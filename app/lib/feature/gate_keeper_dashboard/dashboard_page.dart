@@ -1,7 +1,7 @@
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/dashboard/dashboard_page_view.dart';
-import 'package:app/feature/dashboard/dashboard_page_viewmodel.dart';
+import 'package:app/feature/gate_keeper_dashboard/dashboard_page_view.dart';
+import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page.dart';
 import 'package:app/feature/splash/splash_page.dart';
 import 'package:app/themes_setup.dart';
