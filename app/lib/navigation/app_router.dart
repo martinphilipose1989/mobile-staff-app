@@ -1,4 +1,5 @@
-import 'package:app/feature/dashboard/dashboard_page.dart';
+import 'package:app/feature/gate_keeper_dashboard/dashboard_page.dart';
+import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import '../feature/splash/splash_page.dart';
@@ -19,6 +20,11 @@ class AppRouter {
         return CupertinoPageRoute(
             builder: (context) => const VisitorListPage(),
             settings: const RouteSettings(name: RoutePaths.visitorListPage));
+      case RoutePaths.createEditGatePassPage:
+        return CupertinoPageRoute(
+            builder: (context) => const CreateEditGatePassPage(),
+            settings:
+                const RouteSettings(name: RoutePaths.createEditGatePassPage));
 
       default:
         // Replace by Empty Page

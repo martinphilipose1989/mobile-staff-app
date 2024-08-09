@@ -18,12 +18,6 @@ class DashboardPageView extends BasePageViewWidget<DashboardPageViewModel> {
         dataBuilder: (context, data) {
           if (model.selectedIndex.value == 0) {
             return const VisitorListPage();
-          } else if (model.selectedIndex.value == 1) {
-            return Center(
-                child: Text("selectedIndex ${model.selectedIndex.value}"));
-          } else if (model.selectedIndex.value == 2) {
-            return Center(
-                child: Text("selectedIndex ${model.selectedIndex.value}"));
           }
           return const Center(child: Text("DASHBOARD"));
         });
