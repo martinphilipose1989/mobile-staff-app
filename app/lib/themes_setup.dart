@@ -41,6 +41,7 @@ class AppColors {
   static const Color textPalerGray = Color(0xFFEBEBEB);
 
   static const Color listItem = Color(0xFFF7F7FF);
+  static const Color listItemDisabled = Color(0xFFF4F0EF);
 
   static const Color dividerColor = Color(0xFFE0E0E0);
 }

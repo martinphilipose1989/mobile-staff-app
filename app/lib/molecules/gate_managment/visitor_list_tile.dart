@@ -1,3 +1,4 @@
+import 'package:app/molecules/gate_managment/visit_status_widget.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
@@ -5,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class VisitorListTile extends StatelessWidget {
-  const VisitorListTile({
-    super.key,
-  });
+  const VisitorListTile({super.key, required this.visitStatus});
+
+  final String visitStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,8 @@ class VisitorListTile extends StatelessWidget {
       margin: REdgeInsets.only(bottom: 16),
       shadowColor: const Color(0xFF4C4E64).withOpacity(0.22),
       surfaceTintColor: AppColors.listItem,
-      color: AppColors.listItem,
+      color:
+          visitStatus == "IN" ? AppColors.listItem : AppColors.listItemDisabled,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       child: Container(
         padding: REdgeInsets.all(16),
@@ -86,24 +88,68 @@ class VisitorListTile extends StatelessWidget {
                     )
                   ],
                 ),
-                Container(
-                  height: 36.h,
-                  width: 92.w,
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    color: AppColors.primaryLighter,
-                  ),
-                  child: CommonText(
-                      text: "IN",
-                      style: AppTypography.overline.copyWith(
-                          color: AppColors.primary,
-                          fontSize: 14.sp,
-                          letterSpacing: 0)),
-                ),
+                VisitStatusWidget(visitStatus: visitStatus)
               ],
             ),
+            Divider(height: 12.h, color: AppColors.dividerColor),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Point Of Contact:",
+                      style: AppTypography.smallCaption
+                          .copyWith(letterSpacing: 0.25),
+                    ),
+                    TextSpan(
+                      text: "Kamya",
+                      style: AppTypography.caption.copyWith(
+                          fontSize: 10.sp,
+                          color: visitStatus == "IN"
+                              ? AppColors.textDark
+                              : AppColors.textGray,
+                          letterSpacing: 0.25),
+                    )
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "IN:",
+                      style: AppTypography.smallCaption
+                          .copyWith(letterSpacing: 0.25),
+                    ),
+                    TextSpan(
+                      text: "15 Jul 2024 10:00 AM",
+                      style: AppTypography.caption.copyWith(
+                          fontSize: 10.sp,
+                          color: visitStatus == "IN"
+                              ? AppColors.textDark
+                              : AppColors.textGray,
+                          letterSpacing: 0.25),
+                    )
+                  ],
+                ),
+              ),
+            ]),
+            SizedBox(height: 12.h),
+            Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              padding: REdgeInsets.symmetric(vertical: 6, horizontal: 16),
+              decoration: BoxDecoration(
+                  color: visitStatus == "IN"
+                      ? AppColors.primaryLighter
+                      : AppColors.dividerColor,
+                  borderRadius: BorderRadius.circular(6.r)),
+              child: Text("Purpose Of Visit: School Visit",
+                  style: AppTypography.caption.copyWith(
+                      color: visitStatus == "IN"
+                          ? AppColors.primary
+                          : AppColors.textGray)),
+            )
           ],
         ),
       ),

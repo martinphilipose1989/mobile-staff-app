@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:app/feature/dashboard/dashbaord_view_model.dart';
 import 'package:app/feature/dashboard/widgets/chips.dart';
 import 'package:app/molecules/dashboard/tracker.dart';
-import 'package:app/navigation/route_paths.dart';
+
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_dropdown.dart';
 import 'package:app/utils/common_widgets/common_pageview.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class DashboardPageView extends BasePageViewWidget<DashboardPageModel> {
+  // ignore: use_key_in_widget_constructors
   DashboardPageView(super.providerBase);
 
   @override

@@ -1,4 +1,6 @@
 import 'package:app/molecules/gate_managment/search_text_field_with_filter.dart';
+import 'package:app/molecules/gate_managment/visit_status_toggle.dart';
+
 import 'package:app/molecules/gate_managment/visitor_list_tile.dart';
 import 'package:app/themes_setup.dart';
 
@@ -18,18 +20,25 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
   final TextEditingController searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context, BasePageViewModel model) {
+  Widget build(BuildContext context, VisitorListPageViewModel model) {
     return Padding(
       padding: REdgeInsets.only(left: 16, right: 16, top: 18),
       child: Column(children: [
         SearchTextFieldWithFilter(
             searchController: searchController, filterCallBack: () {}),
         Divider(height: 32.h, color: AppColors.dividerColor),
+        VistsStatusToggleWidget(
+            selectedValue: model.selectValue,
+            onSelectedValueChanged: () {
+              model.onToggleSelect();
+            }),
+        Divider(height: 32.h, color: AppColors.dividerColor),
         Expanded(
           child: ListView.builder(
             itemCount: 10,
             itemBuilder: (context, index) {
-              return const VisitorListTile();
+              return VisitorListTile(
+                  visitStatus: index % 2 == 0 ? "IN" : "OUT");
             },
           ),
         )

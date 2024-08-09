@@ -217,7 +217,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                                 : selectedItems.add(item);
 
                             selectedItemsSubject.add(List.from(selectedItems));
-                            widget.onMultiSelect!(selectedItemsSubject.value);
+                            widget.onMultiSelect(selectedItemsSubject.value);
                             menuSetState(() {}); // This will rebuild the icons
                           },
                           child: Container(
