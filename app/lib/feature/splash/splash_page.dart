@@ -8,7 +8,7 @@ import 'splash_page_model.dart';
 import 'splash_page_view.dart';
 
 class SplashPage extends BasePage<SplashViewModel> {
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({super.key});
 
   @override
   SplashPageState createState() => SplashPageState();
