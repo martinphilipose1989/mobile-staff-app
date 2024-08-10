@@ -39,7 +39,7 @@ class VisitorDetailsRow extends StatelessWidget {
                 style: AppTypography.subtitle2.copyWith(
                   color: AppColors.textDark,
                   fontSize: 14.sp,
-                  height: 1.25,
+                  height: 1.1,
                 ),
               ),
             ],

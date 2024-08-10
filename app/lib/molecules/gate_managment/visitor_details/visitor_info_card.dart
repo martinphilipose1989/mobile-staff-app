@@ -1,5 +1,6 @@
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
+import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,17 +48,20 @@ class VisitorInfoCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    visitorName,
+                  CommonText(
+                    text:visitorName,
                     style: AppTypography.h6.copyWith(
                       color: AppColors.textDark,
+                      height: 1.1
                     ),
                   ),
-                  Text(
-                    "Issued On: $issuedOn",
+                   SizedBox(height: 8.h),
+                  CommonText(
+                    text:"Issued On: $issuedOn",
                     style: AppTypography.body2.copyWith(
                       color: AppColors.textGray,
                       fontSize: 14.sp,
+                       height: 1.1
                     ),
                   ),
                 ],
@@ -72,7 +76,8 @@ class VisitorInfoCard extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topCenter,
-          child: Material(
+          child: Card(
+            margin: EdgeInsets.zero,
             shadowColor: AppColors.shadowColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
@@ -80,10 +85,10 @@ class VisitorInfoCard extends StatelessWidget {
               ),
             ),
             child: CircleAvatar(
-              radius: 66.r,
+              radius: 70.r,
               backgroundColor: Colors.white,
               child: CircleAvatar(
-                radius: 58.r,
+                radius: 60.r,
                 backgroundImage: AssetImage(
                   avatarImagePath,
                 ),
