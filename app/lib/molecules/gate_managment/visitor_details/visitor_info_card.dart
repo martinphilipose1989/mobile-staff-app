@@ -24,11 +24,11 @@ class VisitorInfoCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          margin: const EdgeInsets.only(
-            top: 67,
+          margin:  EdgeInsets.only(
+            top: 67.h,
           ),
-          padding: const EdgeInsets.only(
-            top: 67 + 24,
+          padding:  EdgeInsets.only(
+            top: 67.h + 24.h,
             left: 16,
             right: 16,
             bottom: 24,
