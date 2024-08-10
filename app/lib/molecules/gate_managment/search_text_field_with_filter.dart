@@ -11,19 +11,22 @@ class SearchTextFieldWithFilter extends StatelessWidget {
       required this.searchController,
       this.filterCallBack,
       this.hintText,
-      this.prefixIcon});
+      this.prefixIcon,
+      this.onChanged});
 
   final TextEditingController searchController;
   final VoidCallback? filterCallBack;
   final String? hintText;
   final Widget? prefixIcon;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Flexible(
-          child: CommonSearchTextField(controller: searchController),
+          child: CommonSearchTextField(
+              controller: searchController, onChanged: onChanged),
         ),
         Container(
           height: 56.h,

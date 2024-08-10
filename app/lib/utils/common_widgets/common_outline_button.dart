@@ -39,16 +39,33 @@ class CommonOutlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () {},
+      onPressed: isDisabled || isLoading ? null : onPressed,
       style: OutlinedButton.styleFrom(
-          shadowColor: AppColors.shadowColor,
+          textStyle: titleTextStyle ??
+              AppTypography.subtitle2.copyWith(fontSize: 14.sp),
+          disabledForegroundColor: disabledForegroundColor,
+          disabledBackgroundColor: disabledBackgroundColor,
+          shadowColor: shadowColor ?? AppColors.shadowColor,
           backgroundColor: Colors.white,
-          elevation: 2,
+          elevation: elevation,
           foregroundColor: AppColors.textGray,
           fixedSize: Size(double.infinity, 40.h)),
-      child: Text(
-        "Cancel",
-        style: AppTypography.subtitle2.copyWith(fontSize: 14.sp),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isLoading) ...{
+            SizedBox.square(
+              dimension: 16.w,
+              child: CircularProgressIndicator.adaptive(
+                strokeWidth: 2.w,
+                valueColor: AlwaysStoppedAnimation(loaderColor ?? Colors.white),
+              ),
+            ),
+            SizedBox(width: 8.w), // Add space between the icon and the label
+          },
+          Text(title),
+        ],
       ),
     );
   }
