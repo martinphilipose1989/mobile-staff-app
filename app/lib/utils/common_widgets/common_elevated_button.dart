@@ -14,6 +14,8 @@ class CommonElevatedButton extends StatelessWidget {
   final TextStyle? textStyle;
   final double? height;
   final double? width;
+  final Color? shadowColor;
+  final double? elevation;
 
   const CommonElevatedButton(
       {super.key,
@@ -28,7 +30,9 @@ class CommonElevatedButton extends StatelessWidget {
       this.icon,
       this.textStyle,
       this.height,
-      this.width});
+      this.width,
+      this.shadowColor,
+      this.elevation = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +54,8 @@ class CommonElevatedButton extends StatelessWidget {
                   textBaseline: TextBaseline.alphabetic,
                 )),
         style: ElevatedButton.styleFrom(
+            shadowColor: shadowColor,
+            elevation: elevation,
             backgroundColor: backgroundColor ?? Colors.white),
       ),
     );

@@ -1,9 +1,7 @@
-import 'package:app/feature/dashboard/dashbaord_view_model.dart';
-
+import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
+import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page_viewmodel.dart';
-
 import 'package:app/feature/splash/splash_page_model.dart';
-import 'package:app/feature/tabbar/tabbar_view_model.dart';
 import 'package:app/utils/commonTime/common_time_model.dart';
 import 'package:app/utils/common_calendar/common_calendar_model.dart';
 import 'package:app/utils/common_widgets/common_chip_list/common_chip_list_view_model.dart';
@@ -17,16 +15,6 @@ final splashViewModelProvider =
     ChangeNotifierProvider.autoDispose<SplashViewModel>(
   (ref) => SplashViewModel(getIt.get<String>(instanceName: "BaseUrl"),
       getIt.get<FlutterExceptionHandlerBinder>()),
-);
-
-final tabbarViewModelProvider =
-    ChangeNotifierProvider.autoDispose<TabbarViewModel>(
-  (ref) => TabbarViewModel(getIt.get<FlutterExceptionHandlerBinder>()),
-);
-
-final dashboardViewModelProvider =
-    ChangeNotifierProvider.autoDispose<DashboardPageModel>(
-  (ref) => DashboardPageModel(getIt.get<FlutterExceptionHandlerBinder>()),
 );
 
 final commonCalendarModelProvider =
@@ -51,8 +39,21 @@ final commonChipListProvider =
   (ref) => CommonChipListViewModel(getIt.get<FlutterExceptionHandlerBinder>()),
 );
 
+// GATE MANAGMENT PROVIDERS
 final visitorListPageModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorListPageViewModel>(
   (ref) => VisitorListPageViewModel(
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),
 );
+
+final dashboardPageViewModelProvider =
+    ChangeNotifierProvider.autoDispose<DashboardPageViewModel>((ref) =>
+        DashboardPageViewModel(
+            exceptionHandlerBinder:
+                getIt.get<FlutterExceptionHandlerBinder>()));
+
+final createEditGatePassViewModelProvider =
+    ChangeNotifierProvider.autoDispose<CreateEditGatePassViewModel>((ref) =>
+        CreateEditGatePassViewModel(
+            exceptionHandlerBinder:
+                getIt.get<FlutterExceptionHandlerBinder>()));

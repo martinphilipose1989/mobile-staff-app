@@ -34,7 +34,7 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
           CommonElevatedButton(
             onPressed: () {
               Navigator.of(context).pushReplacementNamed(
-                RoutePaths.otpPage,
+                RoutePaths.dashboard,
               );
             },
             text: 'Lets Get Started',
