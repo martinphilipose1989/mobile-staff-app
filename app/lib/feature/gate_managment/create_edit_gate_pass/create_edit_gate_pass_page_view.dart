@@ -1,4 +1,5 @@
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
+import 'package:app/feature/gate_managment/visitor_details/visitor_details_page.dart';
 import 'package:app/molecules/gate_managment/profile_picker.dart';
 import 'package:app/utils/common_widgets/common_dropdown.dart';
 import 'package:app/utils/common_widgets/common_outline_button.dart';
@@ -99,7 +100,15 @@ class CreateEditGatePassPageView
               SizedBox(width: 16.w),
               Expanded(
                 child: CommonPrimaryElevatedButton(
-                    title: "Submit", onPressed: () {}),
+                    title: "Submit",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const VisitorDetailsPage(),
+                        ),
+                      );
+                    }),
               ),
             ],
           ),

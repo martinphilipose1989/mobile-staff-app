@@ -1,5 +1,6 @@
 import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
+import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page_viewmodel.dart';
 import 'package:app/feature/splash/splash_page_model.dart';
 import 'package:app/utils/commonTime/common_time_model.dart';
@@ -55,5 +56,11 @@ final dashboardPageViewModelProvider =
 final createEditGatePassViewModelProvider =
     ChangeNotifierProvider.autoDispose<CreateEditGatePassViewModel>((ref) =>
         CreateEditGatePassViewModel(
+            exceptionHandlerBinder:
+                getIt.get<FlutterExceptionHandlerBinder>()));
+
+final visitorDetailsViewModelProvider =
+    ChangeNotifierProvider.autoDispose<VisitorDetailsViewModel>((ref) =>
+        VisitorDetailsViewModel(
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
