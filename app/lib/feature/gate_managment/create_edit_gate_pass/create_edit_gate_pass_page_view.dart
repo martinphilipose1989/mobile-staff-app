@@ -4,6 +4,7 @@ import 'package:app/utils/common_widgets/common_dropdown.dart';
 import 'package:app/utils/common_widgets/common_outline_button.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_textformfield_widget.dart';
+import 'package:domain/domain.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +29,11 @@ class CreateEditGatePassPageView
               padding: REdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  ProfilePicker(model: model, onProfilePick: () {}),
+                  ProfilePicker(
+                      model: model,
+                      onProfilePick: () {
+                        model.pickImage(UpoladFileTypeEnum.camera);
+                      }),
                   SizedBox(height: 12.h),
                   const CommonTextFormField(
                       bottomPadding: 16,

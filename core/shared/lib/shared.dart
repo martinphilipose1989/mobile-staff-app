@@ -15,6 +15,8 @@ export 'src/model/error_info.dart';
 export 'src/model/user.dart';
 export 'src/shared_base.dart';
 export 'src/utils/mapper/base_layer_transformer.dart';
+export 'src/model/upload_file.dart';
 
+export 'src/model/error/local_error.dart';
 //utils
 export 'src/utils/validator.dart';

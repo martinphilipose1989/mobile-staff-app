@@ -21,4 +21,10 @@ class VisitorListPageViewModel extends BasePageViewModel {
   void onVisitStatusSelect({required int selectStatus}) {
     log("message");
   }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 }

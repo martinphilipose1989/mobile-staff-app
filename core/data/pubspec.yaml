@@ -16,6 +16,8 @@ dependencies:
     path: ../domain
   shared:
     path: ../shared
+  image_picker: 
+  file_picker:  
 
 
 dev_dependencies:
