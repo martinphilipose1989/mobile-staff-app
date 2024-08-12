@@ -15,15 +15,13 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
   VisitorListPageView(ProviderBase<VisitorListPageViewModel> model)
       : super(model);
 
-  final TextEditingController searchController = TextEditingController();
-
   @override
   Widget build(BuildContext context, VisitorListPageViewModel model) {
     return Padding(
       padding: REdgeInsets.only(left: 16, right: 16, top: 18),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SearchTextFieldWithFilter(
-            searchController: searchController,
+            searchController: model.searchController,
             onChanged: (value) {},
             filterCallBack: () {
               AppBottomSheet(child: FilterBottomSheet(), context: context);
