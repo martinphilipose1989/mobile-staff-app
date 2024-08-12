@@ -1,5 +1,6 @@
 import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
+import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page_viewmodel.dart';
 import 'package:app/feature/splash/splash_page_model.dart';
@@ -62,5 +63,11 @@ final createEditGatePassViewModelProvider =
 final visitorDetailsViewModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorDetailsViewModel>((ref) =>
         VisitorDetailsViewModel(
+            exceptionHandlerBinder:
+                getIt.get<FlutterExceptionHandlerBinder>()));
+
+final gatePassQrScannerViewModelProvider =
+    ChangeNotifierProvider.autoDispose<GatePassQrScannerViewModel>((ref) =>
+        GatePassQrScannerViewModel(
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
