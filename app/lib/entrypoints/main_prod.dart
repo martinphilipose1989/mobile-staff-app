@@ -8,7 +8,7 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.prod,
     values: const FlavorValues(
-      apiBaseUrl: "https://gate-management-r26sp3mibq-uc.a.run.app/api/",
+      apiBaseUrl: "https://gate-management-r26sp3mibq-uc.a.run.app/",
       secrets: AppSecrets.appSecretsProd,
     ),
   );
