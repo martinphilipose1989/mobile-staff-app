@@ -16,6 +16,7 @@ export 'src/usecase/base/params.dart';
 export 'src/usecase/user/login_usecase.dart';
 export 'src/usecase/attachment/attachment_usecase.dart';
 export 'src/usecase/visitor/get_visitor_list_usecase.dart';
+export 'src/usecase/visitor/get_visitor_details_usecase.dart';
 
 export 'package:shared/shared.dart';
 

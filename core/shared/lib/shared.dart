@@ -18,6 +18,7 @@ export 'src/utils/mapper/base_layer_transformer.dart';
 export 'src/model/upload_file.dart';
 export 'src/model/response/gate_mangment/visitor_data_model.dart';
 export 'src/model/response/gate_mangment/visitor_list_response_model.dart';
+export 'src/model/response/gate_mangment/visitor_details_response_model.dart';
 
 export 'src/model/error/local_error.dart';
 //utils

@@ -14,5 +14,10 @@ abstract class DomainModule {
   GetVisitorListUsecase visitorListUsecaseProvider(
       VisitorRepository visitorRepository) {
     return GetVisitorListUsecase(visitorRepository: visitorRepository);
+  }  
+  @lazySingleton
+  GetVisitorDetailsUsecase visitorDetailsUsecaseProvider(
+      VisitorRepository visitorRepository) {
+    return GetVisitorDetailsUsecase(visitorRepository: visitorRepository);
   }
 }

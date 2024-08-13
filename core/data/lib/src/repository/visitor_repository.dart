@@ -11,4 +11,13 @@ class VisitorRepositoryImpl extends VisitorRepository {
     return networkPort.getVisitorList(
         pageNumber: pageNumber, pageSize: pageSize);
   }
+
+  @override
+  Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails({
+    required String gatepassId,
+  }) {
+    return networkPort.getVisitorDetails(
+      gatepassId: gatepassId,
+    );
+  }
 }

@@ -15,8 +15,8 @@ class VisitorDetailsPage extends BasePage<VisitorDetailsViewModel> {
   VisitorDetailsPageState createState() => VisitorDetailsPageState();
 }
 
-class VisitorDetailsPageState extends AppBasePageState<
-    VisitorDetailsViewModel, VisitorDetailsPage> {
+class VisitorDetailsPageState
+    extends AppBasePageState<VisitorDetailsViewModel, VisitorDetailsPage> {
   @override
   Widget buildView(BuildContext context, VisitorDetailsViewModel model) {
     return VisitorDetailsPageView(provideBase());
@@ -37,5 +37,11 @@ class VisitorDetailsPageState extends AppBasePageState<
       showBackButton: true,
       notShowNotificationAndUserBatch: true,
     );
+  }
+
+  @override
+  void onModelReady(VisitorDetailsViewModel model) {
+    model.getVisitorDetails();
+    super.onModelReady(model);
   }
 }

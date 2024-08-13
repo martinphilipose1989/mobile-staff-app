@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/visitor_details_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
 import 'package:retrofit/retrofit.dart';
@@ -14,4 +15,9 @@ abstract class RetrofitService {
   @GET(NetworkProperties.getVisitorList)
   Future<VisitorListResponseEntity> getVisitorList(
       @Query('pageNumber') int pageNumber, @Query('pageSize') int pageSize);
+
+  @GET(NetworkProperties.getVisitorDetails)
+  Future<VisitorDetailsResponseEntity> getVisitorDetails(
+    @Path("gatepassId") String getpassID,
+  );
 }

@@ -66,6 +66,7 @@ final createEditGatePassViewModelProvider =
 final visitorDetailsViewModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorDetailsViewModel>((ref) =>
         VisitorDetailsViewModel(
+           getVisitorListUsecase: getIt.get<GetVisitorDetailsUsecase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
