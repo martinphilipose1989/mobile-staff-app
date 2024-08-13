@@ -1,5 +1,5 @@
-import 'package:domain/src/repository/attachment_repository.dart';
-import 'package:domain/src/usecase/attachment/attachment_usecase.dart';
+import 'package:domain/domain.dart';
+import 'package:domain/src/usecase/visitor/get_visitor_list_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -8,5 +8,11 @@ abstract class DomainModule {
   ChooseFileUseCase attachmentUseCaseProvider(
       AttachmentRepository attachmentRepository) {
     return ChooseFileUseCase(attachmentRepository: attachmentRepository);
+  }
+
+  @lazySingleton
+  GetVisitorListUsecase visitorListUsecaseProvider(
+      VisitorRepository visitorRepository) {
+    return GetVisitorListUsecase(visitorRepository: visitorRepository);
   }
 }

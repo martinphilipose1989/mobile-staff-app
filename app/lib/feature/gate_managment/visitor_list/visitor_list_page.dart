@@ -36,5 +36,7 @@ class VisitorListPageState
   Color scaffoldBackgroundColor() => Colors.white;
 
   @override
-  void onModelReady(VisitorListPageViewModel model) {}
+  void onModelReady(VisitorListPageViewModel model) {
+    model.getVisitorList();
+  }
 }
