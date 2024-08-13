@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+@Deprecated(
+    "CommonElevatedButton has been deprecated will be removed in future try using CommonPrimaryElevatedButton")
 class CommonElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;

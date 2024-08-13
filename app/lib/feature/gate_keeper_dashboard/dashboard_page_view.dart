@@ -19,7 +19,7 @@ class DashboardPageView extends BasePageViewWidget<DashboardPageViewModel> {
           if (model.selectedIndex.value == 0) {
             return const VisitorListPage();
           }
-          return const Center(child: Text("DASHBOARD"));
+          return const SizedBox.shrink();
         });
   }
 }

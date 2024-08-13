@@ -6,16 +6,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CommonSearchTextField extends StatelessWidget {
-  const CommonSearchTextField(
-      {super.key, required this.controller, this.hintText, this.prefixIcon});
+  const CommonSearchTextField({
+    super.key,
+    required this.controller,
+    this.hintText,
+    this.prefixIcon,
+    this.onChanged,
+  });
 
   final TextEditingController controller;
   final String? hintText;
   final Widget? prefixIcon;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
+      onChanged: onChanged,
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: REdgeInsets.only(left: 16, right: 16),

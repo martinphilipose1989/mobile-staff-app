@@ -11,7 +11,7 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class CommonChipListPage extends StatelessWidget {
   final List<CommonChips> chipValues;
-  final Function(int index) onCallBack;
+  final void Function(int index) onCallBack;
   const CommonChipListPage(
       {super.key, required this.chipValues, required this.onCallBack});
 
