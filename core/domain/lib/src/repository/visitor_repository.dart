@@ -9,4 +9,6 @@ abstract class VisitorRepository {
 
   Future<Either<NetworkError, VisitorDetailsResponseModel>> patchVisitorDetails(
       {required String gatepassId, required Map<String, dynamic> outgoingTime});
+  Future<Either<NetworkError, CreateGatepassResponseModel>>
+      createVisitorGatePass({required CreateGatePassModel request});
 }

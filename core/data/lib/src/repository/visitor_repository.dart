@@ -32,4 +32,10 @@ class VisitorRepositoryImpl extends VisitorRepository {
       outgoingTime: outgoingTime,
     );
   }
+
+  @override
+  Future<Either<NetworkError, CreateGatepassResponseModel>>
+      createVisitorGatePass({required CreateGatePassModel request}) {
+    return networkPort.createVisitorGatePass(request: request);
+  }
 }

@@ -13,16 +13,23 @@ abstract class DomainModule {
   GetVisitorListUsecase visitorListUsecaseProvider(
       VisitorRepository visitorRepository) {
     return GetVisitorListUsecase(visitorRepository: visitorRepository);
-  }  
+  }
+
   @lazySingleton
   GetVisitorDetailsUsecase visitorDetailsUsecaseProvider(
       VisitorRepository visitorRepository) {
     return GetVisitorDetailsUsecase(visitorRepository: visitorRepository);
-  } 
-  
-   @lazySingleton
+  }
+
+  @lazySingleton
   PatchVisitorDetailsUsecase gatePassQrScannerViewModelProvider(
       VisitorRepository visitorRepository) {
     return PatchVisitorDetailsUsecase(visitorRepository: visitorRepository);
+  }
+
+  @lazySingleton
+  CreateGatepassUsecase createGatePassUsecaseProvider(
+      VisitorRepository visitorRepository) {
+    return CreateGatepassUsecase(visitorRepository: visitorRepository);
   }
 }

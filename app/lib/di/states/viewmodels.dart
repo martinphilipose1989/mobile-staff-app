@@ -59,6 +59,7 @@ final dashboardPageViewModelProvider =
 final createEditGatePassViewModelProvider =
     ChangeNotifierProvider.autoDispose<CreateEditGatePassViewModel>((ref) =>
         CreateEditGatePassViewModel(
+            createGatepassUsecase: getIt.get<CreateGatepassUsecase>(),
             chooseFileUseCase: getIt.get<ChooseFileUseCase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));

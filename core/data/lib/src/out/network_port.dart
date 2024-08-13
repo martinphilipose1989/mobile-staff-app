@@ -10,4 +10,7 @@ abstract class NetworkPort {
     required String gatepassId,
     required Map<String, dynamic> outgoingTime,
   });
+
+  Future<Either<NetworkError, CreateGatepassResponseModel>>
+      createVisitorGatePass({required CreateGatePassModel request});
 }

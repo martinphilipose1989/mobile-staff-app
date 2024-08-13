@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_details_response_entity.dart';
+import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
+
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
+
 import 'package:retrofit/retrofit.dart';
 
 part 'retrofit_service.g.dart';
@@ -19,11 +23,14 @@ abstract class RetrofitService {
   @GET(NetworkProperties.getVisitorDetails)
   Future<HttpResponse<VisitorDetailsResponseEntity>> getVisitorDetails(
     @Path("gatepassId") String getpassID,
-  );  
-  
+  );
+
   @PATCH(NetworkProperties.getVisitorDetails)
   Future<HttpResponse<VisitorDetailsResponseEntity>> patchVisitorDetails(
     @Path("gatepassId") String getpassID,
     @Body() Map<String, dynamic> outgoingTime,
   );
+  @POST(NetworkProperties.createVistorGatepass)
+  Future<HttpResponse<CreateGatePassResponseEntity>> createVisitorGatePass(
+      @Body() CreateGatePassRequestEntity requestBody);
 }

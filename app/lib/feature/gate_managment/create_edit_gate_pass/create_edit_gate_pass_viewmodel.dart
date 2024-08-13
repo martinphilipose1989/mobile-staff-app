@@ -12,11 +12,14 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final ChooseFileUseCase _chooseFileUseCase;
   final PublishSubject<Resource<UploadFile>> _pickFrontFileResponse =
       PublishSubject();
+  final CreateGatepassUsecase _createGatepassUsecase;
 
   CreateEditGatePassViewModel(
       {required this.exceptionHandlerBinder,
+      required CreateGatepassUsecase createGatepassUsecase,
       required ChooseFileUseCase chooseFileUseCase})
-      : _chooseFileUseCase = chooseFileUseCase;
+      : _createGatepassUsecase = createGatepassUsecase,
+        _chooseFileUseCase = chooseFileUseCase;
 
   void pickImage(UpoladFileTypeEnum fileTypeEnum) {
     exceptionHandlerBinder.handle(block: () {
@@ -36,6 +39,6 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       });
     }).execute();
   }
-}
 
-// [AttachmentRepository] depends on unregistered type [AttachmentPort] from package:data/data.dart
+  void createGatePass() {}
+}
