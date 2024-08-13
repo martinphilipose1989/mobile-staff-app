@@ -54,4 +54,15 @@ class AppImages {
 
   static const String searchIcon = "assets/images/search_icon.svg";
   static const String filterIcon = "assets/images/filter.svg";
+
+  static const String homeBottomIcon = "assets/images/home_bottom_icon.svg";
+  static const String homeActiveBottomIcon =
+      "assets/images/home_active_bottom_icon.svg";
+
+  static const String qrBottomIcon = "assets/images/qr_scan_bottom_icon.svg";
+  static const String gatePassBottomIcon =
+      "assets/images/gate_pass_bottom_icon.svg";
+  static const String defaultAvatar = "assets/images/default_avatar.png";
+  static const String camera = "assets/images/camera.svg";
+  static const String qrImage = "assets/images/qr_image.svg";
 }

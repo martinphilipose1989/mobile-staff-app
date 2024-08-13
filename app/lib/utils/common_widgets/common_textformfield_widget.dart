@@ -16,6 +16,15 @@ class CommonTextFormField extends StatelessWidget {
   final bool showSearchIcon;
   final Widget? prefix;
   final bool showAstreik;
+  final double rightPadding;
+  final double leftPadding;
+  final double topPadding;
+  final double bottomPadding;
+  final bool enableInteractiveSelection;
+  final bool readOnly;
+  final Color? fillColor;
+  final TextStyle? labelTextStyle;
+  final TextInputAction textInputAction;
 
   const CommonTextFormField(
       {super.key,
@@ -29,57 +38,83 @@ class CommonTextFormField extends StatelessWidget {
       this.maxLines,
       required this.showAstreik,
       this.showSearchIcon = false,
-      this.prefix});
+      this.prefix,
+      this.topPadding = 0,
+      this.bottomPadding = 0,
+      this.rightPadding = 0,
+      this.leftPadding = 0,
+      this.enableInteractiveSelection = true,
+      this.readOnly = false,
+      this.fillColor,
+      this.labelTextStyle,
+      this.textInputAction = TextInputAction.done});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        TextFormField(
-          controller: controller,
-          cursorHeight: 20,
-          style: AppTypography.body1,
-          keyboardType: keyboardType,
-          validator: validator,
-          obscureText: obscureText,
-          maxLines: maxLines ?? 1,
-          decoration: decoration ??
-              InputDecoration(
-                prefixIcon: prefix,
-                hintText: hintText ?? '',
-              ),
-        ),
-        Positioned(
-          left: 6,
-          top: -11,
-          child: labelText != ''
-              ? Container(
-                  color: Colors
-                      .white, // Match the background color to avoid overlap
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(
-                    children: [
-                      CommonText(
-                        text: labelText ?? "",
-                        style: AppTypography.caption
-                            .copyWith(color: AppColors.textNeutral35),
-                      ),
-                      showAstreik
-                          ? CommonText(
-                              text: ' *',
-                              style: AppTypography.caption.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.failure,
-                                  fontSize: 12.sp),
-                            )
-                          : const SizedBox.shrink(),
-                    ],
-                  ),
-                )
-              : Container(),
-        )
-      ],
+    return Padding(
+      padding: REdgeInsets.only(
+          top: topPadding,
+          bottom: bottomPadding,
+          left: leftPadding,
+          right: rightPadding),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          TextFormField(
+            textInputAction: textInputAction,
+            ignorePointers: readOnly,
+            readOnly: readOnly,
+            enableInteractiveSelection: enableInteractiveSelection,
+            controller: controller,
+            cursorHeight: 20,
+            style: AppTypography.body1
+                .copyWith(color: readOnly ? AppColors.textLightGray : null),
+            keyboardType: keyboardType,
+            validator: validator,
+            obscureText: obscureText,
+            maxLines: maxLines ?? 1,
+            decoration: decoration ??
+                InputDecoration(
+                    prefixIcon: prefix,
+                    hintText: hintText ?? '',
+                    fillColor: fillColor,
+                    filled: fillColor != null),
+          ),
+          Positioned(
+            left: 6,
+            top: -11,
+            child: labelText != ''
+                ? Container(
+                    color: Colors
+                        .white, // Match the background color to avoid overlap
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      children: [
+                        CommonText(
+                          text: labelText ?? "",
+                          style: readOnly
+                              ? AppTypography.caption
+                                  .copyWith(color: AppColors.textLightGray)
+                              : labelTextStyle ??
+                                  AppTypography.caption
+                                      .copyWith(color: AppColors.textNeutral35),
+                        ),
+                        readOnly == false && showAstreik == true
+                            ? CommonText(
+                                text: ' *',
+                                style: AppTypography.caption.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.failure,
+                                    fontSize: 12.sp),
+                              )
+                            : const SizedBox.shrink(),
+                      ],
+                    ),
+                  )
+                : Container(),
+          )
+        ],
+      ),
     );
   }
 }

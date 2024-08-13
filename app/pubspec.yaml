@@ -56,7 +56,7 @@ dependencies:
     path: ../statemanagement-core/
   flutter_errors:
     git:
-      url: https://github.com/faiyyazs/flutter-errors.git
+      url: https://github.com/AshrafNeo/flutter-errors.git
       ref: main
       path: flutter-errors/
   fluttertoast: ^8.0.9
@@ -67,6 +67,7 @@ dependencies:
   rxdart: ^0.27.7
   pin_code_fields: ^8.0.1
   url_launcher: ^6.3.0
+  mobile_scanner: 5.1.1 
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:app/molecules/gate_managment/visit_status_widget.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
+import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +15,7 @@ class VisitorListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: REdgeInsets.only(bottom: 16),
-      shadowColor: const Color(0xFF4C4E64).withOpacity(0.22),
+      shadowColor: AppColors.shadowColor,
       surfaceTintColor: AppColors.listItem,
       color:
           visitStatus == "IN" ? AppColors.listItem : AppColors.listItemDisabled,
@@ -38,7 +39,7 @@ class VisitorListTile extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 28.r,
                         backgroundImage:
-                            const AssetImage('assets/images/Banner.png'),
+                            const AssetImage(AppImages.defaultAvatar),
                       ),
                     ),
                     SizedBox(width: 5.w),

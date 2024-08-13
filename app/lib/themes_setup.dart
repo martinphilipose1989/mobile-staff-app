@@ -44,6 +44,8 @@ class AppColors {
   static const Color listItemDisabled = Color(0xFFF4F0EF);
 
   static const Color dividerColor = Color(0xFFE0E0E0);
+
+  static Color shadowColor = const Color(0xFF4C4E64).withOpacity(0.22);
 }
 
 List<ThemeData> getThemes(BuildContext context) {
