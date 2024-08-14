@@ -38,4 +38,15 @@ class VisitorRepositoryImpl extends VisitorRepository {
       createVisitorGatePass({required CreateGatePassModel request}) {
     return networkPort.createVisitorGatePass(request: request);
   }
+
+  @override
+  Future<Either<NetworkError, PurposeOfVisitModel>> getPurposeOfVisitList() {
+    return networkPort.getPurposeOfVisitList();
+  }
+
+  @override
+  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
+      getTypeOfVistorList() {
+    return networkPort.getTypeOfVistorList();
+  }
 }

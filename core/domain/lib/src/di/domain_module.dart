@@ -32,4 +32,16 @@ abstract class DomainModule {
       VisitorRepository visitorRepository) {
     return CreateGatepassUsecase(visitorRepository: visitorRepository);
   }
+
+  @lazySingleton
+  GetPurposeOfVisitListUsecase createGetPurposeOfVisitListUsecaseProvider(
+      VisitorRepository visitorRepository) {
+    return GetPurposeOfVisitListUsecase(visitorRepository: visitorRepository);
+  }
+
+  @lazySingleton
+  GetTypeOfVisitorListUsecase createGetTypeOfVisitorListUsecaseeProvider(
+      VisitorRepository visitorRepository) {
+    return GetTypeOfVisitorListUsecase(visitorRepository: visitorRepository);
+  }
 }

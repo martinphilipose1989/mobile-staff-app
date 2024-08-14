@@ -22,6 +22,8 @@ export 'src/model/response/gate_mangment/visitor_details_response_model.dart';
 export 'src/model/request/gate_managment/create_gatepass_model.dart';
 export 'src/model/response/gate_mangment/create_gatepass_response_model.dart';
 export 'src/model/response/gate_mangment/create_gate_pass_data_response_model.dart';
+export 'src/model/response/gate_mangment/purpose_of_visit_response_model.dart';
+export 'src/model/response/gate_mangment/visitor_type_response_model.dart';
 
 export 'src/model/error/local_error.dart';
 //utils

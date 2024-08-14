@@ -75,4 +75,26 @@ class NetworkAdapter implements NetworkPort {
       return Right(response.data.transform());
     });
   }
+
+  @override
+  Future<Either<NetworkError, PurposeOfVisitModel>>
+      getPurposeOfVisitList() async {
+    final response = await safeApiCall(apiService.getPurposeOfVisitList());
+    return response.fold((error) {
+      return Left(error);
+    }, (data) {
+      return Right(data.data.transform());
+    });
+  }
+
+  @override
+  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
+      getTypeOfVistorList() async {
+    final response = await safeApiCall(apiService.getVisitorTypeList());
+    return response.fold((error) {
+      return Left(error);
+    }, (data) {
+      return Right(data.data.transform());
+    });
+  }
 }

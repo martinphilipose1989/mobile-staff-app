@@ -19,6 +19,8 @@ export 'src/usecase/visitor/get_visitor_list_usecase.dart';
 export 'src/usecase/visitor/get_visitor_details_usecase.dart';
 export 'src/usecase/visitor/patch_visitor_details_usecase.dart';
 export 'src/usecase/visitor/create_gatepass_usecase.dart';
+export 'src/usecase/visitor/get_purpose_of_visit_usecase.dart';
+export 'src/usecase/visitor/get_type_of_visitorlist_usecase.dart';
 
 export 'package:shared/shared.dart';
 

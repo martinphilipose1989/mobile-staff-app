@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:app/model/resource.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
@@ -13,6 +14,13 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final PublishSubject<Resource<UploadFile>> _pickFrontFileResponse =
       PublishSubject();
   final CreateGatepassUsecase _createGatepassUsecase;
+
+  final TextEditingController visitorNameController = TextEditingController();
+  final TextEditingController contactNumberController = TextEditingController();
+  final TextEditingController emailIDController = TextEditingController();
+  final TextEditingController studentNameController = TextEditingController();
+  final TextEditingController comingFromController = TextEditingController();
+  final TextEditingController visitDateTimeController = TextEditingController();
 
   CreateEditGatePassViewModel(
       {required this.exceptionHandlerBinder,
@@ -33,9 +41,6 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         _pickFrontFileResponse.add(result);
       }).onError((error) {
         log("ERROR $error");
-
-        /// hide==> showing Local error
-        //  exceptionHandlerBinder.showError(error!);
       });
     }).execute();
   }

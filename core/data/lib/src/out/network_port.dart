@@ -13,4 +13,9 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, CreateGatepassResponseModel>>
       createVisitorGatePass({required CreateGatePassModel request});
+
+  Future<Either<NetworkError, PurposeOfVisitModel>> getPurposeOfVisitList();
+
+  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
+      getTypeOfVistorList();
 }

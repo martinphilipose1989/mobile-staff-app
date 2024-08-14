@@ -38,15 +38,17 @@ class CreateEditGatePassPageView
                         model.pickImage(UpoladFileTypeEnum.camera);
                       }),
                   SizedBox(height: 12.h),
-                  const CommonTextFormField(
+                  CommonTextFormField(
                       bottomPadding: 16,
                       showAstreik: true,
                       labelText: "Visitor Name",
+                      controller: model.visitorNameController,
                       keyboardType: TextInputType.name),
                   CommonTextFormField(
                       bottomPadding: 16,
                       showAstreik: true,
                       labelText: "Contact Number",
+                      controller: model.contactNumberController,
                       prefix: Row(
                         children: [
                           SizedBox(width: 16.w),
@@ -76,16 +78,18 @@ class CreateEditGatePassPageView
                         ],
                       ),
                       keyboardType: TextInputType.phone),
-                  const CommonTextFormField(
+                  CommonTextFormField(
                       bottomPadding: 16,
                       showAstreik: true,
                       labelText: "Email ID",
+                      controller: model.emailIDController,
                       keyboardType: TextInputType.emailAddress),
-                  const CommonTextFormField(
+                  CommonTextFormField(
                     bottomPadding: 16,
                     readOnly: true,
                     showAstreik: true,
                     labelText: "Visit Date & Time",
+                    controller: model.visitDateTimeController,
                   ),
                   CustomDropdownButton(
                     width: double.infinity,
@@ -98,10 +102,11 @@ class CreateEditGatePassPageView
                     onMultiSelect: (_) {},
                     onSingleSelect: (_) {},
                   ),
-                  const CommonTextFormField(
+                  CommonTextFormField(
                       bottomPadding: 16,
                       showAstreik: true,
                       labelText: "Student Name",
+                      controller: model.studentNameController,
                       keyboardType: TextInputType.name),
                   CustomDropdownButton(
                     width: double.infinity,
@@ -125,10 +130,11 @@ class CreateEditGatePassPageView
                     onMultiSelect: (_) {},
                     onSingleSelect: (_) {},
                   ),
-                  const CommonTextFormField(
+                  CommonTextFormField(
                       bottomPadding: 16,
                       showAstreik: true,
                       labelText: "Coming From",
+                      controller: model.comingFromController,
                       keyboardType: TextInputType.text),
                 ],
               ),
