@@ -38,4 +38,10 @@ class CreateEditGatePassPageState extends AppBasePageState<
       notShowNotificationAndUserBatch: true,
     );
   }
+
+  @override
+  void onModelReady(CreateEditGatePassViewModel model) {
+    model.getTypeOfVisitorList();
+    model.getPurposeOfVisitList();
+  }
 }

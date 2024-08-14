@@ -1,6 +1,10 @@
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
+import 'package:app/model/resource.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
+import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,16 +26,37 @@ class ProfilePicker extends StatelessWidget {
             shadowColor: AppColors.shadowColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(80.r),
-              //set border radius more than 50% of height and width to make circle
             ),
-            child: CircleAvatar(
-              radius: 70.r,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 60.r,
-                backgroundImage: const AssetImage(AppImages.defaultAvatar),
-              ),
-            ),
+            child: AppStreamBuilder<Resource<UploadFileResponseModel>>(
+                initialData: Resource.none(),
+                stream: model.uploadedFileResponse,
+                dataBuilder: (context, data) {
+                  return data?.status == Status.none ||
+                          data?.status == Status.error
+                      ? CircleAvatar(
+                          radius: 70.r,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 60.r,
+                            backgroundImage:
+                                const AssetImage(AppImages.defaultAvatar),
+                          ),
+                        )
+                      : DataStatusWidget(
+                          status: data?.status ?? Status.none,
+                          loadingWidget: () =>
+                              const Center(child: CircularProgressIndicator()),
+                          successWidget: () => CircleAvatar(
+                            radius: 70.r,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              radius: 60.r,
+                              backgroundImage:
+                                  NetworkImage("${data?.data?.data?.url}"),
+                            ),
+                          ),
+                        );
+                }),
           ),
           Positioned(
             bottom: 20.h,

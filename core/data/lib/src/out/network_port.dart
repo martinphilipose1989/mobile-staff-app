@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:domain/domain.dart';
 
 abstract class NetworkPort {
@@ -18,4 +20,7 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, TypeOfVisitorResponseModel>>
       getTypeOfVistorList();
+
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
+      {required File file});
 }

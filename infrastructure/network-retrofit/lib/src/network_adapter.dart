@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:data/data.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
@@ -96,5 +98,13 @@ class NetworkAdapter implements NetworkPort {
     }, (data) {
       return Right(data.data.transform());
     });
+  }
+
+  @override
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
+      {required File file}) async {
+    final response = await safeApiCall(apiService.uploadProfileImage(file));
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
   }
 }

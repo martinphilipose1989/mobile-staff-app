@@ -6,4 +6,6 @@ abstract class NetworkProperties {
   static const String getPurposeOfVisitList =
       "gate-management/purpose-of-visit/list";
   static const String getVisitorTypeList = "gate-management/visitor-type/list";
+  static const String uploadProfileImage =
+      "gate-management/visitor/upload-profile-image";
 }

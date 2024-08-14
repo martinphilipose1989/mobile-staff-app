@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_details_response_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/purpose_of_visit_entity.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
 
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_type_entity.dart';
@@ -41,4 +44,9 @@ abstract class RetrofitService {
 
   @GET(NetworkProperties.getVisitorTypeList)
   Future<HttpResponse<TypeOfVisitorEntity>> getVisitorTypeList();
+
+  @POST(NetworkProperties.uploadProfileImage)
+  @MultiPart()
+  Future<HttpResponse<UploadFileResponseEntity>> uploadProfileImage(
+      @Part(name: "file") File file);
 }

@@ -1,4 +1,5 @@
 import 'package:domain/domain.dart';
+import 'package:domain/src/usecase/visitor/upload_visitor_profile_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -43,5 +44,11 @@ abstract class DomainModule {
   GetTypeOfVisitorListUsecase createGetTypeOfVisitorListUsecaseeProvider(
       VisitorRepository visitorRepository) {
     return GetTypeOfVisitorListUsecase(visitorRepository: visitorRepository);
+  }
+
+  @lazySingleton
+  UploadVisitorProfileUsecase uploadVisitorProfileUsecase(
+      VisitorRepository visitorRepository) {
+    return UploadVisitorProfileUsecase(visitorRepository: visitorRepository);
   }
 }

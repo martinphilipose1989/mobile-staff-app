@@ -1,5 +1,6 @@
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_page.dart';
+import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/profile_picker.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
@@ -7,6 +8,8 @@ import 'package:app/utils/common_widgets/common_dropdown.dart';
 import 'package:app/utils/common_widgets/common_outline_button.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_textformfield_widget.dart';
+import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:domain/domain.dart';
 
@@ -91,23 +94,29 @@ class CreateEditGatePassPageView
                     labelText: "Visit Date & Time",
                     controller: model.visitDateTimeController,
                   ),
-                  CustomDropdownButton(
-                    width: double.infinity,
-                    bottomPadding: 16,
-                    items: const ["1", "2", "3"],
-                    isMutiSelect: false,
-                    dropdownName: "Type Of Visitor",
-                    showAstreik: true,
-                    showBorderColor: true,
-                    onMultiSelect: (_) {},
-                    onSingleSelect: (_) {},
+                  AppStreamBuilder<Resource<TypeOfVisitorResponseModel>>(
+                    stream: model.typeOfVisitorResponse,
+                    initialData: Resource.none(),
+                    dataBuilder: (context, data) {
+                      return DataStatusWidget(
+                        status: data?.status ?? Status.none,
+                        loadingWidget: () => const SizedBox.shrink(),
+                        successWidget: () => CustomDropdownButton(
+                          width: double.infinity,
+                          bottomPadding: 16,
+                          items:
+                              data?.data?.data?.map((e) => e.name).toList() ??
+                                  [],
+                          isMutiSelect: false,
+                          dropdownName: "Type Of Visitor",
+                          showAstreik: true,
+                          showBorderColor: true,
+                          onMultiSelect: (_) {},
+                          onSingleSelect: (selectedValue) {},
+                        ),
+                      );
+                    },
                   ),
-                  CommonTextFormField(
-                      bottomPadding: 16,
-                      showAstreik: true,
-                      labelText: "Student Name",
-                      controller: model.studentNameController,
-                      keyboardType: TextInputType.name),
                   CustomDropdownButton(
                     width: double.infinity,
                     bottomPadding: 16,
@@ -119,16 +128,28 @@ class CreateEditGatePassPageView
                     onMultiSelect: (_) {},
                     onSingleSelect: (_) {},
                   ),
-                  CustomDropdownButton(
-                    width: double.infinity,
-                    bottomPadding: 16,
-                    items: const ["1", "2", "3"],
-                    isMutiSelect: false,
-                    dropdownName: "Purpose Of Visit",
-                    showAstreik: true,
-                    showBorderColor: true,
-                    onMultiSelect: (_) {},
-                    onSingleSelect: (_) {},
+                  AppStreamBuilder<Resource<PurposeOfVisitModel>>(
+                    stream: model.purposeOfVisitResponse,
+                    initialData: Resource.none(),
+                    dataBuilder: (context, data) {
+                      return DataStatusWidget(
+                        status: data?.status ?? Status.none,
+                        loadingWidget: () => const SizedBox.shrink(),
+                        successWidget: () => CustomDropdownButton(
+                          width: double.infinity,
+                          bottomPadding: 16,
+                          items:
+                              data?.data?.data?.map((e) => e.name).toList() ??
+                                  [],
+                          isMutiSelect: false,
+                          dropdownName: "Purpose Of Visit",
+                          showAstreik: true,
+                          showBorderColor: true,
+                          onMultiSelect: (_) {},
+                          onSingleSelect: (selectedValue) {},
+                        ),
+                      );
+                    },
                   ),
                   CommonTextFormField(
                       bottomPadding: 16,

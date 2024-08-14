@@ -21,6 +21,7 @@ export 'src/usecase/visitor/patch_visitor_details_usecase.dart';
 export 'src/usecase/visitor/create_gatepass_usecase.dart';
 export 'src/usecase/visitor/get_purpose_of_visit_usecase.dart';
 export 'src/usecase/visitor/get_type_of_visitorlist_usecase.dart';
+export 'src/usecase/visitor/upload_visitor_profile_usecase.dart';
 
 export 'package:shared/shared.dart';
 

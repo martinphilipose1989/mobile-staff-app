@@ -56,13 +56,15 @@ final dashboardPageViewModelProvider =
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
-final createEditGatePassViewModelProvider =
-    ChangeNotifierProvider.autoDispose<CreateEditGatePassViewModel>((ref) =>
-        CreateEditGatePassViewModel(
-            createGatepassUsecase: getIt.get<CreateGatepassUsecase>(),
-            chooseFileUseCase: getIt.get<ChooseFileUseCase>(),
-            exceptionHandlerBinder:
-                getIt.get<FlutterExceptionHandlerBinder>()));
+final createEditGatePassViewModelProvider = ChangeNotifierProvider.autoDispose<
+        CreateEditGatePassViewModel>(
+    (ref) => CreateEditGatePassViewModel(
+        uploadVisitorProfileUsecase: getIt.get<UploadVisitorProfileUsecase>(),
+        getTypeOfVisitorListUsecase: getIt.get<GetTypeOfVisitorListUsecase>(),
+        getPurposeOfVisitListUsecase: getIt.get<GetPurposeOfVisitListUsecase>(),
+        createGatepassUsecase: getIt.get<CreateGatepassUsecase>(),
+        chooseFileUseCase: getIt.get<ChooseFileUseCase>(),
+        exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()));
 
 final visitorDetailsViewModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorDetailsViewModel>((ref) =>

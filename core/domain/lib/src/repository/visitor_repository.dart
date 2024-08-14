@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:domain/domain.dart';
 
 abstract class VisitorRepository {
@@ -16,4 +18,7 @@ abstract class VisitorRepository {
 
   Future<Either<NetworkError, TypeOfVisitorResponseModel>>
       getTypeOfVistorList();
+
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
+      {required File file});
 }

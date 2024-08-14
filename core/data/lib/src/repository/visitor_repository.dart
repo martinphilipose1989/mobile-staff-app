@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
@@ -48,5 +50,11 @@ class VisitorRepositoryImpl extends VisitorRepository {
   Future<Either<NetworkError, TypeOfVisitorResponseModel>>
       getTypeOfVistorList() {
     return networkPort.getTypeOfVistorList();
+  }
+
+  @override
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
+      {required File file}) {
+    return networkPort.uploadProfileImage(file: file);
   }
 }
