@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:app/model/resource.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
@@ -11,6 +12,11 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 class VisitorListPageViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorListUsecase _getVisitorListUsecase;
+  final PublishSubject<Resource<VisitorListResponseModel>>
+      _visitorListResponse = PublishSubject();
+
+  Stream<Resource<VisitorListResponseModel>> get visitorListResponse =>
+      _visitorListResponse.stream;
   final selectedStatus = BehaviorSubject<int>.seeded(-1);
   final statusTypeList = [
     const ToggleOption<int>(value: 0, text: "IN"),
@@ -43,7 +49,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
         params,
         createCall: () => _getVisitorListUsecase.execute(params: params),
       ).asFlow().listen((result) {
-        log("getVisitorList $result");
+        _visitorListResponse.add(result);
       }).onError((error) {
         log("getVisitorList $error");
       });
