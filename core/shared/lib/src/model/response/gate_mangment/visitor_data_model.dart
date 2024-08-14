@@ -25,6 +25,17 @@ class VisitorDataModel {
 
   String? purposeOfVisit;
 
+//visitor details related fields
+  String? purposeOfVisitId;
+
+  String? comingFrom;
+
+  String? qrCode;
+
+  String? visitorProfileImageImageUrl;
+
+  String? visitorProfileImageFilePath;
+
   VisitorDataModel({
     this.id,
     this.pointOfContact,
@@ -38,5 +49,10 @@ class VisitorDataModel {
     this.visitorEmail,
     this.visitorProfileImage,
     this.purposeOfVisit,
+    this.purposeOfVisitId,
+    this.comingFrom,
+    this.qrCode,
+    this.visitorProfileImageImageUrl,
+    this.visitorProfileImageFilePath,
   });
 }

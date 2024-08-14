@@ -66,12 +66,13 @@ final createEditGatePassViewModelProvider =
 final visitorDetailsViewModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorDetailsViewModel>((ref) =>
         VisitorDetailsViewModel(
-           getVisitorListUsecase: getIt.get<GetVisitorDetailsUsecase>(),
+           getVisitorDetailsUsecase: getIt.get<GetVisitorDetailsUsecase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
 final gatePassQrScannerViewModelProvider =
     ChangeNotifierProvider.autoDispose<GatePassQrScannerViewModel>((ref) =>
         GatePassQrScannerViewModel(
+           getVisitorDetailsUsecase: getIt.get<PatchVisitorDetailsUsecase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));

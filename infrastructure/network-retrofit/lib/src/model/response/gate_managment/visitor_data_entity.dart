@@ -42,6 +42,22 @@ class VisitorDataEntity
   @JsonKey(name: "purpose_of_visit")
   String? purposeOfVisit;
 
+//visitor details related fields
+  @JsonKey(name: "purpose_of_visit_id")
+  String? purposeOfVisitId;
+
+  @JsonKey(name: "coming_from")
+  String? comingFrom;
+
+  @JsonKey(name: "qr_code")
+  String? qrCode;
+
+  @JsonKey(name: "visitor_profile_image_file_path")
+  String? visitorProfileImageFilePath;
+
+  @JsonKey(name: "visitor_profile_image_image_url")
+  String? visitorProfileImageImageUrl;
+
   VisitorDataEntity(
       {this.id,
       this.pointOfContact,
@@ -54,7 +70,13 @@ class VisitorDataEntity
       this.visitorMobile,
       this.visitorEmail,
       this.visitorProfileImage,
-      this.purposeOfVisit});
+      this.purposeOfVisit,
+      this.purposeOfVisitId,
+      this.comingFrom,
+      this.qrCode,
+      this.visitorProfileImageFilePath,
+      this.visitorProfileImageImageUrl,
+      });
 
   factory VisitorDataEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorDataEntityFromJson(json);
@@ -69,17 +91,23 @@ class VisitorDataEntity
   @override
   VisitorDataModel transform() {
     return VisitorDataModel(
-        id: id,
-        incomingTime: incomingTime,
-        issuedDate: issuedDate,
-        outgoingTime: outgoingTime,
-        pointOfContact: pointOfContact,
-        purposeOfVisit: purposeOfVisit,
-        visitStatus: visitStatus,
-        visitorEmail: visitorEmail,
-        visitorId: visitorId,
-        visitorMobile: visitorMobile,
-        visitorName: visitorName,
-        visitorProfileImage: visitorProfileImage);
+      id: id,
+      incomingTime: incomingTime,
+      issuedDate: issuedDate,
+      outgoingTime: outgoingTime,
+      pointOfContact: pointOfContact,
+      purposeOfVisit: purposeOfVisit,
+      visitStatus: visitStatus,
+      visitorEmail: visitorEmail,
+      visitorId: visitorId,
+      visitorMobile: visitorMobile,
+      visitorName: visitorName,
+      visitorProfileImage: visitorProfileImage,
+      purposeOfVisitId: purposeOfVisitId,
+      comingFrom: comingFrom,
+      qrCode: qrCode,
+      visitorProfileImageFilePath: visitorProfileImageFilePath,
+      visitorProfileImageImageUrl: visitorProfileImageImageUrl,
+    );
   }
 }

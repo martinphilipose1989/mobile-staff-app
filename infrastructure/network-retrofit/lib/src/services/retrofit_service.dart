@@ -13,11 +13,17 @@ abstract class RetrofitService {
   }
 
   @GET(NetworkProperties.getVisitorList)
-  Future<VisitorListResponseEntity> getVisitorList(
+  Future<HttpResponse<VisitorListResponseEntity>> getVisitorList(
       @Query('pageNumber') int pageNumber, @Query('pageSize') int pageSize);
 
   @GET(NetworkProperties.getVisitorDetails)
-  Future<VisitorDetailsResponseEntity> getVisitorDetails(
+  Future<HttpResponse<VisitorDetailsResponseEntity>> getVisitorDetails(
     @Path("gatepassId") String getpassID,
+  );  
+  
+  @PATCH(NetworkProperties.getVisitorDetails)
+  Future<HttpResponse<VisitorDetailsResponseEntity>> patchVisitorDetails(
+    @Path("gatepassId") String getpassID,
+    @Body() Map<String, dynamic> outgoingTime,
   );
 }

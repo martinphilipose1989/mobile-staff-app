@@ -17,18 +17,34 @@ class NetworkAdapter implements NetworkPort {
     return response.fold((error) {
       return Left(error);
     }, (data) {
-      return Right(data.transform());
+      return Right(data.data.transform());
     });
   }
-  
+
   @override
-  Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails({required String gatepassId}) async {
+  Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(
+      {required String gatepassId}) async {
     final response =
         await safeApiCall(apiService.getVisitorDetails(gatepassId));
     return response.fold((error) {
       return Left(error);
     }, (data) {
-      return Right(data.transform());
+      return Right(data.data.transform());
+    });
+  }
+
+  @override
+  Future<Either<NetworkError, VisitorDetailsResponseModel>> petchVisitorDetails(
+      {required String gatepassId,
+      required Map<String, dynamic> outgoingTime}) async {
+    final response = await safeApiCall(apiService.patchVisitorDetails(
+      gatepassId,
+      outgoingTime,
+    ));
+    return response.fold((error) {
+      return Left(error);
+    }, (data) {
+      return Right(data.data.transform());
     });
   }
 }

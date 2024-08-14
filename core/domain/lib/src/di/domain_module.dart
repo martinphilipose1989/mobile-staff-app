@@ -1,5 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:domain/src/usecase/visitor/get_visitor_list_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -19,5 +18,11 @@ abstract class DomainModule {
   GetVisitorDetailsUsecase visitorDetailsUsecaseProvider(
       VisitorRepository visitorRepository) {
     return GetVisitorDetailsUsecase(visitorRepository: visitorRepository);
+  } 
+  
+   @lazySingleton
+  PatchVisitorDetailsUsecase gatePassQrScannerViewModelProvider(
+      VisitorRepository visitorRepository) {
+    return PatchVisitorDetailsUsecase(visitorRepository: visitorRepository);
   }
 }

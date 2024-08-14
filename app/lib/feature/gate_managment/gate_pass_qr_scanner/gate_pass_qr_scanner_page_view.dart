@@ -27,6 +27,13 @@ class GatePassQrScannerPageView
       width: MediaQuery.of(context).size.width * 0.8,
       height: MediaQuery.of(context).size.width * 0.8,
     );
+
+    model.isUpdateOutGoingTime.listen((data) {
+      if (data) {
+        Navigator.pop(context);
+      }
+    });
+    
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -55,14 +62,25 @@ class GatePassQrScannerPageView
           const SizedBox(
             height: 16,
           ),
-          QrScannerWidget(
-            model.controller,
-            scanWindow,
-            onDetect: (barcodes) {
-              // Additional processing can be done here
-            },
-            scannerResult: model.scannerResult,
-          ),
+          StreamBuilder<bool>(
+              stream: model.isLoading.stream,
+              builder: (context, snapshot) {
+                bool isLoading = snapshot.data ?? false;
+
+                if (isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return QrScannerWidget(
+                  model.controller,
+                  scanWindow,
+                  onDetect: (barcodes) {
+                    // Additional processing can be done here
+                  },
+                  scannerResult: model.scannerResult,
+                );
+              }),
           const Spacer(),
         ],
       ),

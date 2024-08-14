@@ -20,4 +20,16 @@ class VisitorRepositoryImpl extends VisitorRepository {
       gatepassId: gatepassId,
     );
   }
+
+  @override
+  Future<Either<NetworkError, VisitorDetailsResponseModel>>
+      patchVisitorDetails({
+    required String gatepassId,
+    required Map<String, dynamic> outgoingTime,
+  }) {
+    return networkPort.petchVisitorDetails(
+      gatepassId: gatepassId,
+      outgoingTime: outgoingTime,
+    );
+  }
 }
