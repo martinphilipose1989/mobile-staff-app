@@ -1,7 +1,7 @@
 import 'package:app/molecules/gate_managment/visit_status_widget.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
-import 'package:app/utils/common_widgets/app_images.dart';
+import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -35,20 +35,25 @@ class VisitorListTile extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      radius: 32.r,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 28.r,
-                        backgroundImage: visitorDataModel?.visitorProfileImage
-                                    ?.contains("http") ??
-                                false
-                            ? NetworkImage(
-                                "${visitorDataModel?.visitorProfileImage}")
-                            : const AssetImage(AppImages.defaultAvatar)
-                                as ImageProvider<Object>?,
-                      ),
-                    ),
+                    Container(
+                        width: 36.w,
+                        height: 36.w,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipOval(
+                              child: CommonImageWidget(
+                                  imageHeight: 32.w,
+                                  imageWidth: 32.w,
+                                  imageUrl:
+                                      "${visitorDataModel?.visitorProfileImage}"),
+                            ),
+                          ],
+                        )),
                     SizedBox(width: 5.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +80,7 @@ class VisitorListTile extends StatelessWidget {
                           ),
                         ),
                         CommonText(
-                          text: "Parent | Student: Khevna Shah",
+                          text: "Parent",
                           style: AppTypography.overline.copyWith(
                               color: AppColors.textGray,
                               fontSize: 10.sp,
@@ -129,12 +134,15 @@ class VisitorListTile extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: "IN:",
+                      text: visitorDataModel?.visitStatus?.toLowerCase() == "in"
+                          ? "IN:"
+                          : "OUT:",
                       style: AppTypography.smallCaption
                           .copyWith(letterSpacing: 0.25),
                     ),
                     TextSpan(
-                      text: "15 Jul 2024 10:00 AM",
+                      text:
+                          "${visitorDataModel?.visitStatus?.toLowerCase() == "in" ? visitorDataModel?.incomingTime : visitorDataModel?.outgoingTime}",
                       style: AppTypography.caption.copyWith(
                           fontSize: 10.sp,
                           color: visitorDataModel?.visitStatus?.toLowerCase() ==

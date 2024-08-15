@@ -2,6 +2,7 @@ import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/filter_bottom_sheet.dart';
 import 'package:app/molecules/gate_managment/search_text_field_with_filter.dart';
 import 'package:app/molecules/gate_managment/visitor_list_tile.dart';
+import 'package:app/molecules/gate_managment/visitor_list_tile_shimmer.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/common_widgets/app_bottom_sheet.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
@@ -45,8 +46,13 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
           dataBuilder: (context, data) {
             return DataStatusWidget(
               status: data?.status ?? Status.none,
-              loadingWidget: () => const Expanded(
-                  child: Center(child: CircularProgressIndicator())),
+              loadingWidget: () => Expanded(
+                  child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return const VisitorListTileShimmer();
+                },
+              )),
               successWidget: () {
                 return Expanded(
                   child: ListView.builder(

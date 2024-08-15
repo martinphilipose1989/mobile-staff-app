@@ -23,7 +23,15 @@ class CommonSearchTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      onChanged: onChanged,
+      onChanged: (value) {
+        if (value.isNotEmpty && value.startsWith(' ')) {
+          controller.text = value.trimLeft(); // Remove leading spaces
+          controller.selection = TextSelection.fromPosition(
+            TextPosition(offset: controller.text.length),
+          );
+          onChanged?.call(value);
+        }
+      },
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: REdgeInsets.only(left: 16, right: 16),
