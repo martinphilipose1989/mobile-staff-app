@@ -28,7 +28,7 @@ class CountryPickerPhoneTextField extends StatelessWidget {
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(10),
-        FilteringTextInputFormatter.allow(RegExp(r'^[689]\d{0,9}$'))
+        FilteringTextInputFormatter.allow(RegExp(r'^[6789]\d{0,9}$'))
       ],
       prefixIconConstraints: BoxConstraints(maxWidth: 95.w),
       validator: validator,

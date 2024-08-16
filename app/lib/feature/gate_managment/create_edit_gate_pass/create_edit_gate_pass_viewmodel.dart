@@ -1,6 +1,8 @@
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
+import 'package:app/utils/common_widgets/common_popups.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +156,16 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         .asFlow()
         .listen((data) {
       _createGatePassResponse.add(data);
-      if (data.status == Status.error) {
+
+      if (data.status == Status.success) {
+        CommonPopups().showSuccess(
+            navigatorKey.currentContext!, "Gate created successfuly", (value) {
+          navigatorKey.currentState?.pushReplacementNamed(
+            RoutePaths.visitorDetailsPage,
+            arguments: {'gatePassId': '${data.data?.data?.id}'},
+          );
+        });
+      } else if (data.status == Status.error) {
         _flutterToastErrorPresenter.show(
             data.dealSafeAppError!,
             navigatorKey.currentContext!,
