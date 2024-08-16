@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/filter_bottom_sheet.dart';
 import 'package:app/molecules/gate_managment/search_text_field_with_filter.dart';
@@ -16,7 +18,6 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 import 'visitor_list_page_viewmodel.dart';
 
 class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
-  // ignore: use_super_parameters
   VisitorListPageView(ProviderBase<VisitorListPageViewModel> model)
       : super(model);
 
@@ -26,52 +27,87 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
       padding: REdgeInsets.only(left: 16, right: 16, top: 18),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SearchTextFieldWithFilter(
-            searchController: model.searchController,
-            onChanged: (value) {},
-            filterCallBack: () {
-              AppBottomSheet(child: FilterBottomSheet(), context: context);
-            }),
+          searchController: model.searchController,
+          onChanged: (value) {},
+          filterCallBack: () {
+            AppBottomSheet(child: FilterBottomSheet(), context: context);
+          },
+        ),
         Divider(height: 32.h, color: AppColors.dividerColor),
         ToggleOptionList<int>(
           selectedValue: model.selectedStatus,
           options: model.statusTypeList,
-          onSelect: (value) {
-            model.onVisitStatusSelect(selectStatus: value);
-          },
+          onSelect: (value) => model.onVisitStatusSelect(selectStatus: value),
         ),
         Divider(height: 32.h, color: AppColors.dividerColor),
-        AppStreamBuilder<Resource<VisitorListResponseModel>>(
-          stream: model.visitorListResponse,
-          initialData: Resource.none(),
-          dataBuilder: (context, data) {
-            return DataStatusWidget(
-              status: data?.status ?? Status.none,
-              loadingWidget: () => Expanded(
-                  child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return const VisitorListTileShimmer();
-                },
-              )),
-              successWidget: () {
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount:
-                        data?.data?.visitorListDataModel?.visitors?.length,
-                    itemBuilder: (context, index) {
-                      final visitorItem =
-                          data?.data?.visitorListDataModel?.visitors?[index];
-                      return VisitorListTile(
-                        visitorDataModel: visitorItem,
-                      );
-                    },
-                  ),
-                );
-              },
-            );
-          },
+        Expanded(
+          child: AppStreamBuilder<Resource<VisitorListResponseModel>>(
+            stream: model.visitorListResponse,
+            initialData: Resource.none(),
+            dataBuilder: (context, data) {
+              return DataStatusWidget(
+                status: data?.status ?? Status.none,
+                loadingWidget: () => _buildLoadingList(),
+                successWidget: () => _buildVisitorList(context, model),
+              );
+            },
+          ),
         ),
       ]),
+    );
+  }
+
+  Widget _buildLoadingList() {
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) => const VisitorListTileShimmer(),
+    );
+  }
+
+  Widget _buildVisitorList(
+      BuildContext context, VisitorListPageViewModel model) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        if (scrollNotification.metrics.pixels ==
+            scrollNotification.metrics.maxScrollExtent) {
+          model.loadMoreVisitorList();
+        }
+        return false;
+      },
+      child: AppStreamBuilder<List<VisitorDataModel>>(
+        stream: model.visitorListStream,
+        initialData: const [],
+        dataBuilder: (context, visitors) {
+          final hasMorePages = model.hasMorePagesSubject.value;
+          log("$hasMorePages", name: "hasMorePages");
+          final itemCount = visitors?.length ?? 0 + (hasMorePages ? 1 : 0);
+          return ListView.builder(
+            itemCount: itemCount,
+            itemBuilder: (context, index) {
+              if (index < (visitors?.length ?? 0)) {
+                return VisitorListTile(visitorDataModel: visitors?[index]);
+              } else {
+                return _buildLoadingIndicator(model);
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator(VisitorListPageViewModel model) {
+    return AppStreamBuilder<bool>(
+      stream: model.loadingStream,
+      initialData: false,
+      dataBuilder: (context, isLoading) {
+        return isLoading == true
+            ? const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            : const SizedBox.shrink();
+      },
     );
   }
 }
