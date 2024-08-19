@@ -63,6 +63,10 @@ class VisitorListPageViewModel extends BasePageViewModel {
   void getVisitorList() {
     if (_loadingSubject.value || !hasMorePagesSubject.value) return;
 
+    if (_pageSubject.value > 1) {
+      _loadingSubject.add(true);
+    }
+
     _exceptionHandlerBinder.handle(block: () {
       final params =
           GetVisitorListUsecaseParams(pageNumber: _pageSubject.value);
