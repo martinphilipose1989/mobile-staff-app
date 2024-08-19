@@ -2,6 +2,7 @@ import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CommonTextFormField extends StatelessWidget {
@@ -25,6 +26,9 @@ class CommonTextFormField extends StatelessWidget {
   final Color? fillColor;
   final TextStyle? labelTextStyle;
   final TextInputAction textInputAction;
+  final void Function(String)? onChanged;
+  final BoxConstraints? prefixIconConstraints;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CommonTextFormField(
       {super.key,
@@ -47,7 +51,10 @@ class CommonTextFormField extends StatelessWidget {
       this.readOnly = false,
       this.fillColor,
       this.labelTextStyle,
-      this.textInputAction = TextInputAction.done});
+      this.textInputAction = TextInputAction.done,
+      this.onChanged,
+      this.prefixIconConstraints,
+      this.inputFormatters = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +68,17 @@ class CommonTextFormField extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           TextFormField(
+            cursorColor: AppColors.primary,
+            inputFormatters: inputFormatters,
+            onChanged: (value) {
+              if (value.isNotEmpty && value.startsWith(' ')) {
+                controller?.text = value.trimLeft(); // Remove leading spaces
+                controller?.selection = TextSelection.fromPosition(
+                  TextPosition(offset: controller?.text.length ?? 0),
+                );
+                onChanged?.call(value);
+              }
+            },
             textInputAction: textInputAction,
             ignorePointers: readOnly,
             readOnly: readOnly,
@@ -76,6 +94,7 @@ class CommonTextFormField extends StatelessWidget {
             decoration: decoration ??
                 InputDecoration(
                     prefixIcon: prefix,
+                    prefixIconConstraints: prefixIconConstraints,
                     hintText: hintText ?? '',
                     fillColor: fillColor,
                     filled: fillColor != null),

@@ -1,6 +1,10 @@
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
+import 'package:app/model/resource.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
+import 'package:app/utils/common_widgets/common_image_widget.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,34 +26,64 @@ class ProfilePicker extends StatelessWidget {
             shadowColor: AppColors.shadowColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(80.r),
-              //set border radius more than 50% of height and width to make circle
             ),
-            child: CircleAvatar(
-              radius: 70.r,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 60.r,
-                backgroundImage: const AssetImage(AppImages.defaultAvatar),
-              ),
-            ),
+            child: AppStreamBuilder<Resource<UploadFileResponseModel>>(
+                initialData: Resource.none(),
+                stream: model.uploadedFileResponse,
+                dataBuilder: (context, data) {
+                  return Container(
+                    height: 115.w,
+                    width: 115.w,
+                    decoration: const BoxDecoration(
+                        color: Colors.white, shape: BoxShape.circle),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Visibility(
+                          visible: data?.status == Status.loading,
+                          replacement: ClipOval(
+                            child: CommonImageWidget(
+                              imageUrl: "${data?.data?.data?.url}",
+                              imageHeight: 100.w,
+                              imageWidth: 100.w,
+                            ),
+                          ),
+                          child: const Center(
+                            child:
+                                CircularProgressIndicator(), // Progress indicator while loading
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
           ),
-          Positioned(
-            bottom: 20.h,
-            right: 0,
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              onTap: onProfilePick,
-              child: Container(
-                height: 40.w,
-                width: 40.w,
-                padding: REdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                    color: AppColors.primary, shape: BoxShape.circle),
-                child: SvgPicture.asset(AppImages.camera,
-                    height: 24.w, width: 24.w),
-              ),
-            ),
-          )
+          AppStreamBuilder<Resource<UploadFileResponseModel>>(
+              initialData: Resource.none(),
+              stream: model.uploadedFileResponse,
+              dataBuilder: (context, data) {
+                return Positioned(
+                  bottom: 20.h,
+                  right: 0,
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap:
+                        data?.status == Status.loading ? null : onProfilePick,
+                    child: Container(
+                      height: 40.w,
+                      width: 40.w,
+                      padding: REdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: data?.status == Status.loading
+                              ? AppColors.textGray
+                              : AppColors.primary,
+                          shape: BoxShape.circle),
+                      child: SvgPicture.asset(AppImages.camera,
+                          height: 24.w, width: 24.w),
+                    ),
+                  ),
+                );
+              })
         ],
       ),
     );

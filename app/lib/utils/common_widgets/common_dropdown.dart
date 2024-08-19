@@ -7,12 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CustomDropdownButton extends StatefulWidget {
-  final List<String> items;
+  final List<String?> items;
   final bool isMutiSelect;
   final bool showBorderColor;
   final String dropdownName;
   final bool showAstreik;
   final double? width;
+  final bool displayZerothIndex;
   final Function(List<String> selectedValues) onMultiSelect;
   final Function(String selectedValue)? onSingleSelect;
   final double rightPadding;
@@ -26,6 +27,7 @@ class CustomDropdownButton extends StatefulWidget {
     required this.dropdownName,
     required this.showAstreik,
     required this.showBorderColor,
+    this.displayZerothIndex = false,
     this.width,
     required this.onMultiSelect,
     this.onSingleSelect,
@@ -47,6 +49,16 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
       BehaviorSubject<String>.seeded('');
 
   String? selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.displayZerothIndex) {
+      List<String> addedZerothIndex = [];
+      addedZerothIndex.add(widget.items[0] ?? '');
+      selectedItemsSubject.add(addedZerothIndex);
+    }
+  }
 
   @override
   void dispose() {
@@ -91,10 +103,10 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                     ],
                   ),
                   items: widget.items
-                      .map((String item) => DropdownMenuItem<String>(
+                      .map((String? item) => DropdownMenuItem<String>(
                             value: item,
                             child: Text(
-                              item,
+                              item ?? "",
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -112,14 +124,14 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                     singleSelectItemSubject.add(value ?? "");
                   },
                   buttonStyleData: ButtonStyleData(
-                    height: 68.h,
+                    height: 48.h,
                     width: widget.width ?? 175.w,
                     padding: const EdgeInsets.only(left: 14, right: 14),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
                           color: widget.showBorderColor
-                              ? Colors.black
+                              ? Colors.black26
                               : Colors.transparent,
                           width: 1),
                       color: Colors.white,
@@ -129,7 +141,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                     icon: Icon(
                       Icons.keyboard_arrow_down_sharp,
                     ),
-                    //  iconSize: 24,
+                    iconSize: 14,
                     iconEnabledColor: Colors.black,
                     iconDisabledColor: Colors.grey,
                   ),
@@ -137,12 +149,6 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                     direction: DropdownDirection.left,
                     maxHeight: 200,
                     width: widget.width ?? 200,
-                    padding: REdgeInsets.only(
-                      top: widget.topPadding,
-                      bottom: widget.bottomPadding,
-                      right: widget.rightPadding,
-                      left: widget.leftPadding,
-                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       color: Colors.white,
@@ -152,6 +158,12 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                       radius: const Radius.circular(40),
                       thickness: WidgetStateProperty.all<double>(6),
                       thumbVisibility: WidgetStateProperty.all<bool>(true),
+                    ),
+                    padding: REdgeInsets.only(
+                      top: widget.topPadding,
+                      bottom: widget.bottomPadding,
+                      right: widget.rightPadding,
+                      left: widget.leftPadding,
                     ),
                   ),
                   menuItemStyleData: const MenuItemStyleData(
@@ -203,11 +215,10 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
         List<String> selectedItems = snapshot.data ?? [];
         return Padding(
           padding: REdgeInsets.only(
-            top: widget.topPadding,
-            bottom: widget.bottomPadding,
-            right: widget.rightPadding,
-            left: widget.leftPadding,
-          ),
+              top: widget.topPadding,
+              bottom: widget.bottomPadding,
+              right: widget.rightPadding,
+              left: widget.leftPadding),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -234,7 +245,6 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                   items: widget.items.map((item) {
                     return DropdownMenuItem(
                       value: item,
-                      //disable default onTap to avoid closing menu when selecting an item
                       enabled: false,
                       child: StatefulBuilder(
                         builder: (context, menuSetState) {
@@ -243,7 +253,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                             onTap: () {
                               isSelected
                                   ? selectedItems.remove(item)
-                                  : selectedItems.add(item);
+                                  : selectedItems.add(item ?? "");
 
                               selectedItemsSubject
                                   .add(List.from(selectedItems));
@@ -271,7 +281,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                                   const SizedBox(width: 16),
                                   Expanded(
                                     child: Text(
-                                      item,
+                                      "$item",
                                       style: const TextStyle(
                                         fontSize: 14,
                                       ),
@@ -292,7 +302,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                     return widget.items.map(
                       (item) {
                         return Container(
-                          alignment: AlignmentDirectional.center,
+                          alignment: AlignmentDirectional.centerStart,
                           child: Text(
                             selectedItems.join(', '),
                             style: const TextStyle(
@@ -313,7 +323,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
                           color: widget.showBorderColor
-                              ? Colors.black
+                              ? Colors.black26
                               : Colors.transparent,
                           width: 1),
                       color: Colors.white,

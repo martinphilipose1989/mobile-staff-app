@@ -16,21 +16,21 @@ class VisitStatusWidget extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
-        color: visitStatus == "IN"
+        color: visitStatus == "in"
             ? AppColors.primaryLighter
             : AppColors.textPalerGray,
         border: Border.all(
           width: 1,
-          color: visitStatus == "IN"
+          color: visitStatus == "in"
               ? AppColors.primary
               : AppColors.textLighterGray,
         ),
       ),
       child: CommonText(
-        text: visitStatus == "IN" ? "In" : "Out",
+        text: visitStatus == "in" ? "In" : "Out",
         style: AppTypography.overline.copyWith(
           color:
-              visitStatus == "IN" ? AppColors.primary : AppColors.textLightGray,
+              visitStatus == "in" ? AppColors.primary : AppColors.textLightGray,
           fontSize: 14.sp,
           letterSpacing: 0,
         ),

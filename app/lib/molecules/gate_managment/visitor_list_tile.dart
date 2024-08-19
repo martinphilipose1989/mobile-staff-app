@@ -1,15 +1,16 @@
 import 'package:app/molecules/gate_managment/visit_status_widget.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
-import 'package:app/utils/common_widgets/app_images.dart';
+import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class VisitorListTile extends StatelessWidget {
-  const VisitorListTile({super.key, required this.visitStatus});
+  const VisitorListTile({super.key, required this.visitorDataModel});
 
-  final String visitStatus;
+  final VisitorDataModel? visitorDataModel;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,9 @@ class VisitorListTile extends StatelessWidget {
       margin: REdgeInsets.only(bottom: 16),
       shadowColor: AppColors.shadowColor,
       surfaceTintColor: AppColors.listItem,
-      color:
-          visitStatus == "IN" ? AppColors.listItem : AppColors.listItemDisabled,
+      color: visitorDataModel?.visitStatus?.toLowerCase() == "in"
+          ? AppColors.listItem
+          : AppColors.listItemDisabled,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       child: Container(
         padding: REdgeInsets.all(16),
@@ -33,15 +35,25 @@ class VisitorListTile extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      radius: 32.r,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 28.r,
-                        backgroundImage:
-                            const AssetImage(AppImages.defaultAvatar),
-                      ),
-                    ),
+                    Container(
+                        width: 36.w,
+                        height: 36.w,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipOval(
+                              child: CommonImageWidget(
+                                  imageHeight: 32.w,
+                                  imageWidth: 32.w,
+                                  imageUrl:
+                                      "${visitorDataModel?.visitorProfileImage}"),
+                            ),
+                          ],
+                        )),
                     SizedBox(width: 5.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,14 +62,15 @@ class VisitorListTile extends StatelessWidget {
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: "Rohan Takale\t",
+                                text: "${visitorDataModel?.visitorName}\t",
                                 style: AppTypography.caption.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.textDark,
                                     fontSize: 12.sp),
                               ),
                               TextSpan(
-                                text: "(Visitor: ID#1234)",
+                                text:
+                                    "(Visitor: ID#${visitorDataModel?.visitorId})",
                                 style: AppTypography.overline.copyWith(
                                     fontSize: 10.sp,
                                     color: AppColors.textGray,
@@ -67,21 +80,21 @@ class VisitorListTile extends StatelessWidget {
                           ),
                         ),
                         CommonText(
-                          text: "Parent | Student: Khevna Shah",
+                          text: "Parent",
                           style: AppTypography.overline.copyWith(
                               color: AppColors.textGray,
                               fontSize: 10.sp,
                               letterSpacing: 0.25),
                         ),
                         CommonText(
-                          text: "Rohanthale22@gmail.com",
+                          text: "${visitorDataModel?.visitorEmail}",
                           style: AppTypography.overline.copyWith(
                               color: AppColors.textGray,
                               fontSize: 10.sp,
                               letterSpacing: 0.25),
                         ),
                         CommonText(
-                          text: "9876543212",
+                          text: "${visitorDataModel?.visitorMobile}",
                           style: AppTypography.overline.copyWith(
                               color: AppColors.textGray, letterSpacing: 0.25),
                         ),
@@ -89,7 +102,9 @@ class VisitorListTile extends StatelessWidget {
                     )
                   ],
                 ),
-                VisitStatusWidget(visitStatus: visitStatus)
+                VisitStatusWidget(
+                    visitStatus:
+                        visitorDataModel?.visitStatus?.toLowerCase() ?? "")
               ],
             ),
             Divider(height: 12.h, color: AppColors.dividerColor),
@@ -103,10 +118,11 @@ class VisitorListTile extends StatelessWidget {
                           .copyWith(letterSpacing: 0.25),
                     ),
                     TextSpan(
-                      text: "Kamya",
+                      text: "${visitorDataModel?.pointOfContact}",
                       style: AppTypography.caption.copyWith(
                           fontSize: 10.sp,
-                          color: visitStatus == "IN"
+                          color: visitorDataModel?.visitStatus?.toLowerCase() ==
+                                  "in"
                               ? AppColors.textDark
                               : AppColors.textGray,
                           letterSpacing: 0.25),
@@ -118,15 +134,19 @@ class VisitorListTile extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: "IN:",
+                      text: visitorDataModel?.visitStatus?.toLowerCase() == "in"
+                          ? "IN:"
+                          : "OUT:",
                       style: AppTypography.smallCaption
                           .copyWith(letterSpacing: 0.25),
                     ),
                     TextSpan(
-                      text: "15 Jul 2024 10:00 AM",
+                      text:
+                          "${visitorDataModel?.visitStatus?.toLowerCase() == "in" ? visitorDataModel?.incomingTime : visitorDataModel?.outgoingTime}",
                       style: AppTypography.caption.copyWith(
                           fontSize: 10.sp,
-                          color: visitStatus == "IN"
+                          color: visitorDataModel?.visitStatus?.toLowerCase() ==
+                                  "in"
                               ? AppColors.textDark
                               : AppColors.textGray,
                           letterSpacing: 0.25),
@@ -141,15 +161,17 @@ class VisitorListTile extends StatelessWidget {
               width: double.infinity,
               padding: REdgeInsets.symmetric(vertical: 6, horizontal: 16),
               decoration: BoxDecoration(
-                  color: visitStatus == "IN"
+                  color: visitorDataModel?.visitStatus?.toLowerCase() == "in"
                       ? AppColors.primaryLighter
                       : AppColors.dividerColor,
                   borderRadius: BorderRadius.circular(6.r)),
-              child: Text("Purpose Of Visit: School Visit",
+              child: Text(
+                  "Purpose Of Visit:${visitorDataModel?.purposeOfVisit}",
                   style: AppTypography.caption.copyWith(
-                      color: visitStatus == "IN"
-                          ? AppColors.primary
-                          : AppColors.textGray)),
+                      color:
+                          visitorDataModel?.visitStatus?.toLowerCase() == "in"
+                              ? AppColors.primary
+                              : AppColors.textGray)),
             )
           ],
         ),

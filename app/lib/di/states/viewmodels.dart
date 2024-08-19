@@ -1,3 +1,4 @@
+import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
 import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_viewmodel.dart';
@@ -46,6 +47,7 @@ final commonChipListProvider =
 final visitorListPageModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorListPageViewModel>(
   (ref) => VisitorListPageViewModel(
+      getVisitorListUsecase: getIt.get<GetVisitorListUsecase>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),
 );
 
@@ -55,21 +57,27 @@ final dashboardPageViewModelProvider =
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
-final createEditGatePassViewModelProvider =
-    ChangeNotifierProvider.autoDispose<CreateEditGatePassViewModel>((ref) =>
-        CreateEditGatePassViewModel(
-            chooseFileUseCase: getIt.get<ChooseFileUseCase>(),
-            exceptionHandlerBinder:
-                getIt.get<FlutterExceptionHandlerBinder>()));
+final createEditGatePassViewModelProvider = ChangeNotifierProvider.autoDispose<
+        CreateEditGatePassViewModel>(
+    (ref) => CreateEditGatePassViewModel(
+        flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+        uploadVisitorProfileUsecase: getIt.get<UploadVisitorProfileUsecase>(),
+        getTypeOfVisitorListUsecase: getIt.get<GetTypeOfVisitorListUsecase>(),
+        getPurposeOfVisitListUsecase: getIt.get<GetPurposeOfVisitListUsecase>(),
+        createGatepassUsecase: getIt.get<CreateGatepassUsecase>(),
+        chooseFileUseCase: getIt.get<ChooseFileUseCase>(),
+        exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()));
 
 final visitorDetailsViewModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorDetailsViewModel>((ref) =>
         VisitorDetailsViewModel(
+           getVisitorDetailsUsecase: getIt.get<GetVisitorDetailsUsecase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
 final gatePassQrScannerViewModelProvider =
     ChangeNotifierProvider.autoDispose<GatePassQrScannerViewModel>((ref) =>
         GatePassQrScannerViewModel(
+           getVisitorDetailsUsecase: getIt.get<PatchVisitorDetailsUsecase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));

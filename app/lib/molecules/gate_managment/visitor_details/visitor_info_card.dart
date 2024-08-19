@@ -1,6 +1,7 @@
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/dateformate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,10 +25,10 @@ class VisitorInfoCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          margin:  EdgeInsets.only(
+          margin: EdgeInsets.only(
             top: 67.h,
           ),
-          padding:  EdgeInsets.only(
+          padding: EdgeInsets.only(
             top: 67.h + 24.h,
             left: 16,
             right: 16,
@@ -49,23 +50,27 @@ class VisitorInfoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CommonText(
-                    text:visitorName,
-                    style: AppTypography.h6.copyWith(
-                      color: AppColors.textDark,
-                      height: 1.1
-                    ),
+                    text: visitorName,
+                    style: AppTypography.h6
+                        .copyWith(color: AppColors.textDark, height: 1.1),
                   ),
-                   SizedBox(height: 8.h),
+                  SizedBox(height: 8.h),
                   CommonText(
-                    text:"Issued On: $issuedOn",
+                    text: "Issued On: ${issuedOn.dateFormattoddMMyyyy()}",
                     style: AppTypography.body2.copyWith(
-                      color: AppColors.textGray,
-                      fontSize: 14.sp,
-                       height: 1.1
-                    ),
+                        color: AppColors.textGray,
+                        fontSize: 14.sp,
+                        height: 1.1),
                   ),
                 ],
               ),
+              // Image.memory(
+              //   bytes,
+              //   fit: BoxFit.cover,
+              //   errorBuilder: (context, error, stackTrace) {
+              //     return const Icon(Icons.error); // Display an error icon or widget
+              //   },
+              // ),
               SvgPicture.asset(
                 qrImagePath,
                 height: 45.w,
@@ -89,7 +94,11 @@ class VisitorInfoCard extends StatelessWidget {
               backgroundColor: Colors.white,
               child: CircleAvatar(
                 radius: 60.r,
-                backgroundImage: AssetImage(
+                backgroundImage:
+                    // NetworkImage(
+                    //   avatarImagePath,
+                    // )
+                    AssetImage(
                   avatarImagePath,
                 ),
               ),

@@ -30,7 +30,6 @@ class CommonChipListPage extends StatelessWidget {
                   final isSelected = data == index;
                   return GestureDetector(
                     onTap: () {
-                      print(index);
                       onCallBack.call(index);
                       model.highlightIndex.add(index);
                     },

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_page_view.dart';
@@ -9,14 +11,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class VisitorDetailsPage extends BasePage<VisitorDetailsViewModel> {
-  const VisitorDetailsPage({super.key});
+  const VisitorDetailsPage({super.key, required this.gatePassId});
+
+  final String gatePassId;
 
   @override
   VisitorDetailsPageState createState() => VisitorDetailsPageState();
 }
 
-class VisitorDetailsPageState extends AppBasePageState<
-    VisitorDetailsViewModel, VisitorDetailsPage> {
+class VisitorDetailsPageState
+    extends AppBasePageState<VisitorDetailsViewModel, VisitorDetailsPage> {
   @override
   Widget buildView(BuildContext context, VisitorDetailsViewModel model) {
     return VisitorDetailsPageView(provideBase());
@@ -37,5 +41,12 @@ class VisitorDetailsPageState extends AppBasePageState<
       showBackButton: true,
       notShowNotificationAndUserBatch: true,
     );
+  }
+
+  @override
+  void onModelReady(VisitorDetailsViewModel model) {
+    log("gatePassId ${widget.gatePassId}");
+    model.getVisitorDetails(gatePassId: widget.gatePassId);
+    super.onModelReady(model);
   }
 }

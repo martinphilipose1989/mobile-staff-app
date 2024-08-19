@@ -6,4 +6,5 @@ class RoutePaths {
 // gate managment
   static const String visitorListPage = "/visitorListPage";
   static const String createEditGatePassPage = "/createEditGatePassPage";
+  static const String visitorDetailsPage = "/visitorDetailsPage";
 }

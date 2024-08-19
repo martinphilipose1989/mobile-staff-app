@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -5,20 +8,34 @@ class UrlLauncher {
   // Private constructor to prevent instantiation.
   UrlLauncher._();
 
-  // Launches a URL in the default browser.
-  static Future<void> launchURL(String url, {BuildContext? context}) async {
-    final Uri uri = Uri.parse(url);
+  static Future<void> _launch(
+      Uri uri, BuildContext? context, String fallbackMessage) async {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
       if (context != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not launch $url')),
-        );
-      } else {
-        print('Could not launch $url');
+        if (!context.mounted) return;
+        _showFeedback(context, fallbackMessage);
       }
     }
+  }
+
+  static void _showFeedback(BuildContext? context, String message) {
+    if (context != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } else {
+      if (kDebugMode) {
+        log(message);
+      }
+    }
+  }
+
+  // Launches a URL in the default browser.
+  static Future<void> launchURL(String url, {BuildContext? context}) async {
+    final Uri uri = Uri.parse(url);
+    await _launch(uri, context, 'Could not launch $url');
   }
 
   // Launches a URL in a webview.
@@ -32,11 +49,8 @@ class UrlLauncher {
       );
     } else {
       if (context != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not launch $url')),
-        );
-      } else {
-        print('Could not launch $url');
+        if (!context.mounted) return;
+        _showFeedback(context, 'Could not launch $url');
       }
     }
   }
@@ -47,18 +61,7 @@ class UrlLauncher {
       scheme: 'mailto',
       path: email,
     );
-
-    if (await canLaunchUrl(emailLaunchUri)) {
-      await launchUrl(emailLaunchUri);
-    } else {
-      if (context != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not launch $email')),
-        );
-      } else {
-        print('Could not launch $email');
-      }
-    }
+    await _launch(emailLaunchUri, context, 'Could not launch $email');
   }
 
   // Launches a phone number.
@@ -68,17 +71,6 @@ class UrlLauncher {
       scheme: 'tel',
       path: phoneNumber,
     );
-
-    if (await canLaunchUrl(phoneLaunchUri)) {
-      await launchUrl(phoneLaunchUri);
-    } else {
-      if (context != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not launch $phoneNumber')),
-        );
-      } else {
-        print('Could not launch $phoneNumber');
-      }
-    }
+    await _launch(phoneLaunchUri, context, 'Could not launch $phoneNumber');
   }
 }

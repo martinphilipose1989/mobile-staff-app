@@ -74,7 +74,7 @@ android {
         release {
             storeFile file(System.getenv("KEY_STORE_PATH") ?: "keystore/app_key.jks")
             storePassword System.getenv("RELEASE_STORE_PASSWORD")
-            keyAlias System.getenv("RELEASE_KEY_ALIAS")
+            keyAlias System.getenv("RELEASE_KEY_ALIAS") 
             keyPassword System.getenv("RELEASE_KEY_PASSWORD")
         }
     }

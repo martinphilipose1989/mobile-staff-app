@@ -12,6 +12,10 @@ enum ErrorType {
   uiEmptyEmail,
   uiInvalidEmail,
   uiEmptyPassword,
+  uiEmptyName,
+  uiVistorType,
+  uiPurposeOfVisit,
+  uiPorfileImage,
 
   //DB ERROR
   database,
