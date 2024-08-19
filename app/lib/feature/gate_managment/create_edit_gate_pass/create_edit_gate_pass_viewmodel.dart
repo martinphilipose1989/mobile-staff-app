@@ -146,7 +146,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         comingFrom: comingFromController.text,
         pointOfContact: pointOfContactController.text,
         companyName: 'Neo',
-        profileImage: _uploadedFileResponse.valueOrNull?.data?.data?.url,
+        profileImage: _uploadedFileResponse.valueOrNull?.data?.data?.filePath,
         guestCount: guestCountController.text,
       ),
     );
