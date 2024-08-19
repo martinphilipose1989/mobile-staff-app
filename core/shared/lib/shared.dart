@@ -26,5 +26,6 @@ export 'src/model/response/gate_mangment/purpose_of_visit_response_model.dart';
 export 'src/model/response/gate_mangment/visitor_type_response_model.dart';
 export 'src/model/response/gate_mangment/upload_response_model.dart';
 export 'src/model/error/local_error.dart';
+export 'src/model/response/gate_mangment/visitor_populate_response_model.dart';
 //utils
 export 'src/utils/validator.dart';

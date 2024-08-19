@@ -8,8 +8,10 @@ import 'package:network_retrofit/src/model/response/gate_managment/purpose_of_vi
 import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
 
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/visitor_populate_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_type_entity.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
+import 'package:retrofit/http.dart';
 
 import 'package:retrofit/retrofit.dart';
 
@@ -49,4 +51,8 @@ abstract class RetrofitService {
   @MultiPart()
   Future<HttpResponse<UploadFileResponseEntity>> uploadProfileImage(
       @Part(name: "file") File file);
+
+  @GET(NetworkProperties.populateVisitorData)
+  Future<HttpResponse<VisitorPopulateResponseEntity>> populateVisitorData(
+      @Path("mobile") visitorMobileNumber);
 }

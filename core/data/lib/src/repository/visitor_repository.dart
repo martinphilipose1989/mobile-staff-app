@@ -57,4 +57,11 @@ class VisitorRepositoryImpl extends VisitorRepository {
       {required File file}) {
     return networkPort.uploadProfileImage(file: file);
   }
+
+  @override
+  Future<Either<NetworkError, VisitorPopulateResponseModel>>
+      populateVisitorData({required String visitorMobileNumber}) {
+    return networkPort.populateVisitorData(
+        visitorMobileNumber: visitorMobileNumber);
+  }
 }

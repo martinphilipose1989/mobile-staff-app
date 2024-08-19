@@ -22,7 +22,8 @@ export 'src/usecase/visitor/create_gatepass_usecase.dart';
 export 'src/usecase/visitor/get_purpose_of_visit_usecase.dart';
 export 'src/usecase/visitor/get_type_of_visitorlist_usecase.dart';
 export 'src/usecase/visitor/upload_visitor_profile_usecase.dart';
+export 'src/usecase/visitor/populate_visitor_data_usecase.dart';
 
 export 'package:shared/shared.dart';
 
-export 'src/upload_filetype_enum.dart';
+export 'src/utils/upload_filetype_enum.dart';

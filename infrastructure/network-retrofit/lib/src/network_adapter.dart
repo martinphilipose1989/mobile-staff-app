@@ -107,4 +107,13 @@ class NetworkAdapter implements NetworkPort {
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
+
+  @override
+  Future<Either<NetworkError, VisitorPopulateResponseModel>>
+      populateVisitorData({required visitorMobileNumber}) async {
+    final response =
+        await safeApiCall(apiService.populateVisitorData(visitorMobileNumber));
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
 }

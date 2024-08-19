@@ -1,4 +1,5 @@
 import 'package:app/errors/flutter_toast_error_presenter.dart';
+import 'package:app/model/phone_number_details.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';
 import 'package:app/navigation/route_paths.dart';
@@ -6,7 +7,9 @@ import 'package:app/utils/common_widgets/common_popups.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_errors/flutter_errors.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
@@ -20,6 +23,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final UploadVisitorProfileUsecase _uploadVisitorProfileUsecase;
   final CreateGatepassUsecase _createGatepassUsecase;
   final FlutterToastErrorPresenter _flutterToastErrorPresenter;
+  final PopulateVisitorDataUsecase _populateVisitorDataUsecase;
 
   // Stream for picking front file
   final PublishSubject<Resource<UploadFile>> _pickFrontFileResponse =
@@ -139,7 +143,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
     final params = CreateGatepassUsecaseParams(
       requestModel: CreateGatePassModel(
         name: visitorNameController.text,
-        mobile: "$countryDialCode${contactNumberController.text}",
+        mobile: contactNumberController.text.contains("+")
+            ? contactNumberController.text
+            : "$countryDialCode${contactNumberController.text}",
         email: emailIDController.text,
         visitorTypeId: typeOfVisitorId,
         purposeOfVisitId: purposOfVisitId,
@@ -174,16 +180,56 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
     }).onError((error) {});
   }
 
+  void populateVisitorData() {
+    PopulateVisitorDataUsecaseParams params = PopulateVisitorDataUsecaseParams(
+        mobileNumber: contactNumberController.text);
+    RequestManager<VisitorPopulateResponseModel>(params,
+            createCall: () =>
+                _populateVisitorDataUsecase.execute(params: params))
+        .asFlow()
+        .listen((data) {
+      if (data.status == Status.success) {
+        if (data.data?.data != null) {
+          visitorNameController.text = data.data?.data?.name ?? "";
+          contactNumberController.text = data.data?.data?.mobile ?? "";
+          emailIDController.text = data.data?.data?.email ?? "";
+          _uploadedFileResponse.add(
+            Resource.success(
+              data: UploadFileResponseModel(
+                status: 200,
+                data:
+                    UploadFileResponseData(url: data.data?.data?.profileImage),
+              ),
+            ),
+          );
+        }
+      }
+    }).onError((error) {});
+  }
+
+  Future<bool> getCountryCode({required String phoneNumber}) async {
+    try {
+      final result = await parse(phoneNumber);
+      final validPhoneNumber = PhoneNumberDetails.fromMap(result);
+
+      return validPhoneNumber.countryCode.isNotEmpty ? true : false;
+    } on PlatformException catch (_) {
+      return false;
+    }
+  }
+
   // Constructor
   CreateEditGatePassViewModel(
       {required this.exceptionHandlerBinder,
+      required PopulateVisitorDataUsecase populateVisitorDataUsecase,
       required CreateGatepassUsecase createGatepassUsecase,
       required ChooseFileUseCase chooseFileUseCase,
       required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase,
       required GetPurposeOfVisitListUsecase getPurposeOfVisitListUsecase,
       required UploadVisitorProfileUsecase uploadVisitorProfileUsecase,
       required FlutterToastErrorPresenter flutterToastErrorPresenter})
-      : _createGatepassUsecase = createGatepassUsecase,
+      : _populateVisitorDataUsecase = populateVisitorDataUsecase,
+        _createGatepassUsecase = createGatepassUsecase,
         _chooseFileUseCase = chooseFileUseCase,
         _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase,
         _getPurposeOfVisitListUsecase = getPurposeOfVisitListUsecase,
