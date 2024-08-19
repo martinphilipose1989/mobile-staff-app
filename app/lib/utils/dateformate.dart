@@ -19,4 +19,15 @@ extension DateFormatExtension on String {
       return '';
     }
   }
+
+  // dd/MM/yyyy - hh:mma
+
+  String dateFormatToDDMMYYYhhmma() {
+    try {
+      DateTime dateTime = DateTime.parse(this);
+      return DateFormat('dd/MM/yyyy - hh:mma').format(dateTime);
+    } catch (e) {
+      return '';
+    }
+  }
 }

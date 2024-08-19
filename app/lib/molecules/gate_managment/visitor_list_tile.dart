@@ -47,6 +47,7 @@ class VisitorListTile extends StatelessWidget {
                           children: [
                             ClipOval(
                               child: CommonImageWidget(
+                                  progressSize: const Size(12, 12),
                                   imageHeight: 32.w,
                                   imageWidth: 32.w,
                                   imageUrl:

@@ -9,7 +9,8 @@ class CommonImageWidget extends StatelessWidget {
       this.networkImageBoxFit = BoxFit.cover,
       this.fallbackAssetImagePath = AppImages.defaultAvatar,
       this.imageHeight,
-      this.imageWidth});
+      this.imageWidth,
+      this.progressSize});
 
   final String imageUrl;
   final String fallbackAssetImagePath;
@@ -17,6 +18,7 @@ class CommonImageWidget extends StatelessWidget {
   final double? imageHeight;
   final BoxFit networkImageBoxFit;
   final BoxFit assetImageBoxFit;
+  final Size? progressSize;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +38,16 @@ class CommonImageWidget extends StatelessWidget {
           return child; // Return the image when done loading
         }
         return Center(
-          child: CircularProgressIndicator(
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded /
-                    (loadingProgress.expectedTotalBytes ?? 1)
-                : null,
+          child: SizedBox(
+            height: progressSize?.height,
+            width: progressSize?.width,
+            child: CircularProgressIndicator(
+              strokeWidth: progressSize != null ? 2 : 4,
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      (loadingProgress.expectedTotalBytes ?? 1)
+                  : null,
+            ),
           ),
         );
       },
