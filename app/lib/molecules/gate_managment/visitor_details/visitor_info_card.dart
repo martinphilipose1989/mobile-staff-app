@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
@@ -9,7 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class VisitorInfoCard extends StatelessWidget {
   final String visitorName;
   final String issuedOn;
-  final String qrImagePath;
+  final Uint8List qrImagePath;
   final String avatarImagePath;
 
   const VisitorInfoCard({
@@ -64,18 +68,21 @@ class VisitorInfoCard extends StatelessWidget {
                   ),
                 ],
               ),
-              // Image.memory(
-              //   bytes,
-              //   fit: BoxFit.cover,
-              //   errorBuilder: (context, error, stackTrace) {
-              //     return const Icon(Icons.error); // Display an error icon or widget
-              //   },
-              // ),
-              SvgPicture.asset(
-                qrImagePath,
-                height: 45.w,
-                width: 45.w,
-              ),
+              qrImagePath.isNotEmpty
+                  ? Image.memory(
+                      qrImagePath,
+                      fit: BoxFit.cover,
+                      height: 45.w,
+                      width: 45.w,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                            Icons.error); // Display an error icon or widget
+                      },
+                    )
+                  : SizedBox(
+                      height: 45.w,
+                      width: 45.w,
+                    ),
             ],
           ),
         ),
@@ -94,13 +101,12 @@ class VisitorInfoCard extends StatelessWidget {
               backgroundColor: Colors.white,
               child: CircleAvatar(
                 radius: 60.r,
-                backgroundImage:
-                    // NetworkImage(
-                    //   avatarImagePath,
-                    // )
-                    AssetImage(
+                backgroundImage: NetworkImage(
                   avatarImagePath,
                 ),
+                onBackgroundImageError: (error, stackTrace) {
+                  log('Failed to load image: $error');
+                },
               ),
             ),
           ),

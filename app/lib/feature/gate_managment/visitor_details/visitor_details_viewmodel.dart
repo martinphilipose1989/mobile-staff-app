@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:app/model/resource.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_errors/flutter_errors.dart';
@@ -10,8 +11,13 @@ class VisitorDetailsViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorDetailsUsecase _getVisitorDetailsUsecase;
 
-  BehaviorSubject<VisitorDataModel>? visitorDetails =
-      BehaviorSubject<VisitorDataModel>.seeded(VisitorDataModel());
+  final PublishSubject<Resource<VisitorDataModel>> _visitorDetailsResponse =
+      PublishSubject();
+
+  Stream<Resource<VisitorDataModel>> get visitorDetails =>
+      _visitorDetailsResponse.stream;
+
+  final _loadingSubject = BehaviorSubject<bool>.seeded(false);
 
   VisitorDetailsViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
@@ -20,6 +26,10 @@ class VisitorDetailsViewModel extends BasePageViewModel {
         _getVisitorDetailsUsecase = getVisitorDetailsUsecase;
 
   void getVisitorDetails({required gatePassId}) {
+    if (_loadingSubject.value) return;
+
+    _loadingSubject.add(true);
+
     _exceptionHandlerBinder.handle(block: () {
       GetVisitorDetailsUsecaseParams params =
           GetVisitorDetailsUsecaseParams(gatepassId: gatePassId);
@@ -27,8 +37,14 @@ class VisitorDetailsViewModel extends BasePageViewModel {
         params,
         createCall: () => _getVisitorDetailsUsecase.execute(params: params),
       ).asFlow().listen((result) {
-        visitorDetails?.add(result.data?.data ?? VisitorDataModel());
-        log("getVisitorDetails $result");
+        if (Status.success == result.status) {
+          _visitorDetailsResponse.add(
+            Resource.success(
+              data: result.data?.data,
+            ),
+          );
+          log("getVisitorDetails $result");
+        }
       }).onError((error) {
         log("getVisitorDetails $error");
       });

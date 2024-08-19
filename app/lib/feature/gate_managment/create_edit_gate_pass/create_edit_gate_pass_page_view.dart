@@ -217,7 +217,7 @@ class CreateEditGatePassPageView
                                 isLoading: data?.status == Status.loading,
                                 title: "Submit",
                                 onPressed: () {
-                                  if (!model.formKey.currentState!.validate()) {
+                                  if (model.formKey.currentState!.validate()) {
                                     model.createGatePass();
                                   }
                                 },
@@ -233,3 +233,5 @@ class CreateEditGatePassPageView
     });
   }
 }
+
+
