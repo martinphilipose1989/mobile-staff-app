@@ -79,6 +79,7 @@ final visitorDetailsViewModelProvider =
 final gatePassQrScannerViewModelProvider =
     ChangeNotifierProvider.autoDispose<GatePassQrScannerViewModel>((ref) =>
         GatePassQrScannerViewModel(
-            getVisitorDetailsUsecase: getIt.get<PatchVisitorDetailsUsecase>(),
-            exceptionHandlerBinder:
-                getIt.get<FlutterExceptionHandlerBinder>()));
+          getVisitorDetailsUsecase: getIt.get<PatchVisitorDetailsUsecase>(),
+          exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+          flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+        ));

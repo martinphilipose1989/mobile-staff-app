@@ -27,5 +27,8 @@ enum ErrorType {
   imagePickerCancelled,
   imagePickerFailed,
   fileSizeExceed,
-  filePickerFailed
+  filePickerFailed,
+
+  //QR Error
+  qrCodeInvalid
 }

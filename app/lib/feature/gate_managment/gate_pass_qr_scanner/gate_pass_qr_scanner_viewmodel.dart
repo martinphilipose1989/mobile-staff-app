@@ -1,9 +1,12 @@
 import 'dart:developer';
 
+import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
+import 'package:app/myapp.dart';
 import 'package:app/utils/dateformate.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -14,18 +17,27 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final PatchVisitorDetailsUsecase _getVisitorDetailsUsecase;
 
-  BehaviorSubject<VisitorDataModel>? visitorDetails =
-      BehaviorSubject<VisitorDataModel>.seeded(VisitorDataModel());
+  final PublishSubject<Resource<VisitorDataModel>> _visitorDetails =
+      PublishSubject();
 
-  BehaviorSubject<bool> isLoading = BehaviorSubject<bool>.seeded(false);
-  BehaviorSubject<bool> isUpdateOutGoingTime =
-      BehaviorSubject<bool>.seeded(false);
+  Stream<Resource<VisitorDataModel>> get visitorDetails =>
+      _visitorDetails.stream;
 
-  GatePassQrScannerViewModel(
-      {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
-      required PatchVisitorDetailsUsecase getVisitorDetailsUsecase})
-      : _exceptionHandlerBinder = exceptionHandlerBinder,
-        _getVisitorDetailsUsecase = getVisitorDetailsUsecase;
+  final BehaviorSubject<bool> _navigateToHomeScreen = BehaviorSubject<bool>();
+
+  Stream<bool> get navigateToHomeScreenStream => _navigateToHomeScreen.stream;
+
+  final FlutterToastErrorPresenter _flutterToastErrorPresenter;
+
+  bool _hasShownError = false;
+
+  GatePassQrScannerViewModel({
+    required FlutterExceptionHandlerBinder exceptionHandlerBinder,
+    required PatchVisitorDetailsUsecase getVisitorDetailsUsecase,
+    required FlutterToastErrorPresenter flutterToastErrorPresenter,
+  })  : _exceptionHandlerBinder = exceptionHandlerBinder,
+        _getVisitorDetailsUsecase = getVisitorDetailsUsecase,
+        _flutterToastErrorPresenter = flutterToastErrorPresenter;
 
   final MobileScannerController controller = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
@@ -37,13 +49,20 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
     scannerResult.listen((result) async {
       // Handle the scanned result
       if (result.isNotEmpty) {
-        isLoading.add(true);
-        // controller.stop();
-
         String gatepassid = result.split('/').last;
         log('scanne qr $gatepassid');
-
+        controller.stop();
         patchVisitorDetails(gatepassid);
+      } else {
+        _flutterToastErrorPresenter.show(
+          AppError(
+            throwable: Exception(),
+            error: ErrorInfo(message: 'QR Code Invalid'),
+            type: ErrorType.qrCodeInvalid,
+          ),
+          navigatorKey.currentContext!,
+          'QR Code Invalid',
+        );
       }
     });
   }
@@ -61,21 +80,43 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
       RequestManager<VisitorDetailsResponseModel>(
         params,
         createCall: () => _getVisitorDetailsUsecase.execute(params: params),
-      ).asFlow().listen((result) {
-        isLoading.add(false);
+      ).asFlow().listen((result) async {
+        _visitorDetails.add(Resource.loading(data: null));
 
         if (result.status == Status.success) {
-          isUpdateOutGoingTime.add(true);
-          // Access the data from the resource
-          visitorDetails?.add(result.data?.data ?? VisitorDataModel());
-          log("patchVisitorDetails  success${visitorDetails?.first.toString()}");
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            controller.stop();
+
+            _navigateToHomeScreen.add(true);
+          });
+
+          _visitorDetails.add(
+            Resource.success(
+              data: result.data?.data,
+            ),
+          );
+          _hasShownError = false;
+        } else if (result.status == Status.error && !_hasShownError) {
+          _visitorDetails.add(Resource.none());
+
+          _flutterToastErrorPresenter.show(
+            AppError(
+              throwable: Exception(),
+              error: ErrorInfo(message: 'QR Code Invalid'),
+              type: ErrorType.qrCodeInvalid,
+            ),
+            navigatorKey.currentContext!,
+            'QR Code Invalid',
+          );
+
+          _hasShownError = true;
+          controller.start();
         } else {
+          _visitorDetails.add(Resource.none());
           // controller.start();
           log('facing some issue');
         }
       }).onError((error) {
-        isLoading.add(false);
-        //controller.start();
         log("patchVisitorDetails error $error");
       });
     }).execute();
@@ -85,7 +126,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
   void dispose() {
     controller.dispose();
     scannerResult.close();
-    isLoading.close();
+
     super.dispose();
   }
 }
