@@ -1,8 +1,10 @@
 import 'package:app/molecules/gate_managment/visit_status_widget.dart';
+
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/dateformate.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,6 +49,7 @@ class VisitorListTile extends StatelessWidget {
                           children: [
                             ClipOval(
                               child: CommonImageWidget(
+                                  progressSize: const Size(12, 12),
                                   imageHeight: 32.w,
                                   imageWidth: 32.w,
                                   imageUrl:
@@ -80,7 +83,7 @@ class VisitorListTile extends StatelessWidget {
                           ),
                         ),
                         CommonText(
-                          text: "Parent",
+                          text: "${visitorDataModel?.visitorType}",
                           style: AppTypography.overline.copyWith(
                               color: AppColors.textGray,
                               fontSize: 10.sp,
@@ -141,8 +144,9 @@ class VisitorListTile extends StatelessWidget {
                           .copyWith(letterSpacing: 0.25),
                     ),
                     TextSpan(
-                      text:
-                          "${visitorDataModel?.visitStatus?.toLowerCase() == "in" ? visitorDataModel?.incomingTime : visitorDataModel?.outgoingTime}",
+                      text: visitorDataModel?.visitStatus?.toLowerCase() == "in"
+                          ? "${visitorDataModel?.issuedDate?.dateFormattoddMMMyyyy()} ${visitorDataModel?.incomingTime}"
+                          : "${visitorDataModel?.issuedDate?.dateFormattoddMMMyyyy()} ${visitorDataModel?.incomingTime} - ${visitorDataModel?.outgoingTime}",
                       style: AppTypography.caption.copyWith(
                           fontSize: 10.sp,
                           color: visitorDataModel?.visitStatus?.toLowerCase() ==

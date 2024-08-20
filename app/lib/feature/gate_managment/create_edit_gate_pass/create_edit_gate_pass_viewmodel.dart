@@ -4,13 +4,13 @@ import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';
 import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/common_widgets/common_popups.dart';
+import 'package:app/utils/dateformate.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
@@ -134,8 +134,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final TextEditingController guestCountController =
       TextEditingController(text: '0');
   final TextEditingController visitDateTimeController = TextEditingController(
-    text: DateFormat('dd/MM/yyyy - hh:mma').format(DateTime.now()),
-  );
+      text: DateTime.now().toIso8601String().dateFormatToDDMMYYYhhmma());
 
   String countryDialCode = "+91";
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

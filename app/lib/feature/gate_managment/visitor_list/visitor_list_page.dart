@@ -37,6 +37,6 @@ class VisitorListPageState
 
   @override
   void onModelReady(VisitorListPageViewModel model) {
-    model.getVisitorList();
+    model.fetchVisitorList();
   }
 }

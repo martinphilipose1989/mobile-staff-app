@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:app/model/resource.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
@@ -13,11 +12,6 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 class VisitorListPageViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorListUsecase _getVisitorListUsecase;
-  final PublishSubject<Resource<VisitorListResponseModel>>
-      _visitorListResponse = PublishSubject();
-
-  Stream<Resource<VisitorListResponseModel>> get visitorListResponse =>
-      _visitorListResponse.stream;
 
   final selectedStatus = BehaviorSubject<int>.seeded(-1);
   final statusTypeList = [
@@ -31,11 +25,11 @@ class VisitorListPageViewModel extends BasePageViewModel {
   final hasMorePagesSubject = BehaviorSubject<bool>.seeded(true);
   final _pageSubject = BehaviorSubject<int>.seeded(1);
   final _visitorListSubject =
-      BehaviorSubject<List<VisitorDataModel>>.seeded([]);
+      BehaviorSubject<Resource<List<VisitorDataModel>>>.seeded(Resource.none());
 
   Stream<bool> get loadingStream => _loadingSubject.stream;
   Stream<bool> get hasMorePagesStream => hasMorePagesSubject.stream;
-  Stream<List<VisitorDataModel>> get visitorListStream =>
+  Stream<Resource<List<VisitorDataModel>>> get visitorListStream =>
       _visitorListSubject.stream;
 
   final _throttleDuration = const Duration(milliseconds: 300);
@@ -55,13 +49,38 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   void refreshVisitorList() {
     _pageSubject.add(1);
-    _visitorListSubject.add([]);
+    _visitorListSubject.add(Resource.success(data: []));
     hasMorePagesSubject.add(true);
-    getVisitorList();
+    _loadingSubject.add(false);
+    fetchVisitorList();
   }
 
-  void getVisitorList() {
-    if (_loadingSubject.value || !hasMorePagesSubject.value) return;
+  void loadMoreVisitorList() {
+    if (_visitorListSubject.value.data?.isNotEmpty ?? false) {
+      _throttlingController.add(null); // Trigger the throttle stream
+    }
+  }
+
+  final StreamController<void> _throttlingController = StreamController<void>();
+
+  void _setupThrottling() {
+    // Listen to the throttling stream once
+    _throttlingController.stream.throttleTime(_throttleDuration).listen((_) {
+      if (!_loadingSubject.value && hasMorePagesSubject.value) {
+        _pageSubject.add(_pageSubject.value + 1);
+        fetchVisitorList();
+      }
+    });
+  }
+
+  bool _shouldNotFetchVisitors() {
+    return _visitorListSubject.isClosed ||
+        _loadingSubject.value ||
+        !hasMorePagesSubject.value;
+  }
+
+  void fetchVisitorList() {
+    if (_shouldNotFetchVisitors()) return;
 
     if (_pageSubject.value > 1) {
       _loadingSubject.add(true);
@@ -74,48 +93,38 @@ class VisitorListPageViewModel extends BasePageViewModel {
         params,
         createCall: () => _getVisitorListUsecase.execute(params: params),
       ).asFlow().listen((result) {
-        if (_pageSubject.value == 1) {
-          _visitorListResponse.add(result);
-        } else {
-          _loadingSubject.add(true);
-        }
-
-        if (result.status == Status.success) {
-          final visitors = result.data?.visitorListDataModel?.visitors ?? [];
-          final isNextPage =
-              result.data?.visitorListDataModel?.isNextPage ?? false;
-
-          if (_pageSubject.value == 1) {
-            _visitorListSubject.add(visitors);
-          } else {
-            _visitorListSubject
-                .add([..._visitorListSubject.value, ...visitors]);
-          }
-          hasMorePagesSubject.add(isNextPage);
-        }
-
-        _loadingSubject.add(false);
+        _handleVisitorListResponse(result);
       }).onError((error) {
-        log("Error fetching visitor list: $error");
         _loadingSubject.add(false);
       });
     }).execute();
   }
 
-  void loadMoreVisitorList() {
-    _throttlingController.add(null); // Trigger the throttle stream
+  void _handleVisitorListResponse(Resource<VisitorListResponseModel> result) {
+    final isNextPage = result.data?.visitorListDataModel?.isNextPage ?? false;
+    final visitors = result.data?.visitorListDataModel?.visitors ?? [];
+
+    if (_pageSubject.value == 1) {
+      _visitorListSubject.add(Resource.loading(data: null));
+    }
+
+    if (result.status == Status.success) {
+      _updateVisitorList(visitors, isNextPage);
+    }
   }
 
-  final StreamController<void> _throttlingController = StreamController<void>();
-
-  void _setupThrottling() {
-    // Listen to the throttling stream once
-    _throttlingController.stream.throttleTime(_throttleDuration).listen((_) {
-      if (!_loadingSubject.value && hasMorePagesSubject.value) {
-        _pageSubject.add(_pageSubject.value + 1);
-        getVisitorList();
-      }
-    });
+  void _updateVisitorList(List<VisitorDataModel> visitors, bool isNextPage) {
+    if (_pageSubject.value == 1) {
+      _visitorListSubject.add(Resource.success(data: visitors));
+    } else {
+      final List<VisitorDataModel> updatedList = [
+        ..._visitorListSubject.value.data ?? <VisitorDataModel>[],
+        ...visitors
+      ];
+      _visitorListSubject.add(Resource.success(data: updatedList));
+    }
+    hasMorePagesSubject.add(isNextPage);
+    _loadingSubject.add(false);
   }
 
   @override
