@@ -81,7 +81,7 @@ class VisitorListTile extends StatelessWidget {
                           ),
                         ),
                         CommonText(
-                          text: "Parent",
+                          text: "${visitorDataModel?.visitorType}",
                           style: AppTypography.overline.copyWith(
                               color: AppColors.textGray,
                               fontSize: 10.sp,

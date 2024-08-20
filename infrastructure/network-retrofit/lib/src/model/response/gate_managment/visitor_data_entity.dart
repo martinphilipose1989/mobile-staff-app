@@ -58,6 +58,9 @@ class VisitorDataEntity
   @JsonKey(name: "visitor_profile_image_image_url")
   String? visitorProfileImageImageUrl;
 
+  @JsonKey(name: "visitor_type")
+  String? vistorType;
+
   VisitorDataEntity(
       {this.id,
       this.pointOfContact,
@@ -76,7 +79,7 @@ class VisitorDataEntity
       this.qrCode,
       this.visitorProfileImageFilePath,
       this.visitorProfileImageImageUrl,
-      });
+      this.vistorType});
 
   factory VisitorDataEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorDataEntityFromJson(json);
@@ -91,23 +94,23 @@ class VisitorDataEntity
   @override
   VisitorDataModel transform() {
     return VisitorDataModel(
-      id: id,
-      incomingTime: incomingTime,
-      issuedDate: issuedDate,
-      outgoingTime: outgoingTime,
-      pointOfContact: pointOfContact,
-      purposeOfVisit: purposeOfVisit,
-      visitStatus: visitStatus,
-      visitorEmail: visitorEmail,
-      visitorId: visitorId,
-      visitorMobile: visitorMobile,
-      visitorName: visitorName,
-      visitorProfileImage: visitorProfileImage,
-      purposeOfVisitId: purposeOfVisitId,
-      comingFrom: comingFrom,
-      qrCode: qrCode,
-      visitorProfileImageFilePath: visitorProfileImageFilePath,
-      visitorProfileImageImageUrl: visitorProfileImageImageUrl,
-    );
+        id: id,
+        incomingTime: incomingTime,
+        issuedDate: issuedDate,
+        outgoingTime: outgoingTime,
+        pointOfContact: pointOfContact,
+        purposeOfVisit: purposeOfVisit,
+        visitStatus: visitStatus,
+        visitorEmail: visitorEmail,
+        visitorId: visitorId,
+        visitorMobile: visitorMobile,
+        visitorName: visitorName,
+        visitorProfileImage: visitorProfileImage,
+        purposeOfVisitId: purposeOfVisitId,
+        comingFrom: comingFrom,
+        qrCode: qrCode,
+        visitorProfileImageFilePath: visitorProfileImageFilePath,
+        visitorProfileImageImageUrl: visitorProfileImageImageUrl,
+        visitorType: vistorType ?? "Parent");
   }
 }
