@@ -30,6 +30,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
   final FlutterToastErrorPresenter _flutterToastErrorPresenter;
 
   bool _hasShownError = false;
+  final Set<String> scannedCodes = <String>{};
 
   GatePassQrScannerViewModel({
     required FlutterExceptionHandlerBinder exceptionHandlerBinder,
@@ -49,20 +50,20 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
     scannerResult.listen((result) async {
       // Handle the scanned result
       if (result.isNotEmpty) {
+        // Check if this QR code has already been scanned
         String gatepassid = result.split('/').last;
-        log('scanne qr $gatepassid');
-        controller.stop();
-        patchVisitorDetails(gatepassid);
+        if (!scannedCodes.contains(gatepassid)) {
+          _hasShownError = false;
+          log('Scanned QR $gatepassid');
+
+          // Add the gatepassid to the set to prevent future duplicates
+          scannedCodes.add(gatepassid);
+          patchVisitorDetails(gatepassid);
+        } else {
+          log('Duplicate QR code $gatepassid ignored');
+        }
       } else {
-        _flutterToastErrorPresenter.show(
-          AppError(
-            throwable: Exception(),
-            error: ErrorInfo(message: 'QR Code Invalid'),
-            type: ErrorType.qrCodeInvalid,
-          ),
-          navigatorKey.currentContext!,
-          'QR Code Invalid',
-        );
+        qrInvalidMessageShow();
       }
     });
   }
@@ -99,27 +100,30 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
         } else if (result.status == Status.error && !_hasShownError) {
           _visitorDetails.add(Resource.none());
 
-          _flutterToastErrorPresenter.show(
-            AppError(
-              throwable: Exception(),
-              error: ErrorInfo(message: 'QR Code Invalid'),
-              type: ErrorType.qrCodeInvalid,
-            ),
-            navigatorKey.currentContext!,
-            'QR Code Invalid',
-          );
+          qrInvalidMessageShow();
 
           _hasShownError = true;
-          controller.start();
         } else {
           _visitorDetails.add(Resource.none());
-          // controller.start();
+
           log('facing some issue');
         }
       }).onError((error) {
         log("patchVisitorDetails error $error");
       });
     }).execute();
+  }
+
+  qrInvalidMessageShow() {
+    _flutterToastErrorPresenter.show(
+      AppError(
+        throwable: Exception(),
+        error: ErrorInfo(message: 'QR Code Invalid'),
+        type: ErrorType.qrCodeInvalid,
+      ),
+      navigatorKey.currentContext!,
+      'QR Code Invalid',
+    );
   }
 
   @override

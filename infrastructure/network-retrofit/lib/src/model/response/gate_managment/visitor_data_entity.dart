@@ -59,7 +59,10 @@ class VisitorDataEntity
   String? visitorProfileImageImageUrl;
 
   @JsonKey(name: "visitor_type")
-  String? vistorType;
+  String? visitorType;
+
+   @JsonKey(name: "guest_count")
+  int? guestCount;
 
   VisitorDataEntity(
       {this.id,
@@ -79,7 +82,9 @@ class VisitorDataEntity
       this.qrCode,
       this.visitorProfileImageFilePath,
       this.visitorProfileImageImageUrl,
-      this.vistorType});
+      this.visitorType,
+      this.guestCount
+      });
 
   factory VisitorDataEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorDataEntityFromJson(json);
@@ -111,6 +116,9 @@ class VisitorDataEntity
         qrCode: qrCode,
         visitorProfileImageFilePath: visitorProfileImageFilePath,
         visitorProfileImageImageUrl: visitorProfileImageImageUrl,
-        visitorType: vistorType ?? "Parent");
+        visitorType: visitorType ?? "Parent",
+        guestCount: guestCount
+        
+        );
   }
 }

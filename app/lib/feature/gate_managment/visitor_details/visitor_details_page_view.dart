@@ -81,10 +81,10 @@ class VisitorDetailsPageView
                                 value2: visitorData?.data?.visitorEmail ?? '',
                               ),
                               SizedBox(height: 16.h),
-                              const VisitorDetailsRow(
+                               VisitorDetailsRow(
                                 title1: "Type of visitor",
                                 //value1: "parent",
-                                value1: "",
+                                value1:visitorData?.data?.visitorType ?? '',
                                 title2: "Student Name",
                                 // value2: "Khevna Shah",
                                 value2: "",
@@ -104,10 +104,10 @@ class VisitorDetailsPageView
                                 value2: visitorData?.data?.comingFrom ?? '',
                               ),
                               SizedBox(height: 16.h),
-                              const VisitorDetailsRow(
+                               VisitorDetailsRow(
                                 title1: "Guest Count",
                                 // value1: "1",
-                                value1: "",
+                                value1: visitorData?.data?.guestCount.toString() ?? '',
                               ),
                               Divider(
                                 height: 32.h,

@@ -36,7 +36,9 @@ class VisitorDataModel {
 
   String? visitorProfileImageFilePath;
 
-  String visitorType;
+  String? visitorType;
+
+  int? guestCount;
 
   VisitorDataModel(
       {this.id,
@@ -56,5 +58,6 @@ class VisitorDataModel {
       this.qrCode,
       this.visitorProfileImageImageUrl,
       this.visitorProfileImageFilePath,
-      this.visitorType = "Parent"});
+      this.visitorType = "Parent",
+      this.guestCount});
 }
