@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_row.dart';
+import 'package:app/molecules/gate_managment/visitor_details/visitor_details_shimmer.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_info_card.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
@@ -37,9 +38,7 @@ class VisitorDetailsPageView
         dataBuilder: (context, visitorData) {
           return DataStatusWidget(
               status: visitorData?.status ?? Status.none,
-              loadingWidget: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+              loadingWidget: () => const VisitorDetailsPageShimmer(),
               successWidget: () {
                 Uint8List qrImageBytes = Uint8List(0);
                 if (visitorData != null &&

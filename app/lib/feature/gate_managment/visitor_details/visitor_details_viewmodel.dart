@@ -16,27 +16,22 @@ class VisitorDetailsViewModel extends BasePageViewModel {
 
   Stream<Resource<VisitorDataModel>> get visitorDetails =>
       _visitorDetailsResponse.stream;
-
-  final _loadingSubject = BehaviorSubject<bool>.seeded(false);
-
   VisitorDetailsViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required GetVisitorDetailsUsecase getVisitorDetailsUsecase})
       : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorDetailsUsecase = getVisitorDetailsUsecase;
 
-  void getVisitorDetails({required gatePassId}) {
-    if (_loadingSubject.value) return;
-
-    _loadingSubject.add(true);
-
+  Future<void> getVisitorDetails({required gatePassId}) async {
     _exceptionHandlerBinder.handle(block: () {
       GetVisitorDetailsUsecaseParams params =
           GetVisitorDetailsUsecaseParams(gatepassId: gatePassId);
       RequestManager<VisitorDetailsResponseModel>(
         params,
         createCall: () => _getVisitorDetailsUsecase.execute(params: params),
-      ).asFlow().listen((result) {
+      ).asFlow().listen((result) async {
+        _visitorDetailsResponse.add(Resource.loading(data: null));
+
         if (Status.success == result.status) {
           _visitorDetailsResponse.add(
             Resource.success(
