@@ -61,6 +61,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
   }
 
   void getVisitorList() {
+    if (_visitorListSubject.isClosed) return;
     if (_loadingSubject.value || !hasMorePagesSubject.value) return;
 
     if (_pageSubject.value > 1) {
