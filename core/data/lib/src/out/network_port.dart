@@ -23,4 +23,7 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
       {required File file});
+
+  Future<Either<NetworkError, VisitorPopulateResponseModel>>
+      populateVisitorData({required visitorMobileNumber});
 }

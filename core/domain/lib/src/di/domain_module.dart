@@ -51,4 +51,10 @@ abstract class DomainModule {
       VisitorRepository visitorRepository) {
     return UploadVisitorProfileUsecase(visitorRepository: visitorRepository);
   }
+
+  @lazySingleton
+  PopulateVisitorDataUsecase populateVisitorDataUsecase(
+      VisitorRepository visitorRepository) {
+    return PopulateVisitorDataUsecase(visitorRepository: visitorRepository);
+  }
 }

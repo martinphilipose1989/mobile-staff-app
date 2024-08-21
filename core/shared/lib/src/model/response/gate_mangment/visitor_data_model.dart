@@ -36,23 +36,28 @@ class VisitorDataModel {
 
   String? visitorProfileImageFilePath;
 
-  VisitorDataModel({
-    this.id,
-    this.pointOfContact,
-    this.issuedDate,
-    this.incomingTime,
-    this.outgoingTime,
-    this.visitStatus,
-    this.visitorId,
-    this.visitorName,
-    this.visitorMobile,
-    this.visitorEmail,
-    this.visitorProfileImage,
-    this.purposeOfVisit,
-    this.purposeOfVisitId,
-    this.comingFrom,
-    this.qrCode,
-    this.visitorProfileImageImageUrl,
-    this.visitorProfileImageFilePath,
-  });
+  String? visitorType;
+
+  int? guestCount;
+
+  VisitorDataModel(
+      {this.id,
+      this.pointOfContact,
+      this.issuedDate,
+      this.incomingTime,
+      this.outgoingTime,
+      this.visitStatus,
+      this.visitorId,
+      this.visitorName,
+      this.visitorMobile,
+      this.visitorEmail,
+      this.visitorProfileImage,
+      this.purposeOfVisit,
+      this.purposeOfVisitId,
+      this.comingFrom,
+      this.qrCode,
+      this.visitorProfileImageImageUrl,
+      this.visitorProfileImageFilePath,
+      this.visitorType = "Parent",
+      this.guestCount});
 }

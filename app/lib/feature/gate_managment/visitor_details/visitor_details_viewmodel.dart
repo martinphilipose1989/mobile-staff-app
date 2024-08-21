@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:app/model/resource.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_errors/flutter_errors.dart';
@@ -10,25 +11,35 @@ class VisitorDetailsViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorDetailsUsecase _getVisitorDetailsUsecase;
 
-  BehaviorSubject<VisitorDataModel>? visitorDetails =
-      BehaviorSubject<VisitorDataModel>.seeded(VisitorDataModel());
+  final PublishSubject<Resource<VisitorDataModel>> _visitorDetailsResponse =
+      PublishSubject();
 
+  Stream<Resource<VisitorDataModel>> get visitorDetails =>
+      _visitorDetailsResponse.stream;
   VisitorDetailsViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required GetVisitorDetailsUsecase getVisitorDetailsUsecase})
       : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorDetailsUsecase = getVisitorDetailsUsecase;
 
-  void getVisitorDetails({required gatePassId}) {
+  Future<void> getVisitorDetails({required gatePassId}) async {
     _exceptionHandlerBinder.handle(block: () {
       GetVisitorDetailsUsecaseParams params =
           GetVisitorDetailsUsecaseParams(gatepassId: gatePassId);
       RequestManager<VisitorDetailsResponseModel>(
         params,
         createCall: () => _getVisitorDetailsUsecase.execute(params: params),
-      ).asFlow().listen((result) {
-        visitorDetails?.add(result.data?.data ?? VisitorDataModel());
-        log("getVisitorDetails $result");
+      ).asFlow().listen((result) async {
+        _visitorDetailsResponse.add(Resource.loading(data: null));
+
+        if (Status.success == result.status) {
+          _visitorDetailsResponse.add(
+            Resource.success(
+              data: result.data?.data,
+            ),
+          );
+          log("getVisitorDetails $result");
+        }
       }).onError((error) {
         log("getVisitorDetails $error");
       });

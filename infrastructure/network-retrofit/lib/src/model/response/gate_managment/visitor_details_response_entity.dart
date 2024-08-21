@@ -58,6 +58,8 @@ class VisitorDetailsResponseEntity
         purposeOfVisit: data.data?.purposeOfVisit ?? '',
         visitorProfileImageImageUrl:
             data.data?.visitorProfileImageImageUrl ?? '',
+            visitorType: data.data?.visitorType ?? '',
+            guestCount: data.data?.guestCount
       ),
     );
   }
@@ -85,6 +87,8 @@ class VisitorDetailsResponseEntity
           visitorProfileImage: data?.visitorProfileImage ?? '',
           visitorProfileImageFilePath: data?.visitorProfileImageFilePath ?? '',
           visitorProfileImageImageUrl: data?.visitorProfileImageImageUrl ?? '',
+           visitorType: data?.visitorType ?? '',
+           guestCount: data?.guestCount
         ));
   }
 }

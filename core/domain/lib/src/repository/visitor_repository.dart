@@ -21,4 +21,7 @@ abstract class VisitorRepository {
 
   Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
       {required File file});
+
+  Future<Either<NetworkError, VisitorPopulateResponseModel>>
+      populateVisitorData({required String visitorMobileNumber});
 }
