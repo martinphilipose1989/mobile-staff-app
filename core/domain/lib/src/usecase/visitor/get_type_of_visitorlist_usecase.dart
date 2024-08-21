@@ -2,14 +2,14 @@ import 'package:domain/domain.dart';
 import 'package:domain/src/usecase/base/base_usecase.dart';
 
 class GetTypeOfVisitorListUsecase extends BaseUseCase<NetworkError,
-    GetTypeOfVisitorListUsecaseParams, TypeOfVisitorResponseModel> {
+    GetTypeOfVisitorListUsecaseParams, MdmCoReasonResponseModel> {
   final VisitorRepository _visitorRepository;
 
   GetTypeOfVisitorListUsecase({required VisitorRepository visitorRepository})
       : _visitorRepository = visitorRepository;
 
   @override
-  Future<Either<NetworkError, TypeOfVisitorResponseModel>> execute(
+  Future<Either<NetworkError, MdmCoReasonResponseModel>> execute(
       {required GetTypeOfVisitorListUsecaseParams params}) {
     return _visitorRepository.getTypeOfVistorList();
   }

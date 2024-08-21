@@ -5,7 +5,7 @@ class CreateGatePassModel {
 
   String? email;
 
-  String? visitorTypeId;
+  int? visitorTypeId;
 
   String? companyName;
 
@@ -13,7 +13,7 @@ class CreateGatePassModel {
 
   String? otherPointOfContact;
 
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
 
   String? comingFrom;
 

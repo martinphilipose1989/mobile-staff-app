@@ -97,7 +97,7 @@ class CreateEditGatePassPageView
                         labelText: "Visit Date & Time",
                         controller: model.visitDateTimeController,
                       ),
-                      AppStreamBuilder<Resource<TypeOfVisitorResponseModel>>(
+                      AppStreamBuilder<Resource<MdmCoReasonResponseModel>>(
                         stream: model.typeOfVisitorResponse,
                         initialData: Resource.none(),
                         dataBuilder: (context, data) {
@@ -108,9 +108,9 @@ class CreateEditGatePassPageView
                               width: double.infinity,
                               bottomPadding: 16,
                               items: data?.data?.data
-                                      ?.map((e) => e.name)
+                                      ?.map((e) => e.attributes?.name)
                                       .toList() ??
-                                  [],
+                                  <String>[],
                               isMutiSelect: false,
                               dropdownName: "Type Of Visitor",
                               showAstreik: true,
@@ -138,7 +138,7 @@ class CreateEditGatePassPageView
                             return null;
                           },
                           controller: model.pointOfContactController),
-                      AppStreamBuilder<Resource<PurposeOfVisitModel>>(
+                      AppStreamBuilder<Resource<MdmCoReasonResponseModel>>(
                         stream: model.purposeOfVisitResponse,
                         initialData: Resource.none(),
                         dataBuilder: (context, data) {
@@ -149,7 +149,7 @@ class CreateEditGatePassPageView
                               width: double.infinity,
                               bottomPadding: 16,
                               items: data?.data?.data
-                                      ?.map((e) => e.name)
+                                      ?.map((e) => e.attributes?.name)
                                       .toList() ??
                                   [],
                               isMutiSelect: false,
@@ -233,5 +233,3 @@ class CreateEditGatePassPageView
     });
   }
 }
-
-

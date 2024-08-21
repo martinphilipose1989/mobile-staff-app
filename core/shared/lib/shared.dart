@@ -23,7 +23,7 @@ export 'src/model/request/gate_managment/create_gatepass_model.dart';
 export 'src/model/response/gate_mangment/create_gatepass_response_model.dart';
 export 'src/model/response/gate_mangment/create_gate_pass_data_response_model.dart';
 export 'src/model/response/gate_mangment/purpose_of_visit_response_model.dart';
-export 'src/model/response/gate_mangment/visitor_type_response_model.dart';
+export 'src/model/response/gate_mangment/mdm_coreason_response_model.dart';
 export 'src/model/response/gate_mangment/upload_response_model.dart';
 export 'src/model/error/local_error.dart';
 export 'src/model/response/gate_mangment/visitor_populate_response_model.dart';

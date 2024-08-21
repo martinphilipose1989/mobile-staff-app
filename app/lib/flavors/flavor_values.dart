@@ -6,10 +6,12 @@ class FlavorValues {
   final bool useFakeData;
   final bool showLogs;
   final bool _logSqlStatements;
+  final String mdmBaseUrl;
 
   const FlavorValues({
     required this.apiBaseUrl,
     required this.secrets,
+    required this.mdmBaseUrl,
     logSqlStatements = false,
     this.showLogs = false,
     this.useFakeData = false,

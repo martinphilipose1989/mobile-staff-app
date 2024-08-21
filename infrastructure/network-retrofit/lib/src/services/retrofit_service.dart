@@ -10,8 +10,9 @@ import 'package:network_retrofit/src/model/response/gate_managment/upload_file_r
 
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_populate_response_entity.dart';
-import 'package:network_retrofit/src/model/response/gate_managment/visitor_type_entity.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/mdm_coreason_entity.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
+import 'package:retrofit/http.dart';
 
 import 'package:retrofit/retrofit.dart';
 
@@ -41,11 +42,13 @@ abstract class RetrofitService {
   Future<HttpResponse<CreateGatePassResponseEntity>> createVisitorGatePass(
       @Body() CreateGatePassRequestEntity requestBody);
 
-  @GET(NetworkProperties.getPurposeOfVisitList)
-  Future<HttpResponse<PurposeOfVisitEntity>> getPurposeOfVisitList();
+  @GET(NetworkProperties.mdmModule)
+  Future<HttpResponse<MdmCoReasonEntity>> getPurposeOfVisitList(
+      @Query('filters[parent_id]') int id, @Query("fields[0]") String name);
 
-  @GET(NetworkProperties.getVisitorTypeList)
-  Future<HttpResponse<TypeOfVisitorEntity>> getVisitorTypeList();
+  @GET(NetworkProperties.mdmModule)
+  Future<HttpResponse<MdmCoReasonEntity>> getVisitorTypeList(
+      @Query('filters[parent_id]') int id, @Query("fields[0]") String name);
 
   @POST(NetworkProperties.uploadProfileImage)
   @MultiPart()

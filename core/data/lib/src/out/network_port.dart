@@ -16,10 +16,10 @@ abstract class NetworkPort {
   Future<Either<NetworkError, CreateGatepassResponseModel>>
       createVisitorGatePass({required CreateGatePassModel request});
 
-  Future<Either<NetworkError, PurposeOfVisitModel>> getPurposeOfVisitList();
+  Future<Either<NetworkError, MdmCoReasonResponseModel>>
+      getPurposeOfVisitList();
 
-  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
-      getTypeOfVistorList();
+  Future<Either<NetworkError, MdmCoReasonResponseModel>> getTypeOfVistorList();
 
   Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
       {required File file});

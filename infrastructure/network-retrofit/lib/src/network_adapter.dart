@@ -69,9 +69,10 @@ class NetworkAdapter implements NetworkPort {
   }
 
   @override
-  Future<Either<NetworkError, PurposeOfVisitModel>>
+  Future<Either<NetworkError, MdmCoReasonResponseModel>>
       getPurposeOfVisitList() async {
-    final response = await safeApiCall(apiService.getPurposeOfVisitList());
+    final response =
+        await safeApiCall(apiService.getPurposeOfVisitList(19, "name"));
     return response.fold((error) {
       return Left(error);
     }, (data) {
@@ -80,9 +81,10 @@ class NetworkAdapter implements NetworkPort {
   }
 
   @override
-  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
+  Future<Either<NetworkError, MdmCoReasonResponseModel>>
       getTypeOfVistorList() async {
-    final response = await safeApiCall(apiService.getVisitorTypeList());
+    final response =
+        await safeApiCall(apiService.getVisitorTypeList(15, "name"));
     return response.fold((error) {
       return Left(error);
     }, (data) {

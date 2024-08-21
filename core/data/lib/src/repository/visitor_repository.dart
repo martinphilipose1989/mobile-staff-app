@@ -36,13 +36,13 @@ class VisitorRepositoryImpl extends VisitorRepository {
   }
 
   @override
-  Future<Either<NetworkError, PurposeOfVisitModel>> getPurposeOfVisitList() {
+  Future<Either<NetworkError, MdmCoReasonResponseModel>>
+      getPurposeOfVisitList() {
     return networkPort.getPurposeOfVisitList();
   }
 
   @override
-  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
-      getTypeOfVistorList() {
+  Future<Either<NetworkError, MdmCoReasonResponseModel>> getTypeOfVistorList() {
     return networkPort.getTypeOfVistorList();
   }
 

@@ -64,16 +64,16 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   }
 
   // Stream for purpose of visit response
-  final BehaviorSubject<Resource<PurposeOfVisitModel>> _purposeOfVisitResponse =
-      BehaviorSubject();
-  Stream<Resource<PurposeOfVisitModel>> get purposeOfVisitResponse =>
+  final BehaviorSubject<Resource<MdmCoReasonResponseModel>>
+      _purposeOfVisitResponse = BehaviorSubject();
+  Stream<Resource<MdmCoReasonResponseModel>> get purposeOfVisitResponse =>
       _purposeOfVisitResponse.stream;
 
-  String? purposOfVisitId;
+  int? purposOfVisitId;
 
   void getPurposeOfVisitList() {
     final params = GetPurposeOfVisitListUsecaseParams();
-    RequestManager<PurposeOfVisitModel>(params,
+    RequestManager<MdmCoReasonResponseModel>(params,
             createCall: () =>
                 _getPurposeOfVisitListUsecase.execute(params: params))
         .asFlow()
@@ -86,18 +86,19 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   void setPurposeOfVisitId(String value) {
     final result = _purposeOfVisitResponse.valueOrNull;
     purposOfVisitId = result?.data?.data
-        ?.firstWhere((e) => e.name?.toLowerCase() == value.toLowerCase(),
-            orElse: () => PurposeOfVisitDataModel())
+        ?.firstWhere(
+            (e) => e.attributes?.name?.toLowerCase() == value.toLowerCase(),
+            orElse: () => MdmCoReasonDataModel())
         .id;
   }
 
   // Stream for type of visitor response
-  final BehaviorSubject<Resource<TypeOfVisitorResponseModel>>
+  final BehaviorSubject<Resource<MdmCoReasonResponseModel>>
       _typeOfVisitorResponse = BehaviorSubject();
-  Stream<Resource<TypeOfVisitorResponseModel>> get typeOfVisitorResponse =>
+  Stream<Resource<MdmCoReasonResponseModel>> get typeOfVisitorResponse =>
       _typeOfVisitorResponse.stream;
 
-  String? typeOfVisitorId;
+  int? typeOfVisitorId;
 
   void getTypeOfVisitorList() {
     final params = GetTypeOfVisitorListUsecaseParams();
@@ -114,8 +115,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   void setTypeOfVisitorId(String value) {
     final result = _typeOfVisitorResponse.valueOrNull;
     typeOfVisitorId = result?.data?.data
-        ?.firstWhere((e) => e.name?.toLowerCase() == value.toLowerCase(),
-            orElse: () => TypeOfVisitorDataModel())
+        ?.firstWhere(
+            (e) => e.attributes?.name?.toLowerCase() == value.toLowerCase(),
+            orElse: () => MdmCoReasonDataModel())
         .id;
   }
 

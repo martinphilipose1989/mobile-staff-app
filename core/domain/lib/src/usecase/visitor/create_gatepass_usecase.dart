@@ -23,12 +23,12 @@ class CreateGatepassUsecaseParams extends Params {
 
   @override
   Either<AppError, bool> verify() {
-    if (Validator.isEmpty(requestModel.visitorTypeId ?? '')) {
+    if (Validator.isEmpty(requestModel.visitorTypeId.toString())) {
       return Left(AppError(
           type: ErrorType.uiVistorType,
           throwable: Exception(),
           error: ErrorInfo(message: 'Please select type of visitor')));
-    } else if (Validator.isEmpty(requestModel.purposeOfVisitId ?? '')) {
+    } else if (Validator.isEmpty(requestModel.purposeOfVisitId.toString())) {
       return Left(AppError(
           type: ErrorType.uiPurposeOfVisit,
           throwable: Exception(),

@@ -38,10 +38,10 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   final selectedTypeOfVisitor = BehaviorSubject<String>.seeded("");
 
-  final BehaviorSubject<Resource<List<TypeOfVisitorDataModel>>>
+  final BehaviorSubject<Resource<List<MdmCoReasonDataModel>>>
       _typeOfVisitorListSubject = BehaviorSubject.seeded(Resource.none());
 
-  Stream<Resource<List<TypeOfVisitorDataModel>>> get typeOfVisitorListStream =>
+  Stream<Resource<List<MdmCoReasonDataModel>>> get typeOfVisitorListStream =>
       _typeOfVisitorListSubject.stream;
 
   final BehaviorSubject<bool> isFilterAppliedSubject = BehaviorSubject<bool>();
@@ -164,7 +164,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
   getTypeofVisitorList() {
     GetTypeOfVisitorListUsecaseParams params =
         GetTypeOfVisitorListUsecaseParams();
-    RequestManager<TypeOfVisitorResponseModel>(
+    RequestManager<MdmCoReasonResponseModel>(
       params,
       createCall: () => _getTypeOfVisitorListUsecase.execute(params: params),
     ).asFlow().listen(

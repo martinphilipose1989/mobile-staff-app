@@ -10,4 +10,7 @@ abstract class NetworkProperties {
       "gate-management/visitor/upload-profile-image";
 
   static const String populateVisitorData = "gate-management/visitor/";
+
+  static const String mdmModule =
+      "https://ampersand-r26sp3mibq-uc.a.run.app/api/co-reasons";
 }

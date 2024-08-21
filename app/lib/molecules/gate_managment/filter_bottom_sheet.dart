@@ -15,20 +15,6 @@ class FilterBottomSheet extends StatelessWidget {
 
   final VisitorListPageViewModel model;
 
-  // final selectedVisitorType = BehaviorSubject<int>.seeded(-1);
-  // final visitorTypeList = [
-  //   const ToggleOption<int>(value: 0, text: "School Visit"),
-  //   const ToggleOption<int>(value: 1, text: "Interview"),
-  //   const ToggleOption<int>(value: 2, text: "PTM"),
-  //   const ToggleOption<int>(value: 3, text: "Enquiry"),
-  // ];
-
-  // final selectedStatus = BehaviorSubject<String>.seeded("");
-  // final statusTypeList = [
-  //   const ToggleOption<String>(value: "In", text: "IN"),
-  //   const ToggleOption<String>(value: "Out", text: "OUT")
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,7 +39,7 @@ class FilterBottomSheet extends StatelessWidget {
           Divider(height: 16.h, color: AppColors.dividerColor),
           const Text("Visitor Type"),
           SizedBox(height: 16.h),
-          AppStreamBuilder<Resource<List<TypeOfVisitorDataModel>>>(
+          AppStreamBuilder<Resource<List<MdmCoReasonDataModel>>>(
               stream: model.typeOfVisitorListStream,
               initialData: Resource.none(),
               dataBuilder: (context, data) {
@@ -61,7 +47,8 @@ class FilterBottomSheet extends StatelessWidget {
                     selectedValue: model.selectedTypeOfVisitor,
                     options: data?.data
                             ?.map((e) => ToggleOption(
-                                value: "${e.id}", text: "${e.name}"))
+                                value: "${e.id}",
+                                text: "${e.attributes?.name}"))
                             .toList() ??
                         []);
               }),
