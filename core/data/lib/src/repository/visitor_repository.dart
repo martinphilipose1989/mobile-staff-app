@@ -7,12 +7,6 @@ class VisitorRepositoryImpl extends VisitorRepository {
   final NetworkPort networkPort;
 
   VisitorRepositoryImpl({required this.networkPort});
-  @override
-  Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
-      {required int pageNumber, int pageSize = 10}) {
-    return networkPort.getVisitorList(
-        pageNumber: pageNumber, pageSize: pageSize);
-  }
 
   @override
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails({
@@ -63,5 +57,11 @@ class VisitorRepositoryImpl extends VisitorRepository {
       populateVisitorData({required String visitorMobileNumber}) {
     return networkPort.populateVisitorData(
         visitorMobileNumber: visitorMobileNumber);
+  }
+
+  @override
+  Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
+      {required GetVisitorListRequestModel requestBody}) {
+    return networkPort.getVisitorList(request: requestBody);
   }
 }

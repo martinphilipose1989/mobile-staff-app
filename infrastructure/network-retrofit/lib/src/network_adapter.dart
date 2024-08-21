@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:data/data.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
+import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
+
 import 'package:network_retrofit/src/util/safe_api_call.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -16,17 +18,6 @@ class NetworkAdapter implements NetworkPort {
   NetworkAdapter(this.apiService);
 
   @override
-  Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
-      {required int pageNumber, int pageSize = 10}) async {
-    final response = await safeApiCall<HttpResponse<VisitorListResponseEntity>>(
-        apiService.getVisitorList(pageNumber, pageSize));
-    return response.fold((error) {
-      return Left(error);
-    }, (data) {
-      return Right(data.data.transform());
-    });
-  }
-
   @override
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(
       {required String gatepassId}) async {
@@ -113,6 +104,30 @@ class NetworkAdapter implements NetworkPort {
       populateVisitorData({required visitorMobileNumber}) async {
     final response =
         await safeApiCall(apiService.populateVisitorData(visitorMobileNumber));
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
+      {required GetVisitorListRequestModel request}) async {
+    final response = await safeApiCall(
+      apiService.getVisitorList(
+        GetVisitorListRequestEntity(
+          pageNumber: request.pageNumber,
+          pageSize: request.pageSize,
+          filters: request.filters
+              ?.map(
+                (filter) => FilterEntity(
+                  column: filter.column,
+                  operation: filter.operation,
+                  search: filter.search,
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }

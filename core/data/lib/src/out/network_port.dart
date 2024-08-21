@@ -4,7 +4,7 @@ import 'package:domain/domain.dart';
 
 abstract class NetworkPort {
   Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
-      {required int pageNumber, int pageSize = 10});
+      {required GetVisitorListRequestModel request});
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(
       {required String gatepassId});
   Future<Either<NetworkError, VisitorDetailsResponseModel>>

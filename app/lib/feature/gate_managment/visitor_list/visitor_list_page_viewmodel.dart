@@ -10,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class VisitorListPageViewModel extends BasePageViewModel {
+  final int pageSize = 10;
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorListUsecase _getVisitorListUsecase;
 
@@ -87,8 +88,12 @@ class VisitorListPageViewModel extends BasePageViewModel {
     }
 
     _exceptionHandlerBinder.handle(block: () {
-      final params =
-          GetVisitorListUsecaseParams(pageNumber: _pageSubject.value);
+      final params = GetVisitorListUsecaseParams(
+        requestBody: GetVisitorListRequestModel(
+          pageNumber: _pageSubject.value,
+          pageSize: pageSize,
+        ),
+      );
       return RequestManager<VisitorListResponseModel>(
         params,
         createCall: () => _getVisitorListUsecase.execute(params: params),
