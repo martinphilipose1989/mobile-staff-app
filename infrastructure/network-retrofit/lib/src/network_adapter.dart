@@ -5,7 +5,6 @@ import 'package:data/data.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
-import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 
 import 'package:network_retrofit/src/util/safe_api_call.dart';
 import 'package:retrofit/retrofit.dart';
