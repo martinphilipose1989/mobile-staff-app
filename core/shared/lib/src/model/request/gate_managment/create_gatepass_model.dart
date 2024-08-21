@@ -17,7 +17,7 @@ class CreateGatePassModel {
 
   String? comingFrom;
 
-  String? guestCount;
+  int? guestCount;
 
   String? profileImage;
 

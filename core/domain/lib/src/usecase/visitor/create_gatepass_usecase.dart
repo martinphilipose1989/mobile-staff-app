@@ -23,21 +23,30 @@ class CreateGatepassUsecaseParams extends Params {
 
   @override
   Either<AppError, bool> verify() {
-    if (Validator.isEmpty(requestModel.visitorTypeId.toString())) {
-      return Left(AppError(
+    if (requestModel.visitorTypeId == null) {
+      return Left(
+        AppError(
           type: ErrorType.uiVistorType,
           throwable: Exception(),
-          error: ErrorInfo(message: 'Please select type of visitor')));
-    } else if (Validator.isEmpty(requestModel.purposeOfVisitId.toString())) {
-      return Left(AppError(
+          error: ErrorInfo(message: 'Please select type of visitor'),
+        ),
+      );
+    } else if (requestModel.purposeOfVisitId == null) {
+      return Left(
+        AppError(
           type: ErrorType.uiPurposeOfVisit,
           throwable: Exception(),
-          error: ErrorInfo(message: 'Please select purpose of visit')));
+          error: ErrorInfo(message: 'Please select purpose of visit'),
+        ),
+      );
     } else if (Validator.isEmpty(requestModel.profileImage ?? '')) {
-      return Left(AppError(
+      return Left(
+        AppError(
           type: ErrorType.uiPorfileImage,
           throwable: Exception(),
-          error: ErrorInfo(message: 'Please click image of visitor')));
+          error: ErrorInfo(message: 'Please click image of visitor'),
+        ),
+      );
     }
     return Right(true);
   }

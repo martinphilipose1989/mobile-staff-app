@@ -38,7 +38,7 @@ class CreateGatePassRequestEntity
   @JsonKey(name: "coming_from")
   String? comingFrom;
   @JsonKey(name: "guest_count")
-  String? guestCount;
+  int? guestCount;
   @JsonKey(name: "profile_image")
   String? profileImage;
 
@@ -59,7 +59,13 @@ class CreateGatePassRequestEntity
   factory CreateGatePassRequestEntity.fromJson(Map<String, dynamic> json) =>
       _$CreateGatePassRequestEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CreateGatePassRequestEntityToJson(this);
+  Map<String, dynamic> toJson() {
+    final json = _$CreateGatePassRequestEntityToJson(this);
+    if (json['company_name'] == null) {
+      json.remove('company_name');
+    }
+    return json;
+  }
 
   @override
   CreateGatePassRequestEntity restore(CreateGatePassModel data) {

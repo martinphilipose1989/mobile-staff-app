@@ -152,9 +152,8 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         purposeOfVisitId: purposOfVisitId,
         comingFrom: comingFromController.text,
         pointOfContact: pointOfContactController.text,
-        companyName: 'Neo',
         profileImage: _uploadedFileResponse.valueOrNull?.data?.data?.filePath,
-        guestCount: guestCountController.text,
+        guestCount: int.parse(guestCountController.text),
       ),
     );
 

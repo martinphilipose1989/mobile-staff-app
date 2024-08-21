@@ -3,11 +3,11 @@
 class CreateGatePassDataResponseModel {
   String? id;
   String? visitorId;
-  String? visitorTypeId;
+  int? visitorTypeId;
   String? companyName;
   String? pointOfContact;
   String? otherPointOfContact;
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
   String? comingFrom;
 
   int? guestCount;
