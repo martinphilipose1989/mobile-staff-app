@@ -16,6 +16,8 @@ class VisitorListPageViewModel extends BasePageViewModel {
   final GetTypeOfVisitorListUsecase _getTypeOfVisitorListUsecase;
 
   final selectedStatus = BehaviorSubject<String>.seeded("");
+  final selectedVisitStatusFilter = BehaviorSubject<String>.seeded("");
+
   final statusTypeList = [
     const ToggleOption<String>(value: "In", text: "IN"),
     const ToggleOption<String>(value: "Out", text: "OUT")
@@ -44,8 +46,14 @@ class VisitorListPageViewModel extends BasePageViewModel {
   Stream<Resource<List<MdmCoReasonDataModel>>> get typeOfVisitorListStream =>
       _typeOfVisitorListSubject.stream;
 
-  final BehaviorSubject<bool> isFilterAppliedSubject = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> isFilterAppliedSubject =
+      BehaviorSubject<bool>.seeded(false);
   Stream<bool> get isFilterAppLiedStream => isFilterAppliedSubject.stream;
+
+  final BehaviorSubject<bool> isButtonDisableSubject =
+      BehaviorSubject<bool>.seeded(true);
+
+  Stream<bool> get isButtonDisableStream => isButtonDisableSubject.stream;
 
   VisitorListPageViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
@@ -180,6 +188,21 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   void setTypeofVistor({required String typeOfVisitorId}) {
     selectedTypeOfVisitor.add(typeOfVisitorId);
+  }
+
+  void resetFilter() {
+    selectedStatus.add("");
+    selectedTypeOfVisitor.add("");
+    selectedVisitStatusFilter.add("");
+    isFilterAppliedSubject.add(false);
+    isButtonDisableSubject.add(true);
+    refreshVisitorList();
+  }
+
+  void applyFilters() {
+    selectedStatus.add(selectedVisitStatusFilter.value);
+    isFilterAppliedSubject.add(true);
+    refreshVisitorList();
   }
 
   @override

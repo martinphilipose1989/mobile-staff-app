@@ -26,7 +26,7 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
       padding: REdgeInsets.only(left: 16, right: 16, top: 18),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SearchTextFieldWithFilter(
-          searchController: model.searchController,
+          model: model,
           onChanged: (value) {},
           filterCallBack: () {
             AppBottomSheet(

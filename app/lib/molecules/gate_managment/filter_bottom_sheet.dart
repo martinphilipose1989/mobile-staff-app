@@ -31,6 +31,9 @@ class FilterBottomSheet extends StatelessWidget {
                       .copyWith(color: AppColors.textDark)),
               IconButton(
                   onPressed: () {
+                    if (!model.isFilterAppliedSubject.value) {
+                      model.resetFilter();
+                    }
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.close))
@@ -45,6 +48,10 @@ class FilterBottomSheet extends StatelessWidget {
               dataBuilder: (context, data) {
                 return ToggleOptionList<String>(
                     selectedValue: model.selectedTypeOfVisitor,
+                    onSelect: (value) {
+                      model.setTypeofVistor(typeOfVisitorId: value);
+                      model.isButtonDisableSubject.add(false);
+                    },
                     options: data?.data
                             ?.map((e) => ToggleOption(
                                 value: "${e.id}",
@@ -56,7 +63,11 @@ class FilterBottomSheet extends StatelessWidget {
           const Text("Status"),
           SizedBox(height: 16.h),
           ToggleOptionList<String>(
-              selectedValue: model.selectedStatus,
+              onSelect: (value) {
+                model.selectedVisitStatusFilter.add(value);
+                model.isButtonDisableSubject.add(false);
+              },
+              selectedValue: model.selectedVisitStatusFilter,
               options: model.statusTypeList),
           SizedBox(height: 16.h),
           Row(
@@ -65,21 +76,19 @@ class FilterBottomSheet extends StatelessWidget {
                   child: CommonOutlineButton(
                       title: "Reset",
                       onPressed: () {
-                        model.selectedStatus.add("");
-                        model.selectedTypeOfVisitor.add("");
-                        model.isFilterAppliedSubject.add(false);
+                        model.resetFilter();
                         Navigator.pop(context);
                       })),
               SizedBox(width: 16.w),
               Expanded(
                 child: AppStreamBuilder<bool>(
-                    stream: model.isFilterAppLiedStream,
-                    initialData: false,
-                    dataBuilder: (context, isFilterApplied) {
+                    stream: model.isButtonDisableStream,
+                    initialData: model.isButtonDisableSubject.value,
+                    dataBuilder: (context, isButtonDisable) {
                       return CommonPrimaryElevatedButton(
-                          isDisabled: isFilterApplied!,
+                          isDisabled: isButtonDisable!,
                           onPressed: () {
-                            model.refreshVisitorList();
+                            model.applyFilters();
                             Navigator.pop(context);
                           },
                           title: "Apply Filter");
