@@ -57,4 +57,11 @@ abstract class RetrofitService {
   @GET(NetworkProperties.populateVisitorData)
   Future<HttpResponse<VisitorPopulateResponseEntity>> populateVisitorData(
       @Path("mobile") visitorMobileNumber);
+
+  @GET(NetworkProperties.globalSearchVisitor)
+  Future<HttpResponse<VisitorListResponseEntity>> searchVisitorList(
+      @Query('pageNumber') int pageNumber,
+      @Query('pageSize') int pageSize,
+      @Query('search') String searchQuery,
+      CancelToken? cancelToken);
 }

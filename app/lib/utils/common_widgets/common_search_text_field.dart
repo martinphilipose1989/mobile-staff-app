@@ -29,6 +29,7 @@ class CommonSearchTextField extends StatelessWidget {
           controller.selection = TextSelection.fromPosition(
             TextPosition(offset: controller.text.length),
           );
+        } else {
           onChanged?.call(value);
         }
       },

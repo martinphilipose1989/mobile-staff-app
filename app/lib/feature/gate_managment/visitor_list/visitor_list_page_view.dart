@@ -27,7 +27,9 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SearchTextFieldWithFilter(
           model: model,
-          onChanged: (value) {},
+          onChanged: (query) {
+            model.searchVisitorList(query: query);
+          },
           filterCallBack: () {
             AppBottomSheet(
                 child: FilterBottomSheet(model: model), context: context);

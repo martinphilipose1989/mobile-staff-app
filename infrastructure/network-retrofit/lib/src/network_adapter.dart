@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:data/data.dart';
+import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
@@ -13,10 +14,10 @@ import 'services/retrofit_service.dart';
 
 class NetworkAdapter implements NetworkPort {
   final RetrofitService apiService;
+  CancelToken? _cancelToken;
 
   NetworkAdapter(this.apiService);
 
-  @override
   @override
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(
       {required String gatepassId}) async {
@@ -120,15 +121,31 @@ class NetworkAdapter implements NetworkPort {
           filters: request.filters
               ?.map(
                 (filter) => FilterEntity(
-                  column: filter.column,
-                  operation: filter.operation,
-                  search: filter.search,
-                ),
+                    column: filter.column,
+                    operation: filter.operation,
+                    search: filter.search),
               )
               .toList(),
         ),
       ),
     );
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
+      {required int pageNumber,
+      required int pageSize,
+      required String searchQuery}) async {
+    _cancelToken?.cancel();
+
+    // Create a new CancelToken for the new request
+    _cancelToken = CancelToken();
+
+    final response = await safeApiCall(apiService.searchVisitorList(
+        pageNumber, pageSize, searchQuery, _cancelToken));
+
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }

@@ -26,4 +26,9 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, VisitorPopulateResponseModel>>
       populateVisitorData({required visitorMobileNumber});
+
+  Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
+      {required int pageNumber,
+      required int pageSize,
+      required String searchQuery});
 }

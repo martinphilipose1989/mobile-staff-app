@@ -24,4 +24,9 @@ abstract class VisitorRepository {
 
   Future<Either<NetworkError, VisitorPopulateResponseModel>>
       populateVisitorData({required String visitorMobileNumber});
+
+  Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
+      {required int pageNumber,
+      required int pageSize,
+      required String searchQuery});
 }

@@ -64,4 +64,13 @@ class VisitorRepositoryImpl extends VisitorRepository {
       {required GetVisitorListRequestModel requestBody}) {
     return networkPort.getVisitorList(request: requestBody);
   }
+
+  @override
+  Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
+      {required int pageNumber,
+      required int pageSize,
+      required String searchQuery}) {
+    return networkPort.searchVisitorList(
+        pageNumber: pageNumber, pageSize: pageSize, searchQuery: searchQuery);
+  }
 }

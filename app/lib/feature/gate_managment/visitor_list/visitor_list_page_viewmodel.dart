@@ -17,6 +17,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   final selectedStatus = BehaviorSubject<String>.seeded("");
   final selectedVisitStatusFilter = BehaviorSubject<String>.seeded("");
+  final SearchVisitorUsecase _searchVisitorUsecase;
 
   final statusTypeList = [
     const ToggleOption<String>(value: "In", text: "IN"),
@@ -38,6 +39,9 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   final _throttleDuration = const Duration(milliseconds: 300);
 
+  final BehaviorSubject<String> _searchQuerySubject = BehaviorSubject<String>();
+  final Duration _debounceDuration = const Duration(milliseconds: 500);
+
   final selectedTypeOfVisitor = BehaviorSubject<String>.seeded("");
 
   final BehaviorSubject<Resource<List<MdmCoReasonDataModel>>>
@@ -58,12 +62,15 @@ class VisitorListPageViewModel extends BasePageViewModel {
   VisitorListPageViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required GetVisitorListUsecase getVisitorListUsecase,
-      required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase})
+      required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase,
+      required SearchVisitorUsecase searchVisitorusecase})
       : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorListUsecase = getVisitorListUsecase,
-        _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase {
+        _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase,
+        _searchVisitorUsecase = searchVisitorusecase {
     _setupThrottling();
     getTypeofVisitorList();
+    _setupDebouncedSearch();
   }
 
   void onVisitStatusSelect({required String selectStatus}) {
@@ -205,6 +212,38 @@ class VisitorListPageViewModel extends BasePageViewModel {
     refreshVisitorList();
   }
 
+  void searchVisitorList({required String query}) {
+    // Add the search query to the debouncing stream
+    _searchQuerySubject.add(query);
+  }
+
+  void _setupDebouncedSearch() {
+    _searchQuerySubject.debounceTime(_debounceDuration).listen((searchQuery) {
+      if (searchQuery.isEmpty || searchQuery.length < 3) {
+        return;
+      }
+
+      _pageSubject.add(1);
+      _visitorListSubject.add(Resource.success(data: []));
+      hasMorePagesSubject.add(true);
+      _loadingSubject.add(false);
+
+      SearchUseCaseParams params = SearchUseCaseParams(
+          pageNumber: _pageSubject.value,
+          pageSize: pageSize,
+          searchQuery: searchQuery);
+
+      RequestManager(params,
+              createCall: () => _searchVisitorUsecase.execute(params: params))
+          .asFlow()
+          .listen((result) {
+        _handleVisitorListResponse(result);
+      }).onError((error) {
+        // Handle error here
+      });
+    });
+  }
+
   @override
   void dispose() {
     _pageSubject.close();
@@ -215,6 +254,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
     searchController.dispose();
     _throttlingController.close();
     selectedTypeOfVisitor.close();
+    _searchQuerySubject.close();
     super.dispose();
   }
 }
