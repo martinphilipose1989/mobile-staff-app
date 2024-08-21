@@ -13,11 +13,12 @@ class VisitorListPageViewModel extends BasePageViewModel {
   final int pageSize = 10;
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorListUsecase _getVisitorListUsecase;
+  final GetTypeOfVisitorListUsecase _getTypeOfVisitorListUsecase;
 
-  final selectedStatus = BehaviorSubject<int>.seeded(-1);
+  final selectedStatus = BehaviorSubject<String>.seeded("");
   final statusTypeList = [
-    const ToggleOption<int>(value: 0, text: "IN"),
-    const ToggleOption<int>(value: 1, text: "OUT")
+    const ToggleOption<String>(value: "In", text: "IN"),
+    const ToggleOption<String>(value: "Out", text: "OUT")
   ];
 
   final TextEditingController searchController = TextEditingController();
@@ -35,15 +36,29 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   final _throttleDuration = const Duration(milliseconds: 300);
 
-  VisitorListPageViewModel({
-    required FlutterExceptionHandlerBinder exceptionHandlerBinder,
-    required GetVisitorListUsecase getVisitorListUsecase,
-  })  : _exceptionHandlerBinder = exceptionHandlerBinder,
-        _getVisitorListUsecase = getVisitorListUsecase {
+  final selectedTypeOfVisitor = BehaviorSubject<String>.seeded("");
+
+  final BehaviorSubject<Resource<List<TypeOfVisitorDataModel>>>
+      _typeOfVisitorListSubject = BehaviorSubject.seeded(Resource.none());
+
+  Stream<Resource<List<TypeOfVisitorDataModel>>> get typeOfVisitorListStream =>
+      _typeOfVisitorListSubject.stream;
+
+  final BehaviorSubject<bool> isFilterAppliedSubject = BehaviorSubject<bool>();
+  Stream<bool> get isFilterAppLiedStream => isFilterAppliedSubject.stream;
+
+  VisitorListPageViewModel(
+      {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
+      required GetVisitorListUsecase getVisitorListUsecase,
+      required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase})
+      : _exceptionHandlerBinder = exceptionHandlerBinder,
+        _getVisitorListUsecase = getVisitorListUsecase,
+        _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase {
     _setupThrottling();
+    getTypeofVisitorList();
   }
 
-  void onVisitStatusSelect({required int selectStatus}) {
+  void onVisitStatusSelect({required String selectStatus}) {
     selectedStatus.add(selectStatus);
     refreshVisitorList(); // Trigger list refresh on status change
   }
@@ -53,6 +68,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
     _visitorListSubject.add(Resource.success(data: []));
     hasMorePagesSubject.add(true);
     _loadingSubject.add(false);
+
     fetchVisitorList();
   }
 
@@ -90,9 +106,22 @@ class VisitorListPageViewModel extends BasePageViewModel {
     _exceptionHandlerBinder.handle(block: () {
       final params = GetVisitorListUsecaseParams(
         requestBody: GetVisitorListRequestModel(
-          pageNumber: _pageSubject.value,
-          pageSize: pageSize,
-        ),
+            pageNumber: _pageSubject.value,
+            pageSize: pageSize,
+            filters: [
+              if (selectedStatus.value.isNotEmpty) ...{
+                FilterRequestModel(
+                    column: "visit_status",
+                    operation: "equals",
+                    search: selectedStatus.value)
+              },
+              if (selectedTypeOfVisitor.value.isNotEmpty) ...{
+                FilterRequestModel(
+                    column: "visitor_type_id",
+                    operation: "equals",
+                    search: selectedTypeOfVisitor.value)
+              }
+            ]),
       );
       return RequestManager<VisitorListResponseModel>(
         params,
@@ -132,6 +161,27 @@ class VisitorListPageViewModel extends BasePageViewModel {
     _loadingSubject.add(false);
   }
 
+  getTypeofVisitorList() {
+    GetTypeOfVisitorListUsecaseParams params =
+        GetTypeOfVisitorListUsecaseParams();
+    RequestManager<TypeOfVisitorResponseModel>(
+      params,
+      createCall: () => _getTypeOfVisitorListUsecase.execute(params: params),
+    ).asFlow().listen(
+      (result) {
+        if (Status.success == result.status) {
+          _typeOfVisitorListSubject
+              .add(Resource.success(data: result.data?.data));
+        }
+      },
+      onError: (error) {},
+    );
+  }
+
+  void setTypeofVistor({required String typeOfVisitorId}) {
+    selectedTypeOfVisitor.add(typeOfVisitorId);
+  }
+
   @override
   void dispose() {
     _pageSubject.close();
@@ -141,6 +191,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
     selectedStatus.close();
     searchController.dispose();
     _throttlingController.close();
+    selectedTypeOfVisitor.close();
     super.dispose();
   }
 }

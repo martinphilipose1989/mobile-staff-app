@@ -12,7 +12,6 @@ import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_populate_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_type_entity.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
-import 'package:retrofit/http.dart';
 
 import 'package:retrofit/retrofit.dart';
 
@@ -24,7 +23,7 @@ abstract class RetrofitService {
     return _RetrofitService(dio, baseUrl: dio.options.baseUrl);
   }
 
-  @GET(NetworkProperties.getVisitorList)
+  @POST(NetworkProperties.getVisitorList)
   Future<HttpResponse<VisitorListResponseEntity>> getVisitorList(
       @Body() GetVisitorListRequestEntity requestBody);
 

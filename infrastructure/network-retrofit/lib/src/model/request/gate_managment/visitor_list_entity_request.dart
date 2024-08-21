@@ -78,7 +78,9 @@ class FilterEntity
 
   // Method to check if the filter is valid (none of the fields are null)
   bool isValid() {
-    return column != null && operation != null && search != null;
+    return column != null &&
+        operation != null &&
+        (search != null || search.isNotEmpty || search != 0);
   }
 
   @override

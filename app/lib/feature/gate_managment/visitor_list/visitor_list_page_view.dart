@@ -29,11 +29,12 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
           searchController: model.searchController,
           onChanged: (value) {},
           filterCallBack: () {
-            AppBottomSheet(child: FilterBottomSheet(), context: context);
+            AppBottomSheet(
+                child: FilterBottomSheet(model: model), context: context);
           },
         ),
         Divider(height: 32.h, color: AppColors.dividerColor),
-        ToggleOptionList<int>(
+        ToggleOptionList<String>(
           selectedValue: model.selectedStatus,
           options: model.statusTypeList,
           onSelect: (value) => model.onVisitStatusSelect(selectStatus: value),

@@ -26,7 +26,7 @@ class VisitorDataModel {
   String? purposeOfVisit;
 
 //visitor details related fields
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
 
   String? comingFrom;
 
