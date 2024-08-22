@@ -69,7 +69,7 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
                                   .contains("internet") ??
                               false
                           ? "No Internet Connection"
-                          : "",
+                          : "Something Went Wrong",
                       subtitle: data?.dealSafeAppError?.error.message
                                   .contains("internet") ??
                               false
