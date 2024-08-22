@@ -64,8 +64,22 @@ class VisitorListPageView extends BasePageViewWidget<VisitorListPageViewModel> {
                   status: data?.status ?? Status.none,
                   loadingWidget: () => const VisitorShimmerList(),
                   errorWidget: () => Center(
-                      child: Text(data?.dealSafeAppError?.error.message ??
-                          "Something went wrong !!!")),
+                    child: NoDataFoundWidget(
+                      title: data?.dealSafeAppError?.error.message
+                                  .contains("internet") ??
+                              false
+                          ? "No Internet Connection"
+                          : "",
+                      subtitle: data?.dealSafeAppError?.error.message
+                                  .contains("internet") ??
+                              false
+                          ? "It seems you're offline. Please check your internet connection and try again."
+                          : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+                      onPressed: () {
+                        model.refreshVisitorList();
+                      },
+                    ),
+                  ),
                   successWidget: () {
                     return AppStreamBuilder<bool>(
                       stream: model.hasMorePagesStream,

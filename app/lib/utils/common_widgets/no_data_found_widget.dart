@@ -1,18 +1,17 @@
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
+import 'package:app/utils/common_widgets/common_outline_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NoDataFoundWidget extends StatelessWidget {
-  const NoDataFoundWidget({
-    super.key,
-    required this.title,
-    this.subtitle,
-  });
+  const NoDataFoundWidget(
+      {super.key, required this.title, this.subtitle, this.onPressed});
 
   final String title;
   final String? subtitle;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +41,14 @@ class NoDataFoundWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
+        ],
+        if (onPressed != null) ...[
+          const SizedBox(height: 8),
+          CommonOutlineButton(
+              onPressed: () {
+                onPressed?.call();
+              },
+              title: "Try again")
         ]
       ],
     );
