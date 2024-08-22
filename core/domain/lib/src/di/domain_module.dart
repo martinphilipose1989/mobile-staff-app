@@ -1,5 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:domain/src/usecase/visitor/search_visitor_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 @module

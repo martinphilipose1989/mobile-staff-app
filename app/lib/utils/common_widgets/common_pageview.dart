@@ -12,12 +12,12 @@ class CommonPageView extends StatefulWidget {
 }
 
 class CommonPageViewState extends State<CommonPageView> {
-  PageController _pageController = PageController();
+  PageController pageController = PageController();
   int _currentPage = 0;
 
   @override
   void dispose() {
-    _pageController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -27,7 +27,7 @@ class CommonPageViewState extends State<CommonPageView> {
       children: [
         Expanded(
           child: PageView.builder(
-            controller: _pageController,
+            controller: pageController,
             itemCount: widget.images.length,
             onPageChanged: (int index) {
               setState(() {

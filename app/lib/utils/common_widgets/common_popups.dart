@@ -129,7 +129,7 @@ class CommonPopups {
   }
 
   // Private method to show a dialog
-  void _showAppClosingAlert(
+  void showAppClosingAlert(
     BuildContext context, {
     required IconData icon,
     required Color iconColor,

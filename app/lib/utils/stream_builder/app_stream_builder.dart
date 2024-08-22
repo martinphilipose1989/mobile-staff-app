@@ -13,8 +13,8 @@ class AppStreamBuilder<T> extends StreamBuilderBase<T, AsyncSnapshot<T>> {
   final Widget Function(BuildContext context, Object? data)? errorBuilder;
 
   const AppStreamBuilder({
-    Key? key,
-    required Stream<T> stream,
+    super.key,
+    required Stream<T> super.stream,
     this.onData,
     this.onError,
     this.onDone,
@@ -22,7 +22,7 @@ class AppStreamBuilder<T> extends StreamBuilderBase<T, AsyncSnapshot<T>> {
     this.busyBuilder,
     required this.dataBuilder,
     this.errorBuilder,
-  }) : super(key: key, stream: stream);
+  });
 
   @override
   AsyncSnapshot<T> initial() =>

@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/filter_bottom_sheet.dart';
 import 'package:app/molecules/gate_managment/search_text_field_with_filter.dart';

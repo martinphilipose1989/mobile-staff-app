@@ -55,7 +55,6 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
                   cause: throwable),
             );
           case DioExceptionType.badCertificate:
-            // TODO: Handle this case.
             break;
           case DioExceptionType.connectionError:
             return Left(

@@ -7,17 +7,11 @@ class AppPersistenceAdapter implements DatabasePort {
   AppPersistenceAdapter(this.appDatabase);
 
   @override
-  void fetchPosts() {
-    // TODO: implement fetchPosts
-  }
+  void fetchPosts() {}
 
   @override
-  void reload() {
-    // TODO: implement reload
-  }
+  void reload() {}
 
   @override
-  void saveUser() {
-    // TODO: implement saveUser
-  }
+  void saveUser() {}
 }
