@@ -4,9 +4,7 @@ import 'package:app/molecules/gate_managment/search_text_field_with_filter.dart'
 import 'package:app/molecules/gate_managment/visitor_list/visitor_shimmer_list.dart';
 import 'package:app/molecules/gate_managment/visitor_list_tile.dart';
 import 'package:app/themes_setup.dart';
-import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_bottom_sheet.dart';
-import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_refresh_indicator.dart';
 import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
