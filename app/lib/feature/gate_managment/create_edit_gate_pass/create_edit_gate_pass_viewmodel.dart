@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/phone_number_details.dart';
 import 'package:app/model/resource.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
@@ -138,15 +141,13 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final TextEditingController visitDateTimeController = TextEditingController(
       text: DateTime.now().toIso8601String().dateFormatToDDMMYYYhhmma());
 
-  String countryDialCode = "+91";
+  BehaviorSubject<String> countryDialCode = BehaviorSubject.seeded("+91");
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   void createGatePass() async {
     final params = CreateGatepassUsecaseParams(
       requestModel: CreateGatePassModel(
         name: visitorNameController.text,
-        mobile: contactNumberController.text.contains("+")
-            ? contactNumberController.text
-            : "$countryDialCode${contactNumberController.text}",
+        mobile: "${countryDialCode.value}${contactNumberController.text}",
         email: emailIDController.text,
         visitorTypeId: typeOfVisitorId,
         purposeOfVisitId: purposOfVisitId,
@@ -182,7 +183,8 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
 
   void populateVisitorData() {
     PopulateVisitorDataUsecaseParams params = PopulateVisitorDataUsecaseParams(
-        mobileNumber: contactNumberController.text);
+        mobileNumber:
+            "${countryDialCode.value}${contactNumberController.text}");
     RequestManager<VisitorPopulateResponseModel>(params,
             createCall: () =>
                 _populateVisitorDataUsecase.execute(params: params))
@@ -191,8 +193,8 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       if (data.status == Status.success) {
         if (data.data?.data != null) {
           visitorNameController.text = data.data?.data?.name ?? "";
-          contactNumberController.text = data.data?.data?.mobile ?? "";
           emailIDController.text = data.data?.data?.email ?? "";
+          getCountryCode(phoneNumber: data.data?.data?.mobile ?? "");
           _uploadedFileResponse.add(
             Resource.success(
               data: UploadFileResponseModel(
@@ -207,14 +209,16 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
     }).onError((error) {});
   }
 
-  Future<bool> getCountryCode({required String phoneNumber}) async {
+  getCountryCode({required String phoneNumber}) async {
     try {
       final result = await parse(phoneNumber);
       final validPhoneNumber = PhoneNumberDetails.fromMap(result);
-
+      log("validPhoneNumber $validPhoneNumber");
+      contactNumberController.text = validPhoneNumber.nationalNumber;
+      countryDialCode.add("+${validPhoneNumber.countryCode}");
       return validPhoneNumber.countryCode.isNotEmpty ? true : false;
-    } on PlatformException catch (_) {
-      return false;
+    } on PlatformException catch (e) {
+      log("$e");
     }
   }
 

@@ -73,7 +73,7 @@ class VisitorListTile extends StatelessWidget {
                               ),
                               TextSpan(
                                 text:
-                                    "(Visitor: ID#${visitorDataModel?.visitorId})",
+                                    "(Visitor: ID#${visitorDataModel?.visitorId ?? visitorDataModel?.gatePassNumber})",
                                 style: AppTypography.overline.copyWith(
                                     fontSize: 10.sp,
                                     color: AppColors.textGray,

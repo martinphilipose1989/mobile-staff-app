@@ -63,18 +63,29 @@ class CreateEditGatePassPageView
                           return null;
                         },
                       ),
-                      CountryPickerPhoneTextField(
-                        controller: model.contactNumberController,
-                        onCountryChanged: (country) {
-                          model.countryDialCode = country.dialCode!;
-                        },
-                        validator: (value) {
-                          if (Validator.isEmpty(value!)) {
-                            return "Contact number cannot be empty";
-                          }
-                          return null;
-                        },
-                      ),
+                      AppStreamBuilder<String>(
+                          stream: model.countryDialCode.stream,
+                          initialData: model.countryDialCode.value,
+                          dataBuilder: (context, countryDialCode) {
+                            return CountryPickerPhoneTextField(
+                              initialSelection: countryDialCode!,
+                              controller: model.contactNumberController,
+                              onChanged: (value) {
+                                if (value.length == 10) {
+                                  model.populateVisitorData();
+                                }
+                              },
+                              onCountryChanged: (country) {
+                                model.countryDialCode.add(country.dialCode!);
+                              },
+                              validator: (value) {
+                                if (Validator.isEmpty(value!)) {
+                                  return "Contact number cannot be empty";
+                                }
+                                return null;
+                              },
+                            );
+                          }),
                       CommonTextFormField(
                         bottomPadding: 16,
                         showAstreik: true,

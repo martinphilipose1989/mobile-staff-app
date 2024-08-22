@@ -11,11 +11,15 @@ class CountryPickerPhoneTextField extends StatelessWidget {
       {super.key,
       required this.controller,
       required this.onCountryChanged,
-      this.validator});
+      this.onChanged,
+      this.validator,
+      this.initialSelection = "+91"});
 
   final TextEditingController controller;
   final void Function(CountryCode)? onCountryChanged;
   final String? Function(String?)? validator;
+  final String initialSelection;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +28,7 @@ class CountryPickerPhoneTextField extends StatelessWidget {
       bottomPadding: 16,
       labelText: 'Contact Number',
       controller: controller,
+      onChanged: onChanged,
       keyboardType: TextInputType.phone,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
@@ -36,7 +41,7 @@ class CountryPickerPhoneTextField extends StatelessWidget {
         SizedBox(width: 16.w),
         CountryCodePicker(
           flagWidth: 32.w,
-          initialSelection: "+91",
+          initialSelection: initialSelection,
           onChanged: onCountryChanged,
           builder: (countrycode) {
             return Row(

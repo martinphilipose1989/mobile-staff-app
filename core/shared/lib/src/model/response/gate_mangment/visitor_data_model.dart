@@ -40,6 +40,8 @@ class VisitorDataModel {
 
   int? guestCount;
 
+  String? gatePassNumber;
+
   VisitorDataModel(
       {this.id,
       this.pointOfContact,
@@ -59,5 +61,6 @@ class VisitorDataModel {
       this.visitorProfileImageImageUrl,
       this.visitorProfileImageFilePath,
       this.visitorType = "Parent",
-      this.guestCount});
+      this.guestCount,
+      this.gatePassNumber});
 }

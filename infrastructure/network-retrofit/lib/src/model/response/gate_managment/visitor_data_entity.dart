@@ -64,6 +64,9 @@ class VisitorDataEntity
   @JsonKey(name: "guest_count")
   int? guestCount;
 
+  @JsonKey(name: "gatepass_number")
+  String? gatePassNumber;
+
   VisitorDataEntity(
       {this.id,
       this.pointOfContact,
@@ -83,7 +86,8 @@ class VisitorDataEntity
       this.visitorProfileImageFilePath,
       this.visitorProfileImageImageUrl,
       this.visitorType,
-      this.guestCount});
+      this.guestCount,
+      this.gatePassNumber});
 
   factory VisitorDataEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorDataEntityFromJson(json);
@@ -116,6 +120,7 @@ class VisitorDataEntity
         visitorProfileImageFilePath: visitorProfileImageFilePath,
         visitorProfileImageImageUrl: visitorProfileImageImageUrl,
         visitorType: visitorType ?? "Parent",
-        guestCount: guestCount);
+        guestCount: guestCount,
+        gatePassNumber: gatePassNumber);
   }
 }
