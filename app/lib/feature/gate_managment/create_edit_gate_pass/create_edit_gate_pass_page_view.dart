@@ -217,6 +217,7 @@ class CreateEditGatePassPageView
                                 isLoading: data?.status == Status.loading,
                                 title: "Submit",
                                 onPressed: () {
+                                  FocusScope.of(context).unfocus();
                                   if (model.formKey.currentState!.validate()) {
                                     model.createGatePass();
                                   }

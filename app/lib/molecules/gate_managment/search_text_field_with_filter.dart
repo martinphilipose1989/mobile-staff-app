@@ -28,7 +28,10 @@ class SearchTextFieldWithFilter extends StatelessWidget {
       children: [
         Flexible(
           child: CommonSearchTextField(
-              controller: model.searchController, onChanged: onChanged),
+              hintText: hintText,
+              focusNode: model.focusNode,
+              controller: model.searchController,
+              onChanged: onChanged),
         ),
         Container(
           height: 56.h,

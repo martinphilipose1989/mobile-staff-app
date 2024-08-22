@@ -37,6 +37,7 @@ class VisitorListPageState
 
   @override
   void onModelReady(VisitorListPageViewModel model) {
+    model.focusNode.addListener(model.onFocusChange);
     model.fetchVisitorList();
   }
 }

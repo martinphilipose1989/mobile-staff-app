@@ -59,6 +59,18 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   Stream<bool> get isButtonDisableStream => isButtonDisableSubject.stream;
 
+  FocusNode focusNode = FocusNode();
+
+  BehaviorSubject<String> hinText = BehaviorSubject.seeded("Search Visitor");
+
+  void onFocusChange() {
+    if (focusNode.hasFocus) {
+      hinText.add("Search by Name,Email,Contact,Point of Contact...");
+    } else {
+      hinText.add("Search Visitor");
+    }
+  }
+
   VisitorListPageViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required GetVisitorListUsecase getVisitorListUsecase,
@@ -75,10 +87,10 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   void onVisitStatusSelect({required String selectStatus}) {
     selectedStatus.add(selectStatus);
-    refreshVisitorList(); // Trigger list refresh on status change
+    refreshVisitorList();
   }
 
-  void refreshVisitorList() {
+  Future<void> refreshVisitorList() async {
     _pageSubject.add(1);
     _visitorListSubject.add(Resource.success(data: []));
     hasMorePagesSubject.add(true);
@@ -89,14 +101,13 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   void loadMoreVisitorList() {
     if (_visitorListSubject.value.data?.isNotEmpty ?? false) {
-      _throttlingController.add(null); // Trigger the throttle stream
+      _throttlingController.add(null);
     }
   }
 
   final StreamController<void> _throttlingController = StreamController<void>();
 
   void _setupThrottling() {
-    // Listen to the throttling stream once
     _throttlingController.stream.throttleTime(_throttleDuration).listen((_) {
       if (!_loadingSubject.value && hasMorePagesSubject.value) {
         _pageSubject.add(_pageSubject.value + 1);
@@ -150,6 +161,12 @@ class VisitorListPageViewModel extends BasePageViewModel {
   }
 
   void _handleVisitorListResponse(Resource<VisitorListResponseModel> result) {
+    if (result.status == Status.error) {
+      _visitorListSubject
+          .add(Resource.error(data: null, error: result.dealSafeAppError));
+      return;
+    }
+
     final isNextPage = result.data?.visitorListDataModel?.isNextPage ?? false;
     final visitors = result.data?.visitorListDataModel?.visitors ?? [];
 
