@@ -137,7 +137,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final TextEditingController pointOfContactController =
       TextEditingController();
   final TextEditingController guestCountController =
-      TextEditingController(text: '0');
+      TextEditingController(text: '1');
   final TextEditingController visitDateTimeController = TextEditingController(
       text: DateTime.now().toIso8601String().dateFormatToDDMMYYYhhmma());
 
