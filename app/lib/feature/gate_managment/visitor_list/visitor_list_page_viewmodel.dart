@@ -145,7 +145,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
                 FilterRequestModel(
                     column: "visitor_type_id",
                     operation: "equals",
-                    search: selectedTypeOfVisitor.value)
+                    search: int.parse(selectedTypeOfVisitor.value))
               }
             ]),
       );
