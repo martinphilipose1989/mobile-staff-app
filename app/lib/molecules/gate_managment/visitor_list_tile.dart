@@ -1,4 +1,6 @@
 import 'package:app/molecules/gate_managment/visit_status_widget.dart';
+import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
 
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
@@ -18,10 +20,10 @@ class VisitorListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // navigatorKey.currentState?.pushReplacementNamed(
-        //   RoutePaths.visitorDetailsPage,
-        //   arguments: {'gatePassId': '${visitorDataModel?.id}'},
-        // );
+        navigatorKey.currentState?.pushNamed(
+          RoutePaths.visitorDetailsPage,
+          arguments: {'gatePassId': '${visitorDataModel?.id}'},
+        );
       },
       child: Card(
         margin: REdgeInsets.only(bottom: 16),

@@ -11,6 +11,7 @@ import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/dateformate.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:data/data.dart';
 
@@ -65,7 +66,7 @@ class VisitorDetailsPageView
                             children: [
                               VisitorInfoCard(
                                 visitorName:
-                                    visitorData?.data?.visitorName ?? '',
+                                    "${visitorData?.data?.visitorName ?? ''} (#${visitorData?.data?.visitorId ?? visitorData?.data?.gatePassNumber})",
                                 issuedOn: visitorData?.data?.issuedDate ?? '',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,
@@ -99,7 +100,8 @@ class VisitorDetailsPageView
                               SizedBox(height: 16.h),
                               VisitorDetailsRow(
                                 title1: "IN Date& Time",
-                                value1: visitorData?.data?.incomingTime ?? '',
+                                value1:
+                                    "${visitorData?.data?.issuedDate?.dateFormatToddMMMyyyhmma()}",
                                 title2: "Coming From",
                                 value2: visitorData?.data?.comingFrom ?? '',
                               ),

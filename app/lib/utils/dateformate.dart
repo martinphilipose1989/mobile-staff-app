@@ -29,6 +29,15 @@ extension DateFormatExtension on String {
     }
   }
 
+  String dateFormatToddMMMyyyhmma() {
+    try {
+      DateTime dateTime = DateTime.parse(this);
+      return DateFormat('dd MMM yyyy h:mm a').format(dateTime);
+    } catch (e) {
+      return '';
+    }
+  }
+
   String dateFormattoddMMMyyyy() {
     try {
       DateTime dateTime = DateTime.parse(this);
