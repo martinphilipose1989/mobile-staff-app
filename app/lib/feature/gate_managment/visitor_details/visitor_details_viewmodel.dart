@@ -32,9 +32,7 @@ class VisitorDetailsViewModel extends BasePageViewModel {
 
         if (Status.success == result.status) {
           _visitorDetailsResponse.add(
-            Resource.success(
-              data: result.data?.data,
-            ),
+            Resource.success(data: result.data?.data),
           );
         } else if (Status.error == result.status) {
           _visitorDetailsResponse

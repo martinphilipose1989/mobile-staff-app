@@ -71,7 +71,7 @@ class VisitorListTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 0.6.sw,
+                            width: 0.57.sw,
                             child: Text.rich(
                               TextSpan(
                                 children: [
@@ -117,9 +117,20 @@ class VisitorListTile extends StatelessWidget {
                       )
                     ],
                   ),
-                  VisitStatusWidget(
-                      visitStatus:
-                          visitorDataModel?.visitStatus?.toLowerCase() ?? "")
+                  Column(
+                    children: [
+                      Text(
+                        "${visitorDataModel?.issuedDate?.dateFormattoddMMMyyyy()}",
+                        style: AppTypography.smallCaption
+                            .copyWith(color: AppColors.textGray),
+                      ),
+                      SizedBox(height: 12.h),
+                      VisitStatusWidget(
+                          visitStatus:
+                              visitorDataModel?.visitStatus?.toLowerCase() ??
+                                  ""),
+                    ],
+                  )
                 ],
               ),
               Divider(height: 12.h, color: AppColors.dividerColor),
@@ -153,15 +164,15 @@ class VisitorListTile extends StatelessWidget {
                         text:
                             visitorDataModel?.visitStatus?.toLowerCase() == "in"
                                 ? "IN:"
-                                : "OUT:",
+                                : "Out:",
                         style: AppTypography.smallCaption
                             .copyWith(letterSpacing: 0.25),
                       ),
                       TextSpan(
                         text: visitorDataModel?.visitStatus?.toLowerCase() ==
                                 "in"
-                            ? "${visitorDataModel?.issuedDate?.dateFormattoddMMMyyyy()} ${visitorDataModel?.incomingTime}"
-                            : "${visitorDataModel?.issuedDate?.dateFormattoddMMMyyyy()} ${visitorDataModel?.incomingTime} - ${visitorDataModel?.outgoingTime}",
+                            ? "${visitorDataModel?.incomingTime?.convertTo12HourFormat()}"
+                            : "${visitorDataModel?.outgoingTime?.convertTo12HourFormat()}",
                         style: AppTypography.caption.copyWith(
                             fontSize: 10.sp,
                             color:

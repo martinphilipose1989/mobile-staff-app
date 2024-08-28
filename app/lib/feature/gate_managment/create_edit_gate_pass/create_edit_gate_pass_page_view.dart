@@ -197,8 +197,16 @@ class CreateEditGatePassPageView
                           showAstreik: true,
                           labelText: "Guest Count",
                           controller: model.guestCountController,
+                          validator: (value) {
+                            if (Validator.isEmpty(value!)) {
+                              return "Guest count cannot be empty";
+                            }
+
+                            return null;
+                          },
                           inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
+                            FilteringTextInputFormatter.deny(RegExp(r'^0+')),
+                            FilteringTextInputFormatter.digitsOnly,
                           ],
                           keyboardType: TextInputType.number)
                     ],
