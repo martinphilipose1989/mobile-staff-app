@@ -102,9 +102,7 @@ class VisitorInfoCard extends StatelessWidget {
                 backgroundImage: NetworkImage(
                   avatarImagePath,
                 ),
-                onBackgroundImageError: (error, stackTrace) {
-                  log('Failed to load image: $error');
-                },
+                onBackgroundImageError: (error, stackTrace) {},
               ),
             ),
           ),

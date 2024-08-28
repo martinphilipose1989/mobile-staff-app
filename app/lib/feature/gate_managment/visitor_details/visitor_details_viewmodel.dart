@@ -38,11 +38,8 @@ class VisitorDetailsViewModel extends BasePageViewModel {
               data: result.data?.data,
             ),
           );
-          log("getVisitorDetails $result");
         }
-      }).onError((error) {
-        log("getVisitorDetails $error");
-      });
+      }).onError((error) {});
     }).execute();
   }
 }

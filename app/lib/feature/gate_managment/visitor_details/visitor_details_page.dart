@@ -45,7 +45,6 @@ class VisitorDetailsPageState
 
   @override
   void onModelReady(VisitorDetailsViewModel model) {
-    log("gatePassId ${widget.gatePassId}");
     model.getVisitorDetails(gatePassId: widget.gatePassId);
     super.onModelReady(model);
   }

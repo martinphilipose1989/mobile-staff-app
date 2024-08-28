@@ -213,13 +213,11 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
     try {
       final result = await parse(phoneNumber);
       final validPhoneNumber = PhoneNumberDetails.fromMap(result);
-      log("validPhoneNumber $validPhoneNumber");
+
       contactNumberController.text = validPhoneNumber.nationalNumber;
       countryDialCode.add("+${validPhoneNumber.countryCode}");
       return validPhoneNumber.countryCode.isNotEmpty ? true : false;
-    } on PlatformException catch (e) {
-      log("$e");
-    }
+    } on PlatformException catch (_) {}
   }
 
   // Constructor
