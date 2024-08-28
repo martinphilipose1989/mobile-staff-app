@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'dart:typed_data';
 
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
@@ -10,6 +11,7 @@ import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
 import 'package:app/utils/dateformate.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
@@ -23,10 +25,11 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class VisitorDetailsPageView
     extends BasePageViewWidget<VisitorDetailsViewModel> {
+  final String gatePassId;
   // ignore: use_super_parameters
-  VisitorDetailsPageView(
-    ProviderBase<VisitorDetailsViewModel> model,
-  ) : super(model);
+  VisitorDetailsPageView(ProviderBase<VisitorDetailsViewModel> model,
+      {required this.gatePassId})
+      : super(model);
 
   @override
   Widget build(
@@ -40,6 +43,23 @@ class VisitorDetailsPageView
           return DataStatusWidget(
               status: visitorData?.status ?? Status.none,
               loadingWidget: () => const VisitorDetailsPageShimmer(),
+              errorWidget: () => Center(
+                    child: NoDataFoundWidget(
+                      title: visitorData?.dealSafeAppError?.error.message
+                                  .contains("internet") ??
+                              false
+                          ? "No Internet Connection"
+                          : "Something Went Wrong",
+                      subtitle: visitorData?.dealSafeAppError?.error.message
+                                  .contains("internet") ??
+                              false
+                          ? "It seems you're offline. Please check your internet connection and try again."
+                          : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+                      onPressed: () {
+                        model.getVisitorDetails(gatePassId: gatePassId);
+                      },
+                    ),
+                  ),
               successWidget: () {
                 Uint8List qrImageBytes = Uint8List(0);
                 if (visitorData != null &&
@@ -66,7 +86,7 @@ class VisitorDetailsPageView
                             children: [
                               VisitorInfoCard(
                                 visitorName:
-                                    "${visitorData?.data?.visitorName ?? ''} (#${visitorData?.data?.visitorId ?? visitorData?.data?.gatePassNumber})",
+                                    "${visitorData?.data?.visitorName ?? ''}  (#${visitorData?.data?.gatePassNumber ?? "N/A"})",
                                 issuedOn: visitorData?.data?.issuedDate ?? '',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,

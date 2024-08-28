@@ -63,4 +63,9 @@ class VisitorDataModel {
       this.visitorType = "Parent",
       this.guestCount,
       this.gatePassNumber});
+
+  @override
+  String toString() {
+    return 'VisitorDataModel(id: $id, pointOfContact: $pointOfContact, issuedDate: $issuedDate, incomingTime: $incomingTime, outgoingTime: $outgoingTime, visitStatus: $visitStatus, visitorId: $visitorId, visitorName: $visitorName, visitorMobile: $visitorMobile, visitorEmail: $visitorEmail, visitorProfileImage: $visitorProfileImage, purposeOfVisit: $purposeOfVisit, purposeOfVisitId: $purposeOfVisitId, comingFrom: $comingFrom, qrCode: $qrCode, visitorProfileImageImageUrl: $visitorProfileImageImageUrl, visitorProfileImageFilePath: $visitorProfileImageFilePath, visitorType: $visitorType, guestCount: $guestCount, gatePassNumber: $gatePassNumber)';
+  }
 }

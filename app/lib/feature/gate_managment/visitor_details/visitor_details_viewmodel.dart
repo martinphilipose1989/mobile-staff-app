@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/model/resource.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
@@ -38,6 +36,9 @@ class VisitorDetailsViewModel extends BasePageViewModel {
               data: result.data?.data,
             ),
           );
+        } else if (Status.error == result.status) {
+          _visitorDetailsResponse
+              .add(Resource.error(error: result.dealSafeAppError));
         }
       }).onError((error) {});
     }).execute();

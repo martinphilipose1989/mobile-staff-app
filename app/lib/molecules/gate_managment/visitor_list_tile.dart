@@ -70,25 +70,28 @@ class VisitorListTile extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "${visitorDataModel?.visitorName}\t",
-                                  style: AppTypography.caption.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.textDark,
-                                      fontSize: 12.sp),
-                                ),
-                                TextSpan(
-                                  text:
-                                      "(Visitor: ID#${visitorDataModel?.visitorId ?? visitorDataModel?.gatePassNumber})",
-                                  style: AppTypography.overline.copyWith(
-                                      fontSize: 10.sp,
-                                      color: AppColors.textGray,
-                                      letterSpacing: 0.25),
-                                )
-                              ],
+                          SizedBox(
+                            width: 0.6.sw,
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "${visitorDataModel?.visitorName}\t",
+                                    style: AppTypography.caption.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.textDark,
+                                        fontSize: 12.sp),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        "(Visitor: ID#${visitorDataModel?.gatePassNumber ?? "N/A"})",
+                                    style: AppTypography.overline.copyWith(
+                                        fontSize: 10.sp,
+                                        color: AppColors.textGray,
+                                        letterSpacing: 0.25),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           CommonText(
@@ -183,7 +186,7 @@ class VisitorListTile extends StatelessWidget {
                         : AppColors.dividerColor,
                     borderRadius: BorderRadius.circular(6.r)),
                 child: Text(
-                    "Purpose Of Visit:${visitorDataModel?.purposeOfVisit}",
+                    "Purpose Of Visit:${visitorDataModel?.purposeOfVisit ?? "N/A"}",
                     style: AppTypography.caption.copyWith(
                         color:
                             visitorDataModel?.visitStatus?.toLowerCase() == "in"

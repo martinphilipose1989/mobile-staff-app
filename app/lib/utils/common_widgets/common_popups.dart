@@ -118,8 +118,8 @@ class CommonPopups {
                     },
                     title: 'Ok',
                     backgroundColor: Theme.of(context).colorScheme.primary,
-                    titleTextStyle: AppTypography.subtitle2.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary),
+                    titleTextStyle:
+                        AppTypography.subtitle2.copyWith(color: Colors.white),
                   ))
             ],
           ),
