@@ -15,11 +15,7 @@ class UploadFileResponseEntity
   @JsonKey(name: "message")
   String? message;
 
-  UploadFileResponseEntity({
-    this.status,
-    this.data,
-    this.message,
-  });
+  UploadFileResponseEntity({this.status, this.data, this.message});
 
   factory UploadFileResponseEntity.fromJson(Map<String, dynamic> json) =>
       _$UploadFileResponseEntityFromJson(json);
@@ -48,10 +44,7 @@ class UploadResponseDataEntity
   @JsonKey(name: "url")
   String? url;
 
-  UploadResponseDataEntity({
-    this.filePath,
-    this.url,
-  });
+  UploadResponseDataEntity({this.filePath, this.url});
 
   factory UploadResponseDataEntity.fromJson(Map<String, dynamic> json) =>
       _$UploadResponseDataEntityFromJson(json);

@@ -16,6 +16,7 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 class GatePassQrScannerViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final PatchVisitorDetailsUsecase _getVisitorDetailsUsecase;
+  final GetVisitorDetailsUsecase _getGatePassDetailsUsecase;
 
   final PublishSubject<Resource<VisitorDataModel>> _visitorDetails =
       PublishSubject();
@@ -32,13 +33,15 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
   bool _hasShownError = false;
   final Set<String> scannedCodes = <String>{};
 
-  GatePassQrScannerViewModel({
-    required FlutterExceptionHandlerBinder exceptionHandlerBinder,
-    required PatchVisitorDetailsUsecase getVisitorDetailsUsecase,
-    required FlutterToastErrorPresenter flutterToastErrorPresenter,
-  })  : _exceptionHandlerBinder = exceptionHandlerBinder,
+  GatePassQrScannerViewModel(
+      {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
+      required PatchVisitorDetailsUsecase getVisitorDetailsUsecase,
+      required FlutterToastErrorPresenter flutterToastErrorPresenter,
+      required GetVisitorDetailsUsecase getGatePassDetailsUsecase})
+      : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorDetailsUsecase = getVisitorDetailsUsecase,
-        _flutterToastErrorPresenter = flutterToastErrorPresenter;
+        _flutterToastErrorPresenter = flutterToastErrorPresenter,
+        _getGatePassDetailsUsecase = getGatePassDetailsUsecase;
 
   final MobileScannerController controller = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
@@ -48,17 +51,32 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
 
   void listenToScannerResult() {
     scannerResult.listen((result) async {
+      final gatePassUri = Uri.parse(result);
+
+      // Extract the 'type' query parameter
+      final type = gatePassUri.queryParameters['type'];
+
       // Handle the scanned result
       if (result.isNotEmpty) {
-        // Check if this QR code has already been scanned
+        // Extract the gatepassid from the result
         String gatepassid = result.split('/').last;
+
+        // Check if this QR code has already been scanned
         if (!scannedCodes.contains(gatepassid)) {
           _hasShownError = false;
           log('Scanned QR $gatepassid');
 
           // Add the gatepassid to the set to prevent future duplicates
           scannedCodes.add(gatepassid);
-          patchVisitorDetails(gatepassid);
+
+          // Check if 'type' exists in the query parameters
+          if (type != null && type.isNotEmpty) {
+            // Call the function that handles this specific type case
+            getVisitorDetails(gatePassId: gatepassid);
+          } else {
+            // Normal case, no 'type' key in the query parameters
+            patchVisitorDetails(gatepassid);
+          }
         } else {
           log('Duplicate QR code $gatepassid ignored');
         }
@@ -68,6 +86,26 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
     });
   }
 
+  void getVisitorDetails({required String gatePassId}) {
+    _exceptionHandlerBinder.handle(block: () {
+      final params = GetVisitorDetailsUsecaseParams(gatepassId: gatePassId);
+
+      RequestManager<VisitorDetailsResponseModel>(params,
+              createCall: () =>
+                  _getGatePassDetailsUsecase.execute(params: params))
+          .asFlow()
+          .listen((data) {
+        if (data.status == Status.success) {
+          if (data.data?.data?.incomingTime == null) {
+            // Navigate to create gate pass page with gate pass ID on submit call /gate-management/gatepass/{gatepassId}
+          } else {
+            // CALL /gate-management/gatepass/{gatepassId}
+          }
+        }
+      }, onError: (error) {});
+    }).execute();
+  }
+
 //scan QR and update outing time
   void patchVisitorDetails(String gatepassId) {
     _exceptionHandlerBinder.handle(block: () {
@@ -75,7 +113,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           PatchVisitorDetailsUsecaseParams(
         gatepassId: gatepassId,
         outgoingTime: {
-          "outgoing_time": DateTime.now().dateFormatohhmmss(),
+          "outgoing_time": DateTime.now().dateFormatoHHmmss(),
         },
       );
       RequestManager<VisitorDetailsResponseModel>(

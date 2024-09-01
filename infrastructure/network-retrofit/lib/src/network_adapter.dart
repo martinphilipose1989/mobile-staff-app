@@ -149,4 +149,13 @@ class NetworkAdapter implements NetworkPort {
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
+
+  @override
+  Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
+      {required String gatepassID}) async {
+    final response =
+        await safeApiCall(apiService.patchParentGatePass(gatepassID));
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
 }

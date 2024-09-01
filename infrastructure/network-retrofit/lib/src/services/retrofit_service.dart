@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/parent_gatepass_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_details_response_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
@@ -32,7 +33,7 @@ abstract class RetrofitService {
     @Path("gatepassId") String getpassID,
   );
 
-  @PATCH(NetworkProperties.getVisitorDetails)
+  @PATCH(NetworkProperties.signOutVisitor)
   Future<HttpResponse<VisitorDetailsResponseEntity>> patchVisitorDetails(
     @Path("gatepassId") String getpassID,
     @Body() Map<String, dynamic> outgoingTime,
@@ -64,4 +65,8 @@ abstract class RetrofitService {
       @Query('pageSize') int pageSize,
       @Query('search') String searchQuery,
       CancelToken? cancelToken);
+
+  @GET(NetworkProperties.getVisitorDetails)
+  Future<HttpResponse<ParentGatepassResponseEntity>> patchParentGatePass(
+      @Path("gatepassId") String gatepassID);
 }

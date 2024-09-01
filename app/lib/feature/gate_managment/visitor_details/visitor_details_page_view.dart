@@ -119,9 +119,9 @@ class VisitorDetailsPageView
                               ),
                               SizedBox(height: 16.h),
                               VisitorDetailsRow(
-                                title1: "IN Date& Time",
+                                title1: "IN Date & Time",
                                 value1:
-                                    "${visitorData?.data?.issuedDate?.dateFormatToddMMMyyyhmma()}",
+                                    "${visitorData?.data?.issuedDate?.dateFormattoddMMMyyyy()} ${visitorData?.data?.incomingTime?.convertTo12HourFormat()}",
                                 title2: "Coming From",
                                 value2: visitorData?.data?.comingFrom ?? '',
                               ),

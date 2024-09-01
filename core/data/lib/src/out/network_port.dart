@@ -31,4 +31,7 @@ abstract class NetworkPort {
       {required int pageNumber,
       required int pageSize,
       required String searchQuery});
+
+  Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
+      {required String gatepassID});
 }

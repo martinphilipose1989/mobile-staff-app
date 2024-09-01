@@ -1,9 +1,9 @@
 import 'package:intl/intl.dart';
 
 extension DateFormate on DateTime {
-  String dateFormatohhmmss() {
+  String dateFormatoHHmmss() {
     try {
-      return DateFormat('hh:mm:ss').format(this);
+      return DateFormat('HH:mm:ss').format(this);
     } catch (e) {
       return '';
     }

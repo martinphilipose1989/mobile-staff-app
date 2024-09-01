@@ -73,4 +73,10 @@ class VisitorRepositoryImpl extends VisitorRepository {
     return networkPort.searchVisitorList(
         pageNumber: pageNumber, pageSize: pageSize, searchQuery: searchQuery);
   }
+
+  @override
+  Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
+      {required String gatepassID}) {
+    return networkPort.patchParentGatePass(gatepassID: gatepassID);
+  }
 }

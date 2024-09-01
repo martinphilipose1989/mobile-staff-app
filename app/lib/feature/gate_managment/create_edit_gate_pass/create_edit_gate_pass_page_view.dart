@@ -81,6 +81,8 @@ class CreateEditGatePassPageView
                               validator: (value) {
                                 if (Validator.isEmpty(value!)) {
                                   return "Contact number cannot be empty";
+                                } else if (value.length < 10) {
+                                  return "Contact number cannot be less than 10 digits";
                                 }
                                 return null;
                               },
@@ -189,6 +191,7 @@ class CreateEditGatePassPageView
                           if (Validator.isEmpty(value!)) {
                             return "Coming from cannot be empty";
                           }
+
                           return null;
                         },
                       ),
