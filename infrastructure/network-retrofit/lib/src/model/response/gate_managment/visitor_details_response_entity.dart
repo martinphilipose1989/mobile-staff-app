@@ -70,6 +70,7 @@ class VisitorDetailsResponseEntity
         message: message,
         data: VisitorDataModel(
             id: data?.id ?? '',
+            issuedTime: data?.issuedTime ?? '',
             gatePassNumber: data?.gatePassNumber ?? '',
             incomingTime: data?.incomingTime ?? '',
             issuedDate: data?.issuedDate ?? '',

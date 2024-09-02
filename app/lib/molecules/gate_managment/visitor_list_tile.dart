@@ -171,11 +171,9 @@ class VisitorListTile extends StatelessWidget {
                       TextSpan(
                         text:
                             visitorDataModel?.visitStatus?.toLowerCase() == "in"
-                                ? visitorDataModel?.incomingTime
-                                        ?.convertTo12HourFormat() ??
+                                ? visitorDataModel?.incomingTime ??
                                     "Not arrived yet"
-                                : visitorDataModel?.outgoingTime
-                                        ?.convertTo12HourFormat() ??
+                                : visitorDataModel?.outgoingTime ??
                                     "Not arrived yet",
                         style: AppTypography.caption.copyWith(
                             fontSize: 10.sp,

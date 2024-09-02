@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:app/feature/gate_keeper_dashboard/dashboard_page.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
+import 'package:app/feature/gate_managment/visitor_details/qr_details.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_page.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,6 +39,12 @@ class AppRouter {
             name: RoutePaths.createEditGatePassPage,
             arguments: settings.arguments,
           ),
+        );
+
+      case RoutePaths.qrCodeDetailsPage:
+        final arguments = settings.arguments as Uint8List;
+        return CupertinoPageRoute(
+          builder: (context) => QrDetailsPage(qrImageBytes: arguments),
         );
 
       default:
