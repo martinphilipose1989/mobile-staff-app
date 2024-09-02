@@ -21,17 +21,19 @@ class CreateGatePassModel {
 
   String? profileImage;
 
-  CreateGatePassModel({
-    this.name,
-    this.mobile,
-    this.email,
-    this.visitorTypeId,
-    this.companyName,
-    this.pointOfContact,
-    this.otherPointOfContact,
-    this.purposeOfVisitId,
-    this.comingFrom,
-    this.guestCount,
-    this.profileImage,
-  });
+  String? vehicleNumber;
+
+  CreateGatePassModel(
+      {this.name,
+      this.mobile,
+      this.email,
+      this.visitorTypeId,
+      this.companyName,
+      this.pointOfContact,
+      this.otherPointOfContact,
+      this.purposeOfVisitId,
+      this.comingFrom,
+      this.guestCount,
+      this.profileImage,
+      this.vehicleNumber});
 }

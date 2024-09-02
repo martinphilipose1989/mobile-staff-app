@@ -120,7 +120,7 @@ class VisitorListTile extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        "${visitorDataModel?.issuedDate?.dateFormattoddMMMyyyy()}",
+                        "${visitorDataModel?.issuedDate?.dateFormat()}",
                         style: AppTypography.smallCaption
                             .copyWith(color: AppColors.textGray),
                       ),
@@ -144,7 +144,7 @@ class VisitorListTile extends StatelessWidget {
                             .copyWith(letterSpacing: 0.25),
                       ),
                       TextSpan(
-                        text: "${visitorDataModel?.pointOfContact}",
+                        text: visitorDataModel?.pointOfContact ?? "",
                         style: AppTypography.caption.copyWith(
                             fontSize: 10.sp,
                             color:
@@ -169,10 +169,14 @@ class VisitorListTile extends StatelessWidget {
                             .copyWith(letterSpacing: 0.25),
                       ),
                       TextSpan(
-                        text: visitorDataModel?.visitStatus?.toLowerCase() ==
-                                "in"
-                            ? "${visitorDataModel?.incomingTime?.convertTo12HourFormat()}"
-                            : "${visitorDataModel?.outgoingTime?.convertTo12HourFormat()}",
+                        text:
+                            visitorDataModel?.visitStatus?.toLowerCase() == "in"
+                                ? visitorDataModel?.incomingTime
+                                        ?.convertTo12HourFormat() ??
+                                    "Not arrived yet"
+                                : visitorDataModel?.outgoingTime
+                                        ?.convertTo12HourFormat() ??
+                                    "Not arrived yet",
                         style: AppTypography.caption.copyWith(
                             fontSize: 10.sp,
                             color:

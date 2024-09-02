@@ -7,6 +7,7 @@ import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -39,7 +40,7 @@ class DashboardBottomNavigation extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const GatePassQrScannerPage())).then((_) {
+                            const GatePassQrScannerPage())).then((val) {
                   model.selectedIndex.value = 0;
                 });
               } else if (index == 2) {
@@ -49,7 +50,7 @@ class DashboardBottomNavigation extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const CreateEditGatePassPage(),
                   ),
-                ).then((_) {
+                ).then((val) {
                   model.selectedIndex.value = 0;
                 });
               }

@@ -17,17 +17,18 @@ class VisitorPopulateDataModel {
   String? createdAt;
   String? updatedAt;
   int? v;
+  String? profileImageUrl;
 
-  VisitorPopulateDataModel({
-    this.id,
-    this.visitorId,
-    this.name,
-    this.mobile,
-    this.email,
-    this.globalId,
-    this.profileImage,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
-  });
+  VisitorPopulateDataModel(
+      {this.id,
+      this.visitorId,
+      this.name,
+      this.mobile,
+      this.email,
+      this.globalId,
+      this.profileImage,
+      this.createdAt,
+      this.updatedAt,
+      this.v,
+      this.profileImageUrl});
 }

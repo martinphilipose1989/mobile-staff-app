@@ -42,6 +42,8 @@ class VisitorDataModel {
 
   String? gatePassNumber;
 
+  String? vehicleNumber;
+
   VisitorDataModel(
       {this.id,
       this.pointOfContact,
@@ -62,7 +64,8 @@ class VisitorDataModel {
       this.visitorProfileImageFilePath,
       this.visitorType = "Parent",
       this.guestCount,
-      this.gatePassNumber});
+      this.gatePassNumber,
+      this.vehicleNumber});
 
   @override
   String toString() {

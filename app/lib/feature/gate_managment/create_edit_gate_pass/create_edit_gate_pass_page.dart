@@ -31,7 +31,7 @@ class CreateEditGatePassPageState extends AppBasePageState<
     CreateEditGatePassViewModel, CreateEditGatePassPage> {
   @override
   Widget buildView(BuildContext context, CreateEditGatePassViewModel model) {
-    return CreateEditGatePassPageView(provideBase());
+    return CreateEditGatePassPageView(provideBase(), widget.arguments);
   }
 
   @override

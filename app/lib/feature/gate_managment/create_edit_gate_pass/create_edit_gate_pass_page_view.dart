@@ -1,3 +1,4 @@
+import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
 
 import 'package:app/model/resource.dart';
@@ -23,8 +24,10 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class CreateEditGatePassPageView
     extends BasePageViewWidget<CreateEditGatePassViewModel> {
+  final GatePassArguments? arguments;
   // ignore: use_super_parameters
-  CreateEditGatePassPageView(ProviderBase<CreateEditGatePassViewModel> model)
+  CreateEditGatePassPageView(
+      ProviderBase<CreateEditGatePassViewModel> model, this.arguments)
       : super(model);
 
   @override
@@ -50,6 +53,9 @@ class CreateEditGatePassPageView
                         bottomPadding: 16,
                         showAstreik: true,
                         labelText: "Visitor Name",
+                        readOnly:
+                            arguments?.parentData.visitorName?.isNotEmpty ??
+                                false,
                         controller: model.visitorNameController,
                         keyboardType: TextInputType.name,
                         inputFormatters: [
@@ -92,6 +98,9 @@ class CreateEditGatePassPageView
                         bottomPadding: 16,
                         showAstreik: true,
                         labelText: "Email ID",
+                        readOnly:
+                            arguments?.parentData.visitorEmail?.isNotEmpty ??
+                                false,
                         controller: model.emailIDController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -211,7 +220,17 @@ class CreateEditGatePassPageView
                             FilteringTextInputFormatter.deny(RegExp(r'^0+')),
                             FilteringTextInputFormatter.digitsOnly,
                           ],
-                          keyboardType: TextInputType.number)
+                          keyboardType: TextInputType.number),
+                      CommonTextFormField(
+                          bottomPadding: 16,
+                          showAstreik: false,
+                          labelText: "Vehicle Number",
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^[a-zA-Z0-9\s]+$')),
+                          ],
+                          controller: model.vehicleController),
                     ],
                   ),
                 ),
@@ -235,7 +254,7 @@ class CreateEditGatePassPageView
                         initialData: Resource.none(),
                         dataBuilder: (context, data) {
                           return CommonPrimaryElevatedButton(
-                            isLoading: data?.status == Status.loading,
+                            isLoading: data?.data ?? false,
                             title: "Submit",
                             onPressed: () {
                               FocusScope.of(context).unfocus();

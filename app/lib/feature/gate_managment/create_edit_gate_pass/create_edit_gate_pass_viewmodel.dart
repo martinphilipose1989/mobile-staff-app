@@ -137,6 +137,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final TextEditingController comingFromController = TextEditingController();
   final TextEditingController pointOfContactController =
       TextEditingController();
+  final TextEditingController vehicleController = TextEditingController();
   final TextEditingController guestCountController =
       TextEditingController(text: '1');
   final TextEditingController visitDateTimeController = TextEditingController(
@@ -147,16 +148,16 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   void createGatePass() async {
     final params = CreateGatepassUsecaseParams(
       requestModel: CreateGatePassModel(
-        name: visitorNameController.text,
-        mobile: "${countryDialCode.value}${contactNumberController.text}",
-        email: emailIDController.text,
-        visitorTypeId: typeOfVisitorId,
-        purposeOfVisitId: purposOfVisitId,
-        comingFrom: comingFromController.text,
-        pointOfContact: pointOfContactController.text,
-        profileImage: _uploadedFileResponse.valueOrNull?.data?.data?.filePath,
-        guestCount: int.parse(guestCountController.text),
-      ),
+          name: visitorNameController.text,
+          mobile: "${countryDialCode.value}${contactNumberController.text}",
+          email: emailIDController.text,
+          visitorTypeId: typeOfVisitorId,
+          purposeOfVisitId: purposOfVisitId,
+          comingFrom: comingFromController.text,
+          pointOfContact: pointOfContactController.text,
+          profileImage: _uploadedFileResponse.valueOrNull?.data?.data?.filePath,
+          guestCount: int.parse(guestCountController.text),
+          vehicleNumber: vehicleController.text),
     );
 
     RequestManager(params,
@@ -168,7 +169,8 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       if (data.status == Status.success) {
         loadingSubject.add(Resource.loading(data: false));
         CommonPopups().showSuccess(
-            navigatorKey.currentContext!, "Gate created successfuly", (value) {
+            navigatorKey.currentContext!, "Gate pass created successfuly",
+            (value) {
           navigatorKey.currentState?.pushReplacementNamed(
             RoutePaths.visitorDetailsPage,
             arguments: {'gatePassId': '${data.data?.data?.id}'},
@@ -181,7 +183,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             navigatorKey.currentContext!,
             "${data.dealSafeAppError?.error.message}");
       }
-    }).onError((error) {});
+    }).onError((error) {
+      loadingSubject.add(Resource.loading(data: false));
+    });
   }
 
   void populateVisitorData() {
@@ -202,8 +206,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             Resource.success(
               data: UploadFileResponseModel(
                 status: 200,
-                data:
-                    UploadFileResponseData(url: data.data?.data?.profileImage),
+                data: UploadFileResponseData(
+                    filePath: data.data?.data?.profileImage,
+                    url: data.data?.data?.profileImageUrl),
               ),
             ),
           );
@@ -255,7 +260,8 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         loadingSubject.add(Resource.loading(data: false));
 
         CommonPopups().showSuccess(
-            navigatorKey.currentContext!, "Gate created successfuly", (value) {
+            navigatorKey.currentContext!, "Gate pass created successfuly",
+            (value) {
           navigatorKey.currentState?.pushReplacementNamed(
             RoutePaths.visitorDetailsPage,
             arguments: {
@@ -270,7 +276,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             navigatorKey.currentContext!,
             "${data.dealSafeAppError?.error.message}");
       }
-    }).onError((error) {});
+    }).onError((error) {
+      loadingSubject.add(Resource.loading(data: false));
+    });
   }
 
   final BehaviorSubject<Resource<bool>> loadingSubject =

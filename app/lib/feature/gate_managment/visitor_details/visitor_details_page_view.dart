@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'dart:typed_data';
 
+import 'package:app/di/states/viewmodels.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_row.dart';
@@ -121,7 +122,7 @@ class VisitorDetailsPageView
                               VisitorDetailsRow(
                                 title1: "IN Date & Time",
                                 value1:
-                                    "${visitorData?.data?.issuedDate?.dateFormattoddMMMyyyy()} ${visitorData?.data?.incomingTime?.convertTo12HourFormat()}",
+                                    "${visitorData?.data?.issuedDate?.dateFormat()} ${visitorData?.data?.incomingTime?.convertTo12HourFormat()}",
                                 title2: "Coming From",
                                 value2: visitorData?.data?.comingFrom ?? '',
                               ),
@@ -174,6 +175,9 @@ class VisitorDetailsPageView
                           title: "Close",
                           width: MediaQuery.of(context).size.width,
                           onPressed: () {
+                            ProviderScope.containerOf(context)
+                                .read(visitorListPageModelProvider)
+                                .fetchVisitorList();
                             Navigator.pop(context);
                           }),
                     )

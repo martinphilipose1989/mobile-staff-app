@@ -116,7 +116,8 @@ class CommonPopups {
                       Navigator.pop(context);
                       onChanged(true);
                     },
-                    title: 'Ok',
+                    title: 'OK',
+                    foregroundColor: Colors.white,
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     titleTextStyle:
                         AppTypography.subtitle2.copyWith(color: Colors.white),

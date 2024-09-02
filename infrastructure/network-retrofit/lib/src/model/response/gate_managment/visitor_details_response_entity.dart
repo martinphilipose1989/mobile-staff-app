@@ -90,6 +90,7 @@ class VisitorDetailsResponseEntity
             visitorProfileImageImageUrl:
                 data?.visitorProfileImageImageUrl ?? '',
             visitorType: data?.visitorType ?? '',
-            guestCount: data?.guestCount));
+            guestCount: data?.guestCount,
+            vehicleNumber: data?.vehicleNumber));
   }
 }

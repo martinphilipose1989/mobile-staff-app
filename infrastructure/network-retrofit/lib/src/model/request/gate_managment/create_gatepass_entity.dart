@@ -41,20 +41,22 @@ class CreateGatePassRequestEntity
   int? guestCount;
   @JsonKey(name: "profile_image")
   String? profileImage;
+  @JsonKey(name: "vehicle_number")
+  String? vehicleNumber;
 
-  CreateGatePassRequestEntity({
-    this.name,
-    this.mobile,
-    this.email,
-    this.visitorTypeId,
-    this.companyName,
-    this.pointOfContact,
-    this.otherPointOfContact,
-    this.purposeOfVisitId,
-    this.comingFrom,
-    this.guestCount,
-    this.profileImage,
-  });
+  CreateGatePassRequestEntity(
+      {this.name,
+      this.mobile,
+      this.email,
+      this.visitorTypeId,
+      this.companyName,
+      this.pointOfContact,
+      this.otherPointOfContact,
+      this.purposeOfVisitId,
+      this.comingFrom,
+      this.guestCount,
+      this.profileImage,
+      this.vehicleNumber});
 
   factory CreateGatePassRequestEntity.fromJson(Map<String, dynamic> json) =>
       _$CreateGatePassRequestEntityFromJson(json);
@@ -64,6 +66,10 @@ class CreateGatePassRequestEntity
     if (json['company_name'] == null) {
       json.remove('company_name');
     }
+    if (json['vehicle_number'] == null) {
+      json.remove('vehicle_number');
+    }
+
     return json;
   }
 

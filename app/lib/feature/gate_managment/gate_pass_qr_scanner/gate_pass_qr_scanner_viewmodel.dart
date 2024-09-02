@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
+import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
 
 import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';
@@ -58,6 +59,8 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
     scannerResult.listen((result) async {
       final gatePassUri = Uri.parse(result);
 
+      log("message $gatePassUri");
+
       //  Handle the scanned result
       if (result.isNotEmpty) {
         // Extract the gatepassid from the result
@@ -70,6 +73,8 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
         // Check if this QR code has already been scanned
         if (!scannedCodes.contains(gatepassid)) {
           _hasShownError = false;
+          // Stop the scanner as soon as we get a valid result
+          controller.stop();
           log('Scanned QR $gatepassid');
 
           // Add the gatepassid to the set to prevent future duplicates
@@ -101,20 +106,35 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
                   _getGatePassDetailsUsecase.execute(params: params))
           .asFlow()
           .listen((data) {
+        _visitorDetails.add(Resource.loading(data: null));
         if (data.status == Status.success) {
-          if (data.data?.data?.incomingTime == null) {
-            // Navigate to create gate pass page with gate pass ID on submit call /gate-management/gatepass/{gatepassId}
-            navigatorKey.currentState?.pushReplacementNamed(
-                RoutePaths.createEditGatePassPage,
-                arguments: {
-                  'id': gatePassId,
-                  'type': type,
-                  'parentDetails': data.data?.data
-                });
-          } else {
-            // CALL /gate-management/gatepass/{gatepassId}
+          if (data.data?.data?.incomingTime != null &&
+              (data.data?.data?.incomingTime?.isNotEmpty ?? false)) {
             punchParentOut(gatePassId: gatePassId, parentData: data.data!);
+          } else {
+            WidgetsBinding.instance.addPostFrameCallback((timestamp) {
+              controller.stop();
+              navigatorKey.currentState?.pushReplacementNamed(
+                  RoutePaths.createEditGatePassPage,
+                  arguments: GatePassArguments(
+                      id: gatePassId,
+                      type: type,
+                      parentData: data.data!.data!));
+            });
+            _visitorDetails.add(Resource.success(data: VisitorDataModel()));
+
+            _hasShownError = false;
           }
+        } else if (data.status == Status.error && !_hasShownError) {
+          _visitorDetails.add(Resource.none());
+
+          qrInvalidMessageShow(appError: data.dealSafeAppError);
+
+          _hasShownError = true;
+        } else {
+          _visitorDetails.add(Resource.none());
+
+          log('facing some issue');
         }
       }, onError: (error) {});
     }).execute();
@@ -123,12 +143,13 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
   void punchParentOut(
       {required String gatePassId,
       required VisitorDetailsResponseModel parentData}) {
+    log("message PUNCH PARENT");
     final params = PatchParentGatepassUsecaseParams(
       gatePassId: gatePassId,
       requestBody: ParentGatePassRequestModel(
           comingFrom: parentData.data?.comingFrom,
           companyName: "Ampersand",
-          guestCount: "${parentData.data?.guestCount}",
+          guestCount: "${parentData.data?.guestCount ?? '1'}",
           otherPointOfContact: null,
           pointOfContact: parentData.data?.pointOfContact,
           purposeOfVisitId: parentData.data?.purposeOfVisitId,
@@ -139,10 +160,33 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
                 _patchParentGatepassUsecase.execute(params: params))
         .asFlow()
         .listen(
-          (data) {},
-          onError: (error) {},
-        )
-        .onError((error) {});
+      (data) {
+        _visitorDetails.add(Resource.loading(data: null));
+        if (Status.success == data.status &&
+            (data.data?.data?.signedOut == null ||
+                data.data?.data?.signedOut == true)) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            controller.stop();
+
+            _navigateToHomeScreen.add(true);
+          });
+          _visitorDetails.add(Resource.success(data: VisitorDataModel()));
+
+          _hasShownError = false;
+        } else if (data.status == Status.error && !_hasShownError) {
+          _visitorDetails.add(Resource.none());
+
+          qrInvalidMessageShow(appError: data.dealSafeAppError);
+
+          _hasShownError = true;
+        } else {
+          _visitorDetails.add(Resource.none());
+
+          log('facing some issue');
+        }
+      },
+      onError: (error) {},
+    ).onError((error) {});
   }
 
 //scan QR and update outing time
@@ -177,7 +221,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
         } else if (result.status == Status.error && !_hasShownError) {
           _visitorDetails.add(Resource.none());
 
-          qrInvalidMessageShow();
+          qrInvalidMessageShow(appError: result.dealSafeAppError);
 
           _hasShownError = true;
         } else {
@@ -191,15 +235,15 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
     }).execute();
   }
 
-  qrInvalidMessageShow() {
+  void qrInvalidMessageShow({AppError? appError}) {
     _flutterToastErrorPresenter.show(
       AppError(
         throwable: Exception(),
-        error: ErrorInfo(message: 'QR Code Invalid'),
+        error: ErrorInfo(message: appError?.error.message ?? 'QR Code Invalid'),
         type: ErrorType.qrCodeInvalid,
       ),
       navigatorKey.currentContext!,
-      'QR Code Invalid',
+      appError?.error.message ?? 'QR Code Invalid',
     );
   }
 

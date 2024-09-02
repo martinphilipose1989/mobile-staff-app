@@ -63,19 +63,21 @@ class VisitorPopulateDataEntity
   String? updatedAt;
   @JsonKey(name: "__v")
   int? v;
+  @JsonKey(name: "profile_image_url")
+  String? profileImageUrl;
 
-  VisitorPopulateDataEntity({
-    this.id,
-    this.visitorId,
-    this.name,
-    this.mobile,
-    this.email,
-    this.globalId,
-    this.profileImage,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
-  });
+  VisitorPopulateDataEntity(
+      {this.id,
+      this.visitorId,
+      this.name,
+      this.mobile,
+      this.email,
+      this.globalId,
+      this.profileImage,
+      this.createdAt,
+      this.updatedAt,
+      this.v,
+      this.profileImageUrl});
 
   factory VisitorPopulateDataEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorPopulateDataEntityFromJson(json);
@@ -98,6 +100,7 @@ class VisitorPopulateDataEntity
         globalId: globalId,
         name: name,
         profileImage: profileImage,
+        profileImageUrl: profileImageUrl,
         v: v,
         visitorId: visitorId);
   }

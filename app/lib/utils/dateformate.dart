@@ -47,6 +47,15 @@ extension DateFormatExtension on String {
     }
   }
 
+  String dateFormat() {
+    try {
+      DateTime parsedDate = DateFormat("dd-MM-yyyy").parse(this);
+      return DateFormat('dd MMM yyyy').format(parsedDate);
+    } catch (e) {
+      return "";
+    }
+  }
+
   String convertTo12HourFormat() {
     try {
       DateTime dateTime = DateFormat("HH:mm:ss").parse(this);

@@ -31,9 +31,8 @@ class VisitorDetailsViewModel extends BasePageViewModel {
         _visitorDetailsResponse.add(Resource.loading(data: null));
 
         if (Status.success == result.status) {
-          _visitorDetailsResponse.add(
-            Resource.success(data: result.data?.data),
-          );
+          _visitorDetailsResponse
+              .add(Resource.success(data: result.data?.data));
         } else if (Status.error == result.status) {
           _visitorDetailsResponse
               .add(Resource.error(error: result.dealSafeAppError));
