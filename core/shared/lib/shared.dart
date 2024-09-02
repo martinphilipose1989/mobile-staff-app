@@ -28,5 +28,6 @@ export 'src/model/error/local_error.dart';
 export 'src/model/response/gate_mangment/visitor_populate_response_model.dart';
 export 'src/model/request/gate_managment/getvistor_list_request_model.dart';
 export 'src/model/response/gate_mangment/parent_gatepass_response_model.dart';
+export 'src/model/request/gate_managment/parent_gatepass_request_model.dart';
 //utils
 export 'src/utils/validator.dart';

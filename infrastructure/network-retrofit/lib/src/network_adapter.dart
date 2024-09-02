@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:data/data.dart';
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
+import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 
@@ -152,9 +153,20 @@ class NetworkAdapter implements NetworkPort {
 
   @override
   Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
-      {required String gatepassID}) async {
-    final response =
-        await safeApiCall(apiService.patchParentGatePass(gatepassID));
+      {required String gatepassID,
+      required ParentGatePassRequestModel requestModel}) async {
+    final response = await safeApiCall(
+      apiService.patchParentGatePass(
+          gatepassID,
+          ParentGatePassRequestEntity(
+              comingFrom: requestModel.comingFrom,
+              companyName: requestModel.companyName,
+              guestCount: requestModel.guestCount,
+              otherPointOfContact: requestModel.otherPointOfContact,
+              pointOfContact: requestModel.pointOfContact,
+              purposeOfVisitId: requestModel.purposeOfVisitId,
+              visitorTypeId: requestModel.visitorTypeId)),
+    );
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }

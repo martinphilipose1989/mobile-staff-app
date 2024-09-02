@@ -15,6 +15,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
+import 'create_edit_gate_pass_page.dart';
+
 class CreateEditGatePassViewModel extends BasePageViewModel {
   // Dependencies
   final FlutterExceptionHandlerBinder exceptionHandlerBinder;
@@ -25,6 +27,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final CreateGatepassUsecase _createGatepassUsecase;
   final FlutterToastErrorPresenter _flutterToastErrorPresenter;
   final PopulateVisitorDataUsecase _populateVisitorDataUsecase;
+  final PatchParentGatepassUsecase _patchParentGatepassUsecase;
 
   // Stream for picking front file
   final PublishSubject<Resource<UploadFile>> _pickFrontFileResponse =
@@ -163,6 +166,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       _createGatePassResponse.add(data);
 
       if (data.status == Status.success) {
+        loadingSubject.add(Resource.loading(data: false));
         CommonPopups().showSuccess(
             navigatorKey.currentContext!, "Gate created successfuly", (value) {
           navigatorKey.currentState?.pushReplacementNamed(
@@ -171,6 +175,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
           );
         });
       } else if (data.status == Status.error) {
+        loadingSubject.add(Resource.loading(data: false));
         _flutterToastErrorPresenter.show(
             data.dealSafeAppError!,
             navigatorKey.currentContext!,
@@ -218,9 +223,72 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
     } on PlatformException catch (_) {}
   }
 
+  String type = "";
+  String gatePassId = "";
+
+  void populateGatePass({required GatePassArguments arguments}) {
+    visitorNameController.text = arguments.parentData.visitorName ?? "";
+    emailIDController.text = arguments.parentData.visitorEmail ?? "";
+    gatePassId = arguments.id;
+    type = arguments.type;
+    getCountryCode(phoneNumber: arguments.parentData.visitorMobile ?? "");
+  }
+
+  void patchParent() {
+    final params = PatchParentGatepassUsecaseParams(
+      gatePassId: gatePassId,
+      requestBody: ParentGatePassRequestModel(
+          visitorTypeId: 16,
+          purposeOfVisitId: purposOfVisitId,
+          comingFrom: comingFromController.text,
+          pointOfContact: pointOfContactController.text,
+          companyName: "Ampersand",
+          guestCount: guestCountController.text),
+    );
+    RequestManager(
+      params,
+      createCall: () => _patchParentGatepassUsecase.execute(
+        params: params,
+      ),
+    ).asFlow().listen((data) {
+      if (data.status == Status.success) {
+        loadingSubject.add(Resource.loading(data: false));
+
+        CommonPopups().showSuccess(
+            navigatorKey.currentContext!, "Gate created successfuly", (value) {
+          navigatorKey.currentState?.pushReplacementNamed(
+            RoutePaths.visitorDetailsPage,
+            arguments: {
+              'gatePassId': '${data.data?.data?.visitorDataModel?.id}'
+            },
+          );
+        });
+      } else if (data.status == Status.error) {
+        loadingSubject.add(Resource.loading(data: false));
+        _flutterToastErrorPresenter.show(
+            data.dealSafeAppError!,
+            navigatorKey.currentContext!,
+            "${data.dealSafeAppError?.error.message}");
+      }
+    }).onError((error) {});
+  }
+
+  final BehaviorSubject<Resource<bool>> loadingSubject =
+      BehaviorSubject.seeded(Resource.none());
+
+  void creatOrUpdateGatePass() {
+    loadingSubject.add(Resource.loading(data: true));
+    if (type == "cross-platform") {
+      patchParent();
+    } else {
+      createGatePass();
+    }
+  }
+
   // Constructor
   CreateEditGatePassViewModel(
       {required this.exceptionHandlerBinder,
+      required PatchParentGatepassUsecase patchParentGatepassUsecase,
       required PopulateVisitorDataUsecase populateVisitorDataUsecase,
       required CreateGatepassUsecase createGatepassUsecase,
       required ChooseFileUseCase chooseFileUseCase,
@@ -234,5 +302,6 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase,
         _getPurposeOfVisitListUsecase = getPurposeOfVisitListUsecase,
         _uploadVisitorProfileUsecase = uploadVisitorProfileUsecase,
-        _flutterToastErrorPresenter = flutterToastErrorPresenter;
+        _flutterToastErrorPresenter = flutterToastErrorPresenter,
+        _patchParentGatepassUsecase = patchParentGatepassUsecase;
 }

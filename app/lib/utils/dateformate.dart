@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 extension DateFormate on DateTime {
   String dateFormatoHHmmss() {
     try {
-      return DateFormat('HH:mm:ss').format(this);
+      return DateFormat('hh:mm:ss a').format(this);
     } catch (e) {
       return '';
     }

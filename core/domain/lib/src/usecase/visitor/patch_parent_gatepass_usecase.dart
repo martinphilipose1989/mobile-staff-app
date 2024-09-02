@@ -12,14 +12,16 @@ class PatchParentGatepassUsecase extends BaseUseCase<NetworkError,
   Future<Either<NetworkError, ParentGatepassResponseModel>> execute(
       {required PatchParentGatepassUsecaseParams params}) {
     return _visitorRepository.patchParentGatePass(
-        gatepassID: params.gatePassId);
+        gatepassID: params.gatePassId, requestBody: params.requestBody);
   }
 }
 
 class PatchParentGatepassUsecaseParams extends Params {
   final String gatePassId;
+  final ParentGatePassRequestModel requestBody;
 
-  PatchParentGatepassUsecaseParams({super.reloading, required this.gatePassId});
+  PatchParentGatepassUsecaseParams(
+      {super.reloading, required this.gatePassId, required this.requestBody});
 
   @override
   Either<AppError, bool> verify() {

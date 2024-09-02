@@ -29,10 +29,14 @@ class AppRouter {
                 VisitorDetailsPage(gatePassId: args['gatePassId']),
             settings: settings);
       case RoutePaths.createEditGatePassPage:
+        final arguments = settings.arguments as GatePassArguments;
         return CupertinoPageRoute(
-            builder: (context) => const CreateEditGatePassPage(),
-            settings:
-                const RouteSettings(name: RoutePaths.createEditGatePassPage));
+          builder: (context) => CreateEditGatePassPage(arguments: arguments),
+          settings: RouteSettings(
+            name: RoutePaths.createEditGatePassPage,
+            arguments: settings.arguments,
+          ),
+        );
 
       default:
         // Replace by Empty Page

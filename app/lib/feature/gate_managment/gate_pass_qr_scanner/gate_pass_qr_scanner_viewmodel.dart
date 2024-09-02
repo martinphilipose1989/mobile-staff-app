@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
+
 import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/dateformate.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
@@ -17,6 +19,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final PatchVisitorDetailsUsecase _getVisitorDetailsUsecase;
   final GetVisitorDetailsUsecase _getGatePassDetailsUsecase;
+  final PatchParentGatepassUsecase _patchParentGatepassUsecase;
 
   final PublishSubject<Resource<VisitorDataModel>> _visitorDetails =
       PublishSubject();
@@ -37,11 +40,13 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required PatchVisitorDetailsUsecase getVisitorDetailsUsecase,
       required FlutterToastErrorPresenter flutterToastErrorPresenter,
-      required GetVisitorDetailsUsecase getGatePassDetailsUsecase})
+      required GetVisitorDetailsUsecase getGatePassDetailsUsecase,
+      required PatchParentGatepassUsecase patchParentGatepassUsecase})
       : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorDetailsUsecase = getVisitorDetailsUsecase,
         _flutterToastErrorPresenter = flutterToastErrorPresenter,
-        _getGatePassDetailsUsecase = getGatePassDetailsUsecase;
+        _getGatePassDetailsUsecase = getGatePassDetailsUsecase,
+        _patchParentGatepassUsecase = patchParentGatepassUsecase;
 
   final MobileScannerController controller = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
@@ -53,13 +58,14 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
     scannerResult.listen((result) async {
       final gatePassUri = Uri.parse(result);
 
-      // Extract the 'type' query parameter
-      final type = gatePassUri.queryParameters['type'];
-
-      // Handle the scanned result
+      //  Handle the scanned result
       if (result.isNotEmpty) {
         // Extract the gatepassid from the result
-        String gatepassid = result.split('/').last;
+        String? gatepassid = gatePassUri.pathSegments.isNotEmpty
+            ? gatePassUri.pathSegments.last
+            : "";
+        // Extract the 'type' query parameter
+        final type = gatePassUri.queryParameters['type'];
 
         // Check if this QR code has already been scanned
         if (!scannedCodes.contains(gatepassid)) {
@@ -72,7 +78,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           // Check if 'type' exists in the query parameters
           if (type != null && type.isNotEmpty) {
             // Call the function that handles this specific type case
-            getVisitorDetails(gatePassId: gatepassid);
+            getVisitorDetails(gatePassId: gatepassid, type: type);
           } else {
             // Normal case, no 'type' key in the query parameters
             patchVisitorDetails(gatepassid);
@@ -86,7 +92,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
     });
   }
 
-  void getVisitorDetails({required String gatePassId}) {
+  void getVisitorDetails({required String gatePassId, required String type}) {
     _exceptionHandlerBinder.handle(block: () {
       final params = GetVisitorDetailsUsecaseParams(gatepassId: gatePassId);
 
@@ -98,12 +104,45 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
         if (data.status == Status.success) {
           if (data.data?.data?.incomingTime == null) {
             // Navigate to create gate pass page with gate pass ID on submit call /gate-management/gatepass/{gatepassId}
+            navigatorKey.currentState?.pushReplacementNamed(
+                RoutePaths.createEditGatePassPage,
+                arguments: {
+                  'id': gatePassId,
+                  'type': type,
+                  'parentDetails': data.data?.data
+                });
           } else {
             // CALL /gate-management/gatepass/{gatepassId}
+            punchParentOut(gatePassId: gatePassId, parentData: data.data!);
           }
         }
       }, onError: (error) {});
     }).execute();
+  }
+
+  void punchParentOut(
+      {required String gatePassId,
+      required VisitorDetailsResponseModel parentData}) {
+    final params = PatchParentGatepassUsecaseParams(
+      gatePassId: gatePassId,
+      requestBody: ParentGatePassRequestModel(
+          comingFrom: parentData.data?.comingFrom,
+          companyName: "Ampersand",
+          guestCount: "${parentData.data?.guestCount}",
+          otherPointOfContact: null,
+          pointOfContact: parentData.data?.pointOfContact,
+          purposeOfVisitId: parentData.data?.purposeOfVisitId,
+          visitorTypeId: 16),
+    );
+    RequestManager(params,
+            createCall: () =>
+                _patchParentGatepassUsecase.execute(params: params))
+        .asFlow()
+        .listen(
+          (data) {},
+          onError: (error) {},
+        )
+        .onError((error) {});
   }
 
 //scan QR and update outing time

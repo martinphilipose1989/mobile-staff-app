@@ -230,22 +230,21 @@ class CreateEditGatePassPageView
                   ),
                   SizedBox(width: 16.w),
                   Expanded(
-                    child:
-                        AppStreamBuilder<Resource<CreateGatepassResponseModel>>(
-                            stream: model.createGatePassResponse,
-                            initialData: Resource.none(),
-                            dataBuilder: (context, data) {
-                              return CommonPrimaryElevatedButton(
-                                isLoading: data?.status == Status.loading,
-                                title: "Submit",
-                                onPressed: () {
-                                  FocusScope.of(context).unfocus();
-                                  if (model.formKey.currentState!.validate()) {
-                                    model.createGatePass();
-                                  }
-                                },
-                              );
-                            }),
+                    child: AppStreamBuilder<Resource<bool>>(
+                        stream: model.loadingSubject.stream,
+                        initialData: Resource.none(),
+                        dataBuilder: (context, data) {
+                          return CommonPrimaryElevatedButton(
+                            isLoading: data?.status == Status.loading,
+                            title: "Submit",
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+                              if (model.formKey.currentState!.validate()) {
+                                model.creatOrUpdateGatePass();
+                              }
+                            },
+                          );
+                        }),
                   ),
                 ],
               ),

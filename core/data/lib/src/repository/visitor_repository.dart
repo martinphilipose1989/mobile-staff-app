@@ -76,7 +76,9 @@ class VisitorRepositoryImpl extends VisitorRepository {
 
   @override
   Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
-      {required String gatepassID}) {
-    return networkPort.patchParentGatePass(gatepassID: gatepassID);
+      {required String gatepassID,
+      required ParentGatePassRequestModel requestBody}) {
+    return networkPort.patchParentGatePass(
+        gatepassID: gatepassID, requestModel: requestBody);
   }
 }

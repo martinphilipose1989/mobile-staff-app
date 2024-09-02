@@ -33,5 +33,6 @@ abstract class NetworkPort {
       required String searchQuery});
 
   Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
-      {required String gatepassID});
+      {required String gatepassID,
+      required ParentGatePassRequestModel requestModel});
 }

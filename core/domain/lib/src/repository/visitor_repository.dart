@@ -31,5 +31,6 @@ abstract class VisitorRepository {
       required String searchQuery});
 
   Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
-      {required String gatepassID});
+      {required String gatepassID,
+      required ParentGatePassRequestModel requestBody});
 }

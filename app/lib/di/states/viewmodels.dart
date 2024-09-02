@@ -62,6 +62,7 @@ final dashboardPageViewModelProvider =
 final createEditGatePassViewModelProvider = ChangeNotifierProvider.autoDispose<
         CreateEditGatePassViewModel>(
     (ref) => CreateEditGatePassViewModel(
+        patchParentGatepassUsecase: getIt.get<PatchParentGatepassUsecase>(),
         populateVisitorDataUsecase: getIt.get<PopulateVisitorDataUsecase>(),
         flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
         uploadVisitorProfileUsecase: getIt.get<UploadVisitorProfileUsecase>(),
@@ -81,6 +82,7 @@ final visitorDetailsViewModelProvider =
 final gatePassQrScannerViewModelProvider =
     ChangeNotifierProvider.autoDispose<GatePassQrScannerViewModel>((ref) =>
         GatePassQrScannerViewModel(
+          patchParentGatepassUsecase: getIt.get<PatchParentGatepassUsecase>(),
           getGatePassDetailsUsecase: getIt.get<GetVisitorDetailsUsecase>(),
           getVisitorDetailsUsecase: getIt.get<PatchVisitorDetailsUsecase>(),
           exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
