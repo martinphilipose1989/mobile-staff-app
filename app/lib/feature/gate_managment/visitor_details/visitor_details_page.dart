@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_page_view.dart';
@@ -23,7 +21,7 @@ class VisitorDetailsPageState
     extends AppBasePageState<VisitorDetailsViewModel, VisitorDetailsPage> {
   @override
   Widget buildView(BuildContext context, VisitorDetailsViewModel model) {
-    return VisitorDetailsPageView(provideBase());
+    return VisitorDetailsPageView(provideBase(), gatePassId: widget.gatePassId);
   }
 
   @override
@@ -45,7 +43,6 @@ class VisitorDetailsPageState
 
   @override
   void onModelReady(VisitorDetailsViewModel model) {
-    log("gatePassId ${widget.gatePassId}");
     model.getVisitorDetails(gatePassId: widget.gatePassId);
     super.onModelReady(model);
   }

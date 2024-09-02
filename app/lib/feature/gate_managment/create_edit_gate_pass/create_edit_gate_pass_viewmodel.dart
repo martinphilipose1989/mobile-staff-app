@@ -11,8 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
+
+import 'create_edit_gate_pass_page.dart';
 
 class CreateEditGatePassViewModel extends BasePageViewModel {
   // Dependencies
@@ -24,6 +27,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final CreateGatepassUsecase _createGatepassUsecase;
   final FlutterToastErrorPresenter _flutterToastErrorPresenter;
   final PopulateVisitorDataUsecase _populateVisitorDataUsecase;
+  final PatchParentGatepassUsecase _patchParentGatepassUsecase;
 
   // Stream for picking front file
   final PublishSubject<Resource<UploadFile>> _pickFrontFileResponse =
@@ -64,16 +68,16 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   }
 
   // Stream for purpose of visit response
-  final BehaviorSubject<Resource<PurposeOfVisitModel>> _purposeOfVisitResponse =
-      BehaviorSubject();
-  Stream<Resource<PurposeOfVisitModel>> get purposeOfVisitResponse =>
+  final BehaviorSubject<Resource<MdmCoReasonResponseModel>>
+      _purposeOfVisitResponse = BehaviorSubject();
+  Stream<Resource<MdmCoReasonResponseModel>> get purposeOfVisitResponse =>
       _purposeOfVisitResponse.stream;
 
-  String? purposOfVisitId;
+  int? purposOfVisitId;
 
   void getPurposeOfVisitList() {
     final params = GetPurposeOfVisitListUsecaseParams();
-    RequestManager<PurposeOfVisitModel>(params,
+    RequestManager<MdmCoReasonResponseModel>(params,
             createCall: () =>
                 _getPurposeOfVisitListUsecase.execute(params: params))
         .asFlow()
@@ -86,18 +90,19 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   void setPurposeOfVisitId(String value) {
     final result = _purposeOfVisitResponse.valueOrNull;
     purposOfVisitId = result?.data?.data
-        ?.firstWhere((e) => e.name?.toLowerCase() == value.toLowerCase(),
-            orElse: () => PurposeOfVisitDataModel())
+        ?.firstWhere(
+            (e) => e.attributes?.name?.toLowerCase() == value.toLowerCase(),
+            orElse: () => MdmCoReasonDataModel())
         .id;
   }
 
   // Stream for type of visitor response
-  final BehaviorSubject<Resource<TypeOfVisitorResponseModel>>
+  final BehaviorSubject<Resource<MdmCoReasonResponseModel>>
       _typeOfVisitorResponse = BehaviorSubject();
-  Stream<Resource<TypeOfVisitorResponseModel>> get typeOfVisitorResponse =>
+  Stream<Resource<MdmCoReasonResponseModel>> get typeOfVisitorResponse =>
       _typeOfVisitorResponse.stream;
 
-  String? typeOfVisitorId;
+  int? typeOfVisitorId;
 
   void getTypeOfVisitorList() {
     final params = GetTypeOfVisitorListUsecaseParams();
@@ -114,8 +119,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   void setTypeOfVisitorId(String value) {
     final result = _typeOfVisitorResponse.valueOrNull;
     typeOfVisitorId = result?.data?.data
-        ?.firstWhere((e) => e.name?.toLowerCase() == value.toLowerCase(),
-            orElse: () => TypeOfVisitorDataModel())
+        ?.firstWhere(
+            (e) => e.attributes?.name?.toLowerCase() == value.toLowerCase(),
+            orElse: () => MdmCoReasonDataModel())
         .id;
   }
 
@@ -131,29 +137,27 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   final TextEditingController comingFromController = TextEditingController();
   final TextEditingController pointOfContactController =
       TextEditingController();
+  final TextEditingController vehicleController = TextEditingController();
   final TextEditingController guestCountController =
-      TextEditingController(text: '0');
+      TextEditingController(text: '1');
   final TextEditingController visitDateTimeController = TextEditingController(
       text: DateTime.now().toIso8601String().dateFormatToDDMMYYYhhmma());
 
-  String countryDialCode = "+91";
+  BehaviorSubject<String> countryDialCode = BehaviorSubject.seeded("+91");
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   void createGatePass() async {
     final params = CreateGatepassUsecaseParams(
       requestModel: CreateGatePassModel(
-        name: visitorNameController.text,
-        mobile: contactNumberController.text.contains("+")
-            ? contactNumberController.text
-            : "$countryDialCode${contactNumberController.text}",
-        email: emailIDController.text,
-        visitorTypeId: typeOfVisitorId,
-        purposeOfVisitId: purposOfVisitId,
-        comingFrom: comingFromController.text,
-        pointOfContact: pointOfContactController.text,
-        companyName: 'Neo',
-        profileImage: _uploadedFileResponse.valueOrNull?.data?.data?.filePath,
-        guestCount: guestCountController.text,
-      ),
+          name: visitorNameController.text,
+          mobile: "${countryDialCode.value}${contactNumberController.text}",
+          email: emailIDController.text,
+          visitorTypeId: typeOfVisitorId,
+          purposeOfVisitId: purposOfVisitId,
+          comingFrom: comingFromController.text,
+          pointOfContact: pointOfContactController.text,
+          profileImage: _uploadedFileResponse.valueOrNull?.data?.data?.filePath,
+          guestCount: int.parse(guestCountController.text),
+          vehicleNumber: vehicleController.text),
     );
 
     RequestManager(params,
@@ -163,25 +167,31 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       _createGatePassResponse.add(data);
 
       if (data.status == Status.success) {
+        loadingSubject.add(Resource.loading(data: false));
         CommonPopups().showSuccess(
-            navigatorKey.currentContext!, "Gate created successfuly", (value) {
+            navigatorKey.currentContext!, "Gate pass created successfuly",
+            (value) {
           navigatorKey.currentState?.pushReplacementNamed(
             RoutePaths.visitorDetailsPage,
             arguments: {'gatePassId': '${data.data?.data?.id}'},
           );
         });
       } else if (data.status == Status.error) {
+        loadingSubject.add(Resource.loading(data: false));
         _flutterToastErrorPresenter.show(
             data.dealSafeAppError!,
             navigatorKey.currentContext!,
             "${data.dealSafeAppError?.error.message}");
       }
-    }).onError((error) {});
+    }).onError((error) {
+      loadingSubject.add(Resource.loading(data: false));
+    });
   }
 
   void populateVisitorData() {
     PopulateVisitorDataUsecaseParams params = PopulateVisitorDataUsecaseParams(
-        mobileNumber: contactNumberController.text);
+        mobileNumber:
+            "${countryDialCode.value}${contactNumberController.text}");
     RequestManager<VisitorPopulateResponseModel>(params,
             createCall: () =>
                 _populateVisitorDataUsecase.execute(params: params))
@@ -190,14 +200,15 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       if (data.status == Status.success) {
         if (data.data?.data != null) {
           visitorNameController.text = data.data?.data?.name ?? "";
-          contactNumberController.text = data.data?.data?.mobile ?? "";
           emailIDController.text = data.data?.data?.email ?? "";
+          getCountryCode(phoneNumber: data.data?.data?.mobile ?? "");
           _uploadedFileResponse.add(
             Resource.success(
               data: UploadFileResponseModel(
                 status: 200,
-                data:
-                    UploadFileResponseData(url: data.data?.data?.profileImage),
+                data: UploadFileResponseData(
+                    filePath: data.data?.data?.profileImage,
+                    url: data.data?.data?.profileImageUrl),
               ),
             ),
           );
@@ -206,20 +217,86 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
     }).onError((error) {});
   }
 
-  Future<bool> getCountryCode({required String phoneNumber}) async {
+  getCountryCode({required String phoneNumber}) async {
     try {
       final result = await parse(phoneNumber);
       final validPhoneNumber = PhoneNumberDetails.fromMap(result);
 
+      contactNumberController.text = validPhoneNumber.nationalNumber;
+      countryDialCode.add("+${validPhoneNumber.countryCode}");
       return validPhoneNumber.countryCode.isNotEmpty ? true : false;
-    } on PlatformException catch (_) {
-      return false;
+    } on PlatformException catch (_) {}
+  }
+
+  String type = "";
+  String gatePassId = "";
+
+  void populateGatePass({required GatePassArguments arguments}) {
+    visitorNameController.text = arguments.parentData.visitorName ?? "";
+    emailIDController.text = arguments.parentData.visitorEmail ?? "";
+    gatePassId = arguments.id;
+    type = arguments.type;
+    getCountryCode(phoneNumber: arguments.parentData.visitorMobile ?? "");
+  }
+
+  void patchParent() {
+    final params = PatchParentGatepassUsecaseParams(
+      gatePassId: gatePassId,
+      requestBody: ParentGatePassRequestModel(
+          visitorTypeId: 16,
+          purposeOfVisitId: purposOfVisitId,
+          comingFrom: comingFromController.text,
+          pointOfContact: pointOfContactController.text,
+          companyName: "Ampersand",
+          guestCount: guestCountController.text),
+    );
+    RequestManager(
+      params,
+      createCall: () => _patchParentGatepassUsecase.execute(
+        params: params,
+      ),
+    ).asFlow().listen((data) {
+      if (data.status == Status.success) {
+        loadingSubject.add(Resource.loading(data: false));
+
+        CommonPopups().showSuccess(
+            navigatorKey.currentContext!, "Gate pass created successfuly",
+            (value) {
+          navigatorKey.currentState?.pushReplacementNamed(
+            RoutePaths.visitorDetailsPage,
+            arguments: {
+              'gatePassId': '${data.data?.data?.visitorDataModel?.id}'
+            },
+          );
+        });
+      } else if (data.status == Status.error) {
+        loadingSubject.add(Resource.loading(data: false));
+        _flutterToastErrorPresenter.show(
+            data.dealSafeAppError!,
+            navigatorKey.currentContext!,
+            "${data.dealSafeAppError?.error.message}");
+      }
+    }).onError((error) {
+      loadingSubject.add(Resource.loading(data: false));
+    });
+  }
+
+  final BehaviorSubject<Resource<bool>> loadingSubject =
+      BehaviorSubject.seeded(Resource.none());
+
+  void creatOrUpdateGatePass() {
+    loadingSubject.add(Resource.loading(data: true));
+    if (type == "cross-platform") {
+      patchParent();
+    } else {
+      createGatePass();
     }
   }
 
   // Constructor
   CreateEditGatePassViewModel(
       {required this.exceptionHandlerBinder,
+      required PatchParentGatepassUsecase patchParentGatepassUsecase,
       required PopulateVisitorDataUsecase populateVisitorDataUsecase,
       required CreateGatepassUsecase createGatepassUsecase,
       required ChooseFileUseCase chooseFileUseCase,
@@ -233,5 +310,6 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase,
         _getPurposeOfVisitListUsecase = getPurposeOfVisitListUsecase,
         _uploadVisitorProfileUsecase = uploadVisitorProfileUsecase,
-        _flutterToastErrorPresenter = flutterToastErrorPresenter;
+        _flutterToastErrorPresenter = flutterToastErrorPresenter,
+        _patchParentGatepassUsecase = patchParentGatepassUsecase;
 }

@@ -12,7 +12,7 @@ class VisitStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: REdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+      padding: REdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),

@@ -9,5 +9,13 @@ abstract class NetworkProperties {
   static const String uploadProfileImage =
       "gate-management/visitor/upload-profile-image";
 
-  static const String populateVisitorData = "gate-management/visitor/";
+  static const String populateVisitorData = "/gate-management/visitor/{mobile}";
+
+  static const String mdmModule =
+      "https://ampersand-r26sp3mibq-uc.a.run.app/api/co-reasons";
+  static const String globalSearchVisitor =
+      "gate-management/gatepass/global-search";
+
+  static const String signOutVisitor =
+      "gate-management/gatepass/{gatepassId}/sign-out";
 }

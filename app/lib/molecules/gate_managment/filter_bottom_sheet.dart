@@ -1,30 +1,19 @@
+import 'package:app/feature/gate_managment/visitor_list/visitor_list_page_viewmodel.dart';
+import 'package:app/model/resource.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_outline_button.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rxdart/subjects.dart';
 
 class FilterBottomSheet extends StatelessWidget {
-  FilterBottomSheet({
-    super.key,
-  });
+  const FilterBottomSheet({super.key, required this.model});
 
-  final selectedVisitorType = BehaviorSubject<int>.seeded(-1);
-  final visitorTypeList = [
-    const ToggleOption<int>(value: 0, text: "School Visit"),
-    const ToggleOption<int>(value: 1, text: "Interview"),
-    const ToggleOption<int>(value: 2, text: "PTM"),
-    const ToggleOption<int>(value: 3, text: "Enquiry"),
-  ];
-
-  final selectedStatus = BehaviorSubject<int>.seeded(-1);
-  final statusTypeList = [
-    const ToggleOption<int>(value: 0, text: "IN"),
-    const ToggleOption<int>(value: 1, text: "OUT")
-  ];
+  final VisitorListPageViewModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +31,9 @@ class FilterBottomSheet extends StatelessWidget {
                       .copyWith(color: AppColors.textDark)),
               IconButton(
                   onPressed: () {
+                    if (!model.isFilterAppliedSubject.value) {
+                      model.resetFilter();
+                    }
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.close))
@@ -50,29 +42,57 @@ class FilterBottomSheet extends StatelessWidget {
           Divider(height: 16.h, color: AppColors.dividerColor),
           const Text("Visitor Type"),
           SizedBox(height: 16.h),
-          ToggleOptionList<int>(
-              selectedValue: selectedVisitorType, options: visitorTypeList),
+          AppStreamBuilder<Resource<List<MdmCoReasonDataModel>>>(
+              stream: model.typeOfVisitorListStream,
+              initialData: Resource.none(),
+              dataBuilder: (context, data) {
+                return ToggleOptionList<String>(
+                    selectedValue: model.selectedTypeOfVisitor,
+                    onSelect: (value) {
+                      model.setTypeofVistor(typeOfVisitorId: value);
+                      model.isButtonDisableSubject.add(false);
+                    },
+                    options: data?.data
+                            ?.map((e) => ToggleOption(
+                                value: "${e.id}",
+                                text: "${e.attributes?.name}"))
+                            .toList() ??
+                        []);
+              }),
           SizedBox(height: 16.h),
           const Text("Status"),
           SizedBox(height: 16.h),
-          ToggleOptionList<int>(
-              selectedValue: selectedStatus, options: statusTypeList),
+          ToggleOptionList<String>(
+              onSelect: (value) {
+                model.selectedVisitStatusFilter.add(value);
+                model.isButtonDisableSubject.add(false);
+              },
+              selectedValue: model.selectedVisitStatusFilter,
+              options: model.statusTypeList),
           SizedBox(height: 16.h),
           Row(
             children: [
               Expanded(
                   child: CommonOutlineButton(
-                      title: "Cancel",
+                      title: "Reset",
                       onPressed: () {
+                        model.resetFilter();
                         Navigator.pop(context);
                       })),
               SizedBox(width: 16.w),
               Expanded(
-                child: CommonPrimaryElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    title: "Apply Filter"),
+                child: AppStreamBuilder<bool>(
+                    stream: model.isButtonDisableStream,
+                    initialData: model.isButtonDisableSubject.value,
+                    dataBuilder: (context, isButtonDisable) {
+                      return CommonPrimaryElevatedButton(
+                          isDisabled: isButtonDisable!,
+                          onPressed: () {
+                            model.applyFilters();
+                            Navigator.pop(context);
+                          },
+                          title: "Apply Filter");
+                    }),
               )
             ],
           )

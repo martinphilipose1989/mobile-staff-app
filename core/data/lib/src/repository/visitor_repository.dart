@@ -7,12 +7,6 @@ class VisitorRepositoryImpl extends VisitorRepository {
   final NetworkPort networkPort;
 
   VisitorRepositoryImpl({required this.networkPort});
-  @override
-  Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
-      {required int pageNumber, int pageSize = 10}) {
-    return networkPort.getVisitorList(
-        pageNumber: pageNumber, pageSize: pageSize);
-  }
 
   @override
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails({
@@ -42,13 +36,13 @@ class VisitorRepositoryImpl extends VisitorRepository {
   }
 
   @override
-  Future<Either<NetworkError, PurposeOfVisitModel>> getPurposeOfVisitList() {
+  Future<Either<NetworkError, MdmCoReasonResponseModel>>
+      getPurposeOfVisitList() {
     return networkPort.getPurposeOfVisitList();
   }
 
   @override
-  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
-      getTypeOfVistorList() {
+  Future<Either<NetworkError, MdmCoReasonResponseModel>> getTypeOfVistorList() {
     return networkPort.getTypeOfVistorList();
   }
 
@@ -63,5 +57,28 @@ class VisitorRepositoryImpl extends VisitorRepository {
       populateVisitorData({required String visitorMobileNumber}) {
     return networkPort.populateVisitorData(
         visitorMobileNumber: visitorMobileNumber);
+  }
+
+  @override
+  Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
+      {required GetVisitorListRequestModel requestBody}) {
+    return networkPort.getVisitorList(request: requestBody);
+  }
+
+  @override
+  Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
+      {required int pageNumber,
+      required int pageSize,
+      required String searchQuery}) {
+    return networkPort.searchVisitorList(
+        pageNumber: pageNumber, pageSize: pageSize, searchQuery: searchQuery);
+  }
+
+  @override
+  Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
+      {required String gatepassID,
+      required ParentGatePassRequestModel requestBody}) {
+    return networkPort.patchParentGatePass(
+        gatepassID: gatepassID, requestModel: requestBody);
   }
 }

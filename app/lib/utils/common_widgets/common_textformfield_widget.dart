@@ -76,6 +76,7 @@ class CommonTextFormField extends StatelessWidget {
                 controller?.selection = TextSelection.fromPosition(
                   TextPosition(offset: controller?.text.length ?? 0),
                 );
+              } else {
                 onChanged?.call(value);
               }
             },

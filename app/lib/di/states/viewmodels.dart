@@ -47,6 +47,8 @@ final commonChipListProvider =
 final visitorListPageModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorListPageViewModel>(
   (ref) => VisitorListPageViewModel(
+      getTypeOfVisitorListUsecase: getIt.get<GetTypeOfVisitorListUsecase>(),
+      searchVisitorusecase: getIt.get<SearchVisitorUsecase>(),
       getVisitorListUsecase: getIt.get<GetVisitorListUsecase>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),
 );
@@ -60,6 +62,7 @@ final dashboardPageViewModelProvider =
 final createEditGatePassViewModelProvider = ChangeNotifierProvider.autoDispose<
         CreateEditGatePassViewModel>(
     (ref) => CreateEditGatePassViewModel(
+        patchParentGatepassUsecase: getIt.get<PatchParentGatepassUsecase>(),
         populateVisitorDataUsecase: getIt.get<PopulateVisitorDataUsecase>(),
         flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
         uploadVisitorProfileUsecase: getIt.get<UploadVisitorProfileUsecase>(),
@@ -79,6 +82,8 @@ final visitorDetailsViewModelProvider =
 final gatePassQrScannerViewModelProvider =
     ChangeNotifierProvider.autoDispose<GatePassQrScannerViewModel>((ref) =>
         GatePassQrScannerViewModel(
+          patchParentGatepassUsecase: getIt.get<PatchParentGatepassUsecase>(),
+          getGatePassDetailsUsecase: getIt.get<GetVisitorDetailsUsecase>(),
           getVisitorDetailsUsecase: getIt.get<PatchVisitorDetailsUsecase>(),
           exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
           flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),

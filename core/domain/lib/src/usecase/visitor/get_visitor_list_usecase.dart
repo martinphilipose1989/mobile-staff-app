@@ -11,17 +11,14 @@ class GetVisitorListUsecase extends BaseUseCase<BaseError,
   @override
   Future<Either<NetworkError, VisitorListResponseModel>> execute(
       {required GetVisitorListUsecaseParams params}) {
-    return _visitorRepository.getVisitorList(
-        pageNumber: params.pageNumber,
-        pageSize: params.pageSize == null ? 10 : params.pageSize!);
+    return _visitorRepository.getVisitorList(requestBody: params.requestBody);
   }
 }
 
 class GetVisitorListUsecaseParams extends Params {
-  final int pageNumber;
-  final int? pageSize;
+  final GetVisitorListRequestModel requestBody;
 
-  GetVisitorListUsecaseParams({required this.pageNumber, this.pageSize});
+  GetVisitorListUsecaseParams({required this.requestBody});
 
   @override
   Either<AppError, bool> verify() {

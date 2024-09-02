@@ -4,7 +4,7 @@ import 'package:domain/domain.dart';
 
 abstract class VisitorRepository {
   Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
-      {required int pageNumber, int pageSize = 10});
+      {required GetVisitorListRequestModel requestBody});
 
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(
       {required String gatepassId});
@@ -14,14 +14,23 @@ abstract class VisitorRepository {
   Future<Either<NetworkError, CreateGatepassResponseModel>>
       createVisitorGatePass({required CreateGatePassModel request});
 
-  Future<Either<NetworkError, PurposeOfVisitModel>> getPurposeOfVisitList();
+  Future<Either<NetworkError, MdmCoReasonResponseModel>>
+      getPurposeOfVisitList();
 
-  Future<Either<NetworkError, TypeOfVisitorResponseModel>>
-      getTypeOfVistorList();
+  Future<Either<NetworkError, MdmCoReasonResponseModel>> getTypeOfVistorList();
 
   Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
       {required File file});
 
   Future<Either<NetworkError, VisitorPopulateResponseModel>>
       populateVisitorData({required String visitorMobileNumber});
+
+  Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
+      {required int pageNumber,
+      required int pageSize,
+      required String searchQuery});
+
+  Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
+      {required String gatepassID,
+      required ParentGatePassRequestModel requestBody});
 }

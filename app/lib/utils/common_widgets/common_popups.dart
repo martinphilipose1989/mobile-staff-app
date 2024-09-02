@@ -1,6 +1,7 @@
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
-import 'package:app/utils/common_widgets/common_elevated_button.dart';
+import 'package:app/utils/common_widgets/common_outline_button.dart';
+import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,15 +111,16 @@ class CommonPopups {
               SizedBox(
                   height: 40.h,
                   width: 80.w,
-                  child: CommonElevatedButton(
+                  child: CommonPrimaryElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                       onChanged(true);
                     },
-                    text: 'Ok',
+                    title: 'OK',
+                    foregroundColor: Colors.white,
                     backgroundColor: Theme.of(context).colorScheme.primary,
-                    textStyle: AppTypography.subtitle2.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary),
+                    titleTextStyle:
+                        AppTypography.subtitle2.copyWith(color: Colors.white),
                   ))
             ],
           ),
@@ -128,7 +130,7 @@ class CommonPopups {
   }
 
   // Private method to show a dialog
-  void _showAppClosingAlert(
+  void showAppClosingAlert(
     BuildContext context, {
     required IconData icon,
     required Color iconColor,
@@ -164,7 +166,7 @@ class CommonPopups {
                   SizedBox(
                       height: 40.h,
                       width: 67.w,
-                      child: CommonElevatedButton(
+                      child: CommonPrimaryElevatedButton(
                         onPressed: () {
                           if (Platform.isAndroid) {
                             SystemNavigator.pop();
@@ -172,21 +174,21 @@ class CommonPopups {
                             exit(0);
                           }
                         },
-                        text: 'Yes',
+                        title: 'Yes',
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        textStyle: AppTypography.subtitle2.copyWith(
+                        titleTextStyle: AppTypography.subtitle2.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary),
                       )),
                   SizedBox(
                       height: 40.h,
                       width: 67.w,
-                      child: CommonElevatedButton(
+                      child: CommonPrimaryElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        text: '',
+                        title: '',
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        textStyle: AppTypography.subtitle2.copyWith(
+                        titleTextStyle: AppTypography.subtitle2.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary),
                       )),
                 ],
@@ -255,15 +257,14 @@ class CommonPopups {
                   SizedBox(
                       height: 40.h,
                       width: 110.w,
-                      child: CommonElevatedButton(
+                      child: CommonOutlineButton(
                         onPressed: () {
                           Navigator.pop(context);
                           onChanged(true);
                         },
-                        text: 'Cancel',
+                        title: 'Cancel',
                         backgroundColor: Colors.white,
-                        borderColor: Theme.of(context).colorScheme.primary,
-                        textStyle: AppTypography.subtitle2.copyWith(
+                        titleTextStyle: AppTypography.subtitle2.copyWith(
                             color: Theme.of(context).colorScheme.primary),
                       )),
                   const SizedBox(
@@ -272,14 +273,14 @@ class CommonPopups {
                   SizedBox(
                       height: 40.h,
                       width: 110.w,
-                      child: CommonElevatedButton(
+                      child: CommonPrimaryElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
                           onChanged(true);
                         },
-                        text: 'Confirm',
+                        title: 'Confirm',
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        textStyle: AppTypography.subtitle2.copyWith(
+                        titleTextStyle: AppTypography.subtitle2.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary),
                       )),
                 ],

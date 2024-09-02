@@ -26,7 +26,7 @@ class VisitorDataModel {
   String? purposeOfVisit;
 
 //visitor details related fields
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
 
   String? comingFrom;
 
@@ -39,6 +39,10 @@ class VisitorDataModel {
   String? visitorType;
 
   int? guestCount;
+
+  String? gatePassNumber;
+
+  String? vehicleNumber;
 
   VisitorDataModel(
       {this.id,
@@ -59,5 +63,12 @@ class VisitorDataModel {
       this.visitorProfileImageImageUrl,
       this.visitorProfileImageFilePath,
       this.visitorType = "Parent",
-      this.guestCount});
+      this.guestCount,
+      this.gatePassNumber,
+      this.vehicleNumber});
+
+  @override
+  String toString() {
+    return 'VisitorDataModel(id: $id, pointOfContact: $pointOfContact, issuedDate: $issuedDate, incomingTime: $incomingTime, outgoingTime: $outgoingTime, visitStatus: $visitStatus, visitorId: $visitorId, visitorName: $visitorName, visitorMobile: $visitorMobile, visitorEmail: $visitorEmail, visitorProfileImage: $visitorProfileImage, purposeOfVisit: $purposeOfVisit, purposeOfVisitId: $purposeOfVisitId, comingFrom: $comingFrom, qrCode: $qrCode, visitorProfileImageImageUrl: $visitorProfileImageImageUrl, visitorProfileImageFilePath: $visitorProfileImageFilePath, visitorType: $visitorType, guestCount: $guestCount, gatePassNumber: $gatePassNumber)';
+  }
 }

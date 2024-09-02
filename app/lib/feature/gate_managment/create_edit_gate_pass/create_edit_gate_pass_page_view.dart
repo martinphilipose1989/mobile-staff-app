@@ -1,3 +1,4 @@
+import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
 
 import 'package:app/model/resource.dart';
@@ -23,8 +24,10 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class CreateEditGatePassPageView
     extends BasePageViewWidget<CreateEditGatePassViewModel> {
+  final GatePassArguments? arguments;
   // ignore: use_super_parameters
-  CreateEditGatePassPageView(ProviderBase<CreateEditGatePassViewModel> model)
+  CreateEditGatePassPageView(
+      ProviderBase<CreateEditGatePassViewModel> model, this.arguments)
       : super(model);
 
   @override
@@ -50,6 +53,9 @@ class CreateEditGatePassPageView
                         bottomPadding: 16,
                         showAstreik: true,
                         labelText: "Visitor Name",
+                        readOnly:
+                            arguments?.parentData.visitorName?.isNotEmpty ??
+                                false,
                         controller: model.visitorNameController,
                         keyboardType: TextInputType.name,
                         inputFormatters: [
@@ -63,22 +69,38 @@ class CreateEditGatePassPageView
                           return null;
                         },
                       ),
-                      CountryPickerPhoneTextField(
-                        controller: model.contactNumberController,
-                        onCountryChanged: (country) {
-                          model.countryDialCode = country.dialCode!;
-                        },
-                        validator: (value) {
-                          if (Validator.isEmpty(value!)) {
-                            return "Contact number cannot be empty";
-                          }
-                          return null;
-                        },
-                      ),
+                      AppStreamBuilder<String>(
+                          stream: model.countryDialCode.stream,
+                          initialData: model.countryDialCode.value,
+                          dataBuilder: (context, countryDialCode) {
+                            return CountryPickerPhoneTextField(
+                              initialSelection: countryDialCode!,
+                              controller: model.contactNumberController,
+                              onChanged: (value) {
+                                if (value.length == 10) {
+                                  model.populateVisitorData();
+                                }
+                              },
+                              onCountryChanged: (country) {
+                                model.countryDialCode.add(country.dialCode!);
+                              },
+                              validator: (value) {
+                                if (Validator.isEmpty(value!)) {
+                                  return "Contact number cannot be empty";
+                                } else if (value.length < 10) {
+                                  return "Contact number cannot be less than 10 digits";
+                                }
+                                return null;
+                              },
+                            );
+                          }),
                       CommonTextFormField(
                         bottomPadding: 16,
                         showAstreik: true,
                         labelText: "Email ID",
+                        readOnly:
+                            arguments?.parentData.visitorEmail?.isNotEmpty ??
+                                false,
                         controller: model.emailIDController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -97,7 +119,7 @@ class CreateEditGatePassPageView
                         labelText: "Visit Date & Time",
                         controller: model.visitDateTimeController,
                       ),
-                      AppStreamBuilder<Resource<TypeOfVisitorResponseModel>>(
+                      AppStreamBuilder<Resource<MdmCoReasonResponseModel>>(
                         stream: model.typeOfVisitorResponse,
                         initialData: Resource.none(),
                         dataBuilder: (context, data) {
@@ -108,9 +130,9 @@ class CreateEditGatePassPageView
                               width: double.infinity,
                               bottomPadding: 16,
                               items: data?.data?.data
-                                      ?.map((e) => e.name)
+                                      ?.map((e) => e.attributes?.name)
                                       .toList() ??
-                                  [],
+                                  <String>[],
                               isMutiSelect: false,
                               dropdownName: "Type Of Visitor",
                               showAstreik: true,
@@ -138,7 +160,7 @@ class CreateEditGatePassPageView
                             return null;
                           },
                           controller: model.pointOfContactController),
-                      AppStreamBuilder<Resource<PurposeOfVisitModel>>(
+                      AppStreamBuilder<Resource<MdmCoReasonResponseModel>>(
                         stream: model.purposeOfVisitResponse,
                         initialData: Resource.none(),
                         dataBuilder: (context, data) {
@@ -149,7 +171,7 @@ class CreateEditGatePassPageView
                               width: double.infinity,
                               bottomPadding: 16,
                               items: data?.data?.data
-                                      ?.map((e) => e.name)
+                                      ?.map((e) => e.attributes?.name)
                                       .toList() ??
                                   [],
                               isMutiSelect: false,
@@ -178,6 +200,7 @@ class CreateEditGatePassPageView
                           if (Validator.isEmpty(value!)) {
                             return "Coming from cannot be empty";
                           }
+
                           return null;
                         },
                       ),
@@ -186,10 +209,28 @@ class CreateEditGatePassPageView
                           showAstreik: true,
                           labelText: "Guest Count",
                           controller: model.guestCountController,
+                          validator: (value) {
+                            if (Validator.isEmpty(value!)) {
+                              return "Guest count cannot be empty";
+                            }
+
+                            return null;
+                          },
                           inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
+                            FilteringTextInputFormatter.deny(RegExp(r'^0+')),
+                            FilteringTextInputFormatter.digitsOnly,
                           ],
-                          keyboardType: TextInputType.number)
+                          keyboardType: TextInputType.number),
+                      CommonTextFormField(
+                          bottomPadding: 16,
+                          showAstreik: false,
+                          labelText: "Vehicle Number",
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^[a-zA-Z0-9\s]+$')),
+                          ],
+                          controller: model.vehicleController),
                     ],
                   ),
                 ),
@@ -208,21 +249,21 @@ class CreateEditGatePassPageView
                   ),
                   SizedBox(width: 16.w),
                   Expanded(
-                    child:
-                        AppStreamBuilder<Resource<CreateGatepassResponseModel>>(
-                            stream: model.createGatePassResponse,
-                            initialData: Resource.none(),
-                            dataBuilder: (context, data) {
-                              return CommonPrimaryElevatedButton(
-                                isLoading: data?.status == Status.loading,
-                                title: "Submit",
-                                onPressed: () {
-                                  if (model.formKey.currentState!.validate()) {
-                                    model.createGatePass();
-                                  }
-                                },
-                              );
-                            }),
+                    child: AppStreamBuilder<Resource<bool>>(
+                        stream: model.loadingSubject.stream,
+                        initialData: Resource.none(),
+                        dataBuilder: (context, data) {
+                          return CommonPrimaryElevatedButton(
+                            isLoading: data?.data ?? false,
+                            title: "Submit",
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+                              if (model.formKey.currentState!.validate()) {
+                                model.creatOrUpdateGatePass();
+                              }
+                            },
+                          );
+                        }),
                   ),
                 ],
               ),
@@ -233,5 +274,3 @@ class CreateEditGatePassPageView
     });
   }
 }
-
-

@@ -1,5 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:domain/src/usecase/visitor/upload_visitor_profile_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -56,5 +55,17 @@ abstract class DomainModule {
   PopulateVisitorDataUsecase populateVisitorDataUsecase(
       VisitorRepository visitorRepository) {
     return PopulateVisitorDataUsecase(visitorRepository: visitorRepository);
+  }
+
+  @lazySingleton
+  SearchVisitorUsecase searchVisitorUsecase(
+      VisitorRepository visitorRepository) {
+    return SearchVisitorUsecase(visitorRepository: visitorRepository);
+  }
+
+  @lazySingleton
+  PatchParentGatepassUsecase patchParentGatepassUsecase(
+      VisitorRepository visitorRepository) {
+    return PatchParentGatepassUsecase(visitorRepository: visitorRepository);
   }
 }

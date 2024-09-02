@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:app/themes_setup.dart';
@@ -44,27 +43,30 @@ class VisitorInfoCard extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.max,
+            // crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonText(
-                    text: visitorName,
-                    style: AppTypography.h6
-                        .copyWith(color: AppColors.textDark, height: 1.1),
-                  ),
-                  SizedBox(height: 8.h),
-                  CommonText(
-                    text: "Issued On: ${issuedOn.dateFormattoddMMyyyy()}",
-                    style: AppTypography.body2.copyWith(
-                        color: AppColors.textGray,
-                        fontSize: 14.sp,
-                        height: 1.1),
-                  ),
-                ],
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: visitorName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style:
+                          AppTypography.h6.copyWith(color: AppColors.textDark),
+                    ),
+                    SizedBox(height: 8.h),
+                    CommonText(
+                      text: "Issued On: ${issuedOn.dateFormattoddMMyyyy()}",
+                      style: AppTypography.body2.copyWith(
+                          color: AppColors.textGray,
+                          fontSize: 14.sp,
+                          height: 1.1),
+                    ),
+                  ],
+                ),
               ),
               qrImagePath.isNotEmpty
                   ? Image.memory(
@@ -102,9 +104,7 @@ class VisitorInfoCard extends StatelessWidget {
                 backgroundImage: NetworkImage(
                   avatarImagePath,
                 ),
-                onBackgroundImageError: (error, stackTrace) {
-                  log('Failed to load image: $error');
-                },
+                onBackgroundImageError: (error, stackTrace) {},
               ),
             ),
           ),

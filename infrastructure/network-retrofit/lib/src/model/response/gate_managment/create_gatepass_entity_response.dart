@@ -95,7 +95,7 @@ class CreateGatePassDataEntity
   @JsonKey(name: "visitor_id")
   String? visitorId;
   @JsonKey(name: "visitor_type_id")
-  String? visitorTypeId;
+  int? visitorTypeId;
   @JsonKey(name: "company_name")
   String? companyName;
   @JsonKey(name: "point_of_contact")
@@ -103,7 +103,7 @@ class CreateGatePassDataEntity
   @JsonKey(name: "other_point_of_contact")
   String? otherPointOfContact;
   @JsonKey(name: "purpose_of_visit_id")
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
   @JsonKey(name: "coming_from")
   String? comingFrom;
   @JsonKey(name: "guest_count")

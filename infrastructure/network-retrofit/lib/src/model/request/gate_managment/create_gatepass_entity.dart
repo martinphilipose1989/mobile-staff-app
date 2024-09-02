@@ -26,7 +26,7 @@ class CreateGatePassRequestEntity
   @JsonKey(name: "email")
   String? email;
   @JsonKey(name: "visitor_type_id")
-  String? visitorTypeId;
+  int? visitorTypeId;
   @JsonKey(name: "company_name")
   String? companyName;
   @JsonKey(name: "point_of_contact")
@@ -34,32 +34,44 @@ class CreateGatePassRequestEntity
   @JsonKey(name: "other_point_of_contact")
   String? otherPointOfContact;
   @JsonKey(name: "purpose_of_visit_id")
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
   @JsonKey(name: "coming_from")
   String? comingFrom;
   @JsonKey(name: "guest_count")
-  String? guestCount;
+  int? guestCount;
   @JsonKey(name: "profile_image")
   String? profileImage;
+  @JsonKey(name: "vehicle_number")
+  String? vehicleNumber;
 
-  CreateGatePassRequestEntity({
-    this.name,
-    this.mobile,
-    this.email,
-    this.visitorTypeId,
-    this.companyName,
-    this.pointOfContact,
-    this.otherPointOfContact,
-    this.purposeOfVisitId,
-    this.comingFrom,
-    this.guestCount,
-    this.profileImage,
-  });
+  CreateGatePassRequestEntity(
+      {this.name,
+      this.mobile,
+      this.email,
+      this.visitorTypeId,
+      this.companyName,
+      this.pointOfContact,
+      this.otherPointOfContact,
+      this.purposeOfVisitId,
+      this.comingFrom,
+      this.guestCount,
+      this.profileImage,
+      this.vehicleNumber});
 
   factory CreateGatePassRequestEntity.fromJson(Map<String, dynamic> json) =>
       _$CreateGatePassRequestEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CreateGatePassRequestEntityToJson(this);
+  Map<String, dynamic> toJson() {
+    final json = _$CreateGatePassRequestEntityToJson(this);
+    if (json['company_name'] == null) {
+      json.remove('company_name');
+    }
+    if (json['vehicle_number'] == null) {
+      json.remove('vehicle_number');
+    }
+
+    return json;
+  }
 
   @override
   CreateGatePassRequestEntity restore(CreateGatePassModel data) {

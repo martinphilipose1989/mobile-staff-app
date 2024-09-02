@@ -5,7 +5,7 @@ class CreateGatePassModel {
 
   String? email;
 
-  String? visitorTypeId;
+  int? visitorTypeId;
 
   String? companyName;
 
@@ -13,25 +13,27 @@ class CreateGatePassModel {
 
   String? otherPointOfContact;
 
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
 
   String? comingFrom;
 
-  String? guestCount;
+  int? guestCount;
 
   String? profileImage;
 
-  CreateGatePassModel({
-    this.name,
-    this.mobile,
-    this.email,
-    this.visitorTypeId,
-    this.companyName,
-    this.pointOfContact,
-    this.otherPointOfContact,
-    this.purposeOfVisitId,
-    this.comingFrom,
-    this.guestCount,
-    this.profileImage,
-  });
+  String? vehicleNumber;
+
+  CreateGatePassModel(
+      {this.name,
+      this.mobile,
+      this.email,
+      this.visitorTypeId,
+      this.companyName,
+      this.pointOfContact,
+      this.otherPointOfContact,
+      this.purposeOfVisitId,
+      this.comingFrom,
+      this.guestCount,
+      this.profileImage,
+      this.vehicleNumber});
 }

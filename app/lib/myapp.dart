@@ -22,32 +22,38 @@ class MyApp extends StatelessWidget {
         return ScreenUtilInit(
             designSize: const Size(390, 844),
             builder: (context, child) {
-              return MaterialApp(
-                  navigatorKey: navigatorKey,
-                  builder: (context, widget) => ResponsiveBreakpoints.builder(
-                        child: widget!,
-                        breakpoints: [
-                          const Breakpoint(start: 0, end: 450, name: MOBILE),
-                          const Breakpoint(start: 451, end: 800, name: TABLET),
-                          const Breakpoint(
-                              start: 801, end: 1920, name: DESKTOP),
-                          const Breakpoint(
-                              start: 1921, end: double.infinity, name: '4K'),
-                        ],
-                      ),
-                  localizationsDelegates: const [
-                    Strings.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate
-                  ],
-                  supportedLocales: Strings.delegate.supportedLocales,
-                  onGenerateTitle: (context) => Strings.of(context).appName,
-                  debugShowCheckedModeBanner: false,
-                  initialRoute: RoutePaths.splash,
-                  theme: regularTheme,
-                  darkTheme: darkTheme,
-                  themeMode: themeMode,
-                  onGenerateRoute: AppRouter.generateRoute);
+              return GestureDetector(
+                onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: MaterialApp(
+                    navigatorKey: navigatorKey,
+                    builder: (context, widget) => ResponsiveBreakpoints.builder(
+                          child: widget!,
+                          breakpoints: [
+                            const Breakpoint(start: 0, end: 450, name: MOBILE),
+                            const Breakpoint(
+                                start: 451, end: 800, name: TABLET),
+                            const Breakpoint(
+                                start: 801, end: 1920, name: DESKTOP),
+                            const Breakpoint(
+                                start: 1921, end: double.infinity, name: '4K'),
+                          ],
+                        ),
+                    localizationsDelegates: const [
+                      Strings.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate
+                    ],
+                    supportedLocales: Strings.delegate.supportedLocales,
+                    onGenerateTitle: (context) => Strings.of(context).appName,
+                    debugShowCheckedModeBanner: false,
+                    initialRoute: RoutePaths.splash,
+                    theme: regularTheme,
+                    darkTheme: darkTheme,
+                    themeMode: themeMode,
+                    onGenerateRoute: AppRouter.generateRoute),
+              );
             });
       },
     );

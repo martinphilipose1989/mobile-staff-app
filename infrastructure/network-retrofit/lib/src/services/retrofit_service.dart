@@ -1,17 +1,19 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepass_entity.dart';
+import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/parent_gatepass_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_details_response_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
-import 'package:network_retrofit/src/model/response/gate_managment/purpose_of_visit_entity.dart';
+
 import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
 
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_populate_response_entity.dart';
-import 'package:network_retrofit/src/model/response/gate_managment/visitor_type_entity.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/mdm_coreason_entity.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
-import 'package:retrofit/http.dart';
 
 import 'package:retrofit/retrofit.dart';
 
@@ -23,16 +25,16 @@ abstract class RetrofitService {
     return _RetrofitService(dio, baseUrl: dio.options.baseUrl);
   }
 
-  @GET(NetworkProperties.getVisitorList)
+  @POST(NetworkProperties.getVisitorList)
   Future<HttpResponse<VisitorListResponseEntity>> getVisitorList(
-      @Query('pageNumber') int pageNumber, @Query('pageSize') int pageSize);
+      @Body() GetVisitorListRequestEntity requestBody);
 
   @GET(NetworkProperties.getVisitorDetails)
   Future<HttpResponse<VisitorDetailsResponseEntity>> getVisitorDetails(
     @Path("gatepassId") String getpassID,
   );
 
-  @PATCH(NetworkProperties.getVisitorDetails)
+  @PATCH(NetworkProperties.signOutVisitor)
   Future<HttpResponse<VisitorDetailsResponseEntity>> patchVisitorDetails(
     @Path("gatepassId") String getpassID,
     @Body() Map<String, dynamic> outgoingTime,
@@ -41,11 +43,13 @@ abstract class RetrofitService {
   Future<HttpResponse<CreateGatePassResponseEntity>> createVisitorGatePass(
       @Body() CreateGatePassRequestEntity requestBody);
 
-  @GET(NetworkProperties.getPurposeOfVisitList)
-  Future<HttpResponse<PurposeOfVisitEntity>> getPurposeOfVisitList();
+  @GET(NetworkProperties.mdmModule)
+  Future<HttpResponse<MdmCoReasonEntity>> getPurposeOfVisitList(
+      @Query('filters[parent_id]') int id, @Query("fields[0]") String name);
 
-  @GET(NetworkProperties.getVisitorTypeList)
-  Future<HttpResponse<TypeOfVisitorEntity>> getVisitorTypeList();
+  @GET(NetworkProperties.mdmModule)
+  Future<HttpResponse<MdmCoReasonEntity>> getVisitorTypeList(
+      @Query('filters[parent_id]') int id, @Query("fields[0]") String name);
 
   @POST(NetworkProperties.uploadProfileImage)
   @MultiPart()
@@ -55,4 +59,16 @@ abstract class RetrofitService {
   @GET(NetworkProperties.populateVisitorData)
   Future<HttpResponse<VisitorPopulateResponseEntity>> populateVisitorData(
       @Path("mobile") visitorMobileNumber);
+
+  @GET(NetworkProperties.globalSearchVisitor)
+  Future<HttpResponse<VisitorListResponseEntity>> searchVisitorList(
+      @Query('pageNumber') int pageNumber,
+      @Query('pageSize') int pageSize,
+      @Query('search') String searchQuery,
+      CancelToken? cancelToken);
+
+  @PATCH(NetworkProperties.getVisitorDetails)
+  Future<HttpResponse<ParentGatepassResponseEntity>> patchParentGatePass(
+      @Path("gatepassId") String gatepassID,
+      @Body() ParentGatePassRequestEntity requestBody);
 }

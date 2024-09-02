@@ -55,11 +55,15 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
                   cause: throwable),
             );
           case DioExceptionType.badCertificate:
-            // TODO: Handle this case.
             break;
           case DioExceptionType.connectionError:
-            // TODO: Handle this case.
-            break;
+            return Left(
+              NetworkError(
+                  message:
+                      "Connection to API server failed due to internet connection",
+                  httpError: 503,
+                  cause: throwable),
+            );
         }
 
         break;
@@ -69,6 +73,12 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
             message: throwable.toString(), httpError: 502, cause: throwable));
 
       case HttpException:
+        return Left(NetworkError(
+            message: (throwable as HttpException).message,
+            httpError: 502,
+            cause: throwable));
+
+      case FormatException:
         return Left(NetworkError(
             message: (throwable as HttpException).message,
             httpError: 502,

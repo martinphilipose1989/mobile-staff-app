@@ -44,7 +44,7 @@ class VisitorDataEntity
 
 //visitor details related fields
   @JsonKey(name: "purpose_of_visit_id")
-  String? purposeOfVisitId;
+  int? purposeOfVisitId;
 
   @JsonKey(name: "coming_from")
   String? comingFrom;
@@ -61,8 +61,14 @@ class VisitorDataEntity
   @JsonKey(name: "visitor_type")
   String? visitorType;
 
-   @JsonKey(name: "guest_count")
+  @JsonKey(name: "guest_count")
   int? guestCount;
+
+  @JsonKey(name: "gatepass_number")
+  String? gatePassNumber;
+
+  @JsonKey(name: "vehicle_number")
+  String? vehicleNumber;
 
   VisitorDataEntity(
       {this.id,
@@ -83,8 +89,9 @@ class VisitorDataEntity
       this.visitorProfileImageFilePath,
       this.visitorProfileImageImageUrl,
       this.visitorType,
-      this.guestCount
-      });
+      this.guestCount,
+      this.gatePassNumber,
+      this.vehicleNumber});
 
   factory VisitorDataEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorDataEntityFromJson(json);
@@ -117,8 +124,8 @@ class VisitorDataEntity
         visitorProfileImageFilePath: visitorProfileImageFilePath,
         visitorProfileImageImageUrl: visitorProfileImageImageUrl,
         visitorType: visitorType ?? "Parent",
-        guestCount: guestCount
-        
-        );
+        guestCount: guestCount,
+        vehicleNumber: vehicleNumber,
+        gatePassNumber: gatePassNumber);
   }
 }

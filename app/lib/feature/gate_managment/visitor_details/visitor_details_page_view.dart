@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'dart:typed_data';
 
+import 'package:app/di/states/viewmodels.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_row.dart';
@@ -10,7 +12,9 @@ import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/dateformate.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:data/data.dart';
 
@@ -22,10 +26,11 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class VisitorDetailsPageView
     extends BasePageViewWidget<VisitorDetailsViewModel> {
+  final String gatePassId;
   // ignore: use_super_parameters
-  VisitorDetailsPageView(
-    ProviderBase<VisitorDetailsViewModel> model,
-  ) : super(model);
+  VisitorDetailsPageView(ProviderBase<VisitorDetailsViewModel> model,
+      {required this.gatePassId})
+      : super(model);
 
   @override
   Widget build(
@@ -39,6 +44,23 @@ class VisitorDetailsPageView
           return DataStatusWidget(
               status: visitorData?.status ?? Status.none,
               loadingWidget: () => const VisitorDetailsPageShimmer(),
+              errorWidget: () => Center(
+                    child: NoDataFoundWidget(
+                      title: visitorData?.dealSafeAppError?.error.message
+                                  .contains("internet") ??
+                              false
+                          ? "No Internet Connection"
+                          : "Something Went Wrong",
+                      subtitle: visitorData?.dealSafeAppError?.error.message
+                                  .contains("internet") ??
+                              false
+                          ? "It seems you're offline. Please check your internet connection and try again."
+                          : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+                      onPressed: () {
+                        model.getVisitorDetails(gatePassId: gatePassId);
+                      },
+                    ),
+                  ),
               successWidget: () {
                 Uint8List qrImageBytes = Uint8List(0);
                 if (visitorData != null &&
@@ -65,7 +87,7 @@ class VisitorDetailsPageView
                             children: [
                               VisitorInfoCard(
                                 visitorName:
-                                    visitorData?.data?.visitorName ?? '',
+                                    "${visitorData?.data?.visitorName ?? ''}  (#${visitorData?.data?.gatePassNumber ?? "N/A"})",
                                 issuedOn: visitorData?.data?.issuedDate ?? '',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,
@@ -81,11 +103,11 @@ class VisitorDetailsPageView
                                 value2: visitorData?.data?.visitorEmail ?? '',
                               ),
                               SizedBox(height: 16.h),
-                               VisitorDetailsRow(
+                              VisitorDetailsRow(
                                 title1: "Type of visitor",
                                 //value1: "parent",
-                                value1:visitorData?.data?.visitorType ?? '',
-                                title2: "Student Name",
+                                value1: visitorData?.data?.visitorType ?? '',
+                                title2: "",
                                 // value2: "Khevna Shah",
                                 value2: "",
                               ),
@@ -98,16 +120,19 @@ class VisitorDetailsPageView
                               ),
                               SizedBox(height: 16.h),
                               VisitorDetailsRow(
-                                title1: "IN Date& Time",
-                                value1: visitorData?.data?.incomingTime ?? '',
+                                title1: "IN Date & Time",
+                                value1:
+                                    "${visitorData?.data?.issuedDate?.dateFormat()} ${visitorData?.data?.incomingTime?.convertTo12HourFormat()}",
                                 title2: "Coming From",
                                 value2: visitorData?.data?.comingFrom ?? '',
                               ),
                               SizedBox(height: 16.h),
-                               VisitorDetailsRow(
+                              VisitorDetailsRow(
                                 title1: "Guest Count",
                                 // value1: "1",
-                                value1: visitorData?.data?.guestCount.toString() ?? '',
+                                value1:
+                                    visitorData?.data?.guestCount.toString() ??
+                                        '',
                               ),
                               Divider(
                                 height: 32.h,
@@ -150,6 +175,9 @@ class VisitorDetailsPageView
                           title: "Close",
                           width: MediaQuery.of(context).size.width,
                           onPressed: () {
+                            ProviderScope.containerOf(context)
+                                .read(visitorListPageModelProvider)
+                                .fetchVisitorList();
                             Navigator.pop(context);
                           }),
                     )
