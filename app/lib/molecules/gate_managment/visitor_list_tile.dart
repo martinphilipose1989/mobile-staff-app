@@ -125,10 +125,11 @@ class VisitorListTile extends StatelessWidget {
                             .copyWith(color: AppColors.textGray),
                       ),
                       SizedBox(height: 12.h),
-                      VisitStatusWidget(
-                          visitStatus:
-                              visitorDataModel?.visitStatus?.toLowerCase() ??
-                                  ""),
+                      if ((visitorDataModel?.incomingTime?.isNotEmpty ?? false))
+                        VisitStatusWidget(
+                            visitStatus:
+                                visitorDataModel?.visitStatus?.toLowerCase() ??
+                                    ""),
                     ],
                   )
                 ],

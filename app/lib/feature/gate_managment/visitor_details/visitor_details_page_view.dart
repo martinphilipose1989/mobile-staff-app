@@ -90,7 +90,8 @@ class VisitorDetailsPageView
                               VisitorInfoCard(
                                 visitorName:
                                     "${visitorData?.data?.visitorName ?? ''}  (#${visitorData?.data?.gatePassNumber ?? "N/A"})",
-                                issuedOn: visitorData?.data?.issuedDate ?? '',
+                                issuedOn:
+                                    '${visitorData?.data?.issuedDate?.dateFormat()}${visitorData?.data?.issuedTime}',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,
                                 avatarImagePath: visitorData
@@ -135,9 +136,6 @@ class VisitorDetailsPageView
                                 value1:
                                     visitorData?.data?.guestCount.toString() ??
                                         '',
-                                title2: "Issued On",
-                                value2:
-                                    "${visitorData?.data?.issuedDate?.dateFormat()}${visitorData?.data?.issuedTime}",
                               ),
                               Divider(
                                 height: 32.h,
