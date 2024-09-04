@@ -125,10 +125,11 @@ class VisitorListTile extends StatelessWidget {
                             .copyWith(color: AppColors.textGray),
                       ),
                       SizedBox(height: 12.h),
-                      VisitStatusWidget(
-                          visitStatus:
-                              visitorDataModel?.visitStatus?.toLowerCase() ??
-                                  ""),
+                      if ((visitorDataModel?.incomingTime?.isNotEmpty ?? false))
+                        VisitStatusWidget(
+                            visitStatus:
+                                visitorDataModel?.visitStatus?.toLowerCase() ??
+                                    ""),
                     ],
                   )
                 ],
@@ -171,11 +172,9 @@ class VisitorListTile extends StatelessWidget {
                       TextSpan(
                         text:
                             visitorDataModel?.visitStatus?.toLowerCase() == "in"
-                                ? visitorDataModel?.incomingTime
-                                        ?.convertTo12HourFormat() ??
+                                ? visitorDataModel?.incomingTime ??
                                     "Not arrived yet"
-                                : visitorDataModel?.outgoingTime
-                                        ?.convertTo12HourFormat() ??
+                                : visitorDataModel?.outgoingTime ??
                                     "Not arrived yet",
                         style: AppTypography.caption.copyWith(
                             fontSize: 10.sp,

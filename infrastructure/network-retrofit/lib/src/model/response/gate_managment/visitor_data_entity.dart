@@ -15,6 +15,9 @@ class VisitorDataEntity
   @JsonKey(name: "issued_date")
   String? issuedDate;
 
+  @JsonKey(name: "issued_time")
+  String? issuedTime;
+
   @JsonKey(name: "incoming_time")
   String? incomingTime;
 
@@ -91,7 +94,8 @@ class VisitorDataEntity
       this.visitorType,
       this.guestCount,
       this.gatePassNumber,
-      this.vehicleNumber});
+      this.vehicleNumber,
+      this.issuedTime});
 
   factory VisitorDataEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorDataEntityFromJson(json);
@@ -126,6 +130,7 @@ class VisitorDataEntity
         visitorType: visitorType ?? "Parent",
         guestCount: guestCount,
         vehicleNumber: vehicleNumber,
-        gatePassNumber: gatePassNumber);
+        gatePassNumber: gatePassNumber,
+        issuedTime: issuedTime);
   }
 }

@@ -2,8 +2,11 @@ import 'dart:typed_data';
 
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
+
+import 'package:app/utils/common_widgets/common_image_widget.dart';
+
 import 'package:app/utils/common_widgets/common_text_widget.dart';
-import 'package:app/utils/dateformate.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -59,7 +62,7 @@ class VisitorInfoCard extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     CommonText(
-                      text: "Issued On: ${issuedOn.dateFormattoddMMyyyy()}",
+                      text: "Issued On: $issuedOn",
                       style: AppTypography.body2.copyWith(
                           color: AppColors.textGray,
                           fontSize: 14.sp,
@@ -86,29 +89,53 @@ class VisitorInfoCard extends StatelessWidget {
             ],
           ),
         ),
+        // Align(
+        //   alignment: Alignment.topCenter,
+        //   child: Card(
+        //       margin: EdgeInsets.zero,
+        //       shadowColor: AppColors.shadowColor,
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(
+        //           70.r,
+        //         ),
+        //       ),
+        //       child:  CircleAvatar(
+        //         radius: 70.r,
+        //         backgroundColor: Colors.white,
+        //         child: CircleAvatar(
+        //           radius: 60.r,
+        //           backgroundImage: NetworkImage(
+        //             avatarImagePath,
+        //           ),
+        //           onBackgroundImageError: (error, stackTrace) {},
+        //         ),
+        //       ),
+
+        //       ),
+        // ),
         Align(
           alignment: Alignment.topCenter,
           child: Card(
             margin: EdgeInsets.zero,
             shadowColor: AppColors.shadowColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                70.r,
-              ),
+              borderRadius: BorderRadius.circular(70.r),
             ),
             child: CircleAvatar(
               radius: 70.r,
               backgroundColor: Colors.white,
               child: CircleAvatar(
                 radius: 60.r,
-                backgroundImage: NetworkImage(
-                  avatarImagePath,
-                ),
-                onBackgroundImageError: (error, stackTrace) {},
+                child: ClipOval(
+                    child: CommonImageWidget(
+                  imageUrl: avatarImagePath,
+                  imageHeight: 120.r,
+                  imageWidth: 120.r,
+                )),
               ),
             ),
           ),
-        ),
+        )
       ],
     );
   }

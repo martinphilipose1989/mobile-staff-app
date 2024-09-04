@@ -260,8 +260,10 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         loadingSubject.add(Resource.loading(data: false));
 
         CommonPopups().showSuccess(
-            navigatorKey.currentContext!, "Gate pass created successfuly",
-            (value) {
+            navigatorKey.currentContext!,
+            type.isNotEmpty
+                ? "Gate pass updated successfuly"
+                : "Gate pass created successfuly", (value) {
           navigatorKey.currentState?.pushReplacementNamed(
             RoutePaths.visitorDetailsPage,
             arguments: {

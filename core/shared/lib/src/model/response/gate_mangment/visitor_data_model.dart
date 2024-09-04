@@ -7,6 +7,8 @@ class VisitorDataModel {
 
   String? issuedDate;
 
+  String? issuedTime;
+
   String? incomingTime;
 
   String? outgoingTime;
@@ -65,7 +67,8 @@ class VisitorDataModel {
       this.visitorType = "Parent",
       this.guestCount,
       this.gatePassNumber,
-      this.vehicleNumber});
+      this.vehicleNumber,
+      this.issuedTime});
 
   @override
   String toString() {

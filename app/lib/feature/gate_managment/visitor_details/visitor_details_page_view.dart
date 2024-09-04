@@ -8,6 +8,8 @@ import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_row.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_shimmer.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_info_card.dart';
+import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
@@ -88,7 +90,8 @@ class VisitorDetailsPageView
                               VisitorInfoCard(
                                 visitorName:
                                     "${visitorData?.data?.visitorName ?? ''}  (#${visitorData?.data?.gatePassNumber ?? "N/A"})",
-                                issuedOn: visitorData?.data?.issuedDate ?? '',
+                                issuedOn:
+                                    '${visitorData?.data?.issuedDate?.dateFormat()}${visitorData?.data?.issuedTime}',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,
                                 avatarImagePath: visitorData
@@ -122,7 +125,7 @@ class VisitorDetailsPageView
                               VisitorDetailsRow(
                                 title1: "IN Date & Time",
                                 value1:
-                                    "${visitorData?.data?.issuedDate?.dateFormat()} ${visitorData?.data?.incomingTime?.convertTo12HourFormat()}",
+                                    "${visitorData?.data?.issuedDate?.dateFormat()} ${visitorData?.data?.incomingTime}",
                                 title2: "Coming From",
                                 value2: visitorData?.data?.comingFrom ?? '',
                               ),
@@ -148,16 +151,23 @@ class VisitorDetailsPageView
                               ),
                               SizedBox(height: 16.h),
                               qrImageBytes.isNotEmpty
-                                  ? Image.memory(
-                                      qrImageBytes,
-                                      fit: BoxFit.cover,
-                                      height: 120.w,
-                                      width: 120.w,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return const Icon(Icons
-                                            .error); // Display an error icon or widget
+                                  ? InkWell(
+                                      onTap: () {
+                                        navigatorKey.currentState?.pushNamed(
+                                            RoutePaths.qrCodeDetailsPage,
+                                            arguments: qrImageBytes);
                                       },
+                                      child: Image.memory(
+                                        qrImageBytes,
+                                        fit: BoxFit.cover,
+                                        height: 120.w,
+                                        width: 120.w,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Icon(Icons
+                                              .error); // Display an error icon or widget
+                                        },
+                                      ),
                                     )
                                   : SizedBox(
                                       height: 120.w,
