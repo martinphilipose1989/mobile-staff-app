@@ -38,7 +38,7 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
               foregroundColor: AppColors.primary,
               onPressed: () {
                 Navigator.of(context)
-                    .pushReplacementNamed(RoutePaths.dashboard);
+                    .pushReplacementNamed(RoutePaths.transportDashBoardPage);
               },
               title: 'Lets Get Started',
               titleTextStyle: AppTypography.subtitle2),

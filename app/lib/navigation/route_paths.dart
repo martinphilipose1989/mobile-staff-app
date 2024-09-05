@@ -8,4 +8,7 @@ class RoutePaths {
   static const String createEditGatePassPage = "/createEditGatePassPage";
   static const String visitorDetailsPage = "/visitorDetailsPage";
   static const String qrCodeDetailsPage = "/qrcodepage";
+
+  // transport managment
+  static const String transportDashBoardPage = "/transportPage";
 }

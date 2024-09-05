@@ -18,7 +18,8 @@ class CommonPrimaryElevatedButton extends StatelessWidget {
       this.height,
       this.width,
       this.disabledForegroundColor,
-      this.disabledBackgroundColor});
+      this.disabledBackgroundColor,
+      this.icon});
 
   final VoidCallback onPressed;
   final String title;
@@ -34,11 +35,21 @@ class CommonPrimaryElevatedButton extends StatelessWidget {
   final double elevation;
   final double? height;
   final double? width;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: isDisabled || isLoading ? null : onPressed,
+      icon: isLoading
+          ? SizedBox.square(
+              dimension: 16.w,
+              child: CircularProgressIndicator.adaptive(
+                strokeWidth: 2.w,
+                valueColor: AlwaysStoppedAnimation(loaderColor ?? Colors.white),
+              ),
+            )
+          : icon,
       style: ElevatedButton.styleFrom(
           disabledForegroundColor: disabledForegroundColor,
           disabledBackgroundColor: disabledBackgroundColor,
@@ -48,23 +59,7 @@ class CommonPrimaryElevatedButton extends StatelessWidget {
           elevation: elevation,
           textStyle: titleTextStyle,
           fixedSize: Size(width ?? double.infinity, height ?? 40.h)),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (isLoading) ...{
-            SizedBox.square(
-              dimension: 16.w,
-              child: CircularProgressIndicator.adaptive(
-                strokeWidth: 2.w,
-                valueColor: AlwaysStoppedAnimation(loaderColor ?? Colors.white),
-              ),
-            ),
-            SizedBox(width: 8.w), // Add space between the icon and the label
-          },
-          Text(title),
-        ],
-      ),
+      label: Text(title),
     );
   }
 }

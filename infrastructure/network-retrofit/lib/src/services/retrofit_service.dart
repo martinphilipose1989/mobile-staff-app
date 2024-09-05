@@ -54,7 +54,8 @@ abstract class RetrofitService {
   @POST(NetworkProperties.uploadProfileImage)
   @MultiPart()
   Future<HttpResponse<UploadFileResponseEntity>> uploadProfileImage(
-      @Part(name: "file") File file);
+    @Part(name: "file") File file,
+  );
 
   @GET(NetworkProperties.populateVisitorData)
   Future<HttpResponse<VisitorPopulateResponseEntity>> populateVisitorData(
