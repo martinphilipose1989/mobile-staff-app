@@ -66,4 +66,5 @@ class AppImages {
   static const String camera = "assets/images/camera.svg";
   static const String qrImage = "assets/images/qr_image.svg";
   static const String noDataFound = "assets/images/empty_box.webp";
+  static const String backArrow = "assets/images/back_arrow.svg";
 }

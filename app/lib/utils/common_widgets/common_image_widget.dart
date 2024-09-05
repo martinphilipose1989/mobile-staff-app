@@ -43,7 +43,8 @@ class CommonImageWidget extends StatelessWidget {
           ),
         ),
       ),
-      useOldImageOnUrlChange: true,
+      cacheKey: imageUrl,
+      key: ValueKey(imageUrl),
       errorWidget: (context, url, error) => Image.asset(fallbackAssetImagePath,
           width: imageWidth, height: imageHeight, fit: assetImageBoxFit),
     );

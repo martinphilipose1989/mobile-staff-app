@@ -77,15 +77,15 @@ class VisitorListTile extends StatelessWidget {
                                 children: [
                                   TextSpan(
                                     text: "${visitorDataModel?.visitorName}\t",
-                                    style: AppTypography.caption.copyWith(
+                                    style: AppTypography.subtitle2.copyWith(
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.textDark,
-                                        fontSize: 12.sp),
+                                        fontSize: 14.sp),
                                   ),
                                   TextSpan(
                                     text:
                                         "(Visitor: ID#${visitorDataModel?.gatePassNumber ?? "N/A"})",
-                                    style: AppTypography.overline.copyWith(
+                                    style: AppTypography.smallCaption.copyWith(
                                         fontSize: 10.sp,
                                         color: AppColors.textGray,
                                         letterSpacing: 0.25),
@@ -94,23 +94,23 @@ class VisitorListTile extends StatelessWidget {
                               ),
                             ),
                           ),
-                          CommonText(
-                            text: "${visitorDataModel?.visitorType}",
-                            style: AppTypography.overline.copyWith(
+                          Text(
+                            "${visitorDataModel?.visitorType}",
+                            style: AppTypography.smallCaption.copyWith(
                                 color: AppColors.textGray,
                                 fontSize: 10.sp,
                                 letterSpacing: 0.25),
                           ),
                           CommonText(
                             text: "${visitorDataModel?.visitorEmail}",
-                            style: AppTypography.overline.copyWith(
+                            style: AppTypography.smallCaption.copyWith(
                                 color: AppColors.textGray,
                                 fontSize: 10.sp,
                                 letterSpacing: 0.25),
                           ),
                           CommonText(
                             text: "${visitorDataModel?.visitorMobile}",
-                            style: AppTypography.overline.copyWith(
+                            style: AppTypography.smallCaption.copyWith(
                                 color: AppColors.textGray, letterSpacing: 0.25),
                           ),
                         ],
