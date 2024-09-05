@@ -118,6 +118,7 @@ class VisitorListTile extends StatelessWidget {
                     ],
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         "${visitorDataModel?.issuedDate?.dateFormat()}",

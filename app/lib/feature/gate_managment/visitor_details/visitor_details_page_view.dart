@@ -91,7 +91,7 @@ class VisitorDetailsPageView
                                 visitorName:
                                     "${visitorData?.data?.visitorName ?? ''}  (#${visitorData?.data?.gatePassNumber ?? "N/A"})",
                                 issuedOn:
-                                    '${visitorData?.data?.issuedDate?.dateFormat()}${visitorData?.data?.issuedTime}',
+                                    '${visitorData?.data?.issuedDate?.dateFormat()}\t${visitorData?.data?.issuedTime}',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,
                                 avatarImagePath: visitorData
