@@ -69,28 +69,6 @@ class VisitorDetailsPageShimmer extends StatelessWidget {
               color: Colors.white,
             ),
             SizedBox(height: 16.h),
-
-            // Divider Shimmer
-            Container(
-              height: 1.h,
-              color: Colors.grey[300],
-            ),
-            SizedBox(height: 16.h),
-
-            // QR Details Shimmer
-            Container(
-              width: 80.w,
-              height: 20.h,
-              color: Colors.grey[300],
-            ),
-            SizedBox(height: 16.h),
-
-            // QR Code Image Shimmer
-            Container(
-              width: 120.w,
-              height: 120.w,
-              color: Colors.grey[300],
-            ),
           ],
         ),
       ),

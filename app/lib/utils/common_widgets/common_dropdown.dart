@@ -1,9 +1,11 @@
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
+import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CustomDropdownButton extends StatefulWidget {
@@ -84,92 +86,48 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              DropdownButtonHideUnderline(
-                child: DropdownButton2<String>(
-                  isExpanded: true,
-                  hint: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Select ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onTertiary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+              DropdownButtonFormField2<String>(
+                isExpanded: true,
+                hint: Row(
+                  children: [
+                    Expanded(
+                        child: CommonText(
+                            text: "Select",
+                            style: AppTypography.body1,
+                            color: AppColors.textGray)),
+                  ],
+                ),
+                items: widget.items
+                    .map(
+                      (String? item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: CommonText(
+                            text: item ?? "",
+                            style: AppTypography.body1,
+                            color: AppColors.textDark),
                       ),
-                    ],
+                    )
+                    .toList(),
+                value: singleSelectItemSubject.value == ''
+                    ? null
+                    : singleSelectItemSubject.value,
+                onChanged: (value) {
+                  widget.onSingleSelect!(value ?? "");
+                  singleSelectItemSubject.add(value ?? "");
+                },
+                iconStyleData: IconStyleData(
+                  icon: RotatedBox(
+                    quarterTurns: 3,
+                    child: SvgPicture.asset(AppImages.backArrow),
                   ),
-                  items: widget.items
-                      .map((String? item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item ?? "",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ))
-                      .toList(),
-                  value: singleSelectItemSubject.value == ''
-                      ? null
-                      : singleSelectItemSubject.value,
-                  onChanged: (value) {
-                    widget.onSingleSelect!(value ?? "");
-                    singleSelectItemSubject.add(value ?? "");
-                  },
-                  buttonStyleData: ButtonStyleData(
-                    height: 48.h,
-                    width: widget.width ?? 175.w,
-                    padding: const EdgeInsets.only(left: 14, right: 14),
+                ),
+                dropdownStyleData: DropdownStyleData(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                          color: widget.showBorderColor
-                              ? Colors.black26
-                              : Colors.transparent,
-                          width: 1),
-                      color: Colors.white,
-                    ),
-                  ),
-                  iconStyleData: const IconStyleData(
-                    icon: Icon(
-                      Icons.keyboard_arrow_down_sharp,
-                    ),
-                    iconSize: 14,
-                    iconEnabledColor: Colors.black,
-                    iconDisabledColor: Colors.grey,
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    direction: DropdownDirection.left,
-                    maxHeight: 200,
-                    width: widget.width ?? 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      color: Colors.white,
-                    ),
-                    offset: const Offset(1, 0),
-                    scrollbarTheme: ScrollbarThemeData(
-                      radius: const Radius.circular(40),
-                      thickness: WidgetStateProperty.all<double>(6),
-                      thumbVisibility: WidgetStateProperty.all<bool>(true),
-                    ),
-                    padding: REdgeInsets.only(
-                      top: widget.topPadding,
-                      bottom: widget.bottomPadding,
-                      right: widget.rightPadding,
-                      left: widget.leftPadding,
-                    ),
-                  ),
-                  menuItemStyleData: const MenuItemStyleData(
-                    height: 40,
-                    padding: EdgeInsets.only(left: 14, right: 14),
-                  ),
+                        borderRadius: BorderRadius.circular(4.r),
+                        color: AppColors.primaryOn)),
+                menuItemStyleData: const MenuItemStyleData(
+                  height: 40,
+                  padding: EdgeInsets.only(left: 14, right: 14),
                 ),
               ),
               Positioned(
@@ -185,16 +143,13 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                             CommonText(
                               text: widget.dropdownName,
                               style: AppTypography.caption
-                                  .copyWith(color: AppColors.textNeutral35),
+                                  .copyWith(color: AppColors.textGray),
                             ),
                             widget.showAstreik
                                 ? CommonText(
                                     text: ' *',
-                                    style: AppTypography.caption.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.failure,
-                                        fontSize: 12.sp),
-                                  )
+                                    color: AppColors.failure,
+                                    style: AppTypography.caption)
                                 : const SizedBox.shrink(),
                           ],
                         ),

@@ -59,7 +59,6 @@ class CommonTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60.h,
       padding: REdgeInsets.only(
           top: topPadding,
           bottom: bottomPadding,
@@ -95,6 +94,7 @@ class CommonTextFormField extends StatelessWidget {
             maxLines: maxLines ?? 1,
             decoration: decoration ??
                 InputDecoration(
+                    helperText: '',
                     prefixIcon: prefix,
                     prefixIconConstraints: prefixIconConstraints,
                     hintText: hintText ?? '',
@@ -124,9 +124,7 @@ class CommonTextFormField extends StatelessWidget {
                             ? CommonText(
                                 text: ' *',
                                 style: AppTypography.caption.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.failure,
-                                    fontSize: 12.sp),
+                                    color: AppColors.failure, fontSize: 12.sp),
                               )
                             : const SizedBox.shrink(),
                       ],

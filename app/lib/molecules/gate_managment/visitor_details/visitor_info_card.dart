@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 
@@ -72,15 +74,22 @@ class VisitorInfoCard extends StatelessWidget {
                 ),
               ),
               qrImagePath.isNotEmpty
-                  ? Image.memory(
-                      qrImagePath,
-                      fit: BoxFit.cover,
-                      height: 45.w,
-                      width: 45.w,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                            Icons.error); // Display an error icon or widget
+                  ? InkWell(
+                      onTap: () {
+                        navigatorKey.currentState?.pushNamed(
+                            RoutePaths.qrCodeDetailsPage,
+                            arguments: qrImagePath);
                       },
+                      child: Image.memory(
+                        qrImagePath,
+                        fit: BoxFit.cover,
+                        height: 45.w,
+                        width: 45.w,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                              Icons.error); // Display an error icon or widget
+                        },
+                      ),
                     )
                   : SizedBox(
                       height: 45.w,
@@ -89,38 +98,13 @@ class VisitorInfoCard extends StatelessWidget {
             ],
           ),
         ),
-        // Align(
-        //   alignment: Alignment.topCenter,
-        //   child: Card(
-        //       margin: EdgeInsets.zero,
-        //       shadowColor: AppColors.shadowColor,
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(
-        //           70.r,
-        //         ),
-        //       ),
-        //       child:  CircleAvatar(
-        //         radius: 70.r,
-        //         backgroundColor: Colors.white,
-        //         child: CircleAvatar(
-        //           radius: 60.r,
-        //           backgroundImage: NetworkImage(
-        //             avatarImagePath,
-        //           ),
-        //           onBackgroundImageError: (error, stackTrace) {},
-        //         ),
-        //       ),
-
-        //       ),
-        // ),
         Align(
           alignment: Alignment.topCenter,
-          child: Card(
+          child: Container(
             margin: EdgeInsets.zero,
-            shadowColor: AppColors.shadowColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(70.r),
-            ),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(70.r),
+                boxShadow: [AppColors.boxShadow]),
             child: CircleAvatar(
               radius: 70.r,
               backgroundColor: Colors.white,

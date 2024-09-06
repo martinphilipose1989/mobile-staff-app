@@ -22,45 +22,53 @@ class CommonSearchTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      onChanged: (value) {
-        if (value.isNotEmpty && value.startsWith(' ')) {
-          controller.text = value.trimLeft(); // Remove leading spaces
-          controller.selection = TextSelection.fromPosition(
-            TextPosition(offset: controller.text.length),
-          );
-        } else {
-          onChanged?.call(value);
-        }
-      },
-      decoration: InputDecoration(
-        prefixIcon: Padding(
-          padding: REdgeInsets.only(left: 16, right: 16),
-          child: prefixIcon ?? SvgPicture.asset(AppImages.searchIcon),
-        ),
-        hintStyle: AppTypography.subtitle1.copyWith(fontFamily: 'Poppins'),
-        hintText: hintText,
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.textLightGray),
-          borderRadius: BorderRadius.all(
-            Radius.circular(40.r),
+    return LayoutBuilder(builder: (context, constraints) {
+      double calculatedPadding = (constraints.maxHeight - 24.h) / 2;
+      return TextField(
+        controller: controller,
+        focusNode: focusNode,
+        textAlignVertical: TextAlignVertical.center,
+        onChanged: (value) {
+          if (value.isNotEmpty && value.startsWith(' ')) {
+            controller.text = value.trimLeft(); // Remove leading spaces
+            controller.selection = TextSelection.fromPosition(
+              TextPosition(offset: controller.text.length),
+            );
+          } else {
+            onChanged?.call(value);
+          }
+        },
+        decoration: InputDecoration(
+          prefixIcon: SizedBox(
+            height: 24.w,
+            width: 24.w,
+            child: prefixIcon ?? SvgPicture.asset(AppImages.searchIcon),
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: calculatedPadding),
+          hintStyle: AppTypography.subtitle1.copyWith(
+            fontFamily: 'Poppins',
+            color: AppColors.textLightGray,
+          ),
+          labelStyle: AppTypography.subtitle1.copyWith(
+            fontFamily: 'Poppins',
+            color: AppColors.textLightGray,
+          ),
+          hintText: hintText,
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColors.textLightGray),
+            borderRadius: BorderRadius.all(Radius.circular(28.r)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColors.textLightGray),
+            borderRadius: BorderRadius.all(Radius.circular(28.r)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColors.textLightGray),
+            borderRadius: BorderRadius.all(Radius.circular(28.r)),
           ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.textLightGray),
-          borderRadius: BorderRadius.all(
-            Radius.circular(40.r),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.textLightGray),
-          borderRadius: BorderRadius.all(
-            Radius.circular(40.r),
-          ),
-        ),
-      ),
-    );
+      );
+    });
   }
 }
