@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
+import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/parent_gatepass_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_details_response_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
@@ -13,6 +14,7 @@ import 'package:network_retrofit/src/model/response/gate_managment/upload_file_r
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_populate_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/mdm_coreason_entity.dart';
+import 'package:network_retrofit/src/model/response/login/login_response_entity.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
 
 import 'package:retrofit/retrofit.dart';
@@ -72,4 +74,8 @@ abstract class RetrofitService {
   Future<HttpResponse<ParentGatepassResponseEntity>> patchParentGatePass(
       @Path("gatepassId") String gatepassID,
       @Body() ParentGatePassRequestEntity requestBody);
+
+  @POST(NetworkProperties.gateLogin)
+  Future<HttpResponse<LoginResponseEntity>> gateLogin(
+      @Body() LoginRequestEntity requestBody);
 }

@@ -68,4 +68,9 @@ abstract class DomainModule {
       VisitorRepository visitorRepository) {
     return PatchParentGatepassUsecase(visitorRepository: visitorRepository);
   }
+
+  @lazySingleton
+  LoginUseCase loginUseCase(UserRepository userRepository) {
+    return LoginUseCase(userRepository);
+  }
 }

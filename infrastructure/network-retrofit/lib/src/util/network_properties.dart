@@ -18,4 +18,6 @@ abstract class NetworkProperties {
 
   static const String signOutVisitor =
       "gate-management/gatepass/{gatepassId}/sign-out";
+
+  static const String gateLogin = "gate-management/auth/generate-token";
 }

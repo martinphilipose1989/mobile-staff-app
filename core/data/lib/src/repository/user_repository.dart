@@ -10,9 +10,10 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(this.databaseProvider, this.networkPort);
 
   @override
-  Future<Either<NetworkError, User>> loginWithEmail(
+  Future<Either<NetworkError, LoginResponse>> loginWithEmail(
       {required String email, required String password}) {
-    throw UnimplementedError();
+    return networkPort.login(
+        loginRequest: LoginRequest(username: email, password: password));
   }
 
   @override

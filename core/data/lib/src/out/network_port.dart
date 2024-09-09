@@ -35,4 +35,7 @@ abstract class NetworkPort {
   Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
       {required String gatepassID,
       required ParentGatePassRequestModel requestModel});
+
+  Future<Either<NetworkError, LoginResponse>> login(
+      {required LoginRequest loginRequest});
 }

@@ -19,7 +19,8 @@ class LoginUseCase extends BaseUseCase<BaseError, LoginUseCaseParams, User> {
       (await _userRepository.loginWithEmail(
               email: params.emailOrPhone, password: params.password))
           .fold((l) => Left(l), (result) async {
-        return _userRepository.saveUser(result);
+        //TODO: Implement shared prefernce
+        return _userRepository.saveUser(User());
       }),
     );
   }

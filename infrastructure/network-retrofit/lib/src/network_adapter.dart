@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
+import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 
 import 'package:network_retrofit/src/util/safe_api_call.dart';
@@ -166,6 +167,21 @@ class NetworkAdapter implements NetworkPort {
               pointOfContact: requestModel.pointOfContact,
               purposeOfVisitId: requestModel.purposeOfVisitId,
               visitorTypeId: requestModel.visitorTypeId)),
+    );
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, LoginResponse>> login(
+      {required LoginRequest loginRequest}) async {
+    final response = await safeApiCall(
+      apiService.gateLogin(
+        LoginRequestEntity(
+          username: loginRequest.username,
+          password: loginRequest.password,
+        ),
+      ),
     );
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));

@@ -25,9 +25,15 @@ export 'src/model/response/gate_mangment/create_gate_pass_data_response_model.da
 export 'src/model/response/gate_mangment/mdm_coreason_response_model.dart';
 export 'src/model/response/gate_mangment/upload_response_model.dart';
 export 'src/model/error/local_error.dart';
+// gate managment
 export 'src/model/response/gate_mangment/visitor_populate_response_model.dart';
 export 'src/model/request/gate_managment/getvistor_list_request_model.dart';
 export 'src/model/response/gate_mangment/parent_gatepass_response_model.dart';
 export 'src/model/request/gate_managment/parent_gatepass_request_model.dart';
+
+// login
+export 'src/model/request/login/login_request.dart';
+export 'src/model/response/login/login_response.dart';
+
 //utils
 export 'src/utils/validator.dart';
