@@ -5,6 +5,7 @@ library shared;
 
 //constants
 export 'src/const/error_type.dart';
+export 'src/const/server_constants.dart';
 
 //models
 export 'src/model/app_error.dart';
