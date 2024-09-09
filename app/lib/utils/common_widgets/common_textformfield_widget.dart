@@ -58,7 +58,7 @@ class CommonTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: REdgeInsets.only(
           top: topPadding,
           bottom: bottomPadding,

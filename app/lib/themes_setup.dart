@@ -130,7 +130,6 @@ List<ThemeData> getThemes(BuildContext context) {
         selectionColor: AppColors.textPaleGray,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        isDense: true,
         hintStyle: TextStyle(
           color: AppColors.textDark.withOpacity(0.5),
           fontSize: 18,
