@@ -8,8 +8,10 @@ import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
+import 'package:themes/themes.dart';
 
 import 'splash_page_model.dart';
 
@@ -37,8 +39,17 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
               backgroundColor: Colors.white,
               foregroundColor: AppColors.primary,
               onPressed: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(RoutePaths.dashboard);
+                final SharedPreferencesService sharedPreferencesService =
+                    GetIt.I<SharedPreferencesService>();
+
+                final value = sharedPreferencesService.getFromDisk("token");
+
+                if (value != null) {
+                  Navigator.of(context)
+                      .pushReplacementNamed(RoutePaths.dashboard);
+                } else {
+                  Navigator.of(context).pushReplacementNamed(RoutePaths.login);
+                }
               },
               title: 'Lets Get Started',
               titleTextStyle: AppTypography.subtitle2),

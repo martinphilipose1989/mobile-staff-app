@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 import '../../base/app_base_page.dart';
@@ -23,6 +24,7 @@ class SplashPageState extends AppBasePageState<SplashViewModel, SplashPage> {
   @override
   void onModelReady(SplashViewModel model) {
     // bind exception handler here.
+
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
   }
 

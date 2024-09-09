@@ -75,6 +75,7 @@ dependencies:
   shimmer: ^3.0.0
   flutter_libphonenumber: ^2.3.0
   cached_network_image: 
+  flutter_secure_storage: ^9.2.2
 
 
 dev_dependencies:

@@ -2,6 +2,7 @@
 class RoutePaths {
   static const String splash = '/';
   static const String dashboard = "/dashboardPage";
+  static const String login = "/login";
 
 // gate managment
   static const String visitorListPage = "/visitorListPage";
