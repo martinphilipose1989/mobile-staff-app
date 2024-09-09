@@ -127,8 +127,7 @@ class CreateEditGatePassPageView
                             status: data?.status ?? Status.none,
                             loadingWidget: () => const SizedBox.shrink(),
                             successWidget: () => CustomDropdownButton(
-                              width: double.infinity,
-                              bottomPadding: 16,
+                              bottomPadding: 32,
                               items: data?.data?.data
                                       ?.map((e) => e.attributes?.name)
                                       .toList() ??
@@ -140,6 +139,12 @@ class CreateEditGatePassPageView
                               onMultiSelect: (_) {},
                               onSingleSelect: (value) {
                                 model.setTypeOfVisitorId(value);
+                              },
+                              validator: (value) {
+                                if (value == null || Validator.isEmpty(value)) {
+                                  return "Type of visitor cannot be empty";
+                                }
+                                return null;
                               },
                             ),
                           );
@@ -168,8 +173,7 @@ class CreateEditGatePassPageView
                             status: data?.status ?? Status.none,
                             loadingWidget: () => const SizedBox.shrink(),
                             successWidget: () => CustomDropdownButton(
-                              width: double.infinity,
-                              bottomPadding: 16,
+                              bottomPadding: 32,
                               items: data?.data?.data
                                       ?.map((e) => e.attributes?.name)
                                       .toList() ??
@@ -181,6 +185,12 @@ class CreateEditGatePassPageView
                               onMultiSelect: (_) {},
                               onSingleSelect: (value) {
                                 model.setPurposeOfVisitId(value);
+                              },
+                              validator: (value) {
+                                if (value == null || Validator.isEmpty(value)) {
+                                  return "Purpose of visit cannot be empty";
+                                }
+                                return null;
                               },
                             ),
                           );

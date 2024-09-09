@@ -27,11 +27,14 @@ class SearchTextFieldWithFilter extends StatelessWidget {
     return Row(
       children: [
         Flexible(
-          child: CommonSearchTextField(
-              hintText: hintText,
-              focusNode: model.focusNode,
-              controller: model.searchController,
-              onChanged: onChanged),
+          child: SizedBox(
+            height: 40.h,
+            child: CommonSearchTextField(
+                hintText: hintText,
+                focusNode: model.focusNode,
+                controller: model.searchController,
+                onChanged: onChanged),
+          ),
         ),
         Container(
           height: 56.h,

@@ -30,4 +30,9 @@ class SplashPageState extends AppBasePageState<SplashViewModel, SplashPage> {
   Widget buildView(BuildContext context, SplashViewModel model) {
     return SplashPageView(provideBase());
   }
+
+  @override
+  bool extendBodyBehindAppBar() {
+    return true;
+  }
 }

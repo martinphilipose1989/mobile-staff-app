@@ -27,11 +27,10 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       systemOverlayStyle:
           const SystemUiOverlayStyle(statusBarColor: AppColors.primaryLighter),
       backgroundColor: AppColors.primaryLighter,
+      centerTitle: false,
       leading: showBackButton == true
           ? IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios,
-              ),
+              icon: SvgPicture.asset(AppImages.backArrow),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -40,16 +39,12 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
               onTap: () {
                 Scaffold.of(context).openDrawer();
               },
-              child: SvgPicture.asset(
-                AppImages.menuHamburgerLogo,
-                height: 24.h,
-                width: 24.w,
-              ),
-            ),
+              child: SvgPicture.asset(AppImages.menuHamburgerLogo,
+                  height: 24.h, width: 24.w)),
       title: CommonText(
-        text: appbarTitle,
-        style: AppTypography.subtitle1,
-      ),
+          text: appbarTitle,
+          style: AppTypography.subtitle1,
+          color: AppColors.textDark),
       iconTheme: Theme.of(context).appBarTheme.iconTheme,
       actions: (notShowNotificationAndUserBatch ?? false)
           ? []

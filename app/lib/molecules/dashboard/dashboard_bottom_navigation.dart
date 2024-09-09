@@ -22,51 +22,56 @@ class DashboardBottomNavigation extends StatelessWidget {
         initialData: model.selectedIndex.value,
         stream: model.selectedIndex,
         dataBuilder: (context, data) {
-          return BottomNavigationBar(
-            backgroundColor: Colors.white,
-            currentIndex: data!,
-            selectedLabelStyle:
-                AppTypography.caption.copyWith(color: AppColors.primary),
-            selectedFontSize: 12.sp,
-            unselectedFontSize: 12.sp,
-            unselectedLabelStyle:
-                AppTypography.caption.copyWith(color: AppColors.textGray),
-            onTap: (index) {
-              if (index == 0) {
-                model.selectedIndex.value = index;
-              } else if (index == 1) {
-                model.selectedIndex.value = index;
-                Navigator.push(
+          return SafeArea(
+            bottom: true,
+            maintainBottomViewPadding: true,
+            child: BottomNavigationBar(
+              backgroundColor: Colors.white,
+              currentIndex: data!,
+              selectedLabelStyle:
+                  AppTypography.caption.copyWith(color: AppColors.primary),
+              selectedFontSize: 12.sp,
+              unselectedFontSize: 12.sp,
+              unselectedLabelStyle:
+                  AppTypography.caption.copyWith(color: AppColors.textGray),
+              onTap: (index) {
+                if (index == 0) {
+                  model.selectedIndex.value = index;
+                } else if (index == 1) {
+                  model.selectedIndex.value = index;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const GatePassQrScannerPage())).then((val) {
+                    model.selectedIndex.value = 0;
+                  });
+                } else if (index == 2) {
+                  model.selectedIndex.value = index;
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const GatePassQrScannerPage())).then((val) {
-                  model.selectedIndex.value = 0;
-                });
-              } else if (index == 2) {
-                model.selectedIndex.value = index;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreateEditGatePassPage(),
-                  ),
-                ).then((val) {
-                  model.selectedIndex.value = 0;
-                });
-              }
-            },
-            items: [
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(AppImages.homeBottomIcon),
-                  label: "Home",
-                  activeIcon: SvgPicture.asset(AppImages.homeActiveBottomIcon)),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(AppImages.qrBottomIcon),
-                  label: "Scan QR"),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(AppImages.gatePassBottomIcon),
-                  label: "Create Gate-pass")
-            ],
+                      builder: (context) => const CreateEditGatePassPage(),
+                    ),
+                  ).then((val) {
+                    model.selectedIndex.value = 0;
+                  });
+                }
+              },
+              items: [
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(AppImages.homeBottomIcon),
+                    label: "Home",
+                    activeIcon:
+                        SvgPicture.asset(AppImages.homeActiveBottomIcon)),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(AppImages.qrBottomIcon),
+                    label: "Scan QR"),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(AppImages.gatePassBottomIcon),
+                    label: "Create Gate-pass")
+              ],
+            ),
           );
         });
   }

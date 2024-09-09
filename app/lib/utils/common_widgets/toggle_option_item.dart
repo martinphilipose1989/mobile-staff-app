@@ -48,10 +48,11 @@ class ToggleOptionItem<T> extends StatelessWidget {
         ),
         child: CommonText(
           text: text,
-          style: AppTypography.overline.copyWith(
+          style: AppTypography.subtitle2.copyWith(
               color: isSelected ? selectedTextColor : unselectedTextColor,
               fontSize: 14.sp,
-              letterSpacing: 0),
+              letterSpacing: 0,
+              fontWeight: FontWeight.w500),
         ),
       ),
     );

@@ -20,8 +20,8 @@ class VisitorListPageViewModel extends BasePageViewModel {
   final SearchVisitorUsecase _searchVisitorUsecase;
 
   final statusTypeList = [
-    const ToggleOption<String>(value: "In", text: "IN"),
-    const ToggleOption<String>(value: "Out", text: "OUT")
+    const ToggleOption<String>(value: "In", text: "In"),
+    const ToggleOption<String>(value: "Out", text: "Out")
   ];
 
   final TextEditingController searchController = TextEditingController();

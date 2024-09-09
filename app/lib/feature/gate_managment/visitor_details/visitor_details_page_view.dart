@@ -8,12 +8,9 @@ import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_row.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_shimmer.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_info_card.dart';
-import 'package:app/myapp.dart';
-import 'package:app/navigation/route_paths.dart';
-import 'package:app/themes_setup.dart';
-import 'package:app/utils/app_typography.dart';
+
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
-import 'package:app/utils/common_widgets/common_text_widget.dart';
+
 import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
 import 'package:app/utils/dateformate.dart';
@@ -91,7 +88,7 @@ class VisitorDetailsPageView
                                 visitorName:
                                     "${visitorData?.data?.visitorName ?? ''}  (#${visitorData?.data?.gatePassNumber ?? "N/A"})",
                                 issuedOn:
-                                    '${visitorData?.data?.issuedDate?.dateFormat()}${visitorData?.data?.issuedTime}',
+                                    '${visitorData?.data?.issuedDate?.dateFormat()}\t${visitorData?.data?.issuedTime}',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,
                                 avatarImagePath: visitorData
@@ -110,7 +107,7 @@ class VisitorDetailsPageView
                                 title1: "Type of visitor",
                                 //value1: "parent",
                                 value1: visitorData?.data?.visitorType ?? '',
-                                title2: "",
+                                title2: "Student Name",
                                 // value2: "Khevna Shah",
                                 value2: "",
                               ),
@@ -137,42 +134,6 @@ class VisitorDetailsPageView
                                     visitorData?.data?.guestCount.toString() ??
                                         '',
                               ),
-                              Divider(
-                                height: 32.h,
-                                color: AppColors.dividerColor,
-                              ),
-                              CommonText(
-                                text: "QR Details",
-                                style: AppTypography.subtitle1.copyWith(
-                                  color: AppColors.textGray,
-                                  fontSize: 16.sp,
-                                  height: 1.1,
-                                ),
-                              ),
-                              SizedBox(height: 16.h),
-                              qrImageBytes.isNotEmpty
-                                  ? InkWell(
-                                      onTap: () {
-                                        navigatorKey.currentState?.pushNamed(
-                                            RoutePaths.qrCodeDetailsPage,
-                                            arguments: qrImageBytes);
-                                      },
-                                      child: Image.memory(
-                                        qrImageBytes,
-                                        fit: BoxFit.cover,
-                                        height: 120.w,
-                                        width: 120.w,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return const Icon(Icons
-                                              .error); // Display an error icon or widget
-                                        },
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      height: 120.w,
-                                      width: 120.w,
-                                    )
                             ],
                           ),
                         ),

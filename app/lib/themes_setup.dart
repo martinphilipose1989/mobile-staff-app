@@ -46,6 +46,12 @@ class AppColors {
   static const Color dividerColor = Color(0xFFE0E0E0);
 
   static Color shadowColor = const Color(0xFF4C4E64).withOpacity(0.22);
+
+  static BoxShadow boxShadow = BoxShadow(
+      color: AppColors.shadowColor.withOpacity(0.22),
+      blurRadius: 10,
+      // blurStyle: BlurStyle.solid,
+      offset: const Offset(0, 2));
 }
 
 List<ThemeData> getThemes(BuildContext context) {
@@ -138,26 +144,29 @@ List<ThemeData> getThemes(BuildContext context) {
           ),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
             color: AppColors.textDark.withOpacity(0.5),
-            width: 1,
+            width: 0.5,
           ),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
             color: AppColors.failure,
             width: 0.5,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
             color: AppColors.textDark.withOpacity(0.5),
-            width: 1,
+            width: 0.5,
           ),
         ),
         errorStyle: const TextStyle(color: AppColors.failure),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 17, horizontal: 18),
+        // contentPadding:
+        //     const EdgeInsets.symmetric(vertical: 17, horizontal: 18),
       ),
     ),
     ThemeData(
@@ -248,26 +257,29 @@ List<ThemeData> getThemes(BuildContext context) {
           ),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
             color: AppColors.textDark.withOpacity(0.5),
-            width: 1,
+            width: 0.5,
           ),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
             color: AppColors.failure,
             width: 0.5,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
             color: AppColors.textDark.withOpacity(0.5),
-            width: 1,
+            width: 0.5,
           ),
         ),
         errorStyle: const TextStyle(color: AppColors.failure),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 17, horizontal: 18),
+        // contentPadding:
+        //     const EdgeInsets.symmetric(vertical: 17, horizontal: 18),
       ),
     ),
   ];

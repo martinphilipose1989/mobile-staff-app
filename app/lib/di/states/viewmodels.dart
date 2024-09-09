@@ -5,6 +5,7 @@ import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_sca
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page_viewmodel.dart';
 import 'package:app/feature/splash/splash_page_model.dart';
+import 'package:app/feature/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
 import 'package:app/utils/commonTime/common_time_model.dart';
 import 'package:app/utils/common_calendar/common_calendar_model.dart';
 import 'package:app/utils/common_widgets/common_chip_list/common_chip_list_view_model.dart';
@@ -88,3 +89,9 @@ final gatePassQrScannerViewModelProvider =
           exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
           flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
         ));
+
+final transportDashboardPageViewModelProvider =
+    ChangeNotifierProvider.autoDispose<TransportDashboardPageViewModel>((ref) =>
+        TransportDashboardPageViewModel(
+            exceptionHandlerBinder:
+                getIt.get<FlutterExceptionHandlerBinder>()));

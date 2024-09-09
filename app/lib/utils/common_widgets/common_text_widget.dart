@@ -8,31 +8,34 @@ class CommonText extends StatelessWidget {
   final int? maxLines;
   final TextDirection? textDirection;
   final bool? softWrap;
-  final double? textScaleFactor;
+  final double textScaleFactor;
+  final Color? color;
 
   const CommonText({
     super.key,
     required this.text,
+    this.color,
     this.style,
     this.textAlign,
     this.overflow,
     this.maxLines,
     this.textDirection,
     this.softWrap,
-    this.textScaleFactor = 1.0, // Default to 1.0 to maintain consistent size
+    this.textScaleFactor = 1.0,
+    // Default to 1.0 to maintain consistent size
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: style,
+      style: style?.copyWith(color: color),
       textAlign: textAlign,
       overflow: overflow,
       maxLines: maxLines,
       textDirection: textDirection,
       softWrap: softWrap,
-      textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
+      textScaler: TextScaler.linear(textScaleFactor),
     );
   }
 }

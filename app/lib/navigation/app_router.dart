@@ -5,6 +5,7 @@ import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gat
 import 'package:app/feature/gate_managment/visitor_details/qr_details.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_page.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page.dart';
+import 'package:app/feature/transport_managment_dashboard/transport_dashboard_page.dart';
 import 'package:flutter/cupertino.dart';
 import '../feature/splash/splash_page.dart';
 import 'route_paths.dart';
@@ -45,6 +46,11 @@ class AppRouter {
         final arguments = settings.arguments as Uint8List;
         return CupertinoPageRoute(
           builder: (context) => QrDetailsPage(qrImageBytes: arguments),
+        );
+
+      case RoutePaths.transportDashBoardPage:
+        return CupertinoPageRoute(
+          builder: (context) => const TransportDashboardPage(),
         );
 
       default:
