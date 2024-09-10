@@ -2,10 +2,14 @@ import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/string_formatter.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
+import 'package:themes/themes.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -67,9 +71,16 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                     borderRadius: BorderRadius.circular(8.00),
                     border: Border.all(color: AppColors.primary),
                     color: AppColors.primary.withOpacity(0.2)),
-                child: const CommonText(
-                  text: 'ss',
-                  style: TextStyle(color: AppColors.primary),
+                child: CommonText(
+                  text: GetIt.I<SharedPreferencesService>()
+                              .getFromDisk(CommonVariables.userInfoKey) ==
+                          null
+                      ? ""
+                      : GetIt.I<SharedPreferencesService>()
+                          .getFromDisk(CommonVariables.userInfoKey)
+                          .toString()
+                          .getInitials(),
+                  style: const TextStyle(color: AppColors.primary),
                 ),
               )
             ],
