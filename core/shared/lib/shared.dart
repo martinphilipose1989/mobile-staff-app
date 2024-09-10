@@ -6,6 +6,7 @@ library shared;
 //constants
 export 'src/const/error_type.dart';
 export 'src/const/server_constants.dart';
+export 'src/const/common_variables.dart';
 
 //models
 export 'src/model/app_error.dart';
@@ -35,6 +36,10 @@ export 'src/model/request/gate_managment/parent_gatepass_request_model.dart';
 // login
 export 'src/model/request/login/login_request.dart';
 export 'src/model/response/login/login_response.dart';
+
+// user permission
+export 'src/model/response/user_permission/user_permission.dart';
+export 'src/model/request/user_permission/user_permission_request.dart';
 
 //utils
 export 'src/utils/validator.dart';

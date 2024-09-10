@@ -6,6 +6,7 @@ import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
@@ -42,7 +43,8 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                 final SharedPreferencesService sharedPreferencesService =
                     GetIt.I<SharedPreferencesService>();
 
-                final value = sharedPreferencesService.getFromDisk("token");
+                final value = sharedPreferencesService
+                    .getFromDisk(CommonVariables.tokenKey);
 
                 if (value != null) {
                   Navigator.of(context)

@@ -23,18 +23,21 @@ class LoginUseCase
 
     return repoResult.fold((error) {
       return Left(error);
-    }, (data) {
-      sharedPreferencesService.saveToDisk("token", data.data?.accessToken);
+    }, (data) async {
+      sharedPreferencesService.saveToDisk(
+          CommonVariables.tokenKey, data.data?.accessToken);
+
+      final result = await _userRepository.userPermissionDetails(
+          UserPermissionRequest(
+              userEmail: params.emailOrPhone,
+              applicationId: CommonVariables.gateApplicationId,
+              service: CommonVariables.gateService));
+      result.fold((error) {}, (data) {
+        sharedPreferencesService.saveToDisk(
+            CommonVariables.userInfoKey, data.data?.userInfo?.name);
+      });
       return Right(data);
     });
-    // return Future.value(
-    //   (await _userRepository.loginWithEmail(
-    //           email: params.emailOrPhone, password: params.password))
-    //       .fold((l) => Left(l), (result) async {
-    //     //TODO: Implement shared prefernce
-    //     return _userRepository.saveUser(User());
-    //   }),
-    // );
   }
 }
 

@@ -38,4 +38,7 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, LoginResponse>> login(
       {required LoginRequest loginRequest});
+
+  Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
+      {required UserPermissionRequest request});
 }

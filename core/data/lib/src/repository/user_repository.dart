@@ -20,4 +20,10 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<DatabaseError, User>> saveUser(User user) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
+      UserPermissionRequest request) {
+    return networkPort.userPermissionDetails(request: request);
+  }
 }

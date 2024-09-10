@@ -6,4 +6,7 @@ abstract class UserRepository {
       {required String email, required String password});
 
   Future<Either<DatabaseError, User>> saveUser(User user);
+
+  Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
+      UserPermissionRequest request);
 }

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
+import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/parent_gatepass_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_details_response_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/create_gatepass_entity.dart';
@@ -15,6 +16,7 @@ import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_populate_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/mdm_coreason_entity.dart';
 import 'package:network_retrofit/src/model/response/login/login_response_entity.dart';
+import 'package:network_retrofit/src/model/response/user_permission/user_permission_entity_response.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
 
 import 'package:retrofit/retrofit.dart';
@@ -78,4 +80,8 @@ abstract class RetrofitService {
   @POST(NetworkProperties.gateLogin)
   Future<HttpResponse<LoginResponseEntity>> gateLogin(
       @Body() LoginRequestEntity requestBody);
+
+  @POST(NetworkProperties.getUserRoleBasePermission)
+  Future<HttpResponse<UserPermissionEntityResponse>> getUserRoleBasedDetails(
+      @Body() UserPermissionEntityRequest requestBody);
 }
