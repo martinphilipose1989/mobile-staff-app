@@ -12,4 +12,6 @@ class RoutePaths {
 
   // transport managment
   static const String transportDashBoardPage = "/transportPage";
+  // login
+  static const String webLogin = "/webLogin";
 }
