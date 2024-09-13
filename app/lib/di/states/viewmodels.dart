@@ -19,8 +19,12 @@ import '../../dependencies.dart';
 
 final splashViewModelProvider =
     ChangeNotifierProvider.autoDispose<SplashViewModel>(
-  (ref) => SplashViewModel(getIt.get<String>(instanceName: "BaseUrl"),
-      getIt.get<FlutterExceptionHandlerBinder>()),
+  (ref) => SplashViewModel(
+    getIt.get<String>(instanceName: "BaseUrl"),
+    getIt.get<FlutterExceptionHandlerBinder>(),
+    getIt.get<AuthUsecase>(),
+    getIt.get<FlutterToastErrorPresenter>(),
+  ),
 );
 
 final commonCalendarModelProvider =
@@ -101,6 +105,5 @@ final loginPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<LoginPageViewModel>((ref) =>
         LoginPageViewModel(
             flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
-            loginUsecase: getIt.get<LoginUseCase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));

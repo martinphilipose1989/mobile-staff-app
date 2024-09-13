@@ -30,5 +30,12 @@ enum ErrorType {
   filePickerFailed,
 
   //QR Error
-  qrCodeInvalid
+  qrCodeInvalid,
+
+  // Auth Error
+  appAuthUserCancelled,
+  appAuthPlatformException,
+
+  // Storage
+  storageError
 }

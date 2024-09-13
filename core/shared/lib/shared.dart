@@ -36,6 +36,7 @@ export 'src/model/request/gate_managment/parent_gatepass_request_model.dart';
 // login
 export 'src/model/request/login/login_request.dart';
 export 'src/model/response/login/login_response.dart';
+export 'src/model/response/login/auth_response.dart';
 
 // user permission
 export 'src/model/response/user_permission/user_permission.dart';

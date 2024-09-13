@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -26,15 +24,9 @@ class MyInAppWebViewState extends State<MyInAppWebView> {
         onWebViewCreated: (controller) {
           webViewController = controller;
         },
-        onLoadStart: (controller, url) {
-          log("Started loading: $url");
-        },
-        onLoadStop: (controller, url) async {
-          log("Finished loading: $url");
-        },
-        onProgressChanged: (controller, progress) {
-          log("Progress: $progress%");
-        },
+        onLoadStart: (controller, url) {},
+        onLoadStop: (controller, url) async {},
+        onProgressChanged: (controller, progress) {},
       ),
     );
   }

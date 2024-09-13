@@ -14,8 +14,8 @@ dependencies:
     path: ../../dependency-injection/
   data:
     path: ../../core/data/
-  themes:
-    path: ../../themes/  
+  services:
+    path: ../../services/    
   dio:
   retrofit: ^4.1.0
   logger: any  #for logging purpose

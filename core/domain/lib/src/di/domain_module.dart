@@ -1,4 +1,5 @@
 import 'package:domain/domain.dart';
+
 import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
 import 'package:injectable/injectable.dart';
 
@@ -71,13 +72,13 @@ abstract class DomainModule {
   }
 
   @lazySingleton
-  LoginUseCase loginUseCase(UserRepository userRepository) {
-    return LoginUseCase(userRepository);
-  }
-
-  @lazySingleton
   UserPermissionDetailsUsecase userPermissionDetailsUsecase(
       UserRepository userRepository) {
     return UserPermissionDetailsUsecase(userRepository: userRepository);
+  }
+
+  @lazySingleton
+  AuthUsecase authUsecase(UserRepository userRepository) {
+    return AuthUsecase(userRepository: userRepository);
   }
 }

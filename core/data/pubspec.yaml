@@ -12,12 +12,15 @@ dependencies:
   injectable:
   dependency_injection:
     path: ../../dependency-injection/
+  services:
+    path: ../../services/  
   domain:
     path: ../domain
   shared:
     path: ../shared
   image_picker: 
   file_picker:  
+  flutter_appauth: ^7.0.0
 
 
 dev_dependencies:

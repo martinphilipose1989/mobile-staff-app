@@ -95,7 +95,7 @@ class VisitorListTile extends StatelessWidget {
                               letterSpacing: 0.25),
                         ),
                         CommonText(
-                          text: "${visitorDataModel?.visitorEmail}",
+                          text: visitorDataModel?.visitorEmail ?? "",
                           style: AppTypography.smallCaption.copyWith(
                               color: AppColors.textGray,
                               fontSize: 10.sp,

@@ -10,6 +10,10 @@ void main() {
     values: const FlavorValues(
       apiBaseUrl: "https://gate-management-r26sp3mibq-uc.a.run.app/",
       mdmBaseUrl: "https://ampersand-r26sp3mibq-uc.a.run.app/api/co-reasons/",
+      authorizationEndpoint:
+          'https://qa.vgos.org/realms/ampersand-internal-qa/protocol/openid-connect/auth',
+      tokenEndpoint:
+          'https://qa.vgos.org/realms/ampersand-internal-qa/protocol/openid-connect/token',
       secrets: AppSecrets.appSecretsProd,
     ),
   );

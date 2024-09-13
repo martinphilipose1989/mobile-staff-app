@@ -1,6 +1,5 @@
 // ignore_for_file: unused_field
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:data/data.dart';
@@ -45,7 +44,6 @@ class AttachmentAdapter implements AttachmentPort {
             size: platformFile.lengthSync(),
             filePath: platformFile.path);
       } else {
-        log("message");
         throw Exception(ErrorType.imagePickerCancelled.name);
       }
     } catch (e) {
