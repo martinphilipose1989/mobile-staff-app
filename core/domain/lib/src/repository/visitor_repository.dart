@@ -26,9 +26,7 @@ abstract class VisitorRepository {
       populateVisitorData({required String visitorMobileNumber});
 
   Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
-      {required int pageNumber,
-      required int pageSize,
-      required String searchQuery});
+      {required SearchRequest request});
 
   Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
       {required String gatepassID,

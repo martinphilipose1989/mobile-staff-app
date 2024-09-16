@@ -15,6 +15,7 @@ import 'package:network_retrofit/src/model/response/gate_managment/upload_file_r
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_list_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_populate_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/mdm_coreason_entity.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
 import 'package:network_retrofit/src/model/response/login/login_response_entity.dart';
 import 'package:network_retrofit/src/model/response/user_permission/user_permission_entity_response.dart';
 import 'package:network_retrofit/src/util/network_properties.dart';
@@ -65,12 +66,9 @@ abstract class RetrofitService {
   Future<HttpResponse<VisitorPopulateResponseEntity>> populateVisitorData(
       @Path("mobile") visitorMobileNumber);
 
-  @GET(NetworkProperties.globalSearchVisitor)
+  @POST(NetworkProperties.globalSearchVisitor)
   Future<HttpResponse<VisitorListResponseEntity>> searchVisitorList(
-      @Query('pageNumber') int pageNumber,
-      @Query('pageSize') int pageSize,
-      @Query('search') String searchQuery,
-      CancelToken? cancelToken);
+      @Body() SearchRequestEntity request, CancelToken? cancelToken);
 
   @PATCH(NetworkProperties.getVisitorDetails)
   Future<HttpResponse<ParentGatepassResponseEntity>> patchParentGatePass(

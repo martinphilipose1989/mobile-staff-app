@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appauth/src/utils/auth_config.dart';
 import 'package:data/data.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
@@ -33,6 +35,7 @@ class AppAuthAdapter implements AppAuthPort {
             "email"
           ]);
       final response = await _flutterAppAuth.authorizeAndExchangeCode(request);
+
       return response;
     } on FlutterAppAuthUserCancelledException catch (e) {
       throw LocalError(

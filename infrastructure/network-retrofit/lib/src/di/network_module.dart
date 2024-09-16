@@ -1,3 +1,4 @@
+import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:data/data.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -26,6 +27,10 @@ abstract class NetworkModule {
       );
 
   @singleton
+  CurlLoggerDioInterceptor providerCurlLogger() =>
+      CurlLoggerDioInterceptor(printOnSuccess: true);
+
+  @singleton
   ApiInterceptor provideApiInterceptor(@Named("ApiKey") String apiKey) =>
       ApiInterceptor(apiKey);
 
@@ -33,9 +38,12 @@ abstract class NetworkModule {
   TokenInterceptor provideTokenInterceptor() => TokenInterceptor();
 
   @singleton
-  List<Interceptor> providerInterceptors(PrettyDioLogger logger,
-          ApiInterceptor apiInterceptor, TokenInterceptor tokenInterceptor) =>
-      <Interceptor>[tokenInterceptor, apiInterceptor, logger];
+  List<Interceptor> providerInterceptors(
+          PrettyDioLogger logger,
+          ApiInterceptor apiInterceptor,
+          TokenInterceptor tokenInterceptor,
+          CurlLoggerDioInterceptor curlInterceptor) =>
+      <Interceptor>[tokenInterceptor, apiInterceptor, logger, curlInterceptor];
 
   @lazySingleton
   Dio providerDio(BaseOptions options, List<Interceptor> interceptors) {

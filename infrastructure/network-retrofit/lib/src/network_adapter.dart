@@ -9,6 +9,7 @@ import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_e
 import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
 
 import 'package:network_retrofit/src/util/safe_api_call.dart';
 import 'package:retrofit/retrofit.dart';
@@ -138,16 +139,18 @@ class NetworkAdapter implements NetworkPort {
 
   @override
   Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
-      {required int pageNumber,
-      required int pageSize,
-      required String searchQuery}) async {
+      {required SearchRequest requestBody}) async {
     _cancelToken?.cancel();
 
     // Create a new CancelToken for the new request
     _cancelToken = CancelToken();
 
     final response = await safeApiCall(apiService.searchVisitorList(
-        pageNumber, pageSize, searchQuery, _cancelToken));
+        SearchRequestEntity(
+            pageNumber: requestBody.pageNumber,
+            pageSize: requestBody.pageSize,
+            search: requestBody.search),
+        _cancelToken));
 
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));

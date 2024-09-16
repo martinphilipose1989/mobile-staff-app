@@ -12,9 +12,7 @@ class VisitorRepositoryImpl extends VisitorRepository {
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails({
     required String gatepassId,
   }) {
-    return networkPort.getVisitorDetails(
-      gatepassId: gatepassId,
-    );
+    return networkPort.getVisitorDetails(gatepassId: gatepassId);
   }
 
   @override
@@ -24,9 +22,7 @@ class VisitorRepositoryImpl extends VisitorRepository {
     required Map<String, dynamic> outgoingTime,
   }) {
     return networkPort.petchVisitorDetails(
-      gatepassId: gatepassId,
-      outgoingTime: outgoingTime,
-    );
+        gatepassId: gatepassId, outgoingTime: outgoingTime);
   }
 
   @override
@@ -67,11 +63,12 @@ class VisitorRepositoryImpl extends VisitorRepository {
 
   @override
   Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
-      {required int pageNumber,
-      required int pageSize,
-      required String searchQuery}) {
+      {required SearchRequest request}) {
     return networkPort.searchVisitorList(
-        pageNumber: pageNumber, pageSize: pageSize, searchQuery: searchQuery);
+        requestBody: SearchRequest(
+            pageNumber: request.pageNumber,
+            pageSize: request.pageSize,
+            search: request.search));
   }
 
   @override
