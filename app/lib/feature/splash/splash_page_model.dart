@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
+
 import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';
 import 'package:app/navigation/route_paths.dart';
@@ -49,9 +51,12 @@ class SplashViewModel extends BasePageViewModel {
           .asFlow()
           .listen((data) {
         if (data.status == Status.success) {
-          isLoadingSubject.add(Resource.success(data: false));
+          log("RESPONSE SUCCESS");
+
           Navigator.of(navigatorKey.currentContext!)
               .pushReplacementNamed(RoutePaths.dashboard);
+
+          // isLoadingSubject.add(Resource.success(data: false));
         } else if (data.status == Status.loading ||
             data.status == Status.error) {
           isLoadingSubject.add(Resource.none());

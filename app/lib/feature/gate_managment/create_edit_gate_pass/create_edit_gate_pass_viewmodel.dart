@@ -132,6 +132,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       _createGatePassResponse.stream;
 
   final TextEditingController visitorNameController = TextEditingController();
+
   final TextEditingController contactNumberController = TextEditingController();
   final TextEditingController emailIDController = TextEditingController();
   final TextEditingController comingFromController = TextEditingController();

@@ -52,7 +52,11 @@ class CreateEditGatePassPageView
                       CommonTextFormField(
                         bottomPadding: 16,
                         showAstreik: true,
-                        labelText: "Visitor Name",
+                        labelText:
+                            arguments?.parentData.visitorName?.isNotEmpty ??
+                                    false
+                                ? "Parent Name"
+                                : "Visitor Name",
                         readOnly:
                             arguments?.parentData.visitorName?.isNotEmpty ??
                                 false,
@@ -64,7 +68,7 @@ class CreateEditGatePassPageView
                         ],
                         validator: (value) {
                           if (Validator.isEmpty(value!)) {
-                            return "Visitor Name cannot be empty";
+                            return "${arguments?.parentData.visitorName?.isNotEmpty ?? false ? "Parent Name" : "Visitor Name"} cannot be empty";
                           }
                           return null;
                         },

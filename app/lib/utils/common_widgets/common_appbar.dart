@@ -75,7 +75,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                   text: GetIt.I<SharedPreferencesService>()
                               .getFromDisk(CommonVariables.userInfoKey) ==
                           null
-                      ? ""
+                      ? "SS"
                       : GetIt.I<SharedPreferencesService>()
                           .getFromDisk(CommonVariables.userInfoKey)
                           .toString()

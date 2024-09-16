@@ -15,7 +15,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
   final GetVisitorListUsecase _getVisitorListUsecase;
   final GetTypeOfVisitorListUsecase _getTypeOfVisitorListUsecase;
 
-  final selectedStatus = BehaviorSubject<String>.seeded("");
+  final selectedStatus = BehaviorSubject<String>.seeded("In");
   final selectedVisitStatusFilter = BehaviorSubject<String>.seeded("");
   final SearchVisitorUsecase _searchVisitorUsecase;
 
@@ -61,14 +61,15 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   FocusNode focusNode = FocusNode();
 
-  BehaviorSubject<String> hinText = BehaviorSubject.seeded("Search Visitor");
+  BehaviorSubject<String> hinText =
+      BehaviorSubject.seeded("Search by Name,Email,Contact");
 
   void onFocusChange() {
-    if (focusNode.hasFocus) {
-      hinText.add("Search by Name,Email,Contact,Point of Contact...");
-    } else {
-      hinText.add("Search Visitor");
-    }
+    // if (focusNode.hasFocus) {
+    //   hinText.add("Search by Name,Email,Contact");
+    // } else {
+    //   hinText.add("Search Visitor");
+    // }
   }
 
   VisitorListPageViewModel(
@@ -245,20 +246,41 @@ class VisitorListPageViewModel extends BasePageViewModel {
       hasMorePagesSubject.add(true);
       _loadingSubject.add(false);
 
-      SearchUseCaseParams params = SearchUseCaseParams(
-          pageNumber: _pageSubject.value,
-          pageSize: pageSize,
-          searchQuery: searchQuery);
+      fetchVisitorListWithSearch(searchQuery);
+    });
+  }
 
-      RequestManager(params,
-              createCall: () => _searchVisitorUsecase.execute(params: params))
-          .asFlow()
-          .listen((result) {
+  void fetchVisitorListWithSearch(String searchQuery) {
+    _exceptionHandlerBinder.handle(block: () {
+      final params = GetVisitorListUsecaseParams(
+        requestBody: GetVisitorListRequestModel(
+            pageNumber: _pageSubject.value,
+            pageSize: pageSize,
+            search: searchQuery,
+            filters: [
+              if (selectedStatus.value.isNotEmpty) ...{
+                FilterRequestModel(
+                    column: "visit_status",
+                    operation: "equals",
+                    search: selectedStatus.value)
+              },
+              if (selectedTypeOfVisitor.value.isNotEmpty) ...{
+                FilterRequestModel(
+                    column: "visitor_type_id",
+                    operation: "equals",
+                    search: int.parse(selectedTypeOfVisitor.value))
+              }
+            ]),
+      );
+      return RequestManager<VisitorListResponseModel>(
+        params,
+        createCall: () => _getVisitorListUsecase.execute(params: params),
+      ).asFlow().listen((result) {
         _handleVisitorListResponse(result);
       }).onError((error) {
-        // Handle error here
+        _loadingSubject.add(false);
       });
-    });
+    }).execute();
   }
 
   @override

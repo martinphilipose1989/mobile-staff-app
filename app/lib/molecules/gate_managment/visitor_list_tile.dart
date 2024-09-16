@@ -64,7 +64,7 @@ class VisitorListTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: 0.57.sw,
+                          width: 0.55.sw,
                           child: Text.rich(
                             TextSpan(
                               children: [
@@ -134,7 +134,7 @@ class VisitorListTile extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: "To Contact:",
+                      text: "To Contact:\t",
                       style: AppTypography.smallCaption.copyWith(
                           letterSpacing: 0.25, color: AppColors.textGray),
                     ),
@@ -153,15 +153,19 @@ class VisitorListTile extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: visitorDataModel?.visitStatus?.toLowerCase() == "in"
-                          ? "IN:"
-                          : "Out:",
+                          ? "IN:\t"
+                          : "Out:\t",
                       style: AppTypography.smallCaption.copyWith(
                           letterSpacing: 0.25, color: AppColors.textGray),
                     ),
                     TextSpan(
                       text: visitorDataModel?.visitStatus?.toLowerCase() == "in"
-                          ? visitorDataModel?.incomingTime ?? "Not arrived yet"
-                          : visitorDataModel?.outgoingTime ?? "Not arrived yet",
+                          ? visitorDataModel?.incomingTime
+                                  ?.formatTimeWithoutIntl() ??
+                              "Not arrived yet"
+                          : visitorDataModel?.outgoingTime
+                                  ?.formatTimeWithoutIntl() ??
+                              "Not arrived yet",
                       style: AppTypography.caption.copyWith(
                           fontSize: 10.sp,
                           color: AppColors.textDark,
@@ -182,7 +186,7 @@ class VisitorListTile extends StatelessWidget {
                       : AppColors.dividerColor,
                   borderRadius: BorderRadius.circular(6.r)),
               child: Text(
-                  "Purpose Of Visit:${visitorDataModel?.purposeOfVisit ?? "N/A"}",
+                  "Purpose Of Visit:\t${visitorDataModel?.purposeOfVisit ?? "N/A"}",
                   style: AppTypography.caption.copyWith(
                       color:
                           visitorDataModel?.visitStatus?.toLowerCase() == "in"

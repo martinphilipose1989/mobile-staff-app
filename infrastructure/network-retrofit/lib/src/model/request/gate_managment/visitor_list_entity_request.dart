@@ -11,13 +11,17 @@ class GetVisitorListRequestEntity
   @JsonKey(name: "pageNumber")
   int? pageNumber;
 
+  @JsonKey(name: "search")
+  String? search;
+
   @JsonKey(name: "pageSize")
   int? pageSize;
 
   @JsonKey(name: "filters")
   List<FilterEntity>? filters;
 
-  GetVisitorListRequestEntity({this.pageNumber, this.pageSize, this.filters});
+  GetVisitorListRequestEntity(
+      {this.pageNumber, this.pageSize, this.filters, this.search});
 
   factory GetVisitorListRequestEntity.fromJson(Map<String, dynamic> json) =>
       _$GetVisitorListRequestEntityFromJson(json);
@@ -32,6 +36,10 @@ class GetVisitorListRequestEntity
       json.remove('filters');
     } else {
       json['filters'] = validFilters.map((e) => e.toJson()).toList();
+    }
+
+    if (search == null) {
+      json.remove('search');
     }
     return json;
   }

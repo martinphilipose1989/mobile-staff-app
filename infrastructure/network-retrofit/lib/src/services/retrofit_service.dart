@@ -32,7 +32,8 @@ abstract class RetrofitService {
 
   @POST(NetworkProperties.getVisitorList)
   Future<HttpResponse<VisitorListResponseEntity>> getVisitorList(
-      @Body() GetVisitorListRequestEntity requestBody);
+      @Body() GetVisitorListRequestEntity requestBody,
+      CancelToken? cancelToken);
 
   @GET(NetworkProperties.getVisitorDetails)
   Future<HttpResponse<VisitorDetailsResponseEntity>> getVisitorDetails(

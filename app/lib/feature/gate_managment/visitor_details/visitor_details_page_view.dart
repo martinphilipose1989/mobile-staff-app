@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'dart:typed_data';
 
@@ -40,6 +41,7 @@ class VisitorDetailsPageView
         stream: model.visitorDetails,
         initialData: Resource.none(),
         dataBuilder: (context, visitorData) {
+          log("message ${visitorData?.data}");
           return DataStatusWidget(
               status: visitorData?.status ?? Status.none,
               loadingWidget: () => const VisitorDetailsPageShimmer(),
@@ -87,8 +89,7 @@ class VisitorDetailsPageView
                               VisitorInfoCard(
                                 visitorName:
                                     "${visitorData?.data?.visitorName ?? ''}  (#${visitorData?.data?.gatePassNumber ?? "N/A"})",
-                                issuedOn:
-                                    '${visitorData?.data?.issuedDate?.dateFormat()}\t${visitorData?.data?.issuedTime}',
+                                issuedOn: '${visitorData?.data?.issuedDate}',
                                 // qrImagePath: AppImages.qrImage,
                                 qrImagePath: qrImageBytes,
                                 avatarImagePath: visitorData
@@ -104,35 +105,41 @@ class VisitorDetailsPageView
                               ),
                               SizedBox(height: 16.h),
                               VisitorDetailsRow(
-                                title1: "Type of visitor",
-                                //value1: "parent",
-                                value1: visitorData?.data?.visitorType ?? '',
-                                title2: "Student Name",
-                                // value2: "Khevna Shah",
-                                value2: "",
-                              ),
+                                  title1: "Type of visitor",
+                                  //value1: "parent",
+                                  value1: visitorData?.data?.visitorType ?? '',
+                                  title2: "Point Of Contact",
+                                  value2:
+                                      visitorData?.data?.pointOfContact ?? ''),
                               SizedBox(height: 16.h),
                               VisitorDetailsRow(
-                                title1: "Point Of Contact",
-                                value1: visitorData?.data?.pointOfContact ?? '',
-                                title2: "Purpose Of Visit",
-                                value2: visitorData?.data?.purposeOfVisit ?? '',
-                              ),
-                              SizedBox(height: 16.h),
-                              VisitorDetailsRow(
-                                title1: "IN Date & Time",
-                                value1:
-                                    "${visitorData?.data?.issuedDate?.dateFormat()} ${visitorData?.data?.incomingTime}",
+                                title1: "Purpose Of Visit",
+                                value1: visitorData?.data?.purposeOfVisit ?? '',
                                 title2: "Coming From",
                                 value2: visitorData?.data?.comingFrom ?? '',
                               ),
                               SizedBox(height: 16.h),
                               VisitorDetailsRow(
+                                title1: "Date",
+                                value1:
+                                    "${visitorData?.data?.issuedDate?.replaceAll('-', '/')}",
+                                title2: "Time",
+                                value2: visitorData?.data?.issuedTime
+                                        ?.formatTimeWithoutIntl() ??
+                                    '',
+                              ),
+                              SizedBox(height: 16.h),
+                              VisitorDetailsRow(
                                 title1: "Guest Count",
-                                // value1: "1",
                                 value1:
                                     visitorData?.data?.guestCount.toString() ??
                                         '',
+                                title2: visitorData
+                                            ?.data?.vehicleNumber?.isNotEmpty ??
+                                        false
+                                    ? "Vehicle Number"
+                                    : "",
+                                value2: visitorData?.data?.vehicleNumber ?? "",
                               ),
                             ],
                           ),

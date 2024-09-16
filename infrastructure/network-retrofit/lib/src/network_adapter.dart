@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -114,24 +115,42 @@ class NetworkAdapter implements NetworkPort {
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
 
+  int counter = 0;
   @override
   Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
       {required GetVisitorListRequestModel request}) async {
+    if (request.search != null || (request.search?.isNotEmpty ?? false)) {
+      // Log to track cancellation
+      log("New search request: ${request.search}");
+
+      // Cancel the previous request, if any
+      _cancelToken?.cancel("Previous request cancelled");
+
+      // Create a new CancelToken for the new request
+      _cancelToken = CancelToken();
+
+      // Log the cancel request count for debugging
+      counter++;
+      log("Request counter: $counter");
+    }
+
+    // Create a new CancelToken for the new request
     final response = await safeApiCall(
       apiService.getVisitorList(
-        GetVisitorListRequestEntity(
-          pageNumber: request.pageNumber,
-          pageSize: request.pageSize,
-          filters: request.filters
-              ?.map(
-                (filter) => FilterEntity(
-                    column: filter.column,
-                    operation: filter.operation,
-                    search: filter.search),
-              )
-              .toList(),
-        ),
-      ),
+          GetVisitorListRequestEntity(
+            pageNumber: request.pageNumber,
+            pageSize: request.pageSize,
+            search: request.search,
+            filters: request.filters
+                ?.map(
+                  (filter) => FilterEntity(
+                      column: filter.column,
+                      operation: filter.operation,
+                      search: filter.search),
+                )
+                .toList(),
+          ),
+          _cancelToken),
     );
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));

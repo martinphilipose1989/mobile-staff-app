@@ -81,6 +81,7 @@ dependencies:
   flutter_inappwebview: ^6.0.0
   # openid_client:
   flutter_appauth:
+  app_links: ^6.3.2
 
 
 dev_dependencies:

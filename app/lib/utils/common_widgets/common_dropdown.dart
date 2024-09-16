@@ -23,6 +23,8 @@ class CustomDropdownButton extends StatefulWidget {
   final double topPadding;
   final double bottomPadding;
   final FormFieldValidator<String>? validator;
+  final String? intialValue;
+  final BehaviorSubject<String>? singleSelectItemSubject;
   const CustomDropdownButton(
       {super.key,
       required this.items,
@@ -38,7 +40,9 @@ class CustomDropdownButton extends StatefulWidget {
       this.bottomPadding = 0,
       this.rightPadding = 0,
       this.leftPadding = 0,
-      this.validator});
+      this.validator,
+      this.intialValue,
+      this.singleSelectItemSubject});
 
   @override
   State<CustomDropdownButton> createState() => _CustomDropdownButtonState();
@@ -61,6 +65,20 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
       addedZerothIndex.add(widget.items[0] ?? '');
       selectedItemsSubject.add(addedZerothIndex);
     }
+
+    if (!widget.isMutiSelect) {
+      singleSelectItemSubject =
+          widget.singleSelectItemSubject ?? BehaviorSubject<String>.seeded('');
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomDropdownButton oldWidget) {
+    if (oldWidget.intialValue != widget.intialValue &&
+        widget.intialValue != null) {
+      singleSelectItemSubject.add(widget.intialValue ?? '');
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -114,7 +132,9 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                   .toList(),
               value: singleSelectItemSubject.value == ''
                   ? null
-                  : singleSelectItemSubject.value,
+                  : widget.items.contains(singleSelectItemSubject.value)
+                      ? singleSelectItemSubject.value
+                      : null,
               onChanged: (value) {
                 widget.onSingleSelect!(value ?? "");
                 singleSelectItemSubject.add(value ?? "");

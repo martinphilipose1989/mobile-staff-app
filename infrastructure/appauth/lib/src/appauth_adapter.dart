@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:appauth/src/utils/auth_config.dart';
 import 'package:data/data.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
