@@ -35,7 +35,8 @@ abstract class NetworkModule {
       ApiInterceptor(apiKey);
 
   @singleton
-  TokenInterceptor provideTokenInterceptor() => TokenInterceptor();
+  TokenInterceptor provideTokenInterceptor(AppAuthPort appAuthPort) =>
+      TokenInterceptor(appAuthPort: appAuthPort);
 
   @singleton
   List<Interceptor> providerInterceptors(

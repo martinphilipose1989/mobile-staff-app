@@ -101,7 +101,9 @@ class UserRepositoryImpl extends UserRepository {
             secureStorageService.refreshTokenKey, authResponse.refreshToken),
         secureStorageService.saveToDisk(
           secureStorageService.expirationDateTimeKey,
-          authResponse.accessTokenExpirationDateTime?.toIso8601String() ?? '',
+          authResponse.accessTokenExpirationDateTime?.millisecondsSinceEpoch
+                  .toString() ??
+              '',
         ),
       ]);
       return Right(true);

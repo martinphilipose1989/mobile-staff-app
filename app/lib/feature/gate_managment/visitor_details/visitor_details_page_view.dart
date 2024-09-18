@@ -124,9 +124,15 @@ class VisitorDetailsPageView
                                 value1:
                                     "${visitorData?.data?.issuedDate?.replaceAll('-', '/')}",
                                 title2: "Time",
-                                value2: visitorData?.data?.issuedTime
-                                        ?.formatTimeWithoutIntl() ??
-                                    '',
+                                value2: visitorData
+                                            ?.data?.outgoingTime?.isNotEmpty ??
+                                        false
+                                    ? visitorData?.data?.outgoingTime
+                                            ?.formatTimeWithoutIntl() ??
+                                        ""
+                                    : visitorData?.data?.incomingTime
+                                            ?.formatTimeWithoutIntl() ??
+                                        '',
                               ),
                               SizedBox(height: 16.h),
                               VisitorDetailsRow(

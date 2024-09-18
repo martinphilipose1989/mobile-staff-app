@@ -5,5 +5,5 @@ abstract class AppAuthPort {
 
   Future<void> logout();
 
-  Future<void> refreshToken();
+  Future<TokenResponse> refreshToken();
 }

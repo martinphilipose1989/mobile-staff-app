@@ -51,15 +51,17 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
               },
               onDone: () {},
               dataBuilder: (context, data) {
-                return CommonPrimaryElevatedButton(
-                    isLoading: data?.status == Status.loading,
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.primary,
-                    onPressed: () async {
-                      model.login();
-                    },
-                    title: 'Lets Get Started',
-                    titleTextStyle: AppTypography.subtitle2);
+                return data?.data == true
+                    ? const Center(child: CircularProgressIndicator())
+                    : CommonPrimaryElevatedButton(
+                        isLoading: data?.status == Status.loading,
+                        backgroundColor: Colors.white,
+                        foregroundColor: AppColors.primary,
+                        onPressed: () async {
+                          model.login();
+                        },
+                        title: 'Lets Get Started',
+                        titleTextStyle: AppTypography.subtitle2);
               }),
           SizedBox(height: 16.h)
         ],

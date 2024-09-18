@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 
@@ -51,16 +50,13 @@ class SplashViewModel extends BasePageViewModel {
           .asFlow()
           .listen((data) {
         if (data.status == Status.success) {
-          log("RESPONSE SUCCESS");
-
           Navigator.of(navigatorKey.currentContext!)
               .pushReplacementNamed(RoutePaths.dashboard);
-
-          // isLoadingSubject.add(Resource.success(data: false));
-        } else if (data.status == Status.loading ||
-            data.status == Status.error) {
+        } else if (data.status == Status.error) {
           isLoadingSubject.add(Resource.none());
         }
+      }).onError((error) {
+        isLoadingSubject.add(Resource.none());
       });
     }).execute();
   }

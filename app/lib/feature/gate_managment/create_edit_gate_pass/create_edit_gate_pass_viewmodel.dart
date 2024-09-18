@@ -232,11 +232,14 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   String type = "";
   String gatePassId = "";
 
+  BehaviorSubject<String>? intialTypeOfVisitor = BehaviorSubject.seeded('');
+
   void populateGatePass({required GatePassArguments arguments}) {
     visitorNameController.text = arguments.parentData.visitorName ?? "";
     emailIDController.text = arguments.parentData.visitorEmail ?? "";
     gatePassId = arguments.id;
     type = arguments.type;
+
     getCountryCode(phoneNumber: arguments.parentData.visitorMobile ?? "");
   }
 
