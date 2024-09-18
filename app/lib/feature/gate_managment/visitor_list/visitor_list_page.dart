@@ -37,6 +37,13 @@ class VisitorListPageState
 
   @override
   void onModelReady(VisitorListPageViewModel model) {
+    final value = ProviderScope.containerOf(context)
+        .read(dashboardPageViewModelProvider)
+        .selectedSatus
+        .value;
+    if (value.isNotEmpty) {
+      model.selectedStatus.value = value;
+    }
     model.focusNode.addListener(model.onFocusChange);
     model.fetchVisitorList();
   }

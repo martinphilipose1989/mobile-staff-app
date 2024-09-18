@@ -44,11 +44,14 @@ class DashboardBottomNavigation extends StatelessWidget {
                   model.selectedIndex.value = index;
                 } else if (index == 1) {
                   model.selectedIndex.value = index;
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               const GatePassQrScannerPage())).then((val) {
+                    model.selectedSatus.value = "Out";
+
                     model.selectedIndex.value = 0;
                   });
                 } else if (index == 2) {

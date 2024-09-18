@@ -7,6 +7,8 @@ class DashboardPageViewModel extends BasePageViewModel {
 
   final BehaviorSubject<int> selectedIndex = BehaviorSubject.seeded(0);
 
+  final BehaviorSubject<String> selectedSatus = BehaviorSubject.seeded("");
+
   DashboardPageViewModel({required this.exceptionHandlerBinder});
 
   void selectDashboardItem({required int index}) {

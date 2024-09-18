@@ -135,6 +135,8 @@ class VisitorListPageViewModel extends BasePageViewModel {
         requestBody: GetVisitorListRequestModel(
             pageNumber: _pageSubject.value,
             pageSize: pageSize,
+            search:
+                searchController.text.isEmpty ? null : searchController.text,
             filters: [
               if (selectedStatus.value.isNotEmpty) ...{
                 FilterRequestModel(
@@ -216,7 +218,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
   }
 
   void resetFilter() {
-    selectedStatus.add("");
+    selectedStatus.add("In");
     selectedTypeOfVisitor.add("");
     selectedVisitStatusFilter.add("");
     isFilterAppliedSubject.add(false);
