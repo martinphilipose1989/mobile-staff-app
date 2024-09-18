@@ -17,7 +17,6 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   final selectedStatus = BehaviorSubject<String>.seeded("In");
   final selectedVisitStatusFilter = BehaviorSubject<String>.seeded("");
-  final SearchVisitorUsecase _searchVisitorUsecase;
 
   final statusTypeList = [
     const ToggleOption<String>(value: "In", text: "In"),
@@ -75,12 +74,10 @@ class VisitorListPageViewModel extends BasePageViewModel {
   VisitorListPageViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required GetVisitorListUsecase getVisitorListUsecase,
-      required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase,
-      required SearchVisitorUsecase searchVisitorusecase})
+      required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase})
       : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorListUsecase = getVisitorListUsecase,
-        _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase,
-        _searchVisitorUsecase = searchVisitorusecase {
+        _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase {
     _setupThrottling();
     getTypeofVisitorList();
     _setupDebouncedSearch();
@@ -93,6 +90,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   Future<void> refreshVisitorList() async {
     _pageSubject.add(1);
+    searchController.clear();
     _visitorListSubject.add(Resource.success(data: []));
     hasMorePagesSubject.add(true);
     _loadingSubject.add(false);

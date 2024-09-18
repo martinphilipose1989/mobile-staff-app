@@ -38,7 +38,7 @@ class GatePassQrScannerPageView
           if (snapshot.hasData && snapshot.data!) {
             // Navigate to the Home screen when the condition is met
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.pop(context);
+              Navigator.pop(context, "OUT");
             });
           }
 

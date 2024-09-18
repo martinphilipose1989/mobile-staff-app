@@ -22,13 +22,15 @@ class CommonPopups {
 
   // Method to show a success popup
   showSuccess(BuildContext context, String message,
-      Function(bool shouldRoute) onChanged) {
+      Function(bool shouldRoute) onChanged,
+      {dynamic popParameter}) {
     _showDialog(context,
         icon: Icons.check_circle,
         iconColor: Colors.green,
         message: message,
         buttonText: 'OK',
-        onChanged: onChanged);
+        onChanged: onChanged,
+        popParameter: popParameter);
   }
 
   // Method to show an error popup
@@ -84,7 +86,8 @@ class CommonPopups {
       required Color iconColor,
       required String message,
       required String buttonText,
-      required Function(bool shouldRoute) onChanged}) {
+      required Function(bool shouldRoute) onChanged,
+      dynamic popParameter}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -113,7 +116,7 @@ class CommonPopups {
                   width: 80.w,
                   child: CommonPrimaryElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, popParameter);
                       onChanged(true);
                     },
                     title: 'OK',

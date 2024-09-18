@@ -116,6 +116,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
               controller.stop();
               navigatorKey.currentState?.pushReplacementNamed(
                   RoutePaths.createEditGatePassPage,
+                  result: "In",
                   arguments: GatePassArguments(
                       id: gatePassId,
                       type: type,

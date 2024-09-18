@@ -54,7 +54,6 @@ final visitorListPageModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorListPageViewModel>(
   (ref) => VisitorListPageViewModel(
       getTypeOfVisitorListUsecase: getIt.get<GetTypeOfVisitorListUsecase>(),
-      searchVisitorusecase: getIt.get<SearchVisitorUsecase>(),
       getVisitorListUsecase: getIt.get<GetVisitorListUsecase>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),
 );

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
@@ -50,7 +52,12 @@ class DashboardBottomNavigation extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) =>
                               const GatePassQrScannerPage())).then((val) {
-                    model.selectedSatus.value = "Out";
+                    log("GatePassQrScannerPage VALUE ==> $val");
+                    if (val == "In") {
+                      model.selectedSatus.value = "In";
+                    } else {
+                      model.selectedSatus.value = "Out";
+                    }
 
                     model.selectedIndex.value = 0;
                   });
@@ -62,6 +69,8 @@ class DashboardBottomNavigation extends StatelessWidget {
                       builder: (context) => const CreateEditGatePassPage(),
                     ),
                   ).then((val) {
+                    log("CreateEditGatePassPage VALUE ==> $val");
+                    model.selectedSatus.value = "In";
                     model.selectedIndex.value = 0;
                   });
                 }

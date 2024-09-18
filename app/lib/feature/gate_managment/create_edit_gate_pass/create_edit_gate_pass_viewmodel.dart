@@ -174,9 +174,12 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             (value) {
           navigatorKey.currentState?.pushReplacementNamed(
             RoutePaths.visitorDetailsPage,
-            arguments: {'gatePassId': '${data.data?.data?.id}'},
+            arguments: {
+              'gatePassId': '${data.data?.data?.id}',
+              'type': "In",
+            },
           );
-        });
+        }, popParameter: "In");
       } else if (data.status == Status.error) {
         loadingSubject.add(Resource.loading(data: false));
         _flutterToastErrorPresenter.show(
@@ -214,8 +217,14 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             ),
           );
         }
+      } else if (data.status == Status.error) {
+        _flutterToastErrorPresenter.show(data.dealSafeAppError!.throwable,
+            navigatorKey.currentContext!, data.dealSafeAppError!.type.name);
       }
-    }).onError((error) {});
+    }).onError((error) {
+      _flutterToastErrorPresenter.show(error.dealSafeAppError!.throwable,
+          navigatorKey.currentContext!, error.dealSafeAppError!.type.name);
+    });
   }
 
   getCountryCode({required String phoneNumber}) async {
@@ -264,17 +273,21 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         loadingSubject.add(Resource.loading(data: false));
 
         CommonPopups().showSuccess(
-            navigatorKey.currentContext!,
-            type.isNotEmpty
-                ? "Gate pass updated successfuly"
-                : "Gate pass created successfuly", (value) {
-          navigatorKey.currentState?.pushReplacementNamed(
-            RoutePaths.visitorDetailsPage,
-            arguments: {
-              'gatePassId': '${data.data?.data?.visitorDataModel?.id}'
-            },
-          );
-        });
+          navigatorKey.currentContext!,
+          type.isNotEmpty
+              ? "Gate pass updated successfuly"
+              : "Gate pass created successfuly",
+          (value) {
+            navigatorKey.currentState?.pushReplacementNamed(
+              RoutePaths.visitorDetailsPage,
+              arguments: {
+                'gatePassId': '${data.data?.data?.visitorDataModel?.id}',
+                'type': "In"
+              },
+            );
+          },
+          popParameter: "In",
+        );
       } else if (data.status == Status.error) {
         loadingSubject.add(Resource.loading(data: false));
         _flutterToastErrorPresenter.show(

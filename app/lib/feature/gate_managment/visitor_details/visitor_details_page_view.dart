@@ -27,9 +27,10 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 class VisitorDetailsPageView
     extends BasePageViewWidget<VisitorDetailsViewModel> {
   final String gatePassId;
+  final String? visitorType;
   // ignore: use_super_parameters
   VisitorDetailsPageView(ProviderBase<VisitorDetailsViewModel> model,
-      {required this.gatePassId})
+      {required this.gatePassId, this.visitorType})
       : super(model);
 
   @override
@@ -162,7 +163,7 @@ class VisitorDetailsPageView
                             ProviderScope.containerOf(context)
                                 .read(visitorListPageModelProvider)
                                 .fetchVisitorList();
-                            Navigator.pop(context);
+                            Navigator.pop(context, visitorType);
                           }),
                     )
                   ],
