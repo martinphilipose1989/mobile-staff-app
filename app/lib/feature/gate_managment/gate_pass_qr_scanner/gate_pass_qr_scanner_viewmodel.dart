@@ -222,9 +222,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           });
 
           _visitorDetails.add(
-            Resource.success(
-              data: result.data?.data,
-            ),
+            Resource.success(data: result.data?.data),
           );
           _hasShownError = false;
         } else if (result.status == Status.error && !_hasShownError) {

@@ -74,9 +74,9 @@ dependencies:
   cached_network_image: 
   flutter_secure_storage: ^9.2.2
   flutter_inappwebview: ^6.0.0
+  # openid_client:
+  flutter_appauth:
   envied: 
- 
- 
  
 
 

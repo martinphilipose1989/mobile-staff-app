@@ -16,10 +16,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class DashboardBottomNavigation extends StatelessWidget {
-  const DashboardBottomNavigation({super.key, required this.model});
+  DashboardBottomNavigation({super.key, required this.model});
 
   final DashboardPageViewModel model;
 
+  String selectedStatus = '';
   @override
   Widget build(BuildContext context) {
     return AppStreamBuilder<int>(
@@ -43,6 +44,7 @@ class DashboardBottomNavigation extends StatelessWidget {
                   ProviderScope.containerOf(context)
                       .read(visitorListPageModelProvider)
                       .onVisitStatusSelect(selectStatus: "In");
+
                   model.selectedIndex.value = index;
                 } else if (index == 1) {
                   model.selectedIndex.value = index;
@@ -60,6 +62,7 @@ class DashboardBottomNavigation extends StatelessWidget {
                     }
 
                     model.selectedIndex.value = 0;
+                    log("It works");
                   });
                 } else if (index == 2) {
                   model.selectedIndex.value = index;
