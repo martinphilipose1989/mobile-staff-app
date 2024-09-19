@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/phone_number_details.dart';
 import 'package:app/model/resource.dart';
@@ -205,7 +207,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         if (data.data?.data != null) {
           visitorNameController.text = data.data?.data?.name ?? "";
           emailIDController.text = data.data?.data?.email ?? "";
-          getCountryCode(phoneNumber: data.data?.data?.mobile ?? "");
+          log("CONTACT ${data.data?.data?.mobile}");
+          contactNumberController.text = data.data?.data?.mobile ?? "";
+          //TODO: uncomment after deom  getCountryCode(phoneNumber: data.data?.data?.mobile ?? "");
           _uploadedFileResponse.add(
             Resource.success(
               data: UploadFileResponseModel(
@@ -246,10 +250,11 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   void populateGatePass({required GatePassArguments arguments}) {
     visitorNameController.text = arguments.parentData.visitorName ?? "";
     emailIDController.text = arguments.parentData.visitorEmail ?? "";
+    contactNumberController.text = arguments.parentData.visitorMobile ?? "";
     gatePassId = arguments.id;
     type = arguments.type;
 
-    getCountryCode(phoneNumber: arguments.parentData.visitorMobile ?? "");
+    // TODO: uncomment after demo getCountryCode(phoneNumber: arguments.parentData.visitorMobile ?? "");
   }
 
   void patchParent() {

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_viewmodel.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
+import 'package:app/utils/common_widgets/common_app_loader.dart';
 import 'package:app/utils/common_widgets/common_qr_scanner/qr_scanner_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
@@ -62,7 +65,7 @@ class GatePassQrScannerPageView
                       height: 16,
                     ),
                     CommonText(
-                      text: "Please QR Inside The Frame To Scan",
+                      text: "Place QR Inside The Frame To Scan",
                       style: AppTypography.subtitle1.copyWith(
                         color: AppColors.textGray,
                         fontSize: 16.sp,
@@ -90,9 +93,7 @@ class GatePassQrScannerPageView
                 dataBuilder: (context, visitorData) {
                   return DataStatusWidget(
                       status: visitorData?.status ?? Status.none,
-                      loadingWidget: () => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                      loadingWidget: () => const CommonAppLoader(),
                       successWidget: () {
                         return const SizedBox.shrink();
                       });

@@ -132,12 +132,15 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           qrInvalidMessageShow(appError: data.dealSafeAppError);
 
           _hasShownError = true;
-        } else {
-          _visitorDetails.add(Resource.none());
-
-          log('facing some issue');
         }
-      }, onError: (error) {});
+        //  else {
+        //   _visitorDetails.add(Resource.none());
+
+        //   log('facing some issue');
+        // }
+      }, onError: (error) {
+        _visitorDetails.add(Resource.none());
+      });
     }).execute();
   }
 
@@ -180,14 +183,19 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           qrInvalidMessageShow(appError: data.dealSafeAppError);
 
           _hasShownError = true;
-        } else {
-          _visitorDetails.add(Resource.none());
-
-          log('facing some issue');
         }
+        // else {
+        //   _visitorDetails.add(Resource.none());
+
+        //   log('facing some issue');
+        // }
       },
-      onError: (error) {},
-    ).onError((error) {});
+      onError: (error) {
+        _visitorDetails.add(Resource.none());
+      },
+    ).onError((error) {
+      _visitorDetails.add(Resource.none());
+    });
   }
 
 //scan QR and update outing time
@@ -225,13 +233,15 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           qrInvalidMessageShow(appError: result.dealSafeAppError);
 
           _hasShownError = true;
-        } else {
-          _visitorDetails.add(Resource.none());
-
-          log('facing some issue');
         }
+        //  else {
+        //   _visitorDetails.add(Resource.none());
+
+        //   log('facing some issue');
+        // }
       }).onError((error) {
         log("patchVisitorDetails error $error");
+        _visitorDetails.add(Resource.none());
       });
     }).execute();
   }
