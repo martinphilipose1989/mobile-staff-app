@@ -14,6 +14,10 @@ void main() {
           'https://qa.vgos.org/realms/ampersand-internal-qa/protocol/openid-connect/auth',
       tokenEndpoint:
           'https://qa.vgos.org/realms/ampersand-internal-qa/protocol/openid-connect/token',
+      logoutEndpoint:
+          "https://qa.vgos.org/realms/ampersand-internal-qa/protocol/openid-connect/logout",
+      discoveryUrl:
+          'https://qa.vgos.org/realms/ampersand-internal-qa/.well-known/openid-configuration',
       secrets: AppSecrets.appSecretsQA,
     ),
   );

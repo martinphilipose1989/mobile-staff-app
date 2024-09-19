@@ -35,6 +35,7 @@ enum ErrorType {
   // Auth Error
   appAuthUserCancelled,
   appAuthPlatformException,
+  appLogoutException,
 
   // Storage
   storageError

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/model/resource.dart';
+import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
@@ -14,6 +16,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorListUsecase _getVisitorListUsecase;
   final GetTypeOfVisitorListUsecase _getTypeOfVisitorListUsecase;
+  final LogoutUsecase _logoutUsecase;
 
   final selectedStatus = BehaviorSubject<String>.seeded("In");
   final selectedVisitStatusFilter = BehaviorSubject<String>.seeded("");
@@ -74,10 +77,12 @@ class VisitorListPageViewModel extends BasePageViewModel {
   VisitorListPageViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required GetVisitorListUsecase getVisitorListUsecase,
-      required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase})
+      required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase,
+      required LogoutUsecase logoutUsecase})
       : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorListUsecase = getVisitorListUsecase,
-        _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase {
+        _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase,
+        _logoutUsecase = logoutUsecase {
     _setupThrottling();
     getTypeofVisitorList();
     _setupDebouncedSearch();
@@ -170,6 +175,8 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
     final isNextPage = result.data?.visitorListDataModel?.isNextPage ?? false;
     final visitors = result.data?.visitorListDataModel?.visitors ?? [];
+
+    _shouldNotFetchVisitors();
 
     if (_pageSubject.value == 1) {
       _visitorListSubject.add(Resource.loading(data: null));
@@ -281,6 +288,19 @@ class VisitorListPageViewModel extends BasePageViewModel {
         _loadingSubject.add(false);
       });
     }).execute();
+  }
+
+  void logOut() {
+    final LogoutUsecaseParams params = LogoutUsecaseParams();
+    RequestManager(params,
+            createCall: () => _logoutUsecase.execute(params: params))
+        .asFlow()
+        .listen((data) {
+      if (data.status == Status.success) {
+        navigatorKey.currentState!
+            .pushNamedAndRemoveUntil(RoutePaths.splash, (route) => false);
+      }
+    }, onDone: () {}, onError: (error) {});
   }
 
   @override

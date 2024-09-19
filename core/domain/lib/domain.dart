@@ -26,6 +26,7 @@ export 'src/usecase/visitor/populate_visitor_data_usecase.dart';
 export 'src/usecase/visitor/search_visitor_usecase.dart';
 export 'src/usecase/visitor/patch_parent_gatepass_usecase.dart';
 export 'src/usecase/user/auth_usecase.dart';
+export 'src/usecase/user/logout_usecase.dart';
 
 export 'package:shared/shared.dart';
 

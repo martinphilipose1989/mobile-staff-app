@@ -53,6 +53,7 @@ final commonChipListProvider =
 final visitorListPageModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorListPageViewModel>(
   (ref) => VisitorListPageViewModel(
+      logoutUsecase: getIt.get<LogoutUsecase>(),
       getTypeOfVisitorListUsecase: getIt.get<GetTypeOfVisitorListUsecase>(),
       getVisitorListUsecase: getIt.get<GetVisitorListUsecase>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),

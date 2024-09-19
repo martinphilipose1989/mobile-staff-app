@@ -10,6 +10,7 @@ class FlavorValues {
   final String authorizationEndpoint;
   final String tokenEndpoint;
   final String? logoutEndpoint;
+  final String discoveryUrl;
 
   const FlavorValues({
     required this.apiBaseUrl,
@@ -17,6 +18,7 @@ class FlavorValues {
     required this.mdmBaseUrl,
     required this.authorizationEndpoint,
     required this.tokenEndpoint,
+    required this.discoveryUrl,
     this.logoutEndpoint,
     logSqlStatements = false,
     this.showLogs = false,

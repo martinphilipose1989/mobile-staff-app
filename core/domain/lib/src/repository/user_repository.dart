@@ -10,7 +10,11 @@ abstract class UserRepository {
   Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
       UserPermissionRequest request);
 
-  Future<Either<BaseError, AuthResponse>> login();
+  Future<Either<LocalError, AuthResponse>> login();
 
-  Future<Either<BaseError, bool>> storeAccessToken(AuthResponse authResponse);
+  Future<Either<LocalError, bool>> storeAccessToken(AuthResponse authResponse);
+
+  Future<Either<LocalError, LogoutResponse>> logOut();
+
+  Future<Either<LocalError, bool>> clearSession();
 }

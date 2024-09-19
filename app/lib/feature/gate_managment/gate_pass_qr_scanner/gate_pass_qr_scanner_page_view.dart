@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_viewmodel.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/themes_setup.dart';

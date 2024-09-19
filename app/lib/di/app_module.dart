@@ -29,4 +29,11 @@ abstract class AppModule {
 
   @Named("ClientSecret")
   String get clientSecret => FlavorConfig.instance.values.secrets.clientSecret;
+
+  @Named("LogOutUri")
+  String get logOutRedirectUri =>
+      FlavorConfig.instance.values.secrets.logoutRedirectUri;
+
+  @Named("DiscoveryUrl")
+  String get discoveryUrl => FlavorConfig.instance.values.discoveryUrl;
 }

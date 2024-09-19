@@ -81,4 +81,9 @@ abstract class DomainModule {
   AuthUsecase authUsecase(UserRepository userRepository) {
     return AuthUsecase(userRepository: userRepository);
   }
+
+  @lazySingleton
+  LogoutUsecase logoutUsecase(UserRepository userRepository) {
+    return LogoutUsecase(userRepository: userRepository);
+  }
 }

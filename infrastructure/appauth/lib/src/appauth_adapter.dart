@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:appauth/src/utils/auth_config.dart';
 import 'package:data/data.dart';
+
 import 'package:flutter_appauth/flutter_appauth.dart';
 
 class AppAuthAdapter implements AppAuthPort {
@@ -57,9 +60,31 @@ class AppAuthAdapter implements AppAuthPort {
   }
 
   @override
-  Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<EndSessionResponse> logout({required String idTokenHint}) async {
+    try {
+      log("LOGUT");
+      final logoutRequest = EndSessionRequest(
+          discoveryUrl: _config.discoveryUrl,
+          idTokenHint: idTokenHint,
+          postLogoutRedirectUrl: _config.logOutRedirectUri,
+          serviceConfiguration: AuthorizationServiceConfiguration(
+            authorizationEndpoint: _config.loginUrl,
+            tokenEndpoint: _config.tokenUrl,
+            endSessionEndpoint:
+                _config.logOutUrl?.isEmpty ?? false ? null : _config.logOutUrl,
+          ),
+          preferEphemeralSession: true);
+      final response = await _flutterAppAuth.endSession(logoutRequest);
+      log("LOGUT ${response.toString()}");
+      return response;
+    } catch (e) {
+      log("ERROR => $e");
+      throw LocalError(
+        errorType: ErrorType.appLogoutException,
+        message: 'Something went wrong',
+        cause: Exception(e),
+      );
+    }
   }
 
   @override

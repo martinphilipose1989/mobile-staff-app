@@ -176,10 +176,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             (value) {
           navigatorKey.currentState?.pushReplacementNamed(
             RoutePaths.visitorDetailsPage,
-            arguments: {
-              'gatePassId': '${data.data?.data?.id}',
-              'type': "In",
-            },
+            arguments: {'gatePassId': '${data.data?.data?.id}', 'type': "In"},
           );
         }, popParameter: "In");
       } else if (data.status == Status.error) {

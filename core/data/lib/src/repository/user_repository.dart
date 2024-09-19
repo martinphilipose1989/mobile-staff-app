@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:domain/domain.dart';
 import 'package:get_it/get_it.dart';
 import 'package:services/services.dart';
@@ -34,7 +36,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<BaseError, AuthResponse>> login() async {
+  Future<Either<LocalError, AuthResponse>> login() async {
     try {
       final result = await appAuthPort.login();
       if (result.accessToken != null) {
@@ -89,7 +91,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<BaseError, bool>> storeAccessToken(
+  Future<Either<LocalError, bool>> storeAccessToken(
       AuthResponse authResponse) async {
     try {
       await Future.wait([
@@ -109,6 +111,41 @@ class UserRepositoryImpl extends UserRepository {
       return Right(true);
     } catch (error) {
       // Log the error or handle it as needed
+      return Left(
+        LocalError(
+          errorType: ErrorType.storageError,
+          message: error.toString(),
+          cause: Exception(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<LocalError, LogoutResponse>> logOut() async {
+    try {
+      log("logout REPO");
+      final idTokenHint = await secureStorageService
+          .getFromDisk(secureStorageService.idTokenKey);
+      final result = await appAuthPort.logout(idTokenHint: idTokenHint);
+      return Right(LogoutResponse(state: result.state));
+    } catch (error) {
+      return Left(
+        LocalError(
+          errorType: ErrorType.storageError,
+          message: error.toString(),
+          cause: Exception(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<LocalError, bool>> clearSession() async {
+    try {
+      await secureStorageService.clearPreferences();
+      return Right(true);
+    } catch (error) {
       return Left(
         LocalError(
           errorType: ErrorType.storageError,
