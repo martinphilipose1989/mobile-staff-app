@@ -20,6 +20,19 @@ class CommonSearchTextField extends StatelessWidget {
   final void Function(String)? onChanged;
   final FocusNode? focusNode;
 
+  // void _handleKeyPress(KeyEvent event) {
+  //   if (event is KeyDownEvent) {
+  //     // Check if the Backspace key is pressed
+  //     if (event.logicalKey == LogicalKeyboardKey.backspace) {
+  //       log("Backspace Pressed");
+  //       // // Call your custom function here
+  //       // if (_controller.text.isEmpty) {
+  //       //   _handleTextFieldCleared();
+  //       // }
+  //     }
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:app/di/states/viewmodels.dart';
 import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
 import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
 import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_page.dart';
@@ -7,15 +10,17 @@ import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class DashboardBottomNavigation extends StatelessWidget {
-  const DashboardBottomNavigation({super.key, required this.model});
+  DashboardBottomNavigation({super.key, required this.model});
 
   final DashboardPageViewModel model;
 
+  String selectedStatus = '';
   @override
   Widget build(BuildContext context) {
     return AppStreamBuilder<int>(
@@ -36,15 +41,28 @@ class DashboardBottomNavigation extends StatelessWidget {
                   AppTypography.caption.copyWith(color: AppColors.textGray),
               onTap: (index) {
                 if (index == 0) {
+                  ProviderScope.containerOf(context)
+                      .read(visitorListPageModelProvider)
+                      .onVisitStatusSelect(selectStatus: "In");
+
                   model.selectedIndex.value = index;
                 } else if (index == 1) {
                   model.selectedIndex.value = index;
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               const GatePassQrScannerPage())).then((val) {
+                    log("GatePassQrScannerPage VALUE ==> $val");
+                    if (val == "In") {
+                      model.selectedSatus.value = "In";
+                    } else {
+                      model.selectedSatus.value = "Out";
+                    }
+
                     model.selectedIndex.value = 0;
+                    log("It works");
                   });
                 } else if (index == 2) {
                   model.selectedIndex.value = index;
@@ -54,6 +72,8 @@ class DashboardBottomNavigation extends StatelessWidget {
                       builder: (context) => const CreateEditGatePassPage(),
                     ),
                   ).then((val) {
+                    log("CreateEditGatePassPage VALUE ==> $val");
+                    model.selectedSatus.value = "In";
                     model.selectedIndex.value = 0;
                   });
                 }

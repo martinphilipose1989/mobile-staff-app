@@ -1,12 +1,16 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:app/navigation/route_paths.dart';
+import 'package:app/model/resource.dart';
+
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
@@ -33,15 +37,32 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
           Text("STAFF MANAGMENT",
               style: AppTypography.h4.copyWith(color: Colors.white)),
           const Spacer(),
-          CommonPrimaryElevatedButton(
-              backgroundColor: Colors.white,
-              foregroundColor: AppColors.primary,
-              onPressed: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(RoutePaths.dashboard);
+          AppStreamBuilder<Resource<bool>>(
+              initialData: Resource.none(),
+              stream: model.isLoadingSubject.stream,
+              onError: (error) {},
+              onData: (data) {
+                if (data.status == Status.error) {
+                  model.toastErrorPresenter.show(
+                      data.dealSafeAppError!.throwable,
+                      context,
+                      "${data.dealSafeAppError?.error.message}");
+                }
               },
-              title: 'Lets Get Started',
-              titleTextStyle: AppTypography.subtitle2),
+              onDone: () {},
+              dataBuilder: (context, data) {
+                return data?.data == true
+                    ? const Center(child: CircularProgressIndicator())
+                    : CommonPrimaryElevatedButton(
+                        isLoading: data?.status == Status.loading,
+                        backgroundColor: Colors.white,
+                        foregroundColor: AppColors.primary,
+                        onPressed: () async {
+                          model.login();
+                        },
+                        title: 'Lets Get Started',
+                        titleTextStyle: AppTypography.subtitle2);
+              }),
           SizedBox(height: 16.h)
         ],
       ),

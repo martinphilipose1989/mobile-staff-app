@@ -28,8 +28,12 @@ class VisitorListPageState
 
   @override
   PreferredSizeWidget? buildAppbar(VisitorListPageViewModel model) {
-    return const CommonAppBar(
-        appbarTitle: "Type Of Visitors", showBackButton: false);
+    return CommonAppBar(
+        appbarTitle: "Visitors List",
+        showBackButton: false,
+        onTapAction: () {
+          //   model.logOut();
+        });
   }
 
   @override
@@ -37,6 +41,13 @@ class VisitorListPageState
 
   @override
   void onModelReady(VisitorListPageViewModel model) {
+    final value = ProviderScope.containerOf(context)
+        .read(dashboardPageViewModelProvider)
+        .selectedSatus
+        .value;
+    if (value.isNotEmpty) {
+      model.selectedStatus.value = value;
+    }
     model.focusNode.addListener(model.onFocusChange);
     model.fetchVisitorList();
   }

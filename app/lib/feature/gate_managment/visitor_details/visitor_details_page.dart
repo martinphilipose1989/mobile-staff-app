@@ -9,9 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class VisitorDetailsPage extends BasePage<VisitorDetailsViewModel> {
-  const VisitorDetailsPage({super.key, required this.gatePassId});
+  const VisitorDetailsPage(
+      {super.key, required this.gatePassId, this.visitorType});
 
   final String gatePassId;
+  final String? visitorType;
 
   @override
   VisitorDetailsPageState createState() => VisitorDetailsPageState();
@@ -35,7 +37,7 @@ class VisitorDetailsPageState
   @override
   PreferredSizeWidget? buildAppbar(VisitorDetailsViewModel model) {
     return const CommonAppBar(
-      appbarTitle: "Visitor Details",
+      appbarTitle: "Gate Pass",
       showBackButton: true,
       notShowNotificationAndUserBatch: true,
     );

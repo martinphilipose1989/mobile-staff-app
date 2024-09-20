@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/phone_number_details.dart';
 import 'package:app/model/resource.dart';
@@ -132,6 +134,7 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
       _createGatePassResponse.stream;
 
   final TextEditingController visitorNameController = TextEditingController();
+
   final TextEditingController contactNumberController = TextEditingController();
   final TextEditingController emailIDController = TextEditingController();
   final TextEditingController comingFromController = TextEditingController();
@@ -173,9 +176,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             (value) {
           navigatorKey.currentState?.pushReplacementNamed(
             RoutePaths.visitorDetailsPage,
-            arguments: {'gatePassId': '${data.data?.data?.id}'},
+            arguments: {'gatePassId': '${data.data?.data?.id}', 'type': "In"},
           );
-        });
+        }, popParameter: "In");
       } else if (data.status == Status.error) {
         loadingSubject.add(Resource.loading(data: false));
         _flutterToastErrorPresenter.show(
@@ -201,7 +204,9 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         if (data.data?.data != null) {
           visitorNameController.text = data.data?.data?.name ?? "";
           emailIDController.text = data.data?.data?.email ?? "";
-          getCountryCode(phoneNumber: data.data?.data?.mobile ?? "");
+          log("CONTACT ${data.data?.data?.mobile}");
+          contactNumberController.text = data.data?.data?.mobile ?? "";
+          //TODO: uncomment after deom  getCountryCode(phoneNumber: data.data?.data?.mobile ?? "");
           _uploadedFileResponse.add(
             Resource.success(
               data: UploadFileResponseModel(
@@ -213,8 +218,14 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
             ),
           );
         }
+      } else if (data.status == Status.error) {
+        _flutterToastErrorPresenter.show(data.dealSafeAppError!.throwable,
+            navigatorKey.currentContext!, data.dealSafeAppError!.type.name);
       }
-    }).onError((error) {});
+    }).onError((error) {
+      _flutterToastErrorPresenter.show(error.dealSafeAppError!.throwable,
+          navigatorKey.currentContext!, error.dealSafeAppError!.type.name);
+    });
   }
 
   getCountryCode({required String phoneNumber}) async {
@@ -231,12 +242,16 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
   String type = "";
   String gatePassId = "";
 
+  BehaviorSubject<String>? intialTypeOfVisitor = BehaviorSubject.seeded('');
+
   void populateGatePass({required GatePassArguments arguments}) {
     visitorNameController.text = arguments.parentData.visitorName ?? "";
     emailIDController.text = arguments.parentData.visitorEmail ?? "";
+    contactNumberController.text = arguments.parentData.visitorMobile ?? "";
     gatePassId = arguments.id;
     type = arguments.type;
-    getCountryCode(phoneNumber: arguments.parentData.visitorMobile ?? "");
+
+    // TODO: uncomment after demo getCountryCode(phoneNumber: arguments.parentData.visitorMobile ?? "");
   }
 
   void patchParent() {
@@ -260,17 +275,21 @@ class CreateEditGatePassViewModel extends BasePageViewModel {
         loadingSubject.add(Resource.loading(data: false));
 
         CommonPopups().showSuccess(
-            navigatorKey.currentContext!,
-            type.isNotEmpty
-                ? "Gate pass updated successfuly"
-                : "Gate pass created successfuly", (value) {
-          navigatorKey.currentState?.pushReplacementNamed(
-            RoutePaths.visitorDetailsPage,
-            arguments: {
-              'gatePassId': '${data.data?.data?.visitorDataModel?.id}'
-            },
-          );
-        });
+          navigatorKey.currentContext!,
+          type.isNotEmpty
+              ? "Gate pass updated successfuly"
+              : "Gate pass created successfuly",
+          (value) {
+            navigatorKey.currentState?.pushReplacementNamed(
+              RoutePaths.visitorDetailsPage,
+              arguments: {
+                'gatePassId': '${data.data?.data?.visitorDataModel?.id}',
+                'type': "In"
+              },
+            );
+          },
+          popParameter: "In",
+        );
       } else if (data.status == Status.error) {
         loadingSubject.add(Resource.loading(data: false));
         _flutterToastErrorPresenter.show(

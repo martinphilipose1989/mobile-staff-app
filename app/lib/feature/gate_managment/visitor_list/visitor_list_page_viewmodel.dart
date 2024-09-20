@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/model/resource.dart';
+import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
@@ -14,10 +16,10 @@ class VisitorListPageViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder _exceptionHandlerBinder;
   final GetVisitorListUsecase _getVisitorListUsecase;
   final GetTypeOfVisitorListUsecase _getTypeOfVisitorListUsecase;
+  final LogoutUsecase _logoutUsecase;
 
-  final selectedStatus = BehaviorSubject<String>.seeded("");
+  final selectedStatus = BehaviorSubject<String>.seeded("In");
   final selectedVisitStatusFilter = BehaviorSubject<String>.seeded("");
-  final SearchVisitorUsecase _searchVisitorUsecase;
 
   final statusTypeList = [
     const ToggleOption<String>(value: "In", text: "In"),
@@ -61,25 +63,26 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   FocusNode focusNode = FocusNode();
 
-  BehaviorSubject<String> hinText = BehaviorSubject.seeded("Search Visitor");
+  BehaviorSubject<String> hinText =
+      BehaviorSubject.seeded("Search by Name,Email,Contact");
 
   void onFocusChange() {
-    if (focusNode.hasFocus) {
-      hinText.add("Search by Name,Email,Contact,Point of Contact...");
-    } else {
-      hinText.add("Search Visitor");
-    }
+    // if (focusNode.hasFocus) {
+    //   hinText.add("Search by Name,Email,Contact");
+    // } else {
+    //   hinText.add("Search Visitor");
+    // }
   }
 
   VisitorListPageViewModel(
       {required FlutterExceptionHandlerBinder exceptionHandlerBinder,
       required GetVisitorListUsecase getVisitorListUsecase,
       required GetTypeOfVisitorListUsecase getTypeOfVisitorListUsecase,
-      required SearchVisitorUsecase searchVisitorusecase})
+      required LogoutUsecase logoutUsecase})
       : _exceptionHandlerBinder = exceptionHandlerBinder,
         _getVisitorListUsecase = getVisitorListUsecase,
         _getTypeOfVisitorListUsecase = getTypeOfVisitorListUsecase,
-        _searchVisitorUsecase = searchVisitorusecase {
+        _logoutUsecase = logoutUsecase {
     _setupThrottling();
     getTypeofVisitorList();
     _setupDebouncedSearch();
@@ -92,6 +95,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
   Future<void> refreshVisitorList() async {
     _pageSubject.add(1);
+    searchController.clear();
     _visitorListSubject.add(Resource.success(data: []));
     hasMorePagesSubject.add(true);
     _loadingSubject.add(false);
@@ -134,6 +138,8 @@ class VisitorListPageViewModel extends BasePageViewModel {
         requestBody: GetVisitorListRequestModel(
             pageNumber: _pageSubject.value,
             pageSize: pageSize,
+            search:
+                searchController.text.isEmpty ? null : searchController.text,
             filters: [
               if (selectedStatus.value.isNotEmpty) ...{
                 FilterRequestModel(
@@ -169,6 +175,8 @@ class VisitorListPageViewModel extends BasePageViewModel {
 
     final isNextPage = result.data?.visitorListDataModel?.isNextPage ?? false;
     final visitors = result.data?.visitorListDataModel?.visitors ?? [];
+
+    _shouldNotFetchVisitors();
 
     if (_pageSubject.value == 1) {
       _visitorListSubject.add(Resource.loading(data: null));
@@ -215,7 +223,7 @@ class VisitorListPageViewModel extends BasePageViewModel {
   }
 
   void resetFilter() {
-    selectedStatus.add("");
+    selectedStatus.add("In");
     selectedTypeOfVisitor.add("");
     selectedVisitStatusFilter.add("");
     isFilterAppliedSubject.add(false);
@@ -245,20 +253,54 @@ class VisitorListPageViewModel extends BasePageViewModel {
       hasMorePagesSubject.add(true);
       _loadingSubject.add(false);
 
-      SearchUseCaseParams params = SearchUseCaseParams(
-          pageNumber: _pageSubject.value,
-          pageSize: pageSize,
-          searchQuery: searchQuery);
+      fetchVisitorListWithSearch(searchQuery);
+    });
+  }
 
-      RequestManager(params,
-              createCall: () => _searchVisitorUsecase.execute(params: params))
-          .asFlow()
-          .listen((result) {
+  void fetchVisitorListWithSearch(String searchQuery) {
+    _exceptionHandlerBinder.handle(block: () {
+      final params = GetVisitorListUsecaseParams(
+        requestBody: GetVisitorListRequestModel(
+            pageNumber: _pageSubject.value,
+            pageSize: pageSize,
+            search: searchQuery,
+            filters: [
+              if (selectedStatus.value.isNotEmpty) ...{
+                FilterRequestModel(
+                    column: "visit_status",
+                    operation: "equals",
+                    search: selectedStatus.value)
+              },
+              if (selectedTypeOfVisitor.value.isNotEmpty) ...{
+                FilterRequestModel(
+                    column: "visitor_type_id",
+                    operation: "equals",
+                    search: int.parse(selectedTypeOfVisitor.value))
+              }
+            ]),
+      );
+      return RequestManager<VisitorListResponseModel>(
+        params,
+        createCall: () => _getVisitorListUsecase.execute(params: params),
+      ).asFlow().listen((result) {
         _handleVisitorListResponse(result);
       }).onError((error) {
-        // Handle error here
+        _loadingSubject.add(false);
       });
-    });
+    }).execute();
+  }
+
+  void logOut() {
+    final LogoutUsecaseParams params = LogoutUsecaseParams();
+    RequestManager(params,
+            createCall: () => _logoutUsecase.execute(params: params))
+        .asFlow()
+        .listen((data) {
+      if (data.status == Status.success) {
+        navigatorKey.currentState!
+            .pushNamedAndRemoveUntil(RoutePaths.splash, (route) => false);
+      }
+    }, onDone: () {}, onError: (error) {});
   }
 
   @override

@@ -12,7 +12,9 @@ dependencies:
   injectable:
   dependency_injection:
     path: ../../dependency-injection/
+ 
   dartz: ^0.10.1
+  flutter_secure_storage: ^9.2.2
   shared:
     path: ../shared
 

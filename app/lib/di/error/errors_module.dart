@@ -1,3 +1,5 @@
+// ignore_for_file: type_literal_in_constant_pattern
+
 import 'package:app/errors/flutter_alert_error_presenter.dart';
 import 'package:app/errors/flutter_snack_bar_error_presenter.dart';
 import 'package:app/model/alert_texts.dart';

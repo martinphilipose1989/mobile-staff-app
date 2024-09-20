@@ -28,11 +28,15 @@ abstract class NetworkPort {
       populateVisitorData({required visitorMobileNumber});
 
   Future<Either<NetworkError, VisitorListResponseModel>> searchVisitorList(
-      {required int pageNumber,
-      required int pageSize,
-      required String searchQuery});
+      {required SearchRequest requestBody});
 
   Future<Either<NetworkError, ParentGatepassResponseModel>> patchParentGatePass(
       {required String gatepassID,
       required ParentGatePassRequestModel requestModel});
+
+  Future<Either<NetworkError, LoginResponse>> login(
+      {required LoginRequest loginRequest});
+
+  Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
+      {required UserPermissionRequest request});
 }

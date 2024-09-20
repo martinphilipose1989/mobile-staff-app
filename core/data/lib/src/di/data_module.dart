@@ -8,9 +8,9 @@ import 'package:injectable/injectable.dart';
 @module
 abstract class DataModule {
   @lazySingleton
-  UserRepository userRepositoryProvider(
-      DatabasePort databasePort, NetworkPort networkPort) {
-    return UserRepositoryImpl(databasePort, networkPort);
+  UserRepository userRepositoryProvider(DatabasePort databasePort,
+      NetworkPort networkPort, AppAuthPort appAuthPort) {
+    return UserRepositoryImpl(databasePort, networkPort, appAuthPort);
   }
 
   @lazySingleton

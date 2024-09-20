@@ -1,4 +1,5 @@
 import 'package:app/app.dart';
+import 'package:app/env/env_prod.dart';
 import 'package:app/flavors/flavor.dart';
 import 'package:app/flavors/flavor_config.dart';
 import 'package:app/flavors/flavor_values.dart';
@@ -8,8 +9,12 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.prod,
     values: const FlavorValues(
-      apiBaseUrl: "https://gate-management-r26sp3mibq-uc.a.run.app/",
-      mdmBaseUrl: "https://ampersand-r26sp3mibq-uc.a.run.app/api/co-reasons/",
+      apiBaseUrl: EnvProd.baseUrl,
+      mdmBaseUrl: EnvProd.mdmBaseUrl,
+      authorizationEndpoint: EnvProd.authorizationEndpoint,
+      tokenEndpoint: EnvProd.tokenEndpoint,
+      logoutEndpoint: EnvProd.logoutEndpoint,
+      discoveryUrl: EnvProd.discoveryUrl,
       secrets: AppSecrets.appSecretsProd,
     ),
   );

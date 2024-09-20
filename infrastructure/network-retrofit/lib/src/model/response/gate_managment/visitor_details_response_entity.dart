@@ -24,11 +24,7 @@ class VisitorDetailsResponseEntity
   @JsonKey(name: "message")
   String? message;
 
-  VisitorDetailsResponseEntity({
-    this.status,
-    this.data,
-    this.message,
-  });
+  VisitorDetailsResponseEntity({this.status, this.data, this.message});
 
   factory VisitorDetailsResponseEntity.fromJson(Map<String, dynamic> json) =>
       _$VisitorDetailsResponseEntityFromJson(json);
@@ -92,6 +88,7 @@ class VisitorDetailsResponseEntity
                 data?.visitorProfileImageImageUrl ?? '',
             visitorType: data?.visitorType ?? '',
             guestCount: data?.guestCount,
-            vehicleNumber: data?.vehicleNumber));
+            vehicleNumber: data?.vehicleNumber,
+            studentName: data?.studentName));
   }
 }

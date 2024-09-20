@@ -22,7 +22,7 @@ class SplashPageState extends AppBasePageState<SplashViewModel, SplashPage> {
 
   @override
   void onModelReady(SplashViewModel model) {
-    // bind exception handler here.
+    // Bind exception handler here
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
   }
 

@@ -116,6 +116,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
               controller.stop();
               navigatorKey.currentState?.pushReplacementNamed(
                   RoutePaths.createEditGatePassPage,
+                  result: "In",
                   arguments: GatePassArguments(
                       id: gatePassId,
                       type: type,
@@ -131,12 +132,15 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           qrInvalidMessageShow(appError: data.dealSafeAppError);
 
           _hasShownError = true;
-        } else {
-          _visitorDetails.add(Resource.none());
-
-          log('facing some issue');
         }
-      }, onError: (error) {});
+        //  else {
+        //   _visitorDetails.add(Resource.none());
+
+        //   log('facing some issue');
+        // }
+      }, onError: (error) {
+        _visitorDetails.add(Resource.none());
+      });
     }).execute();
   }
 
@@ -179,14 +183,19 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           qrInvalidMessageShow(appError: data.dealSafeAppError);
 
           _hasShownError = true;
-        } else {
-          _visitorDetails.add(Resource.none());
-
-          log('facing some issue');
         }
+        // else {
+        //   _visitorDetails.add(Resource.none());
+
+        //   log('facing some issue');
+        // }
       },
-      onError: (error) {},
-    ).onError((error) {});
+      onError: (error) {
+        _visitorDetails.add(Resource.none());
+      },
+    ).onError((error) {
+      _visitorDetails.add(Resource.none());
+    });
   }
 
 //scan QR and update outing time
@@ -213,9 +222,7 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           });
 
           _visitorDetails.add(
-            Resource.success(
-              data: result.data?.data,
-            ),
+            Resource.success(data: result.data?.data),
           );
           _hasShownError = false;
         } else if (result.status == Status.error && !_hasShownError) {
@@ -224,13 +231,15 @@ class GatePassQrScannerViewModel extends BasePageViewModel {
           qrInvalidMessageShow(appError: result.dealSafeAppError);
 
           _hasShownError = true;
-        } else {
-          _visitorDetails.add(Resource.none());
-
-          log('facing some issue');
         }
+        //  else {
+        //   _visitorDetails.add(Resource.none());
+
+        //   log('facing some issue');
+        // }
       }).onError((error) {
         log("patchVisitorDetails error $error");
+        _visitorDetails.add(Resource.none());
       });
     }).execute();
   }

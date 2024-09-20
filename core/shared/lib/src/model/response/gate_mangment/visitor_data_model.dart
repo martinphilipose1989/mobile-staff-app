@@ -46,6 +46,8 @@ class VisitorDataModel {
 
   String? vehicleNumber;
 
+  String? studentName;
+
   VisitorDataModel(
       {this.id,
       this.pointOfContact,
@@ -68,7 +70,8 @@ class VisitorDataModel {
       this.guestCount,
       this.gatePassNumber,
       this.vehicleNumber,
-      this.issuedTime});
+      this.issuedTime,
+      this.studentName});
 
   @override
   String toString() {

@@ -52,7 +52,11 @@ class CreateEditGatePassPageView
                       CommonTextFormField(
                         bottomPadding: 16,
                         showAstreik: true,
-                        labelText: "Visitor Name",
+                        labelText:
+                            arguments?.parentData.visitorName?.isNotEmpty ??
+                                    false
+                                ? "Parent Name"
+                                : "Visitor Name",
                         readOnly:
                             arguments?.parentData.visitorName?.isNotEmpty ??
                                 false,
@@ -64,7 +68,7 @@ class CreateEditGatePassPageView
                         ],
                         validator: (value) {
                           if (Validator.isEmpty(value!)) {
-                            return "Visitor Name cannot be empty";
+                            return "${arguments?.parentData.visitorName?.isNotEmpty ?? false ? "Parent Name" : "Visitor Name"} cannot be empty";
                           }
                           return null;
                         },
@@ -126,27 +130,45 @@ class CreateEditGatePassPageView
                           return DataStatusWidget(
                             status: data?.status ?? Status.none,
                             loadingWidget: () => const SizedBox.shrink(),
-                            successWidget: () => CustomDropdownButton(
-                              bottomPadding: 32,
-                              items: data?.data?.data
-                                      ?.map((e) => e.attributes?.name)
-                                      .toList() ??
-                                  <String>[],
-                              isMutiSelect: false,
-                              dropdownName: "Type Of Visitor",
-                              showAstreik: true,
-                              showBorderColor: true,
-                              onMultiSelect: (_) {},
-                              onSingleSelect: (value) {
-                                model.setTypeOfVisitorId(value);
-                              },
-                              validator: (value) {
-                                if (value == null || Validator.isEmpty(value)) {
-                                  return "Type of visitor cannot be empty";
-                                }
-                                return null;
-                              },
-                            ),
+                            successWidget: () => AppStreamBuilder<String?>(
+                                stream: model.intialTypeOfVisitor!.stream,
+                                initialData: model.intialTypeOfVisitor?.value,
+                                dataBuilder: (context, visitorType) {
+                                  return CustomDropdownButton(
+                                    bottomPadding: 32,
+                                    intialValue: visitorType,
+                                    items: arguments?.parentData.visitorName
+                                                ?.isEmpty ??
+                                            true
+                                        ? data?.data?.data
+                                                ?.map((e) => e.attributes?.name)
+                                                .toList() ??
+                                            <String>[]
+                                        : data?.data?.data
+                                                ?.map((e) => e.attributes?.name)
+                                                .toList()
+                                                .where((e) =>
+                                                    e?.toLowerCase() ==
+                                                    "parent")
+                                                .toList() ??
+                                            [],
+                                    isMutiSelect: false,
+                                    dropdownName: "Type Of Visitor",
+                                    showAstreik: true,
+                                    showBorderColor: true,
+                                    onMultiSelect: (_) {},
+                                    onSingleSelect: (value) {
+                                      model.setTypeOfVisitorId(value);
+                                    },
+                                    validator: (value) {
+                                      if (value == null ||
+                                          Validator.isEmpty(value)) {
+                                        return "Type of visitor cannot be empty";
+                                      }
+                                      return null;
+                                    },
+                                  );
+                                }),
                           );
                         },
                       ),

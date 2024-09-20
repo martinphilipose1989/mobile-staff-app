@@ -1,4 +1,6 @@
 import 'package:domain/domain.dart';
+
+import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -67,5 +69,21 @@ abstract class DomainModule {
   PatchParentGatepassUsecase patchParentGatepassUsecase(
       VisitorRepository visitorRepository) {
     return PatchParentGatepassUsecase(visitorRepository: visitorRepository);
+  }
+
+  @lazySingleton
+  UserPermissionDetailsUsecase userPermissionDetailsUsecase(
+      UserRepository userRepository) {
+    return UserPermissionDetailsUsecase(userRepository: userRepository);
+  }
+
+  @lazySingleton
+  AuthUsecase authUsecase(UserRepository userRepository) {
+    return AuthUsecase(userRepository: userRepository);
+  }
+
+  @lazySingleton
+  LogoutUsecase logoutUsecase(UserRepository userRepository) {
+    return LogoutUsecase(userRepository: userRepository);
   }
 }

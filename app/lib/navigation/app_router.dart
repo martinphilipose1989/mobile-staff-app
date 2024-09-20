@@ -5,7 +5,9 @@ import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gat
 import 'package:app/feature/gate_managment/visitor_details/qr_details.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_page.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page.dart';
+import 'package:app/feature/login/login_page.dart';
 import 'package:app/feature/transport_managment_dashboard/transport_dashboard_page.dart';
+import 'package:app/utils/app_webview.dart';
 import 'package:flutter/cupertino.dart';
 import '../feature/splash/splash_page.dart';
 import 'route_paths.dart';
@@ -17,6 +19,7 @@ class AppRouter {
         return CupertinoPageRoute(
             builder: (context) => const SplashPage(),
             settings: const RouteSettings(name: RoutePaths.splash));
+
       case RoutePaths.dashboard:
         return CupertinoPageRoute(
             builder: (context) => const DashboardPage(),
@@ -53,6 +56,15 @@ class AppRouter {
           builder: (context) => const TransportDashboardPage(),
         );
 
+      case RoutePaths.login:
+        return CupertinoPageRoute(
+          builder: (context) => const LoginPage(),
+        );
+
+      case RoutePaths.webLogin:
+        return CupertinoPageRoute(
+          builder: (context) => const MyInAppWebView(),
+        );
       default:
         // Replace by Empty Page
         return CupertinoPageRoute(

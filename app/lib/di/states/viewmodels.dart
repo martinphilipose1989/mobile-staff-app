@@ -4,6 +4,7 @@ import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gat
 import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/feature/gate_managment/visitor_list/visitor_list_page_viewmodel.dart';
+import 'package:app/feature/login/login_viewmodel.dart';
 import 'package:app/feature/splash/splash_page_model.dart';
 import 'package:app/feature/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
 import 'package:app/utils/commonTime/common_time_model.dart';
@@ -18,8 +19,12 @@ import '../../dependencies.dart';
 
 final splashViewModelProvider =
     ChangeNotifierProvider.autoDispose<SplashViewModel>(
-  (ref) => SplashViewModel(getIt.get<String>(instanceName: "BaseUrl"),
-      getIt.get<FlutterExceptionHandlerBinder>()),
+  (ref) => SplashViewModel(
+    getIt.get<String>(instanceName: "BaseUrl"),
+    getIt.get<FlutterExceptionHandlerBinder>(),
+    getIt.get<AuthUsecase>(),
+    getIt.get<FlutterToastErrorPresenter>(),
+  ),
 );
 
 final commonCalendarModelProvider =
@@ -48,8 +53,8 @@ final commonChipListProvider =
 final visitorListPageModelProvider =
     ChangeNotifierProvider.autoDispose<VisitorListPageViewModel>(
   (ref) => VisitorListPageViewModel(
+      logoutUsecase: getIt.get<LogoutUsecase>(),
       getTypeOfVisitorListUsecase: getIt.get<GetTypeOfVisitorListUsecase>(),
-      searchVisitorusecase: getIt.get<SearchVisitorUsecase>(),
       getVisitorListUsecase: getIt.get<GetVisitorListUsecase>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),
 );
@@ -93,5 +98,12 @@ final gatePassQrScannerViewModelProvider =
 final transportDashboardPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<TransportDashboardPageViewModel>((ref) =>
         TransportDashboardPageViewModel(
+            exceptionHandlerBinder:
+                getIt.get<FlutterExceptionHandlerBinder>()));
+
+final loginPageViewModelProvider =
+    ChangeNotifierProvider.autoDispose<LoginPageViewModel>((ref) =>
+        LoginPageViewModel(
+            flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));

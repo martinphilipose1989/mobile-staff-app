@@ -12,9 +12,12 @@ class SearchVisitorUsecase extends BaseUseCase<NetworkError,
   Future<Either<NetworkError, VisitorListResponseModel>> execute(
       {required SearchUseCaseParams params}) {
     return _visitorRepository.searchVisitorList(
+      request: SearchRequest(
         pageNumber: params.pageNumber,
         pageSize: params.pageSize,
-        searchQuery: params.searchQuery);
+        search: params.searchQuery,
+      ),
+    );
   }
 }
 

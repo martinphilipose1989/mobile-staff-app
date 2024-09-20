@@ -1,8 +1,16 @@
 import 'dart:async';
 
+import 'package:app/errors/flutter_toast_error_presenter.dart';
+
+import 'package:app/model/resource.dart';
+import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
+import 'package:app/utils/request_manager.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 @injectable
@@ -11,9 +19,17 @@ class SplashViewModel extends BasePageViewModel {
   final StreamController<bool> _navigateToDashboardController =
       StreamController();
   final FlutterExceptionHandlerBinder exceptionHandlerBinder;
+  final FlutterToastErrorPresenter toastErrorPresenter;
   late Timer future;
 
-  SplashViewModel(@factoryParam this.myBaseUrl, this.exceptionHandlerBinder) {
+  final AuthUsecase authUsecase;
+
+  SplashViewModel(
+    @factoryParam this.myBaseUrl,
+    this.exceptionHandlerBinder,
+    this.authUsecase,
+    this.toastErrorPresenter,
+  ) {
     future = Timer(const Duration(seconds: 2), () async {
       _navigateToDashboardController.sink.add(true);
       _navigateToDashboardController.close();
@@ -21,6 +37,29 @@ class SplashViewModel extends BasePageViewModel {
   }
 
   Stream<bool> navigateToDashboard() => _navigateToDashboardController.stream;
+
+  BehaviorSubject<Resource<bool>> isLoadingSubject =
+      BehaviorSubject.seeded(Resource.none());
+
+  void login() {
+    isLoadingSubject.add(Resource.loading());
+    final AuthUsecaseParams params = AuthUsecaseParams();
+    exceptionHandlerBinder.handle(block: () {
+      RequestManager(params,
+              createCall: () => authUsecase.execute(params: params))
+          .asFlow()
+          .listen((data) {
+        if (data.status == Status.success) {
+          Navigator.of(navigatorKey.currentContext!)
+              .pushReplacementNamed(RoutePaths.dashboard);
+        } else if (data.status == Status.error) {
+          isLoadingSubject.add(Resource.none());
+        }
+      }).onError((error) {
+        isLoadingSubject.add(Resource.none());
+      });
+    }).execute();
+  }
 
   void test() {
     exceptionHandlerBinder.handle(block: () {
