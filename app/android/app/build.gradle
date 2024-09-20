@@ -60,6 +60,7 @@ android {
             dimension "flavors"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
+                   
         }
         qa {
             dimension "flavors"

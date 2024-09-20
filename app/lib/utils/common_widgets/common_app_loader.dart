@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 
 class CommonAppLoader extends StatelessWidget {
   final Color backdropFilterColor;
-  const CommonAppLoader({super.key, this.backdropFilterColor = Colors.black12});
+  final Color? progressColor;
+  const CommonAppLoader(
+      {super.key,
+      this.backdropFilterColor = Colors.black12,
+      this.progressColor});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,12 @@ class CommonAppLoader extends StatelessWidget {
             ),
           ),
         ),
-        const Center(child: CircularProgressIndicator()),
+        Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(
+                progressColor ?? Theme.of(context).colorScheme.primary),
+          ),
+        ),
       ],
     );
   }
