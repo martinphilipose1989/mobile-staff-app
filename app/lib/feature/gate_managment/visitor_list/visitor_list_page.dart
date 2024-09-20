@@ -32,7 +32,7 @@ class VisitorListPageState
         appbarTitle: "Visitors List",
         showBackButton: false,
         onTapAction: () {
-          model.logOut();
+          //   model.logOut();
         });
   }
 

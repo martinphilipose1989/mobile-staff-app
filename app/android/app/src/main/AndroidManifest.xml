@@ -50,7 +50,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="${logoutAuthRedirectScheme}" android:host="logoutcallback"/>
     </intent-filter>
-    <!-- //gatemanagment://logoutcallback -->
+   
 </activity>
 
         <!-- Don't delete the meta-data below.

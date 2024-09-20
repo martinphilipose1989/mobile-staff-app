@@ -8,8 +8,9 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.prod,
     values: const FlavorValues(
-      apiBaseUrl: "https://gate-management-r26sp3mibq-uc.a.run.app/",
-      mdmBaseUrl: "https://ampersand-r26sp3mibq-uc.a.run.app/api/co-reasons/",
+      apiBaseUrl:
+          "https://gate-management-backend-869610231867.asia-south1.run.app/",
+      mdmBaseUrl: "https://ampersand-r26sp3mibq-uc.a.run.app/",
       authorizationEndpoint:
           'https://qa.vgos.org/realms/ampersand-internal-qa/protocol/openid-connect/auth',
       tokenEndpoint:

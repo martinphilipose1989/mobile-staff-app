@@ -13,6 +13,8 @@ abstract class NetworkProperties {
 
   static const String mdmModule =
       "https://ampersand-r26sp3mibq-uc.a.run.app/api/co-reasons";
+  //  "https://ampersand-r26sp3mibq-uc.a.run.app/api/co-reasons"; DEV URL
+
   static const String globalSearchVisitor =
       "gate-management/gatepass/global-search";
 
