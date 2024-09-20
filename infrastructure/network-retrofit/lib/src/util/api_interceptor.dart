@@ -2,7 +2,6 @@ import 'package:data/data.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:network_retrofit/src/util/network_properties.dart';
 
 import 'package:services/services.dart';
 
@@ -16,8 +15,7 @@ class ApiInterceptor extends InterceptorsWrapper {
   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final isCoReasonRequest =
-        options.uri.path.contains(NetworkProperties.mdmModule);
+    final isCoReasonRequest = options.uri.path.contains("/api/co-reasons");
 
     if (isCoReasonRequest) {
       options.headers.putIfAbsent(
