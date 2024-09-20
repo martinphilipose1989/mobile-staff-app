@@ -45,5 +45,19 @@
 	<false/>
     <key>NSCameraUsageDescription</key>
     <string>This app needs camera access to scan QR codes and click images</string>
+
+   
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>gatemanagement</string>
+            </array>
+            <key>CFBundleURLName</key>
+            <string>com.ampersand.staff</string>
+        </dict>
+    </array>
+
 </dict>
 </plist>
