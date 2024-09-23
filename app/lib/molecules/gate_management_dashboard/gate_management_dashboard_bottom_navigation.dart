@@ -1,9 +1,11 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:developer';
 
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
-import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
-import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_page.dart';
+import 'package:app/feature/gate_management/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
+import 'package:app/feature/gate_management/create_edit_gate_pass/create_edit_gate_pass_page.dart';
+import 'package:app/feature/gate_management/gate_pass_qr_scanner/gate_pass_qr_scanner_page.dart';
 
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
@@ -15,8 +17,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-class DashboardBottomNavigation extends StatelessWidget {
-  DashboardBottomNavigation({super.key, required this.model});
+class GateManagementDashboardBottomNavigation extends StatelessWidget {
+  GateManagementDashboardBottomNavigation({super.key, required this.model});
 
   final DashboardPageViewModel model;
 

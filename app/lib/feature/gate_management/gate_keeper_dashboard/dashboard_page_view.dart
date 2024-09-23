@@ -1,7 +1,7 @@
 // ignore_for_file: use_super_parameters
 
-import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
-import 'package:app/feature/gate_managment/visitor_list/visitor_list_page.dart';
+import 'package:app/feature/gate_management/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
+import 'package:app/feature/gate_management/visitor_list/visitor_list_page.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,4 +1,4 @@
-import 'package:app/feature/gate_managment/visitor_list/visitor_list_page_viewmodel.dart';
+import 'package:app/feature/gate_management/visitor_list/visitor_list_page_viewmodel.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_search_text_field.dart';

@@ -1,4 +1,4 @@
-import 'package:app/feature/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
+import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';

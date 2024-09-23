@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
-import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
+import 'package:app/feature/gate_management/create_edit_gate_pass/create_edit_gate_pass_page.dart';
 
 import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';

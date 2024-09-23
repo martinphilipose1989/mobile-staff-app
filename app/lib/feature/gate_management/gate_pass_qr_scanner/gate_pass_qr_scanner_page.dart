@@ -1,7 +1,7 @@
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_page_view.dart';
-import 'package:app/feature/gate_managment/gate_pass_qr_scanner/gate_pass_qr_scanner_viewmodel.dart';
+import 'package:app/feature/gate_management/gate_pass_qr_scanner/gate_pass_qr_scanner_page_view.dart';
+import 'package:app/feature/gate_management/gate_pass_qr_scanner/gate_pass_qr_scanner_viewmodel.dart';
 import 'package:app/utils/common_widgets/common_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

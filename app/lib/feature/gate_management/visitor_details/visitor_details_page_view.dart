@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/gate_managment/visitor_details/visitor_details_viewmodel.dart';
+import 'package:app/feature/gate_management/visitor_details/visitor_details_viewmodel.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_row.dart';
 import 'package:app/molecules/gate_managment/visitor_details/visitor_details_shimmer.dart';

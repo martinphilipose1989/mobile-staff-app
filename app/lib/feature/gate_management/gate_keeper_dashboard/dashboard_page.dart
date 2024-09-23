@@ -1,9 +1,9 @@
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/gate_keeper_dashboard/dashboard_page_view.dart';
-import 'package:app/feature/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
+import 'package:app/feature/gate_management/gate_keeper_dashboard/dashboard_page_view.dart';
+import 'package:app/feature/gate_management/gate_keeper_dashboard/dashboard_page_viewmodel.dart';
 
-import 'package:app/molecules/dashboard/dashboard_bottom_navigation.dart';
+import 'package:app/molecules/gate_management_dashboard/gate_management_dashboard_bottom_navigation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,6 +34,6 @@ class DashboardPageState
 
   @override
   Widget? buildBottomNavigationBar(DashboardPageViewModel model) {
-    return DashboardBottomNavigation(model: model);
+    return GateManagementDashboardBottomNavigation(model: model);
   }
 }

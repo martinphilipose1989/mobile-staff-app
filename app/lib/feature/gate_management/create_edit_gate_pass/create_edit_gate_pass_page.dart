@@ -1,7 +1,7 @@
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page_view.dart';
-import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
+import 'package:app/feature/gate_management/create_edit_gate_pass/create_edit_gate_pass_page_view.dart';
+import 'package:app/feature/gate_management/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
 import 'package:app/utils/common_widgets/common_appbar.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';

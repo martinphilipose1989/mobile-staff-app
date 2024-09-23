@@ -1,5 +1,5 @@
-import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_page.dart';
-import 'package:app/feature/gate_managment/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
+import 'package:app/feature/gate_management/create_edit_gate_pass/create_edit_gate_pass_page.dart';
+import 'package:app/feature/gate_management/create_edit_gate_pass/create_edit_gate_pass_viewmodel.dart';
 
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/gate_managment/profile_picker.dart';
