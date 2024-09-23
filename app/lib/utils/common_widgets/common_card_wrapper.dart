@@ -12,7 +12,8 @@ class CommonCardWrapper extends StatelessWidget {
       this.bottom = 16,
       this.top = 0,
       this.left = 0,
-      this.right = 0});
+      this.right = 0,
+      this.contentPadding});
 
   final Widget child;
   final Color primaryColor;
@@ -22,13 +23,14 @@ class CommonCardWrapper extends StatelessWidget {
   final double right;
   final double left;
   final double bottom;
+  final EdgeInsets? contentPadding;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin:
           REdgeInsets.only(top: top, left: left, right: right, bottom: bottom),
-      padding: REdgeInsets.all(16),
+      padding: contentPadding ?? REdgeInsets.all(16),
       decoration: BoxDecoration(
           color: isPrimary ? primaryColor : secondaryColor,
           borderRadius: BorderRadius.circular(8.r),

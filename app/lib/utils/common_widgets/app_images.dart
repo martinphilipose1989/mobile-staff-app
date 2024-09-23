@@ -69,4 +69,6 @@ class AppImages {
   static const String backArrow = "assets/images/back_arrow.svg";
   static const String defaultBus = "assets/images/default_bus.webp";
   static const String playButton = "assets/images/play.svg";
+  static const String routeImage = "assets/images/route_path.webp";
+  static const String callIcon = "assets/images/call_icon.svg";
 }

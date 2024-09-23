@@ -6,6 +6,7 @@ import 'package:app/feature/gate_management/visitor_details/visitor_details_view
 import 'package:app/feature/gate_management/visitor_list/visitor_list_page_viewmodel.dart';
 import 'package:app/feature/login/login_viewmodel.dart';
 import 'package:app/feature/splash/splash_page_model.dart';
+import 'package:app/feature/transport_management/incident_report/incident_report_page_viewmodel.dart';
 import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
 import 'package:app/utils/commonTime/common_time_model.dart';
 import 'package:app/utils/common_calendar/common_calendar_model.dart';
@@ -104,6 +105,13 @@ final transportDashboardPageViewModelProvider =
 final loginPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<LoginPageViewModel>((ref) =>
         LoginPageViewModel(
+            flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+            exceptionHandlerBinder:
+                getIt.get<FlutterExceptionHandlerBinder>()));
+
+final incidentReportPageViewModelProvider =
+    ChangeNotifierProvider.autoDispose<IncidentReportPageViewModel>((ref) =>
+        IncidentReportPageViewModel(
             flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));

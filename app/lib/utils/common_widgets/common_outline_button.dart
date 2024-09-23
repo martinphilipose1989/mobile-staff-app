@@ -12,21 +12,24 @@ class CommonOutlineButton extends StatelessWidget {
       this.isDisabled = false,
       required this.onPressed,
       this.backgroundColor,
-      this.foregroundColor,
+      this.foregroundColor = AppColors.textGray,
       this.loaderColor,
       this.shadowColor,
       this.elevation = 2,
       this.height,
       this.width,
       this.disabledForegroundColor,
-      this.disabledBackgroundColor});
+      this.disabledBackgroundColor,
+      this.icon,
+      this.borderRadius,
+      this.borderSide});
 
   final VoidCallback onPressed;
   final String title;
   final TextStyle? titleTextStyle;
   final bool isDisabled;
   final bool isLoading;
-  final Color? foregroundColor;
+  final Color foregroundColor;
   final Color? backgroundColor;
   final Color? disabledForegroundColor;
   final Color? disabledBackgroundColor;
@@ -35,12 +38,15 @@ class CommonOutlineButton extends StatelessWidget {
   final double elevation;
   final double? height;
   final double? width;
+  final Widget? icon;
+  final double? borderRadius;
+  final BorderSide? borderSide;
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: isDisabled || isLoading ? null : onPressed,
-      style: OutlinedButton.styleFrom(
+    return OutlinedButton.icon(
+        onPressed: isDisabled || isLoading ? null : onPressed,
+        style: OutlinedButton.styleFrom(
           textStyle: titleTextStyle ??
               AppTypography.subtitle2.copyWith(fontSize: 14.sp),
           disabledForegroundColor: disabledForegroundColor,
@@ -48,25 +54,24 @@ class CommonOutlineButton extends StatelessWidget {
           shadowColor: shadowColor ?? AppColors.shadowColor,
           backgroundColor: Colors.white,
           elevation: elevation,
-          foregroundColor: AppColors.textGray,
-          fixedSize: Size(double.infinity, 40.h)),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (isLoading) ...{
-            SizedBox.square(
-              dimension: 16.w,
-              child: CircularProgressIndicator.adaptive(
-                strokeWidth: 2.w,
-                valueColor: AlwaysStoppedAnimation(loaderColor ?? Colors.white),
-              ),
-            ),
-            SizedBox(width: 8.w), // Add space between the icon and the label
-          },
-          Text(title),
-        ],
-      ),
-    );
+          foregroundColor: foregroundColor,
+          fixedSize: Size(double.infinity, 40.h),
+          shape: borderRadius != null
+              ? RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(borderRadius!))
+              : null,
+          side: borderSide,
+        ),
+        icon: isLoading
+            ? SizedBox.square(
+                dimension: 16.w,
+                child: CircularProgressIndicator.adaptive(
+                  strokeWidth: 2.w,
+                  valueColor:
+                      AlwaysStoppedAnimation(loaderColor ?? Colors.white),
+                ),
+              )
+            : icon,
+        label: Text(title));
   }
 }

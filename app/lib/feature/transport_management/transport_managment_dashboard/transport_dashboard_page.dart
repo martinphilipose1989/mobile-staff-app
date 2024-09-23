@@ -1,12 +1,14 @@
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
-import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_pageview.dart';
+
 import 'package:app/utils/common_widgets/common_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
+
+import 'transport_dashboard_page_viewmodel.dart';
+import 'transport_dashboard_pageview.dart';
 
 class TransportDashboardPage extends BasePage<TransportDashboardPageViewModel> {
   const TransportDashboardPage({super.key});
