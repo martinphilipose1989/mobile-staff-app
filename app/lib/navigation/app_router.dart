@@ -6,6 +6,8 @@ import 'package:app/feature/gate_management/visitor_details/qr_details.dart';
 import 'package:app/feature/gate_management/visitor_details/visitor_details_page.dart';
 import 'package:app/feature/gate_management/visitor_list/visitor_list_page.dart';
 import 'package:app/feature/login/login_page.dart';
+import 'package:app/feature/transport_management/incident_report/incident_report_page.dart';
+import 'package:app/feature/transport_management/school_contacts/school_contacts_page.dart';
 import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page.dart';
 import 'package:app/utils/app_webview.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,11 +53,6 @@ class AppRouter {
           builder: (context) => QrDetailsPage(qrImageBytes: arguments),
         );
 
-      case RoutePaths.transportDashBoardPage:
-        return CupertinoPageRoute(
-          builder: (context) => const TransportDashboardPage(),
-        );
-
       case RoutePaths.login:
         return CupertinoPageRoute(
           builder: (context) => const LoginPage(),
@@ -65,11 +62,22 @@ class AppRouter {
         return CupertinoPageRoute(
           builder: (context) => const MyInAppWebView(),
         );
+
+      // TRANSPORT MODULE
+      case RoutePaths.transportDashBoardPage:
+        return CupertinoPageRoute(
+            builder: (context) => const TransportDashboardPage());
+
+      case RoutePaths.incidentReportPage:
+        return CupertinoPageRoute(
+            builder: (context) => const IncidentReportPage());
+
+      case RoutePaths.schoolContactPage:
+        return CupertinoPageRoute(
+            builder: (context) => const SchoolContactsPage());
       default:
         // Replace by Empty Page
-        return CupertinoPageRoute(
-          builder: (context) => Container(),
-        );
+        return CupertinoPageRoute(builder: (context) => Container());
     }
   }
 }
