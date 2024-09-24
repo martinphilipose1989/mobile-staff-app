@@ -71,4 +71,15 @@ class AppImages {
   static const String playButton = "assets/images/play.svg";
   static const String routeImage = "assets/images/route_path.webp";
   static const String callIcon = "assets/images/call_icon.svg";
+
+  static const String defaultDriverAvatar = "assets/images/default_driver.webp";
+  static const String defaultStudentAvatar =
+      "assets/images/default_student.webp";
+  static const String defaultTeacherAvatar =
+      "assets/images/default_teacher.webp";
+  static const String checkMark = "assets/images/check_mark.svg";
+
+  static const String clockIcon = "assets/images/clock.svg";
+  static const String locationIcon = "assets/images/location.svg";
+  static const String userIcon = "assets/images/user.svg";
 }

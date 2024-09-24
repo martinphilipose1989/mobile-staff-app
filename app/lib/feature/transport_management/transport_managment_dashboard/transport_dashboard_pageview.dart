@@ -32,10 +32,9 @@ class TransportDashboardPageView
         const UpcomingTripListTile(),
         const CompletedTripListTile(),
         const ArrivalInfoTile(
-          vehicleNumber: "MH47-PK-9386",
-          startTime: "7:00 AM",
-          routeName: "Prabhadevi",
-        )
+            vehicleNumber: "MH47-PK-9386",
+            startTime: "7:00 AM",
+            totalStudents: 10)
       ],
     );
   }
