@@ -1,8 +1,11 @@
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
+
+import 'package:app/molecules/transport_management/trip_checklist/trip_verification_pop_up.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/enum/dialog_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,7 +49,14 @@ class BusChecklistPageView
           subtitle: CommonText(text: "Driver", style: AppTypography.body2),
           trailing: TextButton.icon(
             icon: SvgPicture.asset(AppImages.checkMark),
-            onPressed: () {},
+            onPressed: () {
+              tripVerificationPopUp(context,
+                  header: "Verify Driver",
+                  info: "+91-9090901234",
+                  name: "Ramesh Singh",
+                  role: "Driver",
+                  type: DialogType.driver);
+            },
             label: CommonText(text: "Confirm", style: AppTypography.subtitle2),
           ),
         ),
@@ -64,11 +74,42 @@ class BusChecklistPageView
               CommonText(text: "School Teacher", style: AppTypography.body2),
           trailing: TextButton.icon(
             icon: SvgPicture.asset(AppImages.checkMark),
-            onPressed: () {},
+            onPressed: () {
+              tripVerificationPopUp(context,
+                  header: "Verify Teacher",
+                  info: "School Teacher",
+                  name: "Lily Santoz",
+                  role: "Teacher",
+                  type: DialogType.teacher);
+            },
             label: CommonText(text: "Confirm", style: AppTypography.subtitle2),
           ),
         )
       ],
+    );
+  }
+
+  Future<dynamic> tripVerificationPopUp(BuildContext context,
+      {required String header,
+      required String info,
+      required String name,
+      required String role,
+      required DialogType type,
+      String imageUrl = ''}) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return TripVerificationPopUp(
+          header: header,
+          info: info,
+          name: name,
+          imageUrl: imageUrl,
+          negativeText: role,
+          negativeCallback: () {},
+          positiveCallback: () {},
+          type: type,
+        );
+      },
     );
   }
 }

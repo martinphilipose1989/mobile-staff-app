@@ -82,4 +82,5 @@ class AppImages {
   static const String clockIcon = "assets/images/clock.svg";
   static const String locationIcon = "assets/images/location.svg";
   static const String userIcon = "assets/images/user.svg";
+  static const String closeIcon = "assets/images/close_circle.svg";
 }
