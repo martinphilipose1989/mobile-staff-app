@@ -10,13 +10,13 @@ import 'package:rxdart/rxdart.dart';
 
 class CustomDropdownButton extends StatefulWidget {
   final List<String?> items;
-  final bool isMutiSelect;
+  final bool? isMutiSelect;
   final bool showBorderColor;
   final String dropdownName;
   final bool showAstreik;
   final double? width;
   final bool displayZerothIndex;
-  final Function(List<String> selectedValues) onMultiSelect;
+  final Function(List<String> selectedValues)? onMultiSelect;
   final Function(String selectedValue)? onSingleSelect;
   final double rightPadding;
   final double leftPadding;
@@ -28,13 +28,13 @@ class CustomDropdownButton extends StatefulWidget {
   const CustomDropdownButton(
       {super.key,
       required this.items,
-      required this.isMutiSelect,
+      this.isMutiSelect,
       required this.dropdownName,
       required this.showAstreik,
-      required this.showBorderColor,
+      this.showBorderColor = false,
       this.displayZerothIndex = false,
       this.width,
-      required this.onMultiSelect,
+      this.onMultiSelect,
       this.onSingleSelect,
       this.topPadding = 0,
       this.bottomPadding = 0,
@@ -66,7 +66,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
       selectedItemsSubject.add(addedZerothIndex);
     }
 
-    if (!widget.isMutiSelect) {
+    if (widget.isMutiSelect != null && !(widget.isMutiSelect ?? false)) {
       singleSelectItemSubject =
           widget.singleSelectItemSubject ?? BehaviorSubject<String>.seeded('');
     }
@@ -95,7 +95,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             right: widget.rightPadding,
             bottom: widget.bottomPadding,
             left: widget.leftPadding),
-        child: widget.isMutiSelect
+        child: widget.isMutiSelect != null
             ? multiSelectDropDown()
             : singleSelectDropDown());
   }
@@ -228,7 +228,8 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                                 : selectedItems.add(item ?? "");
 
                             selectedItemsSubject.add(List.from(selectedItems));
-                            widget.onMultiSelect(selectedItemsSubject.value);
+                            widget.onMultiSelect
+                                ?.call(selectedItemsSubject.value);
                             menuSetState(() {}); // This will rebuild the icons
                           },
                           child: Container(

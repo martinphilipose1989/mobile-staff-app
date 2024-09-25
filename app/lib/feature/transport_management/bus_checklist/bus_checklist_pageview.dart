@@ -4,7 +4,9 @@ import 'package:app/molecules/transport_management/trip_checklist/trip_verificat
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
+import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/dialog/add_new_bearer.dart';
 import 'package:app/utils/enum/dialog_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,6 +86,22 @@ class BusChecklistPageView
             },
             label: CommonText(text: "Confirm", style: AppTypography.subtitle2),
           ),
+        ),
+        const Spacer(),
+        Container(
+          padding: REdgeInsets.only(left: 16, right: 16, bottom: 20),
+          width: double.infinity,
+          child: CommonPrimaryElevatedButton(
+            title: "Submit",
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AddNewBearer(
+                        cancelCallback: () {}, addNewBearerCallback: () {});
+                  });
+            },
+          ),
         )
       ],
     );
@@ -100,15 +118,14 @@ class BusChecklistPageView
       context: context,
       builder: (context) {
         return TripVerificationPopUp(
-          header: header,
-          info: info,
-          name: name,
-          imageUrl: imageUrl,
-          negativeText: role,
-          negativeCallback: () {},
-          positiveCallback: () {},
-          type: type,
-        );
+            header: header,
+            info: info,
+            name: name,
+            imageUrl: imageUrl,
+            negativeText: role,
+            negativeCallback: () {},
+            positiveCallback: () {},
+            type: type);
       },
     );
   }
