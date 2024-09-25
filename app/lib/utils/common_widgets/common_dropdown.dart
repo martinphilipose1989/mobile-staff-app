@@ -136,7 +136,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
                       ? singleSelectItemSubject.value
                       : null,
               onChanged: (value) {
-                widget.onSingleSelect!(value ?? "");
+                widget.onSingleSelect?.call(value ?? "");
                 singleSelectItemSubject.add(value ?? "");
               },
               iconStyleData: IconStyleData(
