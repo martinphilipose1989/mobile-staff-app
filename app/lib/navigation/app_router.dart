@@ -7,6 +7,7 @@ import 'package:app/feature/gate_management/visitor_details/visitor_details_page
 import 'package:app/feature/gate_management/visitor_list/visitor_list_page.dart';
 import 'package:app/feature/login/login_page.dart';
 import 'package:app/feature/transport_management/bus_checklist/bus_checklist_page.dart';
+import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page.dart';
 import 'package:app/feature/transport_management/incident_report/incident_report_page.dart';
 import 'package:app/feature/transport_management/school_contacts/school_contacts_page.dart';
 import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page.dart';
@@ -80,6 +81,9 @@ class AppRouter {
       case RoutePaths.busCheckListPage:
         return CupertinoPageRoute(
             builder: (context) => const BusChecklistPage());
+      case RoutePaths.busRouteDetailsPage:
+        return CupertinoPageRoute(
+            builder: (context) => const BusRouteDetailsPage());
       default:
         // Replace by Empty Page
         return CupertinoPageRoute(builder: (context) => Container());

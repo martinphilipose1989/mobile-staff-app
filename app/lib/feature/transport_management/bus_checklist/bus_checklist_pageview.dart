@@ -6,7 +6,8 @@ import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
-import 'package:app/utils/common_widgets/dialog/add_new_bearer.dart';
+
+import 'package:app/utils/common_widgets/dialog/view_bearer.dart';
 import 'package:app/utils/enum/dialog_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -97,8 +98,9 @@ class BusChecklistPageView
               showDialog(
                   context: context,
                   builder: (context) {
-                    return AddNewBearer(
-                        cancelCallback: () {}, addNewBearerCallback: () {});
+                    return ViewOrDropBearer(onCancel: () {}, onConfirm: () {});
+                    // AddNewBearer(
+                    //     cancelCallback: () {}, addNewBearerCallback: () {});
                   });
             },
           ),

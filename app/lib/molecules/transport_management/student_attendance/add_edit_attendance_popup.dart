@@ -24,68 +24,88 @@ class AddEditAttendancePopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return Dialog(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
-      insetPadding: EdgeInsets.zero,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CommonText(text: header),
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: SvgPicture.asset(AppImages.closeIcon),
-          )
-        ],
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CommonImageWidget(
-            imageUrl: "imageUrl",
-            fallbackAssetImagePath: AppImages.defaultStudentAvatar,
-            imageWidth: 125.w,
-            imageHeight: 125.h,
-            clipBehavior: Clip.hardEdge,
-          ),
-          CommonText(
-              text: studentName,
-              color: AppColors.textDark,
-              style: AppTypography.h6),
-          const SizedBox(height: 4),
-          CommonText(
-              text: "Regular Student",
-              color: AppColors.textGray,
-              style: AppTypography.body2),
-        ],
-      ),
-      actions: [
-        CommonPrimaryElevatedButton(
-          elevation: 0,
-          title: "Absent",
-          icon: SvgPicture.asset(
-            AppImages.closeIcon,
-            colorFilter:
-                const ColorFilter.mode(AppColors.primaryOn, BlendMode.srcIn),
-          ),
-          backgroundColor: AppColors.failure,
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          onPressed: onAbsentPresentCallback,
+      insetPadding: const EdgeInsets.all(16),
+      child: Container(
+        width: double.infinity,
+        padding: REdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CommonText(text: header, style: AppTypography.h5),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.asset(AppImages.closeIcon),
+                )
+              ],
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: Column(
+                children: [
+                  CommonImageWidget(
+                    imageUrl: "imageUrl",
+                    fallbackAssetImagePath: AppImages.defaultStudentAvatar,
+                    imageWidth: 125.w,
+                    imageHeight: 125.h,
+                    clipBehavior: Clip.hardEdge,
+                  ),
+                  CommonText(
+                      text: studentName,
+                      color: AppColors.textDark,
+                      style: AppTypography.h6),
+                  const SizedBox(height: 4),
+                  CommonText(
+                      text: "Regular Student",
+                      color: AppColors.textGray,
+                      style: AppTypography.body2),
+                ],
+              ),
+            ),
+            const SizedBox(height: 48),
+            Row(
+              children: [
+                Expanded(
+                  child: CommonPrimaryElevatedButton(
+                    elevation: 0,
+                    title: "Absent",
+                    icon: SvgPicture.asset(
+                      AppImages.closeIcon,
+                      colorFilter: const ColorFilter.mode(
+                          AppColors.primaryOn, BlendMode.srcIn),
+                    ),
+                    backgroundColor: AppColors.failure,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    onPressed: onAbsentPresentCallback,
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Expanded(
+                  child: CommonPrimaryElevatedButton(
+                    elevation: 0,
+                    title: "Present",
+                    icon: SvgPicture.asset(
+                      AppImages.checkMark,
+                      colorFilter: const ColorFilter.mode(
+                          AppColors.primaryOn, BlendMode.srcIn),
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    onPressed: onStudentPresentCallback,
+                  ),
+                )
+              ],
+            )
+          ],
         ),
-        CommonPrimaryElevatedButton(
-          elevation: 0,
-          title: "Present",
-          icon: SvgPicture.asset(
-            AppImages.checkMark,
-            colorFilter:
-                const ColorFilter.mode(AppColors.primaryOn, BlendMode.srcIn),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          onPressed: onStudentPresentCallback,
-        )
-      ],
+      ),
     );
   }
 }

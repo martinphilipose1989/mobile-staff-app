@@ -7,6 +7,7 @@ import 'package:app/feature/gate_management/visitor_list/visitor_list_page_viewm
 import 'package:app/feature/login/login_viewmodel.dart';
 import 'package:app/feature/splash/splash_page_model.dart';
 import 'package:app/feature/transport_management/bus_checklist/bus_checklist_page_viewmodel.dart';
+import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page_viewmodel.dart';
 import 'package:app/feature/transport_management/incident_report/incident_report_page_viewmodel.dart';
 import 'package:app/feature/transport_management/school_contacts/school_contacts_page_viewmodel.dart';
 import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
@@ -131,3 +132,11 @@ final busChecklistPageViewModelProvider =
             flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
+
+final busRouteDetailsPageViewModelProvider =
+    ChangeNotifierProvider.autoDispose<BusRouteDetailsPageViewModel>(
+  (ref) => BusRouteDetailsPageViewModel(
+    flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+    exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+  ),
+);
