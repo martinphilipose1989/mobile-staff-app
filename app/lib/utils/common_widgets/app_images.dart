@@ -84,4 +84,6 @@ class AppImages {
   static const String userIcon = "assets/images/user.svg";
   static const String closeIcon = "assets/images/close_circle.svg";
   static const String editIcon = "assets/images/edit_icon.svg";
+  static const String yellowBus = "assets/images/yellow_bus.webp";
+  static const String userOutlineIcon = "assets/images/user_outline.svg";
 }

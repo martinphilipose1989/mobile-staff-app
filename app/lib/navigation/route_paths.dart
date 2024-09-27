@@ -16,6 +16,7 @@ class RoutePaths {
   static const String schoolContactPage = "/schoolContactPage";
   static const String busCheckListPage = "/busCheckListPage";
   static const String busRouteDetailsPage = "/busRouteDetailsPage";
+  static const String busRouteListPage = "/busRouteListPage";
 
   // login
   static const String webLogin = "/webLogin";

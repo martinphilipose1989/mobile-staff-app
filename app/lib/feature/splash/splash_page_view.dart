@@ -64,7 +64,7 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             onPressed: () async {
                               // model.login();
                               Navigator.pushReplacementNamed(
-                                  context, RoutePaths.busRouteDetailsPage);
+                                  context, RoutePaths.busRouteListPage);
                             },
                             title: 'Lets Get Started',
                             titleTextStyle: AppTypography.subtitle2);
