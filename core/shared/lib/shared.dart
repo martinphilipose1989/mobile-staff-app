@@ -44,5 +44,10 @@ export 'src/model/response/login/logout_response.dart';
 export 'src/model/response/user_permission/user_permission.dart';
 export 'src/model/request/user_permission/user_permission_request.dart';
 
+// transport management
+
+export 'src/model/response/transport_management/create_reportincident_entity_response.dart';
+export 'src/model/request/transport_management/create_reportincident_entity_request.dart';
+
 //utils
 export 'src/utils/validator.dart';
