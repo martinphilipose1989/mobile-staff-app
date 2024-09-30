@@ -8,6 +8,7 @@ import 'package:network_retrofit/src/model/request/gate_managment/create_gatepas
 import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
+import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
@@ -203,9 +204,7 @@ class NetworkAdapter implements NetworkPort {
     final response = await safeApiCall(
       apiService.gateLogin(
         LoginRequestEntity(
-          username: loginRequest.username,
-          password: loginRequest.password,
-        ),
+            username: loginRequest.username, password: loginRequest.password),
       ),
     );
     return response.fold(
@@ -221,6 +220,46 @@ class NetworkAdapter implements NetworkPort {
           service: request.service,
           userEmail: request.userEmail)),
     );
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, TripResponse>> getMyDutyList(
+      {int page = 1, int limit = 10}) async {
+    final response = await safeApiCall(
+      transportService.getMyDutyList(page, limit),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
+      {int page = 1, int limit = 10}) async {
+    final response = await safeApiCall(
+      transportService.getAllCheckList(page, limit),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, CreateIncidentReportResponse>>
+      createIncidentReport(
+          {required CreateIncidentReportRequest requestBody}) async {
+    final request = CreateIncidentReportRequestEntity(
+        teacherId: requestBody.teacherId,
+        busDidiId: requestBody.busDidiId,
+        busDiverId: requestBody.busDiverId,
+        busId: requestBody.busId,
+        comment: requestBody.comment,
+        incidentType: requestBody.incidentType,
+        studentId: requestBody.studentId);
+    final response =
+        await safeApiCall(transportService.createIncidentReport(request));
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }

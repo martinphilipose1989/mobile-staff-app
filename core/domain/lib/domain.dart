@@ -10,6 +10,7 @@ export 'package:dartz/dartz.dart';
 export 'src/repository/user_repository.dart';
 export 'src/repository/attachment_repository.dart';
 export 'src/repository/visitor_repository.dart';
+export 'src/repository/transport_repository.dart';
 
 //use-cases
 export 'src/usecase/base/params.dart';
@@ -27,6 +28,7 @@ export 'src/usecase/visitor/search_visitor_usecase.dart';
 export 'src/usecase/visitor/patch_parent_gatepass_usecase.dart';
 export 'src/usecase/user/auth_usecase.dart';
 export 'src/usecase/user/logout_usecase.dart';
+export 'src/usecase/transport/get_myduty_list_usecase.dart';
 
 export 'package:shared/shared.dart';
 

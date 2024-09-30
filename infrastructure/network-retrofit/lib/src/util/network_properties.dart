@@ -25,7 +25,4 @@ abstract class NetworkProperties {
 
   static const String getUserRoleBasePermission =
       "https://ampersand-r26sp3mibq-uc.a.run.app/api/rbac-role-permissions/role-permissions-for-user";
-
-  // Transport
-  static const String myDutyList = "transport-service/mobile-app/my-duty";
 }

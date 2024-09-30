@@ -39,4 +39,13 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
       {required UserPermissionRequest request});
+
+  Future<Either<NetworkError, TripResponse>> getMyDutyList(
+      {int page = 1, int limit = 10});
+
+  Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
+      {int page = 1, int limit = 10});
+
+  Future<Either<NetworkError, CreateIncidentReportResponse>>
+      createIncidentReport({required CreateIncidentReportRequest requestBody});
 }

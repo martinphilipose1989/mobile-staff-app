@@ -1,4 +1,6 @@
 import 'package:domain/domain.dart';
+import 'package:domain/src/usecase/transport/create_incident_report_usecase.dart';
+import 'package:domain/src/usecase/transport/get_all_checklist_usecase.dart';
 
 import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
 import 'package:injectable/injectable.dart';
@@ -85,5 +87,24 @@ abstract class DomainModule {
   @lazySingleton
   LogoutUsecase logoutUsecase(UserRepository userRepository) {
     return LogoutUsecase(userRepository: userRepository);
+  }
+
+  @lazySingleton
+  GetMydutyListUsecase getMydutyListUsecase(
+      TransportRepository transportRepository) {
+    return GetMydutyListUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  GetAllChecklistUsecase getAllChecklistUsecase(
+      TransportRepository transportRepository) {
+    return GetAllChecklistUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  CreateIncidentReportUsecase createIncidentReportUsecase(
+      TransportRepository transportRepository) {
+    return CreateIncidentReportUsecase(
+        transportRepository: transportRepository);
   }
 }
