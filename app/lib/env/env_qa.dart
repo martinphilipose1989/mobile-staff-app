@@ -10,6 +10,9 @@ abstract class EnvQa {
   @EnviedField(varName: 'MDM_BASE_URL')
   static const String mdmBaseUrl = _EnvQa.mdmBaseUrl;
 
+  @EnviedField(varName: 'TRANSPORT_BASE_URL')
+  static const String transportBaseUrl = _EnvQa.transportBaseUrl;
+
   @EnviedField(varName: 'KEY_CLOAK_AUTH_URL')
   static const String authorizationEndpoint = _EnvQa.authorizationEndpoint;
 

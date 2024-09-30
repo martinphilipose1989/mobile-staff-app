@@ -11,8 +11,10 @@ class FlavorValues {
   final String tokenEndpoint;
   final String? logoutEndpoint;
   final String discoveryUrl;
+  final String transportUrl;
 
   const FlavorValues({
+    required this.transportUrl,
     required this.apiBaseUrl,
     required this.secrets,
     required this.mdmBaseUrl,

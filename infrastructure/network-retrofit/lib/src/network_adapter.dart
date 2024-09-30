@@ -11,6 +11,7 @@ import 'package:network_retrofit/src/model/request/login/login_request_entity.da
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
+import 'package:network_retrofit/src/services/transport_service.dart';
 
 import 'package:network_retrofit/src/util/safe_api_call.dart';
 import 'package:retrofit/retrofit.dart';
@@ -19,9 +20,10 @@ import 'services/retrofit_service.dart';
 
 class NetworkAdapter implements NetworkPort {
   final RetrofitService apiService;
+  final TransportService transportService;
   CancelToken? _cancelToken;
 
-  NetworkAdapter(this.apiService);
+  NetworkAdapter(this.apiService, this.transportService);
 
   @override
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(

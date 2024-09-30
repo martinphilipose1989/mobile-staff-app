@@ -10,6 +10,9 @@ abstract class EnvDev {
   @EnviedField(varName: 'MDM_BASE_URL')
   static const String mdmBaseUrl = _EnvDev.mdmBaseUrl;
 
+  @EnviedField(varName: 'TRANSPORT_BASE_URL')
+  static const String transportBaseUrl = _EnvDev.transportBaseUrl;
+
   @EnviedField(varName: 'KEY_CLOAK_AUTH_URL')
   static const String authorizationEndpoint = _EnvDev.authorizationEndpoint;
 

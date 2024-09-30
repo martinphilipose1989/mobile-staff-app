@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:network_retrofit/src/network_adapter.dart';
 import 'package:network_retrofit/src/services/retrofit_service.dart';
+import 'package:network_retrofit/src/services/transport_service.dart';
 import 'package:network_retrofit/src/util/api_interceptor.dart';
 import 'package:network_retrofit/src/util/token_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -57,6 +58,12 @@ abstract class NetworkModule {
   RetrofitService providerRetrofitService(Dio dio) => RetrofitService(dio);
 
   @lazySingleton
-  NetworkPort providerNetworkService(RetrofitService retrofitService) =>
-      NetworkAdapter(retrofitService);
+  TransportService providerTransportService(
+          Dio dio, @Named('TransportUrl') String transportUrl) =>
+      TransportService(dio, transportUrl: transportUrl);
+
+  @lazySingleton
+  NetworkPort providerNetworkService(
+          RetrofitService retrofitService, TransportService transportService) =>
+      NetworkAdapter(retrofitService, transportService);
 }

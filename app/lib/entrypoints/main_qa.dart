@@ -11,6 +11,7 @@ void main() {
     values: const FlavorValues(
       apiBaseUrl: EnvQa.baseUrl,
       mdmBaseUrl: EnvQa.mdmBaseUrl,
+      transportUrl: EnvQa.transportBaseUrl,
       authorizationEndpoint: EnvQa.authorizationEndpoint,
       tokenEndpoint: EnvQa.tokenEndpoint,
       logoutEndpoint: EnvQa.logoutEndpoint,
