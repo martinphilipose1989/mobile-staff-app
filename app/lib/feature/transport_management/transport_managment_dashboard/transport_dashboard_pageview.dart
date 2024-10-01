@@ -29,7 +29,7 @@ class TransportDashboardPageView
               options: model.tripStatusType,
               onSelect: (value) => {}),
         ),
-        const UpcomingTripListTile(),
+        // const UpcomingTripListTile(),
         const CompletedTripListTile(),
         const ArrivalInfoTile(
             vehicleNumber: "MH47-PK-9386",

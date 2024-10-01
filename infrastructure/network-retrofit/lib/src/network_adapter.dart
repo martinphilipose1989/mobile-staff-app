@@ -118,7 +118,6 @@ class NetworkAdapter implements NetworkPort {
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
 
-  int counter = 0;
   @override
   Future<Either<NetworkError, VisitorListResponseModel>> getVisitorList(
       {required GetVisitorListRequestModel request}) async {
@@ -131,10 +130,6 @@ class NetworkAdapter implements NetworkPort {
 
       // Create a new CancelToken for the new request
       _cancelToken = CancelToken();
-
-      // Log the cancel request count for debugging
-      counter++;
-      log("Request counter: $counter");
     }
 
     // Create a new CancelToken for the new request

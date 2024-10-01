@@ -35,7 +35,8 @@ class TripResponseEntity
 
   @override
   TripResponse transform() {
-    return TripResponse();
+    return TripResponse(
+        data: data?.transform(), message: message, status: status);
   }
 }
 

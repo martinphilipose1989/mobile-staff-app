@@ -21,53 +21,55 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
         switch ((throwable as DioException).type) {
           case DioExceptionType.connectionTimeout:
             return Left(NetworkError(
-                message:
-                    "Connection to API server failed due to internet connection",
-                httpError: 503,
-                cause: throwable));
-
+              message:
+                  "Connection timed out while trying to reach the API server. Please check your internet connection.",
+              httpError: 408,
+              cause: throwable,
+            ));
           case DioExceptionType.sendTimeout:
             return Left(NetworkError(
-                message:
-                    "Connection to API server failed due to internet connection",
-                httpError: 503,
-                cause: throwable));
-
+              message:
+                  "Request timeout while sending data to the server. Please try again.",
+              httpError: 408,
+              cause: throwable,
+            ));
           case DioExceptionType.receiveTimeout:
             return Left(NetworkError(
-                message:
-                    "Connection to API server failed due to internet connection",
-                httpError: 503,
-                cause: throwable));
-
+              message:
+                  "Request timeout while waiting for the server's response. Please check your internet connection.",
+              httpError: 408,
+              cause: throwable,
+            ));
           case DioExceptionType.badResponse:
             return Left(getError(apiResponse: throwable.response!));
           //"Received invalid status code: ${error.response.statusCode}";
           case DioExceptionType.cancel:
-            //"Request to API server was cancelled"
             break;
           case DioExceptionType.unknown:
-            return Left(
-              NetworkError(
-                  message:
-                      "Connection to API server failed due to internet connection",
-                  httpError: 503,
-                  cause: throwable),
-            );
+            return Left(NetworkError(
+              message:
+                  "An unknown error occurred. Please check your internet connection and try again.",
+              httpError: 503,
+              cause: throwable,
+            ));
           case DioExceptionType.badCertificate:
-            break;
+            return Left(NetworkError(
+              message:
+                  "Server certificate verification failed. Please ensure your connection is secure.",
+              httpError: 495,
+              cause: throwable,
+            ));
           case DioExceptionType.connectionError:
             return Left(
               NetworkError(
-                  message:
-                      "Connection to API server failed due to internet connection",
-                  httpError: 503,
-                  cause: throwable),
+                message:
+                    "Failed to connect to the server. Please check your internet connection.",
+                httpError: 503,
+                cause: throwable,
+              ),
             );
         }
-
         break;
-
       case IOException:
         return Left(NetworkError(
             message: throwable.toString(), httpError: 502, cause: throwable));
@@ -88,6 +90,7 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
         return Left(NetworkError(
             message: throwable.toString(), httpError: 502, cause: throwable));
     }
+
     return Left(NetworkError(
         message: throwable.toString(), httpError: 502, cause: throwable));
   }

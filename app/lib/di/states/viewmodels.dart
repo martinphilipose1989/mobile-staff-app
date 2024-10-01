@@ -10,6 +10,7 @@ import 'package:app/feature/transport_management/bus_checklist/bus_checklist_pag
 import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page_viewmodel.dart';
 import 'package:app/feature/transport_management/bus_route_list/bus_route_list_page_viewmodel.dart';
 import 'package:app/feature/transport_management/incident_report/incident_report_page_viewmodel.dart';
+import 'package:app/feature/transport_management/my_duty/my_duty_page_viewmodel.dart';
 import 'package:app/feature/transport_management/school_contacts/school_contacts_page_viewmodel.dart';
 import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
 import 'package:app/utils/commonTime/common_time_model.dart';
@@ -148,4 +149,12 @@ final busRouteListPageViewModelProvider =
     flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
     exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
   ),
+);
+
+final myDutyPageViewModelProvider =
+    ChangeNotifierProvider.autoDispose<MyDutyPageViewModel>(
+  (ref) => MyDutyPageViewModel(
+      getMydutyListUsecase: getIt.get<GetMydutyListUsecase>(),
+      flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+      exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),
 );

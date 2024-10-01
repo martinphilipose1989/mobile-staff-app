@@ -3,6 +3,7 @@ import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_card_wrapper.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,9 +11,9 @@ import 'trip_list_tile_header.dart';
 import 'trip_tile_detail_item.dart';
 
 class UpcomingTripListTile extends StatelessWidget {
-  const UpcomingTripListTile({
-    super.key,
-  });
+  const UpcomingTripListTile({super.key, required this.trip});
+
+  final TripResult trip;
 
   @override
   Widget build(BuildContext context) {
@@ -62,3 +63,13 @@ class UpcomingTripListTile extends StatelessWidget {
     );
   }
 }
+
+
+
+/**
+ * export enum RouteType {
+  SchoolToOut = "1", // drop
+  OutToSchool = "2",  // pickup
+}
+ * 
+ */

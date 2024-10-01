@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:data/data.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -31,5 +33,11 @@ class ApiInterceptor extends InterceptorsWrapper {
   Future onResponse(
       Response response, ResponseInterceptorHandler handler) async {
     handler.next(response);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    log("message ${err.type.name}");
+    super.onError(err, handler);
   }
 }
