@@ -1,6 +1,5 @@
 import 'package:domain/domain.dart';
 import 'package:domain/src/usecase/transport/create_incident_report_usecase.dart';
-import 'package:domain/src/usecase/transport/get_all_checklist_usecase.dart';
 
 import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
 import 'package:injectable/injectable.dart';
@@ -106,5 +105,11 @@ abstract class DomainModule {
       TransportRepository transportRepository) {
     return CreateIncidentReportUsecase(
         transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  GetAllBusStopsUsecase getBusStopsList(
+      TransportRepository transportRepository) {
+    return GetAllBusStopsUsecase(transportRepository: transportRepository);
   }
 }

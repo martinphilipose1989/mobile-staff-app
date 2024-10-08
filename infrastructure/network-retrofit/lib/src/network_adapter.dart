@@ -219,22 +219,22 @@ class NetworkAdapter implements NetworkPort {
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
 
-  @override
-  Future<Either<NetworkError, TripResponse>> getMyDutyList(
-      {int page = 1, int limit = 10}) async {
-    final response = await safeApiCall(
-      transportService.getMyDutyList(page, limit),
-    );
+  // @override
+  // Future<Either<NetworkError, TripResponse>> getMyDutyList(
+  //     {int page = 1, int limit = 10}) async {
+  //   final response = await safeApiCall(
+  //     transportService.getMyDutyList(page, limit),
+  //   );
 
-    return response.fold(
-        (error) => Left(error), (data) => Right(data.data.transform()));
-  }
+  //   return response.fold(
+  //       (error) => Left(error), (data) => Right(data.data.transform()));
+  // }
 
   @override
   Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
-      {int page = 1, int limit = 10}) async {
+      {required int page, required int dayId}) async {
     final response = await safeApiCall(
-      transportService.getAllCheckList(page, limit),
+      transportService.getAllCheckList(page, 10, dayId),
     );
 
     return response.fold(
@@ -255,6 +255,28 @@ class NetworkAdapter implements NetworkPort {
         studentId: requestBody.studentId);
     final response =
         await safeApiCall(transportService.createIncidentReport(request));
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, TripResponse>> getMyDutyList(
+      {required int page, required int dayId}) async {
+    final response = await safeApiCall(
+      transportService.getMyDutyList(page, 10, dayId),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, BusStopResponseModel>> getBusStopsList(
+      {required String routeId, required int dayId}) async {
+    final response = await safeApiCall(
+      transportService.getBusStopsList(routeId: routeId, dayId: dayId),
+    );
+
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }

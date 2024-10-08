@@ -10,14 +10,16 @@ class GetMydutyListUsecase
   @override
   Future<Either<NetworkError, TripResponse>> execute(
       {required GetMydutyListParams params}) {
-    return transportRepository.getMyDutyList(pageNo: params.pageNo);
+    return transportRepository.getMyDutyList(
+        pageNo: params.pageNo, dayId: params.dayId);
   }
 }
 
 class GetMydutyListParams extends Params {
   final int pageNo;
+  final int dayId;
 
-  GetMydutyListParams({required this.pageNo});
+  GetMydutyListParams({required this.pageNo, required this.dayId});
 
   @override
   Either<AppError, bool> verify() {

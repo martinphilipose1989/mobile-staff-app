@@ -50,6 +50,7 @@ export 'src/model/response/transport_management/create_reportincident_response.d
 export 'src/model/request/transport_management/create_reportincident_request.dart';
 export 'src/model/response/transport_management/trip_response.dart';
 export 'src/model/response/transport_management/checklist_response.dart';
+export 'src/model/response/transport_management/busstop_response.dart';
 
 //utils
 export 'src/utils/validator.dart';

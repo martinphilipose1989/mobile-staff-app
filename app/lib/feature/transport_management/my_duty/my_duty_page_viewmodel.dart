@@ -16,7 +16,8 @@ class MyDutyPageViewModel extends BasePageViewModel {
   final FlutterToastErrorPresenter flutterToastErrorPresenter;
   final GetMydutyListUsecase getMydutyListUsecase;
 
-  final BehaviorSubject<String> selectedTripStatus = BehaviorSubject.seeded("");
+  final BehaviorSubject<String> selectedTripStatus =
+      BehaviorSubject.seeded("up coming trips");
 
   final tripStatusType = [
     const ToggleOption<String>(
@@ -52,8 +53,8 @@ class MyDutyPageViewModel extends BasePageViewModel {
       _tripListSubject.add(Resource.loading(data: null));
     }
 
-    final GetMydutyListParams params =
-        GetMydutyListParams(pageNo: _pageSubject.value);
+    final GetMydutyListParams params = GetMydutyListParams(
+        pageNo: _pageSubject.value, dayId: DateTime.now().weekday);
 
     ApiResponseHandler.apiCallHandler(
       exceptionHandlerBinder: exceptionHandlerBinder,

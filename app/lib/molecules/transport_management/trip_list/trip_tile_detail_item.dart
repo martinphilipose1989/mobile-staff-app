@@ -23,10 +23,12 @@ class TripTileDetailItem extends StatelessWidget {
             text: title,
             style: AppTypography.caption,
             color: AppColors.textGray),
-        CommonText(
-            text: subtitle,
-            color: AppColors.textDark,
-            style: subtitleTextStyle ?? AppTypography.subtitle2),
+        subtitle.isEmpty
+            ? const SizedBox.shrink()
+            : CommonText(
+                text: subtitle,
+                color: AppColors.textDark,
+                style: subtitleTextStyle ?? AppTypography.subtitle2),
       ],
     );
   }

@@ -43,17 +43,19 @@ class Checklist {
 
   String? updatedAt;
 
-  Checklist({
-    this.id,
-    this.slug,
-    this.checkList,
-    this.description,
-    this.icon,
-    this.img,
-    this.parentId,
-    this.isActive,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
-  });
+  bool? isVerified;
+
+  Checklist(
+      {this.id,
+      this.slug,
+      this.checkList,
+      this.description,
+      this.icon,
+      this.img,
+      this.parentId,
+      this.isActive,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.isVerified = false});
 }

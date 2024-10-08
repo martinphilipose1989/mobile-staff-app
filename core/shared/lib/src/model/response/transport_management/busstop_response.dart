@@ -1,15 +1,15 @@
-class BusStopResponseEntity {
+class BusStopResponseModel {
   int? status;
 
-  BusStopDataEntity? data;
+  BusStopDataModel? data;
 
   String? message;
 
-  BusStopResponseEntity({this.status, this.data, this.message});
+  BusStopResponseModel({this.status, this.data, this.message});
 }
 
-class BusStopDataEntity {
-  List<BusStopResultEntity>? results;
+class BusStopDataModel {
+  BusStopResultModel? results;
 
   int? total;
 
@@ -17,7 +17,7 @@ class BusStopDataEntity {
 
   String? limit;
 
-  BusStopDataEntity({
+  BusStopDataModel({
     this.results,
     this.total,
     this.page,
@@ -25,42 +25,85 @@ class BusStopDataEntity {
   });
 }
 
-class BusStopResultEntity {
-  int? id;
-
-  String? stopName;
-
-  String? stopMapName;
-
-  String? lat;
-
-  String? long;
-
-  int? relatedStopId;
-
-  String? startDate;
-
-  String? endDate;
-
-  int? orderBy;
-
-  int? distanceKm;
-
-  String? zoneName;
-
+class BusStopResultModel {
+  String? id;
+  int? shiftId;
+  int? workingSaturdayId;
+  String? routeName;
+  String? busType;
+  int? busCapacity;
+  String? routeType;
+  bool? isPermanentRoute;
+  DateTime? startDate;
+  DateTime? endDate;
+  String? schoolCode;
   int? schoolId;
-
+  String? routeCode;
   int? academicYrsId;
-
   bool? isDraft;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  List<RouteStopMappingModel>? routeStopMapping;
 
-  String? createdAt;
+  BusStopResultModel({
+    this.id,
+    this.shiftId,
+    this.workingSaturdayId,
+    this.routeName,
+    this.busType,
+    this.busCapacity,
+    this.routeType,
+    this.isPermanentRoute,
+    this.startDate,
+    this.endDate,
+    this.schoolCode,
+    this.schoolId,
+    this.routeCode,
+    this.academicYrsId,
+    this.isDraft,
+    this.createdAt,
+    this.updatedAt,
+    this.routeStopMapping,
+  });
+}
 
-  String? updatedAt;
+class RouteStopMappingModel {
+  String? id;
+  int? orderNo;
+  String? approxTime;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  StopModel? stop;
 
-  dynamic routeStopMapping;
+  RouteStopMappingModel({
+    this.id,
+    this.orderNo,
+    this.approxTime,
+    this.createdAt,
+    this.updatedAt,
+    this.stop,
+  });
+}
 
-  BusStopResultEntity({
+class StopModel {
+  int? id;
+  String? stopName;
+  String? stopMapName;
+  String? lat;
+  String? long;
+  int? relatedStopId;
+  DateTime? startDate;
+  DateTime? endDate;
+  int? orderBy;
+  int? distanceKm;
+  dynamic zoneName;
+  int? schoolId;
+  int? academicYrsId;
+  bool? isDraft;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  StopModel({
     this.id,
     this.stopName,
     this.stopMapName,
@@ -77,6 +120,5 @@ class BusStopResultEntity {
     this.isDraft,
     this.createdAt,
     this.updatedAt,
-    this.routeStopMapping,
   });
 }
