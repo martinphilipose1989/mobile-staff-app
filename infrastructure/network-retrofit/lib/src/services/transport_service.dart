@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
+import 'package:network_retrofit/src/model/response/transport_management/bus_route_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/checklist_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/create_reportincident_entity_response.dart';
 import 'package:network_retrofit/src/model/response/transport_management/get_student_profile_entity_response.dart';
@@ -21,6 +22,7 @@ const String _getStudentProfile =
 
 const String _getGuardianList =
     "transport-service/mobile-app/guardians-list/{studentId}";
+const String _getBusStopsList = 'transport-service/mobile-app/bus-stops';
 
 @RestApi()
 abstract class TransportService {
@@ -28,13 +30,11 @@ abstract class TransportService {
     return _TransportService(dio, baseUrl: transportUrl);
   }
 
-  @GET(_getMyDutyList)
-  Future<HttpResponse<TripResponseEntity>> getMyDutyList(
-      @Query("page") int page, @Query("limit") int limit);
-
   @GET(_getCheckList)
   Future<HttpResponse<CheckListResponseEntity>> getAllCheckList(
-      @Query("page") int page, @Query("limit") int limit);
+      @Query("page") int page,
+      @Query("limit") int limit,
+      @Query("day_id") int dayId);
 
   @POST(_createIncidentReport)
   Future<HttpResponse<CreateIncidentReportResponseEntity>> createIncidentReport(
@@ -51,4 +51,14 @@ abstract class TransportService {
   @GET(_getGuardianList)
   Future<HttpResponse<GetGuardianListResponseEntity>> getGuardianList(
       @Path("studentId") int studentid);
+  @GET(_getMyDutyList)
+  Future<HttpResponse<TripResponseEntity>> getMyDutyList(
+      @Query("page") int page,
+      @Query("limit") int limit,
+      @Query("day_id") int dayId);
+
+  @GET(_getBusStopsList)
+  Future<HttpResponse<BusStopResponseEntity>> getBusStopsList(
+      {@Query("route_id") required String routeId,
+      @Query("day_id") required int dayId});
 }

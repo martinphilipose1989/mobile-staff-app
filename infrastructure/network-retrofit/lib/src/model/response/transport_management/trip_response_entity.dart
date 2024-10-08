@@ -2,6 +2,8 @@ import 'package:data/data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:network_retrofit/src/model/response/transport_management/route_stop_mapping_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/stop_entity.dart';
+import 'package:network_retrofit/src/model/response/transport_management/route_working_days_entity.dart';
+import 'package:network_retrofit/src/model/response/transport_management/students_stop_mapping_response_entity.dart';
 
 part 'trip_response_entity.g.dart';
 
@@ -45,7 +47,7 @@ class TripResponseEntity
 @JsonSerializable()
 class TripDataEntity
     implements BaseLayerDataTransformer<TripDataEntity, TripData> {
-  @JsonKey(name: "results")
+  @JsonKey(name: "tripData")
   List<TripResultEntity>? tripResult;
   @JsonKey(name: "total")
   int? total;
@@ -119,34 +121,42 @@ class TripResultEntity
   @JsonKey(name: "updatedAt")
   String? updatedAt;
   @JsonKey(name: "routeWorkingDays")
-  dynamic routeWorkingDays;
+  RouteWorkingDaysEntity? routeWorkingDays;
+  @JsonKey(name: "shift_name")
+  String? shiftName;
+  @JsonKey(name: "school_name")
+  String? schoolName;
   @JsonKey(name: "routeBusUserMapping")
   List<RouteBusUserMappingEntity>? routeBusUserMappingEntity;
   @JsonKey(name: "routeStopMapping")
   List<RouteStopMappingEntity>? routeStopMapping;
+  @JsonKey(name: "studentStopsMappings")
+  List<StudentsStopMappingResponseEntity>? studentStopsMappings;
 
-  TripResultEntity({
-    this.id,
-    this.shiftId,
-    this.workingSaturdayId,
-    this.routeName,
-    this.busType,
-    this.busCapacity,
-    this.routeType,
-    this.isPermanentRoute,
-    this.startDate,
-    this.endDate,
-    this.schoolCode,
-    this.schoolId,
-    this.routeCode,
-    this.academicYrsId,
-    this.isDraft,
-    this.createdAt,
-    this.updatedAt,
-    this.routeWorkingDays,
-    this.routeBusUserMappingEntity,
-    this.routeStopMapping,
-  });
+  TripResultEntity(
+      {this.id,
+      this.shiftId,
+      this.workingSaturdayId,
+      this.routeName,
+      this.busType,
+      this.busCapacity,
+      this.routeType,
+      this.isPermanentRoute,
+      this.startDate,
+      this.endDate,
+      this.schoolCode,
+      this.schoolId,
+      this.routeCode,
+      this.academicYrsId,
+      this.isDraft,
+      this.createdAt,
+      this.updatedAt,
+      this.routeWorkingDays,
+      this.routeBusUserMappingEntity,
+      this.routeStopMapping,
+      this.studentStopsMappings,
+      this.schoolName,
+      this.shiftName});
 
   factory TripResultEntity.fromJson(Map<String, dynamic> json) =>
       _$TripResultEntityFromJson(json);
@@ -168,12 +178,51 @@ class TripResultEntity
         routeName: data.routeName,
         routeType: data.routeType,
         schoolCode: data.schoolCode,
-        routeWorkingDays: data.routeWorkingDays,
+        schoolName: data.schoolName,
+        shiftName: data.shiftName,
+        studentStopsMappings: data.studentStopsMappings
+            ?.map((e) => StudentsStopMappingResponseEntity(
+                createdAt: e.createdAt,
+                endDate: e.endDate,
+                feesId: e.feesId,
+                feesStatus: e.feesStatus,
+                id: e.id,
+                routeId: e.routeId,
+                startDate: e.startDate,
+                stopId: e.stopId,
+                studentId: e.studentId,
+                updatedAt: e.updatedAt))
+            .toList(),
+        routeWorkingDays: RouteWorkingDaysEntity(
+            createdAt: data.routeWorkingDays?.createdAt,
+            dayId: data.routeWorkingDays?.dayId,
+            id: data.routeWorkingDays?.id,
+            updatedAt: data.routeWorkingDays?.updatedAt),
         schoolId: data.schoolId,
         shiftId: data.shiftId,
         startDate: data.startDate,
         updatedAt: data.updatedAt,
         workingSaturdayId: data.workingSaturdayId,
+        routeBusUserMappingEntity: data.routeBusUserMapping
+            ?.map((e) => RouteBusUserMappingEntity(
+                bus: BusEntity(
+                    busMaxCapacity: e.bus?.busMaxCapacity,
+                    busNumber: e.bus?.busNumber,
+                    busType: e.bus?.busType,
+                    createdAt: e.bus?.createdAt,
+                    id: e.bus?.id,
+                    manualCode: e.bus?.manualCode,
+                    updatedAt: e.bus?.updatedAt,
+                    wifiIdentification: e.bus?.wifiIdentification,
+                    wifiName: e.bus?.wifiName),
+                createdAt: e.createdAt,
+                endDate: e.endDate,
+                id: e.id,
+                startDate: e.startDate,
+                updatedAt: e.updatedAt,
+                userId: e.userId,
+                userType: e.userType))
+            .toList(),
         routeStopMapping: data.routeStopMapping
             ?.map(
               (e) => RouteStopMappingEntity(
@@ -205,12 +254,16 @@ class TripResultEntity
         routeCode: routeCode,
         routeName: routeName,
         routeType: routeType,
-        routeWorkingDays: routeWorkingDays,
+        routeWorkingDays: routeWorkingDays?.transform(),
         schoolCode: schoolCode,
         schoolId: schoolId,
+        schoolName: schoolName,
+        shiftName: shiftName,
         shiftId: shiftId,
         startDate: startDate,
         updatedAt: updatedAt,
+        studentStopsMappings:
+            studentStopsMappings?.map((e) => e.transform()).toList(),
         workingSaturdayId: workingSaturdayId);
   }
 }
@@ -279,7 +332,15 @@ class RouteBusUserMappingEntity
 
   @override
   RouteBusUserMapping transform() {
-    return RouteBusUserMapping();
+    return RouteBusUserMapping(
+        bus: bus?.transform(),
+        createdAt: createdAt,
+        endDate: endDate,
+        id: id,
+        startDate: startDate,
+        updatedAt: updatedAt,
+        userId: userId,
+        userType: userType);
   }
 }
 

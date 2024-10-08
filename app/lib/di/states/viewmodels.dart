@@ -132,6 +132,7 @@ final busChecklistPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<BusChecklistPageViewModel>((ref) =>
         BusChecklistPageViewModel(
             flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+            getAllChecklistUsecase: getIt.get<GetAllChecklistUsecase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
@@ -150,9 +151,9 @@ final busRouteDetailsPageViewModelProvider =
 final busRouteListPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<BusRouteListPageViewModel>(
   (ref) => BusRouteListPageViewModel(
-    flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
-    exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
-  ),
+      flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+      exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+      getAllBusStopsUsecase: getIt.get<GetAllBusStopsUsecase>()),
 );
 
 final myDutyPageViewModelProvider =

@@ -40,11 +40,8 @@ abstract class NetworkPort {
   Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
       {required UserPermissionRequest request});
 
-  Future<Either<NetworkError, TripResponse>> getMyDutyList(
-      {int page = 1, int limit = 10});
-
   Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
-      {int page = 1, int limit = 10});
+      {required int page, required int dayId});
 
   Future<Either<NetworkError, CreateIncidentReportResponse>>
       createIncidentReport({required CreateIncidentReportRequest requestBody});
@@ -60,4 +57,9 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, GetGuardianListResponse>> getGuardianList(
       {required int studentId});
+  Future<Either<NetworkError, TripResponse>> getMyDutyList(
+      {required int page, required int dayId});
+
+  Future<Either<NetworkError, BusStopResponseModel>> getBusStopsList(
+      {required String routeId, required int dayId});
 }

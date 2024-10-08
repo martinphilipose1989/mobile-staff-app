@@ -38,11 +38,17 @@ class BusChecklistPageState
   void onModelReady(BusRouteListPageViewModel model) {
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
     //getViewModel()
+    model.trip = ProviderScope.containerOf(context)
+        .read(busChecklistPageViewModelProvider)
+        .trip;
     super.onModelReady(model);
   }
 
   @override
   PreferredSizeWidget? buildAppbar(BusRouteListPageViewModel model) {
-    return const CommonAppBar(appbarTitle: "PBD To MLD");
+    return CommonAppBar(
+        showBackButton: true,
+        appbarTitle:
+            "School To ${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'}");
   }
 }

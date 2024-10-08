@@ -1,5 +1,3 @@
-import 'route_stop_mapping_response.dart';
-
 class TripResponse {
   int? status;
 
@@ -57,34 +55,43 @@ class TripResult {
 
   String? updatedAt;
 
-  dynamic routeWorkingDays;
+  String? shiftName;
+
+  String? schoolName;
 
   List<RouteBusUserMapping>? routeBusUserMapping;
 
-  List<RouteStopMapping>? routeStopMapping;
+  List<TripRouteStopMapping>? routeStopMapping;
 
-  TripResult({
-    this.id,
-    this.shiftId,
-    this.workingSaturdayId,
-    this.routeName,
-    this.busType,
-    this.busCapacity,
-    this.routeType,
-    this.isPermanentRoute,
-    this.startDate,
-    this.endDate,
-    this.schoolCode,
-    this.schoolId,
-    this.routeCode,
-    this.academicYrsId,
-    this.isDraft,
-    this.createdAt,
-    this.updatedAt,
-    this.routeWorkingDays,
-    this.routeBusUserMapping,
-    this.routeStopMapping,
-  });
+  RouteWorkingDays? routeWorkingDays;
+  List<StudentStopsMapping>? studentStopsMappings;
+  bool isLoading;
+
+  TripResult(
+      {this.id,
+      this.shiftId,
+      this.workingSaturdayId,
+      this.routeName,
+      this.busType,
+      this.busCapacity,
+      this.routeType,
+      this.isPermanentRoute,
+      this.startDate,
+      this.endDate,
+      this.schoolCode,
+      this.schoolId,
+      this.routeCode,
+      this.academicYrsId,
+      this.isDraft,
+      this.createdAt,
+      this.updatedAt,
+      this.routeWorkingDays,
+      this.routeBusUserMapping,
+      this.routeStopMapping,
+      this.studentStopsMappings,
+      this.schoolName,
+      this.shiftName,
+      this.isLoading = false});
 }
 
 class RouteBusUserMapping {
@@ -142,6 +149,121 @@ class Bus {
     this.manualCode,
     this.busType,
     this.busMaxCapacity,
+    this.createdAt,
+    this.updatedAt,
+  });
+}
+
+class TripRouteStopMapping {
+  String? id;
+
+  int? orderNo;
+
+  String? approxTime;
+
+  String? createdAt;
+
+  String? updatedAt;
+
+  TripStop? stop;
+
+  TripRouteStopMapping(
+      {this.id,
+      this.orderNo,
+      this.approxTime,
+      this.createdAt,
+      this.updatedAt,
+      this.stop});
+}
+
+class TripStop {
+  int? id;
+
+  String? stopName;
+
+  String? stopMapName;
+
+  String? lat;
+
+  String? long;
+
+  dynamic relatedStopId;
+
+  String? startDate;
+
+  String? endDate;
+
+  int? orderBy;
+
+  int? distanceKm;
+
+  String? zoneName;
+
+  int? schoolId;
+
+  dynamic academicYrsId;
+
+  bool? isDraft;
+
+  String? createdAt;
+
+  String? updatedAt;
+
+  TripStop({
+    this.id,
+    this.stopName,
+    this.stopMapName,
+    this.lat,
+    this.long,
+    this.relatedStopId,
+    this.startDate,
+    this.endDate,
+    this.orderBy,
+    this.distanceKm,
+    this.zoneName,
+    this.schoolId,
+    this.academicYrsId,
+    this.isDraft,
+    this.createdAt,
+    this.updatedAt,
+  });
+}
+
+class RouteWorkingDays {
+  String? id;
+  int? dayId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  RouteWorkingDays({
+    this.id,
+    this.dayId,
+    this.createdAt,
+    this.updatedAt,
+  });
+}
+
+class StudentStopsMapping {
+  String? id;
+  int? studentId;
+  int? stopId;
+  int? routeId;
+  DateTime? startDate;
+  DateTime? endDate;
+  dynamic feesId;
+  dynamic feesStatus;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  StudentStopsMapping({
+    this.id,
+    this.studentId,
+    this.stopId,
+    this.routeId,
+    this.startDate,
+    this.endDate,
+    this.feesId,
+    this.feesStatus,
     this.createdAt,
     this.updatedAt,
   });

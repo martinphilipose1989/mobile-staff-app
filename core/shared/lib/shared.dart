@@ -58,6 +58,7 @@ export 'src/model/response/transport_management/get_studentprofile_response.dart
 export 'src/model/response/transport_management/guardian_detail_response.dart';
 export 'src/model/response/transport_management/create_bearer_response.dart';
 export 'src/model/request/transport_management/create_bearer_request.dart';
+export 'src/model/response/transport_management/busstop_response.dart';
 
 //utils
 export 'src/utils/validator.dart';

@@ -141,7 +141,8 @@ class TransportDetailsEntity
 }
 
 @JsonSerializable()
-class RouteEntity implements BaseLayerDataTransformer<RouteEntity, Route> {
+class RouteEntity
+    implements BaseLayerDataTransformer<RouteEntity, TransportRoute> {
   @JsonKey(name: "id")
   String? id;
   @JsonKey(name: "route_name")
@@ -167,17 +168,18 @@ class RouteEntity implements BaseLayerDataTransformer<RouteEntity, Route> {
   Map<String, dynamic> toJson() => _$RouteEntityToJson(this);
 
   @override
-  RouteEntity restore(Route data) {
+  RouteEntity restore(TransportRoute data) {
     return RouteEntity();
   }
 
   @override
-  Route transform() {
-    return Route(
-        id: id,
-        busType: busType,
-        routeName: routeName,
-        routeType: routeType,
-        routeStopMapping: routeStopMapping?.map((e) => e.transform()).toList());
+  TransportRoute transform() {
+    return TransportRoute(
+      id: id,
+      busType: busType,
+      routeName: routeName,
+      routeType: routeType,
+      // routeStopMapping: routeStopMapping?.map((e) => e.transform()).toList()
+    );
   }
 }

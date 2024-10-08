@@ -54,12 +54,12 @@ class TransportDetails {
 
   int? studentId;
 
-  Route? route;
+  TransportRoute? route;
 
   TransportDetails({this.id, this.studentId, this.route});
 }
 
-class Route {
+class TransportRoute {
   String? id;
 
   String? routeName;
@@ -68,9 +68,9 @@ class Route {
 
   String? routeType;
 
-  List<RouteStopMapping>? routeStopMapping;
+  List<TransportRouteStopMapping>? routeStopMapping;
 
-  Route({
+  TransportRoute({
     this.id,
     this.routeName,
     this.busType,

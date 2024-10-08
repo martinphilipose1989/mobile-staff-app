@@ -8,14 +8,14 @@ class TransportRepositoryImpl implements TransportRepository {
 
   @override
   Future<Either<NetworkError, TripResponse>> getMyDutyList(
-      {required int pageNo}) {
-    return networkPort.getMyDutyList(page: pageNo);
+      {required int pageNo, required int dayId}) {
+    return networkPort.getMyDutyList(page: pageNo, dayId: dayId);
   }
 
   @override
   Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
-      {required int pageNo}) {
-    return networkPort.getAllCheckList(page: pageNo);
+      {required int pageNo, required int dayId}) {
+    return networkPort.getAllCheckList(page: pageNo, dayId: dayId);
   }
 
   @override
@@ -46,5 +46,11 @@ class TransportRepositoryImpl implements TransportRepository {
   Future<Either<NetworkError, GetGuardianListResponse>> getGuardianList(
       {required int studentId}) {
     return networkPort.getGuardianList(studentId: studentId);
+  }
+
+  @override
+  Future<Either<NetworkError, BusStopResponseModel>> getBusStopsList(
+      {required String routeId, required int dayId}) {
+    return networkPort.getBusStopsList(routeId: routeId, dayId: dayId);
   }
 }

@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'stop_entity.g.dart';
 
 @JsonSerializable()
-class StopEntity implements BaseLayerDataTransformer<StopEntity, Stop> {
+class StopEntity implements BaseLayerDataTransformer<StopEntity, TripStop> {
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "stop_name")
@@ -63,7 +63,7 @@ class StopEntity implements BaseLayerDataTransformer<StopEntity, Stop> {
   Map<String, dynamic> toJson() => _$StopEntityToJson(this);
 
   @override
-  StopEntity restore(Stop data) {
+  StopEntity restore(TripStop data) {
     return StopEntity(
         id: data.id,
         distanceKm: data.distanceKm,
@@ -84,8 +84,8 @@ class StopEntity implements BaseLayerDataTransformer<StopEntity, Stop> {
   }
 
   @override
-  Stop transform() {
-    return Stop(
+  TripStop transform() {
+    return TripStop(
         academicYrsId: academicYrsId,
         createdAt: createdAt,
         distanceKm: distanceKm,

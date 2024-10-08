@@ -1,6 +1,6 @@
 import 'stop_response.dart';
 
-class RouteStopMapping {
+class TransportRouteStopMapping {
   String? id;
 
   int? orderNo;
@@ -13,7 +13,7 @@ class RouteStopMapping {
 
   Stop? stop;
 
-  RouteStopMapping(
+  TransportRouteStopMapping(
       {this.id,
       this.orderNo,
       this.approxTime,

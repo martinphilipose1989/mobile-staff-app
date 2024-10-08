@@ -1,8 +1,14 @@
+import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
+import 'package:app/utils/common_widgets/common_refresh_indicator.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/no_data_found_widget.dart';
+import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,67 +27,189 @@ class BusRouteListPageView
   Widget build(BuildContext context, BusRouteListPageViewModel model) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16),
-          child: ArrivalInfoTile(
-              vehicleNumber: "MH47-PK-9386",
-              startTime: "7:00 AM",
-              totalStudents: 10),
-        ),
+        Padding(
+            padding: const EdgeInsets.all(16),
+            child: ArrivalInfoTile(
+                vehicleNumber:
+                    model.trip?.routeBusUserMapping?[0].bus?.busNumber ?? '',
+                startTime: model.trip?.shiftName ?? '',
+                totalStudents: model.trip?.studentStopsMappings?.length ?? 0)),
         Expanded(
-          child: ListView.separated(
-              itemCount: 10,
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 8.h);
-              },
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TimelineTile(
-                    index: index,
-                    isActive: true,
-                    lineWidth: 3.w,
-                    circleColor: AppColors.primary,
-                    leadingChild: Column(
-                      children: [
-                        CommonText(
-                            text: "7:00 Am",
-                            style: AppTypography.caption,
-                            color: AppColors.textGray),
-                        CommonText(
-                            text: "7:00 Am",
-                            style: AppTypography.caption,
-                            color: index == 0
-                                ? AppColors.success
-                                : AppColors.failure),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CommonText(
-                            text: "Vibgyor Kids and High - Malad West",
-                            color: index == 0
-                                ? AppColors.primary
-                                : AppColors.textLightGray,
-                            style: AppTypography.subtitle2),
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppImages.userOutlineIcon),
-                            CommonText(
-                                text: "5 Students (3 Present,2 Absent)",
-                                color: AppColors.textGray,
-                                style: AppTypography.caption),
-                          ],
-                        ),
-                        if (index == 0)
-                          Expanded(child: Container(height: 100.h))
-                      ],
-                    ),
-                  ),
-                );
-              }),
-        ),
+            child: AppStreamBuilder<Resource<List<RouteStopMappingModel>>>(
+                stream: model.busStopsListStream,
+                initialData: Resource.none(),
+                dataBuilder: (context, busStopsListData) {
+                  return CommonRefreshIndicator(
+                      onRefresh: () {
+                        return model.refreshMyDutyList();
+                      },
+                      child: DataStatusWidget(
+                          status: busStopsListData?.status ?? Status.none,
+                          loadingWidget: () => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                          errorWidget: () => Center(
+                                child: NoDataFoundWidget(
+                                  title: busStopsListData
+                                              ?.dealSafeAppError?.error.message
+                                              .contains("internet") ??
+                                          false
+                                      ? "No Internet Connection"
+                                      : "Something Went Wrong",
+                                  subtitle: busStopsListData
+                                              ?.dealSafeAppError?.error.message
+                                              .contains("internet") ??
+                                          false
+                                      ? "It seems you're offline. Please check your internet connection and try again."
+                                      : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+                                  onPressed: () {
+                                    model.refreshMyDutyList();
+                                  },
+                                ),
+                              ),
+                          successWidget: () {
+                            return AppStreamBuilder<bool>(
+                                stream: model.hasMorePagesStream,
+                                initialData: model.hasMorePagesSubject.value,
+                                dataBuilder: (context, hasMorePage) {
+                                  return NotificationListener<
+                                          ScrollNotification>(
+                                      onNotification: (scrollNotification) {
+                                        if (scrollNotification.metrics.pixels ==
+                                            scrollNotification
+                                                .metrics.maxScrollExtent) {
+                                          //model.loadMoreVisitorList();
+                                        }
+                                        return false;
+                                      },
+                                      child: AppStreamBuilder<bool>(
+                                          stream: model.loadingStream,
+                                          initialData: false,
+                                          dataBuilder: (context, isLoading) {
+                                            // final itemCount = (busStopsListData
+                                            //             ?.data?.length ??
+                                            //         0) +
+                                            //     (isLoading! && hasMorePage!
+                                            //         ? 1
+                                            //         : 0);
+                                            return Visibility(
+                                              visible: busStopsListData
+                                                      ?.data?.isEmpty ??
+                                                  false,
+                                              replacement:
+                                                  CommonRefreshIndicator(
+                                                isChildScrollable: true,
+                                                onRefresh: () {
+                                                  return model
+                                                      .refreshMyDutyList();
+                                                },
+                                                child: ListView.separated(
+                                                    itemCount: busStopsListData
+                                                            ?.data?.length ??
+                                                        0,
+                                                    separatorBuilder:
+                                                        (context, index) {
+                                                      return SizedBox(
+                                                          height: 8.h);
+                                                    },
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16.0),
+                                                        child: TimelineTile(
+                                                          index: index,
+                                                          isActive: true,
+                                                          lineWidth: 3.w,
+                                                          stopName:
+                                                              busStopsListData
+                                                                      ?.data?[
+                                                                          index]
+                                                                      .stop
+                                                                      ?.stopName ??
+                                                                  '',
+                                                          circleColor:
+                                                              AppColors.primary,
+                                                          leadingChild: Column(
+                                                            children: [
+                                                              CommonText(
+                                                                  text: model.convertTo12HourFormat(busStopsListData
+                                                                          ?.data?[
+                                                                              index]
+                                                                          .approxTime ??
+                                                                      ""),
+                                                                  style: AppTypography
+                                                                      .caption,
+                                                                  color: AppColors
+                                                                      .textGray),
+                                                              // CommonText(
+                                                              //     text:
+                                                              //         "7:00 Am",
+                                                              //     style: AppTypography
+                                                              //         .caption,
+                                                              //     color: index ==
+                                                              //             0
+                                                              //         ? AppColors
+                                                              //             .success
+                                                              //         : AppColors
+                                                              //             .failure),
+                                                            ],
+                                                          ),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              CommonText(
+                                                                  text: busStopsListData
+                                                                          ?.data?[
+                                                                              index]
+                                                                          .stop
+                                                                          ?.stopName ??
+                                                                      '',
+                                                                  color: index ==
+                                                                          0
+                                                                      ? AppColors
+                                                                          .primary
+                                                                      : AppColors
+                                                                          .textLightGray,
+                                                                  style: AppTypography
+                                                                      .subtitle2),
+                                                              Row(
+                                                                children: [
+                                                                  SvgPicture.asset(
+                                                                      AppImages
+                                                                          .userOutlineIcon),
+                                                                  CommonText(
+                                                                      text:
+                                                                          "5 Students (3 Present,2 Absent)",
+                                                                      color: AppColors
+                                                                          .textGray,
+                                                                      style: AppTypography
+                                                                          .caption),
+                                                                ],
+                                                              ),
+                                                              if (index == 0)
+                                                                Expanded(
+                                                                    child: Container(
+                                                                        height:
+                                                                            100.h))
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }),
+                                              ),
+                                              child: const NoDataFoundWidget(
+                                                title:
+                                                    "No Bus Stops List Found",
+                                              ),
+                                            );
+                                          }));
+                                });
+                          }));
+                }))
 
         // Padding(
         //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -146,17 +274,17 @@ class BusRouteListPageView
 }
 
 class TimelineTile extends StatelessWidget {
-  const TimelineTile({
-    super.key,
-    this.lineWidth = 1.3,
-    this.circleSize,
-    this.lineColor,
-    this.circleColor,
-    this.leadingChild,
-    this.isActive = false,
-    required this.index,
-    required this.child,
-  });
+  const TimelineTile(
+      {super.key,
+      this.lineWidth = 1.3,
+      this.circleSize,
+      this.lineColor,
+      this.circleColor,
+      this.leadingChild,
+      this.isActive = false,
+      required this.index,
+      required this.child,
+      required this.stopName});
 
   final double? lineWidth;
   final double? circleSize;
@@ -166,6 +294,7 @@ class TimelineTile extends StatelessWidget {
   final Widget? leadingChild;
   final int index;
   final bool isActive;
+  final String stopName;
 
   @override
   Widget build(BuildContext context) {
@@ -299,9 +428,9 @@ class TimelineTile extends StatelessWidget {
                                             margin: EdgeInsets.zero,
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 6, horizontal: 10),
-                                            child: const CommonText(
+                                            child: CommonText(
                                                 text:
-                                                    "Currently at Prabhadevi \n(Updated 1 mins ago)"),
+                                                    "Currently at $stopName \n(Updated 1 mins ago)"),
                                           ),
                                         ],
                                       ),

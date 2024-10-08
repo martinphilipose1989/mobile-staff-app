@@ -24,39 +24,53 @@ class UpcomingTripListTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TripListTileHeader(),
+          TripListTileHeader(
+            trip: trip,
+          ),
           const Divider(color: AppColors.textPalerGray),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             TripTileDetailItem(
-                title: "Prabhadevi",
-                subtitle: "PBD",
+                title: "School",
+                subtitle: "",
                 subtitleTextStyle: AppTypography.h6),
             Stack(
               alignment: Alignment.bottomCenter,
               clipBehavior: Clip.none,
               children: [
                 Image.asset(AppImages.routeImage, height: 48.h, width: 144.w),
-                CommonText(
-                    text: "Rno: XYZ1213",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    color: AppColors.textGray,
-                    style: AppTypography.smallCaption)
+                SizedBox(
+                  width: 80,
+                  child: CommonText(
+                      text: "Rno: ${trip.routeCode}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      color: AppColors.textGray,
+                      style: AppTypography.smallCaption),
+                )
               ],
             ),
             TripTileDetailItem(
-                title: "Malad",
-                subtitle: "MLD",
+                title: trip.routeStopMapping?.last.stop?.stopName ?? '--',
+                subtitle: '',
                 subtitleTextStyle: AppTypography.h6),
           ]),
           const SizedBox(height: 16),
           Row(children: [
-            const TripTileDetailItem(
-                title: "Students", subtitle: "15 Students"),
+            TripTileDetailItem(
+                title: "Students",
+                subtitle: "${trip.studentStopsMappings?.length ?? 0} Students"),
             SizedBox(width: 32.w),
-            const TripTileDetailItem(title: "Action", subtitle: "Pickup"),
+            TripTileDetailItem(
+                title: "Action",
+                subtitle: trip.routeType == "2"
+                    ? "Pickup"
+                    : trip.routeType == "1"
+                        ? "Drop"
+                        : ""),
             SizedBox(width: 32.w),
-            const TripTileDetailItem(title: "Shift", subtitle: "Morning"),
+            TripTileDetailItem(title: "Shift", subtitle: trip.shiftName ?? ''),
           ]),
         ],
       ),

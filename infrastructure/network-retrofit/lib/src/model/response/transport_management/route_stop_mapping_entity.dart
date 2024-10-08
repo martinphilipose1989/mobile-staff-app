@@ -7,7 +7,7 @@ part 'route_stop_mapping_entity.g.dart';
 @JsonSerializable()
 class RouteStopMappingEntity
     implements
-        BaseLayerDataTransformer<RouteStopMappingEntity, RouteStopMapping> {
+        BaseLayerDataTransformer<RouteStopMappingEntity, TripRouteStopMapping> {
   @JsonKey(name: "id")
   String? id;
   @JsonKey(name: "order_no")
@@ -35,7 +35,7 @@ class RouteStopMappingEntity
   Map<String, dynamic> toJson() => _$RouteStopMappingEntityToJson(this);
 
   @override
-  RouteStopMappingEntity restore(RouteStopMapping data) {
+  RouteStopMappingEntity restore(TripRouteStopMapping data) {
     final stop = data.stop;
     return RouteStopMappingEntity(
       approxTime: data.approxTime,
@@ -65,8 +65,8 @@ class RouteStopMappingEntity
   }
 
   @override
-  RouteStopMapping transform() {
-    return RouteStopMapping(
+  TripRouteStopMapping transform() {
+    return TripRouteStopMapping(
         id: id,
         approxTime: approxTime,
         createdAt: createdAt,
