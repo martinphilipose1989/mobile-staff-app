@@ -9,4 +9,10 @@ abstract class TransportRepository {
 
   Future<Either<NetworkError, CreateIncidentReportResponse>> createIncident(
       {required CreateIncidentReportRequest requestBody});
+
+  Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
+      {required int routeId, required int stopId});
+
+  Future<Either<NetworkError, CreateAttendance>> createAttendance(
+      {required CreateAttendance createAttendance});
 }

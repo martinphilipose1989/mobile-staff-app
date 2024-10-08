@@ -23,4 +23,16 @@ class TransportRepositoryImpl implements TransportRepository {
       {required CreateIncidentReportRequest requestBody}) {
     return networkPort.createIncidentReport(requestBody: requestBody);
   }
+
+  @override
+  Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
+      {required int routeId, required int stopId}) {
+    return networkPort.getStudentListByRoute(routeId: routeId, stopId: stopId);
+  }
+
+  @override
+  Future<Either<NetworkError, CreateAttendance>> createAttendance(
+      {required CreateAttendance createAttendance}) {
+    return networkPort.createAttendance(createAttendance: createAttendance);
+  }
 }

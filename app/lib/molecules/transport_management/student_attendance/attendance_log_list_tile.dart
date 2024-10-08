@@ -1,10 +1,13 @@
+import 'package:app/di/states/viewmodels.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_card_wrapper.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -12,10 +15,14 @@ import 'add_edit_attendance_popup.dart';
 
 class AttendanceLogListTile extends StatelessWidget {
   const AttendanceLogListTile(
-      {super.key, this.isEdit = false, this.isPresent = false});
+      {super.key,
+      this.isEdit = false,
+      this.isPresent = false,
+      required this.student});
 
   final bool isEdit;
   final bool isPresent;
+  final Student student;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +39,9 @@ class AttendanceLogListTile extends StatelessWidget {
               Row(
                 children: [
                   CommonImageWidget(
-                      imageUrl: "imageUrl",
+                      imageUrl: student.studentDetails?.profileImage ?? "",
                       imageHeight: 40.h,
+                      fallbackAssetImagePath: AppImages.defaultStudentAvatar,
                       imageWidth: 40.h,
                       clipBehavior: Clip.hardEdge),
                   SizedBox(width: 8.w),
@@ -41,7 +49,8 @@ class AttendanceLogListTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CommonText(
-                          text: "Khevna Shah",
+                          text:
+                              "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
                           style: AppTypography.subtitle2,
                           color: AppColors.textDark),
                       CommonText(
@@ -61,9 +70,34 @@ class AttendanceLogListTile extends StatelessWidget {
                         builder: (context) {
                           return AddEditAttendancePopup(
                             header: "Add Attendance Log",
-                            onAbsentPresentCallback: () {},
-                            onStudentPresentCallback: () {},
-                            studentName: "Khevna Shah",
+                            onAbsentPresentCallback: () {
+                              final selectedStudent = Student(
+                                id: student.id,
+                                studentId: student.studentId,
+                                studentDetails: student.studentDetails,
+                              );
+                              ProviderScope.containerOf(context)
+                                  .read(busRouteDetailsPageViewModelProvider)
+                                  .createAttendance(
+                                    student: selectedStudent,
+                                    remark: "absent",
+                                  );
+                            },
+                            onStudentPresentCallback: () {
+                              final selectedStudent = Student(
+                                id: student.id,
+                                studentId: student.studentId,
+                                studentDetails: student.studentDetails,
+                              );
+                              ProviderScope.containerOf(context)
+                                  .read(busRouteDetailsPageViewModelProvider)
+                                  .createAttendance(
+                                    student: selectedStudent,
+                                    remark: "present",
+                                  );
+                            },
+                            studentName:
+                                "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
                           );
                         });
                   },
@@ -77,9 +111,34 @@ class AttendanceLogListTile extends StatelessWidget {
                         builder: (context) {
                           return AddEditAttendancePopup(
                             header: "Edit Attendance Log",
-                            onAbsentPresentCallback: () {},
-                            onStudentPresentCallback: () {},
-                            studentName: "Khevna Shah",
+                            onAbsentPresentCallback: () {
+                              final selectedStudent = Student(
+                                id: student.id,
+                                studentId: student.studentId,
+                                studentDetails: student.studentDetails,
+                              );
+                              ProviderScope.containerOf(context)
+                                  .read(busRouteDetailsPageViewModelProvider)
+                                  .createAttendance(
+                                    student: selectedStudent,
+                                    remark: "absent",
+                                  );
+                            },
+                            onStudentPresentCallback: () {
+                              final selectedStudent = Student(
+                                id: student.id,
+                                studentId: student.studentId,
+                                studentDetails: student.studentDetails,
+                              );
+                              ProviderScope.containerOf(context)
+                                  .read(busRouteDetailsPageViewModelProvider)
+                                  .createAttendance(
+                                    student: selectedStudent,
+                                    remark: "present",
+                                  );
+                            },
+                            studentName:
+                                "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
                           );
                         });
                   },

@@ -15,6 +15,9 @@ abstract class AppModule {
   @Named("TransportUrl")
   String get transportBaseUrl => FlavorConfig.instance.values.transportUrl;
 
+  @Named("AcademicsUrl")
+  String get academicsBaseUrl => FlavorConfig.instance.values.academicsUrl;
+
   @Named("AuthUrl")
   String get authUrl => FlavorConfig.instance.values.authorizationEndpoint;
 

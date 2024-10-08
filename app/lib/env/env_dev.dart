@@ -13,6 +13,9 @@ abstract class EnvDev {
   @EnviedField(varName: 'TRANSPORT_BASE_URL')
   static const String transportBaseUrl = _EnvDev.transportBaseUrl;
 
+  @EnviedField(varName: 'ACADEMICS_BASE_URL')
+  static const String academicsBaseUrl = _EnvDev.academicsBaseUrl;
+
   @EnviedField(varName: 'KEY_CLOAK_AUTH_URL')
   static const String authorizationEndpoint = _EnvDev.authorizationEndpoint;
 

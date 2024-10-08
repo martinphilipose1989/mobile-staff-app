@@ -3,6 +3,7 @@ import 'package:data/data.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:network_retrofit/src/network_adapter.dart';
+import 'package:network_retrofit/src/services/academics_service.dart';
 import 'package:network_retrofit/src/services/retrofit_service.dart';
 import 'package:network_retrofit/src/services/transport_service.dart';
 import 'package:network_retrofit/src/util/api_interceptor.dart';
@@ -63,7 +64,14 @@ abstract class NetworkModule {
       TransportService(dio, transportUrl: transportUrl);
 
   @lazySingleton
+  AcademicsService providerAcademicsService(
+          Dio dio, @Named('AcademicsUrl') String academicsUrl) =>
+      AcademicsService(dio, academicsUrl: academicsUrl);
+
+  @lazySingleton
   NetworkPort providerNetworkService(
-          RetrofitService retrofitService, TransportService transportService) =>
-      NetworkAdapter(retrofitService, transportService);
+          RetrofitService retrofitService,
+          TransportService transportService,
+          AcademicsService academicsService) =>
+      NetworkAdapter(retrofitService, transportService, academicsService);
 }

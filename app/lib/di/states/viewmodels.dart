@@ -138,6 +138,8 @@ final busChecklistPageViewModelProvider =
 final busRouteDetailsPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<BusRouteDetailsPageViewModel>(
   (ref) => BusRouteDetailsPageViewModel(
+    createAttendanceUsecase: getIt.get<CreateAttendanceUsecase>(),
+    getStudentlistByRouteUsecase: getIt.get<GetStudentlistByRouteUsecase>(),
     flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
     exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
   ),

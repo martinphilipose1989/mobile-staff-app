@@ -29,6 +29,8 @@ export 'src/usecase/visitor/patch_parent_gatepass_usecase.dart';
 export 'src/usecase/user/auth_usecase.dart';
 export 'src/usecase/user/logout_usecase.dart';
 export 'src/usecase/transport/get_myduty_list_usecase.dart';
+export 'src/usecase/transport/get_studentlist_by_route.dart';
+export 'src/usecase/transport/create_attendance_usecase.dart';
 
 export 'package:shared/shared.dart';
 

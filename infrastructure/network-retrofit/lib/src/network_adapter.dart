@@ -8,10 +8,12 @@ import 'package:network_retrofit/src/model/request/gate_managment/create_gatepas
 import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepass_entity.dart';
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
+import 'package:network_retrofit/src/model/request/transport_management/create_attendane_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
+import 'package:network_retrofit/src/services/academics_service.dart';
 import 'package:network_retrofit/src/services/transport_service.dart';
 
 import 'package:network_retrofit/src/util/safe_api_call.dart';
@@ -22,9 +24,10 @@ import 'services/retrofit_service.dart';
 class NetworkAdapter implements NetworkPort {
   final RetrofitService apiService;
   final TransportService transportService;
+  final AcademicsService academicsService;
   CancelToken? _cancelToken;
 
-  NetworkAdapter(this.apiService, this.transportService);
+  NetworkAdapter(this.apiService, this.transportService, this.academicsService);
 
   @override
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(
@@ -257,5 +260,53 @@ class NetworkAdapter implements NetworkPort {
         await safeApiCall(transportService.createIncidentReport(request));
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
+      {required int routeId, required int stopId}) async {
+    final response = await safeApiCall(
+        transportService.getStudentRouteList(routeId, stopId));
+
+    return response.fold(
+        (error) => Left(error),
+        (data) => Right(
+              data.data.transform(),
+            ));
+  }
+
+  @override
+  Future<Either<NetworkError, CreateAttendance>> createAttendance(
+      {required CreateAttendance createAttendance}) async {
+    final response = await safeApiCall(
+      academicsService.createAttendance(
+        CreateAttendanceEntity(
+          academicYearId: createAttendance.academicYearId,
+          attendanceDate: createAttendance.attendanceDate,
+          boardId: createAttendance.boardId,
+          brandId: createAttendance.brandId,
+          divisionId: createAttendance.divisionId,
+          gradeId: createAttendance.gradeId,
+          schoolId: createAttendance.schoolId,
+          shiftId: createAttendance.shiftId,
+          attendanceDetails: createAttendance.attendanceDetails
+              ?.map(
+                (e) => AttendanceDetailEntity(
+                    attendanceRemark: e.attendanceRemark,
+                    attendanceType: e.attendanceType,
+                    globalStudentId: e.globalStudentId,
+                    subjectId: e.subjectId,
+                    timetableId: e.timetableId),
+              )
+              .toList(),
+        ),
+      ),
+    );
+
+    return response.fold(
+        (error) => Left(error),
+        (data) => Right(
+              data.data.transform(),
+            ));
   }
 }

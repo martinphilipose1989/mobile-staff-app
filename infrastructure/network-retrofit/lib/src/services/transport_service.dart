@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/response/transport_management/checklist_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/create_reportincident_entity_response.dart';
+import 'package:network_retrofit/src/model/response/transport_management/get_student_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/trip_response_entity.dart';
 
 import 'package:retrofit/retrofit.dart';
@@ -12,6 +13,8 @@ part 'transport_service.g.dart';
 const String _getMyDutyList = "transport-service/mobile-app/my-duty";
 const String _getCheckList = "transport-service/mobile-app/check-list";
 const String _createIncidentReport = "transport-service/mobile-app/check-list";
+const String _getStudentListByRoute =
+    "transport-service/mobile-app/student-list";
 
 @RestApi()
 abstract class TransportService {
@@ -30,4 +33,8 @@ abstract class TransportService {
   @POST(_createIncidentReport)
   Future<HttpResponse<CreateIncidentReportResponseEntity>> createIncidentReport(
       @Body() CreateIncidentReportRequestEntity body);
+
+  @GET(_getStudentListByRoute)
+  Future<HttpResponse<GetStudentListEntity>> getStudentRouteList(
+      @Query("route_id") int routeId, @Query("stop_id") int stopId);
 }

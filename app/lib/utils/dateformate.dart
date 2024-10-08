@@ -10,6 +10,14 @@ extension DateFormate on DateTime {
       return '';
     }
   }
+
+  String dateFormatToyyyMMdd() {
+    try {
+      return DateFormat('yyyy-MM-dd').format(this);
+    } catch (e) {
+      return '';
+    }
+  }
 }
 
 extension DateFormatExtension on String {

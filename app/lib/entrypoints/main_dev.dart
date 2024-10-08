@@ -9,6 +9,7 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.dev,
     values: const FlavorValues(
+      academicsUrl: EnvDev.academicsBaseUrl,
       apiBaseUrl: EnvDev.baseUrl,
       mdmBaseUrl: EnvDev.mdmBaseUrl,
       transportUrl: EnvDev.transportBaseUrl,

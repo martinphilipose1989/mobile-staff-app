@@ -48,4 +48,10 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, CreateIncidentReportResponse>>
       createIncidentReport({required CreateIncidentReportRequest requestBody});
+
+  Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
+      {required int routeId, required int stopId});
+
+  Future<Either<NetworkError, CreateAttendance>> createAttendance(
+      {required CreateAttendance createAttendance});
 }

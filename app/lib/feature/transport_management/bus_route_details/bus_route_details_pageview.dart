@@ -1,10 +1,16 @@
+import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/attendance_count_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/attendance_log_list_tile.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 
+import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
+
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,9 +70,36 @@ class BusRouteDetailsPageView
             ],
           ),
         ),
-        const AttendanceLogListTile(),
-        const AttendanceLogListTile(isEdit: true, isPresent: true),
-        const AttendanceLogListTile(),
+        Expanded(
+          child: AppStreamBuilder<Resource<List<Student>>>(
+            stream: model.studentListStream,
+            initialData: Resource.none(),
+            dataBuilder: (context, studentData) {
+              return DataStatusWidget(
+                status: studentData?.status ?? Status.none,
+                loadingWidget: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                successWidget: () => ListView.builder(
+                  itemCount: studentData?.data?.length,
+                  itemBuilder: (context, index) {
+                    final student = studentData?.data?[index];
+                    return AttendanceLogListTile(student: student!);
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          child: CommonPrimaryElevatedButton(
+            title: "Pickup Students",
+            width: double.infinity,
+            onPressed: () {},
+          ),
+        )
       ],
     );
   }

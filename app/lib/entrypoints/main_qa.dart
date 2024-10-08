@@ -9,6 +9,7 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.qa,
     values: const FlavorValues(
+      academicsUrl: EnvQa.academicsBaseUrl,
       apiBaseUrl: EnvQa.baseUrl,
       mdmBaseUrl: EnvQa.mdmBaseUrl,
       transportUrl: EnvQa.transportBaseUrl,

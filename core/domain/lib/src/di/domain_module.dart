@@ -107,4 +107,16 @@ abstract class DomainModule {
     return CreateIncidentReportUsecase(
         transportRepository: transportRepository);
   }
+
+  @lazySingleton
+  GetStudentlistByRouteUsecase getStudentlistByRouteUsecase(
+      TransportRepository transportRepository) {
+    return GetStudentlistByRouteUsecase(
+        transportRepository: transportRepository);
+  }
+
+  CreateAttendanceUsecase createAttendanceUsecase(
+      TransportRepository transportRepository) {
+    return CreateAttendanceUsecase(transportRepository: transportRepository);
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
 import 'package:app/molecules/transport_management/trip_list/completed_trip_list_tile.dart';
-import 'package:app/molecules/transport_management/trip_list/upcoming_trip_list_tile.dart';
 
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
 import 'package:flutter/material.dart';
