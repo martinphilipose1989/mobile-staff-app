@@ -14,7 +14,8 @@ import 'package:app/feature/transport_management/my_duty/my_duty_page.dart';
 import 'package:app/feature/transport_management/school_contacts/school_contacts_page.dart';
 import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page.dart';
 import 'package:app/utils/app_webview.dart';
-import 'package:domain/domain.dart' hide Route;
+import 'package:domain/domain.dart';
+
 import 'package:flutter/cupertino.dart';
 import '../feature/splash/splash_page.dart';
 import 'route_paths.dart';
