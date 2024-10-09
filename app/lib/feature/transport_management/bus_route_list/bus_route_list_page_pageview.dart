@@ -177,13 +177,19 @@ class BusRouteListPageView
                                                                   style: AppTypography
                                                                       .subtitle2),
                                                               Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
                                                                 children: [
                                                                   SvgPicture.asset(
                                                                       AppImages
                                                                           .userOutlineIcon),
+                                                                  const SizedBox(
+                                                                    width: 5,
+                                                                  ),
                                                                   CommonText(
                                                                       text:
-                                                                          "5 Students (3 Present,2 Absent)",
+                                                                          "${busStopsListData?.data?[index].totalStudents} Students",
                                                                       color: AppColors
                                                                           .textGray,
                                                                       style: AppTypography

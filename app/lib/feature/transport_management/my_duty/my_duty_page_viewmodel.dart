@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
@@ -15,6 +14,7 @@ class MyDutyPageViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder exceptionHandlerBinder;
   final FlutterToastErrorPresenter flutterToastErrorPresenter;
   final GetMydutyListUsecase getMydutyListUsecase;
+  final CreateRouteLogsUsecase createRouteLogsUsecase;
 
   final BehaviorSubject<String> selectedTripStatus =
       BehaviorSubject.seeded("up coming trips");
@@ -32,18 +32,23 @@ class MyDutyPageViewModel extends BasePageViewModel {
   final hasMorePagesSubject = BehaviorSubject<bool>.seeded(true);
   final _tripListSubject =
       BehaviorSubject<Resource<List<TripResult>>>.seeded(Resource.none());
+  final _createRouteLogsSubject =
+      BehaviorSubject<Resource<CreateRouteLogsData>>.seeded(Resource.none());
 
   Stream<bool> get loadingStream => _loadingSubject.stream;
   Stream<bool> get hasMorePagesStream => hasMorePagesSubject.stream;
   Stream<Resource<List<TripResult>>> get tripListStream =>
       _tripListSubject.stream;
+  Stream<Resource<CreateRouteLogsData>> get createRouteLogsStream =>
+      _createRouteLogsSubject.stream;
 
   final _throttleDuration = const Duration(milliseconds: 300);
 
   MyDutyPageViewModel(
       {required this.exceptionHandlerBinder,
       required this.flutterToastErrorPresenter,
-      required this.getMydutyListUsecase}) {
+      required this.getMydutyListUsecase,
+      required this.createRouteLogsUsecase}) {
     getMyDutyList();
   }
 
@@ -72,9 +77,53 @@ class MyDutyPageViewModel extends BasePageViewModel {
     );
   }
 
+  void createRouteLogs(int routeId) {
+    final CreateRouteLogsParams params = CreateRouteLogsParams(
+        didId: null,
+        driverId: 1,
+        endDate: DateTime.now().toIso8601String(),
+        startDate: DateTime.now().toIso8601String(),
+        routeId: routeId,
+        userType: 2,
+        routeStatus: "Inprocess",
+        teacherId: null);
+    ApiResponseHandler.apiCallHandler(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) => createRouteLogsUsecase.execute(params: params),
+      onSuccess: (result) {
+        _createRouteLogsSubject.add(Resource.success(data: result?.data));
+      },
+      onError: (error) {
+        _createRouteLogsSubject.add(Resource.error(data: null, error: error));
+      },
+    );
+  }
+
+  void startRouteCall(TripResult tripResult) {
+    List<TripResult> a = _tripListSubject.value.data ?? [];
+    for (var value in a) {
+      if (value.id == tripResult.id) {
+        value.isLoading = true;
+      }
+    }
+    _tripListSubject.add(Resource.success(data: a));
+    createRouteLogs(int.parse(tripResult.id ?? ''));
+  }
+
+  void stopLoader(TripResult tripResult) {
+    List<TripResult> a = _tripListSubject.value.data ?? [];
+    for (var value in a) {
+      value.isLoading = false;
+    }
+    _tripListSubject.add(Resource.success(data: a));
+  }
+
   Future<void> refreshMyDutyList() async {
     _pageSubject.add(1);
     _tripListSubject.add(Resource.success(data: []));
+    _createRouteLogsSubject.add(Resource.success());
     hasMorePagesSubject.add(true);
     _loadingSubject.add(false);
     getMyDutyList();
@@ -85,6 +134,7 @@ class MyDutyPageViewModel extends BasePageViewModel {
     selectedTripStatus.close();
     _loadingSubject.close();
     _pageSubject.close();
+    _createRouteLogsSubject.close();
     hasMorePagesSubject.close();
     _tripListSubject.close();
     super.dispose();

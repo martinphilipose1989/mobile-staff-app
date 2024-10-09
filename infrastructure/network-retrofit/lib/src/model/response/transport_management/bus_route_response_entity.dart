@@ -9,7 +9,7 @@ class BusStopResponseEntity extends BaseLayerDataTransformer<
   @JsonKey(name: "status")
   int? status;
   @JsonKey(name: "data")
-  BusStopDataEntity? data;
+  BusStopResultEntity? data;
   @JsonKey(name: "message")
   String? message;
 
@@ -169,15 +169,17 @@ class RouteStopMappingEntity extends BaseLayerDataTransformer<
   DateTime? updatedAt;
   @JsonKey(name: "stop")
   StopEntity? stop;
+  @JsonKey(name: "totalStudents")
+  int? totalStudents;
 
-  RouteStopMappingEntity({
-    this.id,
-    this.orderNo,
-    this.approxTime,
-    this.createdAt,
-    this.updatedAt,
-    this.stop,
-  });
+  RouteStopMappingEntity(
+      {this.id,
+      this.orderNo,
+      this.approxTime,
+      this.createdAt,
+      this.updatedAt,
+      this.stop,
+      this.totalStudents});
 
   factory RouteStopMappingEntity.fromJson(Map<String, dynamic> json) =>
       _$RouteStopMappingEntityFromJson(json);
@@ -192,6 +194,7 @@ class RouteStopMappingEntity extends BaseLayerDataTransformer<
         createdAt: createdAt,
         id: id,
         orderNo: orderNo,
+        totalStudents: totalStudents,
         stop: stop?.transform(),
         updatedAt: updatedAt);
   }

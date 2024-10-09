@@ -1,61 +1,51 @@
 class CheckListResponse {
   int? status;
-
-  CheckListResponseData? data;
-
+  List<CheckListDatum>? data;
   String? message;
 
-  CheckListResponse({this.status, this.data, this.message});
+  CheckListResponse({
+    this.status,
+    this.data,
+    this.message,
+  });
 }
 
-class CheckListResponseData {
-  List<Checklist>? results;
-
-  int? total;
-
-  String? page;
-
-  String? limit;
-
-  CheckListResponseData({this.results, this.total, this.page, this.limit});
-}
-
-class Checklist {
+class CheckListDatum {
   String? id;
+  String? userType;
+  DateTime? startDate;
+  DateTime? endDate;
+  int? userId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  UserDetails? userDetails;
+  bool isVerified;
 
-  String? slug;
-
-  String? checkList;
-
-  String? description;
-
-  String? icon;
-
-  String? img;
-
-  int? parentId;
-
-  bool? isActive;
-
-  String? status;
-
-  String? createdAt;
-
-  String? updatedAt;
-
-  bool? isVerified;
-
-  Checklist(
+  CheckListDatum(
       {this.id,
-      this.slug,
-      this.checkList,
-      this.description,
-      this.icon,
-      this.img,
-      this.parentId,
-      this.isActive,
-      this.status,
+      this.userType,
+      this.startDate,
+      this.endDate,
+      this.userId,
       this.createdAt,
       this.updatedAt,
+      this.userDetails,
       this.isVerified = false});
+}
+
+class UserDetails {
+  int? userId;
+  String? fullName;
+  String? firstName;
+  String? middleName;
+  String? lastName;
+  String? mobile;
+
+  UserDetails(
+      {this.userId,
+      this.fullName,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.mobile});
 }

@@ -15,6 +15,7 @@ import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
 import 'package:app/utils/enum/dialog_enum.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
+import 'package:app/utils/url_launcher.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,7 +48,7 @@ class BusChecklistPageView
               CommonText(text: "Bus Checklist", style: AppTypography.subtitle2),
         ),
         Expanded(
-            child: AppStreamBuilder<Resource<List<Checklist>>>(
+            child: AppStreamBuilder<Resource<List<CheckListDatum>>>(
           stream: model.checkListStream,
           initialData: Resource.none(),
           dataBuilder: (context, checkListdata) {
@@ -110,87 +111,124 @@ class BusChecklistPageView
                                       if (index <
                                           (checkListdata?.data?.length ?? 0)) {
                                         return ListTile(
-                                          minVerticalPadding: 0,
-                                          leading: CommonImageWidget(
-                                            imageUrl: checkListdata
-                                                    ?.data?[index].img ??
-                                                '',
-                                            clipBehavior: Clip.hardEdge,
-                                            fallbackAssetImagePath:
-                                                AppImages.defaultDriverAvatar,
-                                            imageHeight: 40.h,
-                                            imageWidth: 40.w,
-                                          ),
-                                          title: CommonText(
-                                              text: checkListdata?.data?[index]
-                                                      .checkList ??
-                                                  '',
-                                              style: AppTypography.subtitle2),
-                                          subtitle: CommonText(
-                                              text: checkListdata?.data?[index]
-                                                      .description ??
-                                                  '',
-                                              style: AppTypography.body2),
-                                          trailing: (checkListdata?.data?[index]
-                                                      .isVerified ??
-                                                  false)
-                                              ? Container(
-                                                  height: 40.h,
-                                                  decoration: BoxDecoration(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primaryContainer,
-                                                      border: Border.all(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColor),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        10,
-                                                      )),
-                                                  child: TextButton.icon(
-                                                      onPressed: () {},
-                                                      icon: SvgPicture.asset(
-                                                          AppImages.checkMark),
-                                                      label: CommonText(
-                                                          text: "Verified",
-                                                          style: AppTypography
-                                                              .subtitle2)),
-                                                )
-                                              : TextButton.icon(
-                                                  icon: SvgPicture.asset(
-                                                      AppImages.checkMark),
-                                                  onPressed: () {
-                                                    tripVerificationPopUp(
-                                                        context,
-                                                        positiveCallback: () {
-                                                      model.verifyData(
-                                                          checkListdata?.data ??
-                                                              [],
-                                                          index);
-                                                      Navigator.pop(context);
-                                                    }, negativeCallback: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                        header: checkListdata
+                                            minVerticalPadding: 0,
+                                            leading: CommonImageWidget(
+                                              imageUrl: '',
+                                              clipBehavior: Clip.hardEdge,
+                                              fallbackAssetImagePath:
+                                                  AppImages.defaultDriverAvatar,
+                                              imageHeight: 40.h,
+                                              imageWidth: 40.w,
+                                            ),
+                                            title: CommonText(
+                                                text: checkListdata
+                                                        ?.data?[index]
+                                                        .userDetails
+                                                        ?.fullName ??
+                                                    '',
+                                                style: AppTypography.subtitle2),
+                                            subtitle: CommonText(
+                                                text: '',
+                                                style: AppTypography.body2),
+                                            trailing: AppStreamBuilder<
+                                                Resource<
+                                                    GetChecklistConfirmationData>>(
+                                              stream:
+                                                  model.getConfirmationStream,
+                                              initialData: Resource.none(),
+                                              dataBuilder: (context, data) {
+                                                return data!.status ==
+                                                        Status.loading
+                                                    ? const CircularProgressIndicator()
+                                                    : (checkListdata
                                                                 ?.data?[index]
-                                                                .slug ??
-                                                            '',
-                                                        info: "+91-9090901234",
-                                                        name: checkListdata
-                                                                ?.data?[index]
-                                                                .checkList ??
-                                                            '',
-                                                        role: 'Call',
-                                                        type:
-                                                            DialogType.driver);
-                                                  },
-                                                  label: CommonText(
-                                                      text: "Confirm",
-                                                      style: AppTypography
-                                                          .subtitle2),
-                                                ),
-                                        );
+                                                                .isVerified ??
+                                                            false)
+                                                        ? Container(
+                                                            height: 40.h,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .primaryContainer,
+                                                                    border: Border.all(
+                                                                        color: Theme.of(context)
+                                                                            .primaryColor),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                      10,
+                                                                    )),
+                                                            child: TextButton.icon(
+                                                                onPressed:
+                                                                    () {},
+                                                                icon: SvgPicture
+                                                                    .asset(AppImages
+                                                                        .checkMark),
+                                                                label: CommonText(
+                                                                    text:
+                                                                        "Verified",
+                                                                    style: AppTypography
+                                                                        .subtitle2)),
+                                                          )
+                                                        : TextButton.icon(
+                                                            icon: SvgPicture
+                                                                .asset(AppImages
+                                                                    .checkMark),
+                                                            onPressed: () {
+                                                              tripVerificationPopUp(
+                                                                  context,
+                                                                  positiveCallback:
+                                                                      () {
+                                                                model.getChecklistConfirmation(
+                                                                    checkListdata
+                                                                            ?.data?[
+                                                                                index]
+                                                                            .userType ??
+                                                                        '',
+                                                                    checkListdata
+                                                                            ?.data ??
+                                                                        [],
+                                                                    index);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              }, negativeCallback:
+                                                                      () {
+                                                                UrlLauncher
+                                                                    .launchPhone(
+                                                                  checkListdata
+                                                                          ?.data?[
+                                                                              index]
+                                                                          .userDetails
+                                                                          ?.mobile ??
+                                                                      '',
+                                                                );
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                                  header:
+                                                                      'Verify ${checkListdata?.data?[index].userType ?? ''}',
+                                                                  info:
+                                                                      "+91-${checkListdata?.data?[index].userDetails?.mobile}",
+                                                                  name: checkListdata
+                                                                          ?.data?[
+                                                                              index]
+                                                                          .userDetails
+                                                                          ?.fullName ??
+                                                                      '',
+                                                                  role:
+                                                                      'Call ${checkListdata?.data?[index].userType ?? ''}',
+                                                                  type: DialogType
+                                                                      .driver);
+                                                            },
+                                                            label: CommonText(
+                                                                text: "Confirm",
+                                                                style: AppTypography
+                                                                    .subtitle2),
+                                                          );
+                                              },
+                                            ));
                                       } else if (isLoading) {
                                         return const Padding(
                                           padding: EdgeInsets.only(
@@ -219,7 +257,7 @@ class BusChecklistPageView
           },
         )),
         const Spacer(),
-        AppStreamBuilder<Resource<List<Checklist>>>(
+        AppStreamBuilder<Resource<List<CheckListDatum>>>(
           stream: model.checkListStream,
           initialData: Resource.none(),
           dataBuilder: (context, data) {

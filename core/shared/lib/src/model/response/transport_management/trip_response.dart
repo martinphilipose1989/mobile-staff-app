@@ -65,6 +65,7 @@ class TripResult {
 
   RouteWorkingDays? routeWorkingDays;
   List<StudentStopsMapping>? studentStopsMappings;
+  bool isLoading;
 
   TripResult(
       {this.id,
@@ -89,7 +90,8 @@ class TripResult {
       this.routeStopMapping,
       this.studentStopsMappings,
       this.schoolName,
-      this.shiftName});
+      this.shiftName,
+      this.isLoading = false});
 }
 
 class RouteBusUserMapping {

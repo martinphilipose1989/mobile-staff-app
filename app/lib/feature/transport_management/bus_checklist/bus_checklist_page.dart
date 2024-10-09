@@ -41,6 +41,7 @@ class BusChecklistPageState
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
     //getViewModel()
     model.trip = widget.tripResult;
+    model.getBusCheckList();
     super.onModelReady(model);
   }
 

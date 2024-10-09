@@ -1,7 +1,7 @@
 class BusStopResponseModel {
   int? status;
 
-  BusStopDataModel? data;
+  BusStopResultModel? data;
 
   String? message;
 
@@ -74,15 +74,16 @@ class RouteStopMappingModel {
   DateTime? createdAt;
   DateTime? updatedAt;
   StopModel? stop;
+  int? totalStudents;
 
-  RouteStopMappingModel({
-    this.id,
-    this.orderNo,
-    this.approxTime,
-    this.createdAt,
-    this.updatedAt,
-    this.stop,
-  });
+  RouteStopMappingModel(
+      {this.id,
+      this.orderNo,
+      this.approxTime,
+      this.createdAt,
+      this.updatedAt,
+      this.stop,
+      this.totalStudents});
 }
 
 class StopModel {
