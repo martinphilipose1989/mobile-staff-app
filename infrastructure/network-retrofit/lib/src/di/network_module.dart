@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:network_retrofit/src/network_adapter.dart';
 import 'package:network_retrofit/src/services/academics_service.dart';
+import 'package:network_retrofit/src/services/mdm_service.dart';
 import 'package:network_retrofit/src/services/retrofit_service.dart';
 import 'package:network_retrofit/src/services/transport_service.dart';
 import 'package:network_retrofit/src/util/api_interceptor.dart';
@@ -67,6 +68,10 @@ abstract class NetworkModule {
   AcademicsService providerAcademicsService(
           Dio dio, @Named('AcademicsUrl') String academicsUrl) =>
       AcademicsService(dio, academicsUrl: academicsUrl);
+
+  @lazySingleton
+  MdmService providerMDMService(Dio dio, @Named('MDMUrl') String mdmUrl) =>
+      MdmService(dio, mdmUrl: mdmUrl);
 
   @lazySingleton
   NetworkPort providerNetworkService(

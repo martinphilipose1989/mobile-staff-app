@@ -9,8 +9,8 @@ abstract class AppModule {
   @Named("ApiKey")
   String get apiKey => FlavorConfig.instance.values.secrets.thirdpartyApiKey;
 
-  @Named("MDMApiKey")
-  String get mdmApiKey => FlavorConfig.instance.values.mdmBaseUrl;
+  @Named("MDMUrl")
+  String get mdmBaseUrl => FlavorConfig.instance.values.mdmBaseUrl;
 
   @Named("TransportUrl")
   String get transportBaseUrl => FlavorConfig.instance.values.transportUrl;
