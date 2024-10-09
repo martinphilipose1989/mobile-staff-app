@@ -12,26 +12,31 @@ class BusChecklistPageViewModel extends BasePageViewModel {
   final FlutterToastErrorPresenter flutterToastErrorPresenter;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GetAllChecklistUsecase getAllChecklistUsecase;
+  final GetChecklistConfirmationUsecase getChecklistConfirmationUsecase;
 
   BusChecklistPageViewModel(
       {required this.exceptionHandlerBinder,
       required this.flutterToastErrorPresenter,
-      required this.getAllChecklistUsecase}) {
-    getBusCheckList();
-  }
+      required this.getAllChecklistUsecase,
+      required this.getChecklistConfirmationUsecase});
 
   TripResult? trip;
   final _loadingSubject = BehaviorSubject<bool>.seeded(false);
   final _pageSubject = BehaviorSubject<int>.seeded(1);
   final _checkListSubject =
-      BehaviorSubject<Resource<List<Checklist>>>.seeded(Resource.none());
+      BehaviorSubject<Resource<List<CheckListDatum>>>.seeded(Resource.none());
+  final _getConfirmationSubject =
+      BehaviorSubject<Resource<GetChecklistConfirmationData>>.seeded(
+          Resource.none());
 
   final hasMorePagesSubject = BehaviorSubject<bool>.seeded(true);
 
   Stream<bool> get loadingStream => _loadingSubject.stream;
   Stream<bool> get hasMorePagesStream => hasMorePagesSubject.stream;
-  Stream<Resource<List<Checklist>>> get checkListStream =>
+  Stream<Resource<List<CheckListDatum>>> get checkListStream =>
       _checkListSubject.stream;
+  Stream<Resource<GetChecklistConfirmationData>> get getConfirmationStream =>
+      _getConfirmationSubject.stream;
 
   void getBusCheckList() {
     _loadingSubject.add(true);
@@ -40,7 +45,9 @@ class BusChecklistPageViewModel extends BasePageViewModel {
     }
 
     final GetAllChecklistParams params = GetAllChecklistParams(
-        pageNo: _pageSubject.value, dayId: DateTime.now().weekday);
+        userId: 1,
+        routeId: int.parse(trip?.id ?? ''),
+        busId: int.parse(trip?.routeBusUserMapping?[0].bus?.id ?? ''));
 
     ApiResponseHandler.apiCallHandler(
       exceptionHandlerBinder: exceptionHandlerBinder,
@@ -48,7 +55,7 @@ class BusChecklistPageViewModel extends BasePageViewModel {
       params: params,
       createCall: (params) => getAllChecklistUsecase.execute(params: params),
       onSuccess: (result) {
-        _checkListSubject.add(Resource.success(data: result?.data?.results));
+        _checkListSubject.add(Resource.success(data: result?.data));
         _loadingSubject.add(false);
       },
       onError: (error) {
@@ -58,9 +65,33 @@ class BusChecklistPageViewModel extends BasePageViewModel {
     );
   }
 
-  void verifyData(List<Checklist> checkListdata, int index) {
-    checkListdata[index].isVerified = true;
-    _checkListSubject.add(Resource.success(data: checkListdata));
+  void getChecklistConfirmation(
+      String userType, List<CheckListDatum> checkListdata, int index) {
+    final GetChecklistConfirmationParams params =
+        GetChecklistConfirmationParams(
+            userId: 1,
+            routeId: int.parse(trip?.id ?? ''),
+            userType: userType == "didi"
+                ? 1
+                : userType == "driver"
+                    ? 2
+                    : 3);
+    _getConfirmationSubject.add(Resource.loading(data: null));
+    ApiResponseHandler.apiCallHandler(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) =>
+          getChecklistConfirmationUsecase.execute(params: params),
+      onSuccess: (result) {
+        _getConfirmationSubject.add(Resource.success(data: result?.data));
+        checkListdata[index].isVerified = true;
+        _checkListSubject.add(Resource.success(data: checkListdata));
+      },
+      onError: (error) {
+        _getConfirmationSubject.add(Resource.error(data: null, error: error));
+      },
+    );
   }
 
   Future<void> refreshMyDutyList() async {

@@ -10,15 +10,17 @@ class GetAllChecklistUsecase extends BaseUseCase<NetworkError,
   Future<Either<NetworkError, CheckListResponse>> execute(
       {required GetAllChecklistParams params}) {
     return transportRepository.getAllCheckList(
-        pageNo: params.pageNo, dayId: params.dayId);
+        userId: params.userId, routeId: params.routeId, busId: params.busId);
   }
 }
 
 class GetAllChecklistParams extends Params {
-  final int pageNo;
-  final int dayId;
+  final int userId;
+  final int routeId;
+  final int busId;
 
-  GetAllChecklistParams({required this.pageNo, required this.dayId});
+  GetAllChecklistParams(
+      {required this.userId, required this.routeId, required this.busId});
 
   @override
   Either<AppError, bool> verify() {

@@ -10,6 +10,9 @@ import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_e
 import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_attendane_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
@@ -222,28 +225,6 @@ class NetworkAdapter implements NetworkPort {
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
 
-  // @override
-  // Future<Either<NetworkError, TripResponse>> getMyDutyList(
-  //     {int page = 1, int limit = 10}) async {
-  //   final response = await safeApiCall(
-  //     transportService.getMyDutyList(page, limit),
-  //   );
-
-  //   return response.fold(
-  //       (error) => Left(error), (data) => Right(data.data.transform()));
-  // }
-
-  @override
-  Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
-      {required int page, required int dayId}) async {
-    final response = await safeApiCall(
-      transportService.getAllCheckList(page, 10, dayId),
-    );
-
-    return response.fold(
-        (error) => Left(error), (data) => Right(data.data.transform()));
-  }
-
   @override
   Future<Either<NetworkError, CreateIncidentReportResponse>>
       createIncidentReport(
@@ -350,6 +331,76 @@ class NetworkAdapter implements NetworkPort {
       {required String routeId, required int dayId}) async {
     final response = await safeApiCall(
       transportService.getBusStopsList(routeId: routeId, dayId: dayId),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, FetchStopLogsModel>> fetchStopLogs(
+      {required int routeId, required int stopId}) async {
+    final response = await safeApiCall(
+      transportService.fetchStopLogs(routeId: routeId, stopId: stopId),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
+      {required int routeId, required int userId, required int busId}) async {
+    final GetCheckListEntityRequest getCheckListEntityRequest =
+        GetCheckListEntityRequest(
+            busId: busId, routeId: routeId, userId: userId);
+    final response = await safeApiCall(
+      transportService.getAllCheckList(getCheckListEntityRequest),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, GetChecklistConfirmationModel>>
+      getChecklistConfirmation(
+          {required int routeId,
+          required int userId,
+          required int userType}) async {
+    final GetChecklistConfirmationRequest getCheckListEntityRequest =
+        GetChecklistConfirmationRequest(
+            userType: userType, routeId: routeId, userId: userId);
+    final response = await safeApiCall(
+      transportService.getChecklistConfirmation(getCheckListEntityRequest),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, CreateRouteLogsModel>> createRouteLogs(
+      {required int routeId,
+      int? driverId,
+      int? didId,
+      int? teacherId,
+      required int userType,
+      required String routeStatus,
+      required String startDate,
+      required String endDate}) async {
+    final CreateRouteLogsRequest createRouteLogsRequest =
+        CreateRouteLogsRequest(
+            didId: didId,
+            driverId: driverId,
+            endDate: endDate,
+            routeId: routeId,
+            userType: userType,
+            routeStatus: routeStatus,
+            startDate: startDate,
+            teacherId: teacherId);
+    final response = await safeApiCall(
+      transportService.createRouteLogs(createRouteLogsRequest),
     );
 
     return response.fold(

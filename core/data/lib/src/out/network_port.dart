@@ -40,9 +40,6 @@ abstract class NetworkPort {
   Future<Either<NetworkError, UserPermissionResponse>> userPermissionDetails(
       {required UserPermissionRequest request});
 
-  Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
-      {required int page, required int dayId});
-
   Future<Either<NetworkError, CreateIncidentReportResponse>>
       createIncidentReport({required CreateIncidentReportRequest requestBody});
 
@@ -62,4 +59,24 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, BusStopResponseModel>> getBusStopsList(
       {required String routeId, required int dayId});
+
+  Future<Either<NetworkError, FetchStopLogsModel>> fetchStopLogs(
+      {required int routeId, required int stopId});
+
+  Future<Either<NetworkError, CheckListResponse>> getAllCheckList(
+      {required int routeId, required int userId, required int busId});
+
+  Future<Either<NetworkError, GetChecklistConfirmationModel>>
+      getChecklistConfirmation(
+          {required int routeId, required int userId, required int userType});
+
+  Future<Either<NetworkError, CreateRouteLogsModel>> createRouteLogs(
+      {required int routeId,
+      int? driverId,
+      int? didId,
+      int? teacherId,
+      required String routeStatus,
+      required int userType,
+      required String startDate,
+      required String endDate});
 }

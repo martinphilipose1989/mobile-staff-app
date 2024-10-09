@@ -59,6 +59,9 @@ export 'src/model/response/transport_management/guardian_detail_response.dart';
 export 'src/model/response/transport_management/create_bearer_response.dart';
 export 'src/model/request/transport_management/create_bearer_request.dart';
 export 'src/model/response/transport_management/busstop_response.dart';
+export 'src/model/response/transport_management/fetch_stops_logs_model.dart';
+export 'src/model/response/transport_management/get_checklist_confirmation_response.dart';
+export 'src/model/response/transport_management/create_route_logs_model.dart';
 
 //utils
 export 'src/utils/validator.dart';

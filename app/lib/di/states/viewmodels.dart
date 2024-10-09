@@ -133,6 +133,8 @@ final busChecklistPageViewModelProvider =
         BusChecklistPageViewModel(
             flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
             getAllChecklistUsecase: getIt.get<GetAllChecklistUsecase>(),
+            getChecklistConfirmationUsecase:
+                getIt.get<GetChecklistConfirmationUsecase>(),
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
@@ -153,7 +155,8 @@ final busRouteListPageViewModelProvider =
   (ref) => BusRouteListPageViewModel(
       flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
-      getAllBusStopsUsecase: getIt.get<GetAllBusStopsUsecase>()),
+      getAllBusStopsUsecase: getIt.get<GetAllBusStopsUsecase>(),
+      fetchStopLogsUsecase: getIt.get<FetchStopLogsUsecase>()),
 );
 
 final myDutyPageViewModelProvider =
@@ -161,5 +164,6 @@ final myDutyPageViewModelProvider =
   (ref) => MyDutyPageViewModel(
       getMydutyListUsecase: getIt.get<GetMydutyListUsecase>(),
       flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
-      exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()),
+      exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+      createRouteLogsUsecase: getIt.get<CreateRouteLogsUsecase>()),
 );

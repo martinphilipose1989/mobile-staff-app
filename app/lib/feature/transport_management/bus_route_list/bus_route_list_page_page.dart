@@ -41,6 +41,7 @@ class BusChecklistPageState
     model.trip = ProviderScope.containerOf(context)
         .read(busChecklistPageViewModelProvider)
         .trip;
+    model.getBusStopsList();
     super.onModelReady(model);
   }
 
