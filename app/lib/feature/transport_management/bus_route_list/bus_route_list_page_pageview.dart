@@ -1,5 +1,6 @@
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
@@ -118,90 +119,97 @@ class BusRouteListPageView
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(16.0),
-                                                        child: TimelineTile(
-                                                          index: index,
-                                                          isActive: true,
-                                                          lineWidth: 3.w,
-                                                          stopName:
-                                                              busStopsListData
-                                                                      ?.data?[
-                                                                          index]
-                                                                      .stop
-                                                                      ?.stopName ??
-                                                                  '',
-                                                          circleColor:
-                                                              AppColors.primary,
-                                                          leadingChild: Column(
-                                                            children: [
-                                                              CommonText(
-                                                                  text: model.convertTo12HourFormat(busStopsListData
-                                                                          ?.data?[
-                                                                              index]
-                                                                          .approxTime ??
-                                                                      ""),
-                                                                  style: AppTypography
-                                                                      .caption,
-                                                                  color: AppColors
-                                                                      .textGray),
-                                                              // CommonText(
-                                                              //     text:
-                                                              //         "7:00 Am",
-                                                              //     style: AppTypography
-                                                              //         .caption,
-                                                              //     color: index ==
-                                                              //             0
-                                                              //         ? AppColors
-                                                              //             .success
-                                                              //         : AppColors
-                                                              //             .failure),
-                                                            ],
-                                                          ),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              CommonText(
-                                                                  text: busStopsListData
-                                                                          ?.data?[
-                                                                              index]
-                                                                          .stop
-                                                                          ?.stopName ??
-                                                                      '',
-                                                                  color: index ==
-                                                                          0
-                                                                      ? AppColors
-                                                                          .primary
-                                                                      : AppColors
-                                                                          .textLightGray,
-                                                                  style: AppTypography
-                                                                      .subtitle2),
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  SvgPicture.asset(
-                                                                      AppImages
-                                                                          .userOutlineIcon),
-                                                                  const SizedBox(
-                                                                    width: 5,
-                                                                  ),
-                                                                  CommonText(
-                                                                      text:
-                                                                          "${busStopsListData?.data?[index].totalStudents} Students",
-                                                                      color: AppColors
-                                                                          .textGray,
-                                                                      style: AppTypography
-                                                                          .caption),
-                                                                ],
-                                                              ),
-                                                              if (index == 0)
-                                                                Expanded(
-                                                                    child: Container(
-                                                                        height:
-                                                                            100.h))
-                                                            ],
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                RoutePaths
+                                                                    .busRouteDetailsPage);
+                                                          },
+                                                          child: TimelineTile(
+                                                            index: index,
+                                                            isActive: true,
+                                                            lineWidth: 3.w,
+                                                            stopName: busStopsListData
+                                                                    ?.data?[
+                                                                        index]
+                                                                    .stop
+                                                                    ?.stopName ??
+                                                                '',
+                                                            circleColor:
+                                                                AppColors
+                                                                    .primary,
+                                                            leadingChild:
+                                                                Column(
+                                                              children: [
+                                                                CommonText(
+                                                                    text: model.convertTo12HourFormat(
+                                                                        busStopsListData?.data?[index].approxTime ??
+                                                                            ""),
+                                                                    style: AppTypography
+                                                                        .caption,
+                                                                    color: AppColors
+                                                                        .textGray),
+                                                                // CommonText(
+                                                                //     text:
+                                                                //         "7:00 Am",
+                                                                //     style: AppTypography
+                                                                //         .caption,
+                                                                //     color: index ==
+                                                                //             0
+                                                                //         ? AppColors
+                                                                //             .success
+                                                                //         : AppColors
+                                                                //             .failure),
+                                                              ],
+                                                            ),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                CommonText(
+                                                                    text: busStopsListData
+                                                                            ?.data?[
+                                                                                index]
+                                                                            .stop
+                                                                            ?.stopName ??
+                                                                        '',
+                                                                    color: index ==
+                                                                            0
+                                                                        ? AppColors
+                                                                            .primary
+                                                                        : AppColors
+                                                                            .textLightGray,
+                                                                    style: AppTypography
+                                                                        .subtitle2),
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    SvgPicture.asset(
+                                                                        AppImages
+                                                                            .userOutlineIcon),
+                                                                    const SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    CommonText(
+                                                                        text:
+                                                                            "${busStopsListData?.data?[index].totalStudents} Students",
+                                                                        color: AppColors
+                                                                            .textGray,
+                                                                        style: AppTypography
+                                                                            .caption),
+                                                                  ],
+                                                                ),
+                                                                if (index == 0)
+                                                                  Expanded(
+                                                                      child: Container(
+                                                                          height:
+                                                                              100.h))
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       );
