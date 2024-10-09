@@ -18,6 +18,7 @@ class Student {
   String? createdAt;
   String? updatedAt;
   StudentDetails? studentDetails;
+  List<IntimationDetails>? intimationList;
 
   Student(
       {this.id,
@@ -30,7 +31,8 @@ class Student {
       this.feesStatus,
       this.createdAt,
       this.updatedAt,
-      this.studentDetails});
+      this.studentDetails,
+      this.intimationList});
 }
 
 class StudentDetails {

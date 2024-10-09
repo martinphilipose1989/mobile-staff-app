@@ -15,4 +15,10 @@ abstract class TransportRepository {
 
   Future<Either<NetworkError, CreateAttendance>> createAttendance(
       {required CreateAttendance createAttendance});
+
+  Future<Either<NetworkError, GetStudentProfileResponse>> getStudentProfile(
+      {required int studentId});
+
+  Future<Either<NetworkError, GetGuardianListResponse>> getGuardianList(
+      {required int studentId});
 }

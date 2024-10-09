@@ -60,6 +60,8 @@ class StudentEntity
   String? updatedAt;
   @JsonKey(name: "student_details")
   StudentDetailsEntity? studentDetails;
+  @JsonKey(name: "intimation_details")
+  List<IntimationDetailsEntity>? intimationDetails;
 
   StudentEntity(
       {this.id,
@@ -72,7 +74,8 @@ class StudentEntity
       this.feesStatus,
       this.createdAt,
       this.updatedAt,
-      this.studentDetails});
+      this.studentDetails,
+      this.intimationDetails});
 
   factory StudentEntity.fromJson(Map<String, dynamic> json) =>
       _$StudentEntityFromJson(json);
@@ -96,6 +99,7 @@ class StudentEntity
         stopId: stopId,
         startDate: startDate,
         studentDetails: studentDetails?.transform(),
+        intimationList: intimationDetails?.map((e) => e.transform()).toList(),
         studentId: studentId,
         updatedAt: updatedAt);
   }

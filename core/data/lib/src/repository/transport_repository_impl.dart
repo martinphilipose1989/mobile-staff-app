@@ -35,4 +35,16 @@ class TransportRepositoryImpl implements TransportRepository {
       {required CreateAttendance createAttendance}) {
     return networkPort.createAttendance(createAttendance: createAttendance);
   }
+
+  @override
+  Future<Either<NetworkError, GetStudentProfileResponse>> getStudentProfile(
+      {required int studentId}) {
+    return networkPort.getStudentProfile(studentId: studentId);
+  }
+
+  @override
+  Future<Either<NetworkError, GetGuardianListResponse>> getGuardianList(
+      {required int studentId}) {
+    return networkPort.getGuardianList(studentId: studentId);
+  }
 }

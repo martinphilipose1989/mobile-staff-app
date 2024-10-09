@@ -14,6 +14,8 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GetStudentlistByRouteUsecase getStudentlistByRouteUsecase;
   final CreateAttendanceUsecase createAttendanceUsecase;
+  final GetGuardianlistUsecase getGuardianlistUsecase;
+  final GetStudentProfileUsecase getStudentProfileUsecase;
 
   final _studentListSubject =
       BehaviorSubject<Resource<List<Student>>>.seeded(Resource.none());
@@ -21,8 +23,17 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   Stream<Resource<List<Student>>> get studentListStream =>
       _studentListSubject.stream;
 
+  // Guardian List
+  final _guardianListSubject =
+      BehaviorSubject<Resource<List<GuardiansDetail>>>.seeded(Resource.none());
+
+  Stream<Resource<List<GuardiansDetail>>> get guardianListStream =>
+      _guardianListSubject.stream;
+
   BusRouteDetailsPageViewModel(
-      {required this.exceptionHandlerBinder,
+      {required this.getGuardianlistUsecase,
+      required this.getStudentProfileUsecase,
+      required this.exceptionHandlerBinder,
       required this.flutterToastErrorPresenter,
       required this.getStudentlistByRouteUsecase,
       required this.createAttendanceUsecase});
@@ -67,6 +78,25 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       createCall: (params) => createAttendanceUsecase.execute(params: params),
       onSuccess: (data) {},
       onError: (error) {},
+    );
+  }
+
+  void getGuardianList({required int studentId}) {
+    _guardianListSubject.add(Resource.loading(data: null));
+    final GetGuardianlistUsecaseParams params =
+        GetGuardianlistUsecaseParams(studentId: studentId);
+    ApiResponseHandler.apiCallHandler<GetGuardianlistUsecaseParams,
+        GetGuardianListResponse, NetworkError>(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) => getGuardianlistUsecase.execute(params: params),
+      onSuccess: (result) {
+        _guardianListSubject.add(Resource.success(data: result?.data));
+      },
+      onError: (error) {
+        _guardianListSubject.add(Resource.error(error: error));
+      },
     );
   }
 }

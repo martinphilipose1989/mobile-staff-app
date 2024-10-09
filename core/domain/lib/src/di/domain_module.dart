@@ -115,8 +115,21 @@ abstract class DomainModule {
         transportRepository: transportRepository);
   }
 
+  @lazySingleton
   CreateAttendanceUsecase createAttendanceUsecase(
       TransportRepository transportRepository) {
     return CreateAttendanceUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  GetStudentProfileUsecase getStudentProfileUsecase(
+      TransportRepository transportRepository) {
+    return GetStudentProfileUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  GetGuardianlistUsecase getGuardianlistUsecase(
+      TransportRepository transportRepository) {
+    return GetGuardianlistUsecase(transportRepository: transportRepository);
   }
 }

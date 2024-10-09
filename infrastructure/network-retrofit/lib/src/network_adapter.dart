@@ -309,4 +309,28 @@ class NetworkAdapter implements NetworkPort {
               data.data.transform(),
             ));
   }
+
+  @override
+  Future<Either<NetworkError, GetStudentProfileResponse>> getStudentProfile(
+      {required int studentId}) async {
+    final response =
+        await safeApiCall(transportService.getStudentProfile(studentId));
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, GetGuardianListResponse>> getGuardianList(
+      {required int studentId}) async {
+    final response =
+        await safeApiCall(transportService.getGuardianList(studentId));
+
+    return response.fold(
+      (error) => Left(error),
+      (data) => Right(
+        data.data.transform(),
+      ),
+    );
+  }
 }

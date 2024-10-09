@@ -6,4 +6,12 @@ extension StringExtensions on String {
     }
     return nameParts[0][0].toUpperCase(); // Handle single names
   }
+
+  String capitalizeFirst() {
+    if (isEmpty) return this;
+    return split(' ').map((word) {
+      if (word.isEmpty) return word;
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
+  }
 }

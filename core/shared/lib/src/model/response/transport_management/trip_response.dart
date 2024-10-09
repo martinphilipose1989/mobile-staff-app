@@ -1,3 +1,5 @@
+import 'route_stop_mapping_response.dart';
+
 class TripResponse {
   int? status;
 
@@ -140,81 +142,6 @@ class Bus {
     this.manualCode,
     this.busType,
     this.busMaxCapacity,
-    this.createdAt,
-    this.updatedAt,
-  });
-}
-
-class RouteStopMapping {
-  String? id;
-
-  int? orderNo;
-
-  String? approxTime;
-
-  String? createdAt;
-
-  String? updatedAt;
-
-  Stop? stop;
-
-  RouteStopMapping(
-      {this.id,
-      this.orderNo,
-      this.approxTime,
-      this.createdAt,
-      this.updatedAt,
-      this.stop});
-}
-
-class Stop {
-  int? id;
-
-  String? stopName;
-
-  String? stopMapName;
-
-  String? lat;
-
-  String? long;
-
-  dynamic relatedStopId;
-
-  String? startDate;
-
-  String? endDate;
-
-  int? orderBy;
-
-  int? distanceKm;
-
-  String? zoneName;
-
-  int? schoolId;
-
-  dynamic academicYrsId;
-
-  bool? isDraft;
-
-  String? createdAt;
-
-  String? updatedAt;
-
-  Stop({
-    this.id,
-    this.stopName,
-    this.stopMapName,
-    this.lat,
-    this.long,
-    this.relatedStopId,
-    this.startDate,
-    this.endDate,
-    this.orderBy,
-    this.distanceKm,
-    this.zoneName,
-    this.schoolId,
-    this.academicYrsId,
-    this.isDraft,
     this.createdAt,
     this.updatedAt,
   });
