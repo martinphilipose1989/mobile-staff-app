@@ -32,7 +32,7 @@ class GetStudentProfileData {
 
   TransportDetails? transportDetails;
 
-  List<dynamic>? bearersDetails;
+  List<BearerResponse>? bearersDetails;
 
   GetStudentProfileData({
     this.studentId,
@@ -77,4 +77,23 @@ class TransportRoute {
     this.routeType,
     this.routeStopMapping,
   });
+}
+
+class BearerResponse {
+  String? firstName;
+
+  String? middleName;
+
+  String? lastName;
+
+  String? mobileNo;
+
+  String? profileImage;
+
+  BearerResponse(
+      {this.firstName,
+      this.middleName,
+      this.lastName,
+      this.mobileNo,
+      this.profileImage});
 }

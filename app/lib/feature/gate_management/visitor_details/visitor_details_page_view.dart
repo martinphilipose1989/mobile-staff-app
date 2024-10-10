@@ -34,10 +34,7 @@ class VisitorDetailsPageView
       : super(model);
 
   @override
-  Widget build(
-    BuildContext context,
-    VisitorDetailsViewModel model,
-  ) {
+  Widget build(BuildContext context, VisitorDetailsViewModel model) {
     return AppStreamBuilder<Resource<VisitorDataModel>>(
         stream: model.visitorDetails,
         initialData: Resource.none(),
