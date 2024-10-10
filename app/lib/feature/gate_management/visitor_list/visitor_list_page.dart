@@ -28,12 +28,13 @@ class VisitorListPageState
 
   @override
   PreferredSizeWidget? buildAppbar(VisitorListPageViewModel model) {
-    return CommonAppBar(
-        appbarTitle: "Visitors List",
-        showBackButton: false,
-        onTapAction: () {
-          //   model.logOut();
-        });
+    return const CommonAppBar(
+      appbarTitle: "Visitors List",
+      showBackButton: true,
+      // onTapAction: () {
+      //   //   model.logOut();
+      // }
+    );
   }
 
   @override

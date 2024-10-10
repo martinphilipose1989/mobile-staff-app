@@ -11,6 +11,7 @@ import 'package:network_retrofit/src/model/request/login/login_request_entity.da
 import 'package:network_retrofit/src/model/request/transport_management/create_attendane_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request_entity.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
@@ -401,6 +402,22 @@ class NetworkAdapter implements NetworkPort {
             teacherId: teacherId);
     final response = await safeApiCall(
       transportService.createRouteLogs(createRouteLogsRequest),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
+      {required int routeId,
+      required int stopId,
+      required String stopStatus,
+      required String time}) async {
+    CreateStopLogsRequest createStopLogsRequest = CreateStopLogsRequest(
+        routeId: routeId, stopId: stopId, stopStatus: stopStatus, time: time);
+    final response = await safeApiCall(
+      transportService.createStopLogs(createStopLogsRequest),
     );
 
     return response.fold(

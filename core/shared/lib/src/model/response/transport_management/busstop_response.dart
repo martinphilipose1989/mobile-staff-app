@@ -75,6 +75,7 @@ class RouteStopMappingModel {
   DateTime? updatedAt;
   StopModel? stop;
   int? totalStudents;
+  bool stopComplete;
 
   RouteStopMappingModel(
       {this.id,
@@ -83,6 +84,7 @@ class RouteStopMappingModel {
       this.createdAt,
       this.updatedAt,
       this.stop,
+      this.stopComplete = false,
       this.totalStudents});
 }
 

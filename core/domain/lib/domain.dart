@@ -38,6 +38,7 @@ export 'src/usecase/transport/get_all_bus_stops_usecase.dart';
 export 'src/usecase/transport/fetch_stop_logs_usecase.dart';
 export 'src/usecase/transport/get_checklist_confirmation_usecase.dart';
 export 'src/usecase/transport/create_route_logs_usecase.dart';
+export 'src/usecase/transport/create_stops_logs_usecase.dart';
 
 export 'package:shared/shared.dart';
 

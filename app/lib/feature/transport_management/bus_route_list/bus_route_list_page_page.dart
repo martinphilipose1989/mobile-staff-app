@@ -37,11 +37,11 @@ class BusChecklistPageState
   @override
   void onModelReady(BusRouteListPageViewModel model) {
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
-    //getViewModel()
     model.trip = ProviderScope.containerOf(context)
         .read(busChecklistPageViewModelProvider)
         .trip;
     model.getBusStopsList();
+
     super.onModelReady(model);
   }
 
@@ -49,7 +49,8 @@ class BusChecklistPageState
   PreferredSizeWidget? buildAppbar(BusRouteListPageViewModel model) {
     return CommonAppBar(
         showBackButton: true,
-        appbarTitle:
-            "School To ${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'}");
+        appbarTitle: model.trip?.routeType == "1"
+            ? "School To ${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'}"
+            : "${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'} To School");
   }
 }

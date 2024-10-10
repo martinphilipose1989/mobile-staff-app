@@ -79,4 +79,10 @@ abstract class NetworkPort {
       required int userType,
       required String startDate,
       required String endDate});
+
+  Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
+      {required int routeId,
+      required int stopId,
+      required String stopStatus,
+      required String time});
 }

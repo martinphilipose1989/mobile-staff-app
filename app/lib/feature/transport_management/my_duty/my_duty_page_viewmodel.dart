@@ -23,7 +23,7 @@ class MyDutyPageViewModel extends BasePageViewModel {
     const ToggleOption<String>(
         value: "up coming trips", text: "Upcoming Trips"),
     const ToggleOption<String>(
-        value: "completed trips", text: "Incompleted Trips")
+        value: "completed trips", text: "Completed Trips")
   ];
 
   // GET MY DUTY
@@ -84,7 +84,7 @@ class MyDutyPageViewModel extends BasePageViewModel {
         endDate: DateTime.now().toIso8601String(),
         startDate: DateTime.now().toIso8601String(),
         routeId: routeId,
-        userType: 2,
+        userType: 1,
         routeStatus: "Inprocess",
         teacherId: null);
     ApiResponseHandler.apiCallHandler(

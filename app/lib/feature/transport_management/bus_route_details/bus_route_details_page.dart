@@ -2,6 +2,7 @@ import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
 
 import 'package:app/utils/common_widgets/common_appbar.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,7 +12,8 @@ import 'bus_route_details_page_viewmodel.dart';
 import 'bus_route_details_pageview.dart';
 
 class BusRouteDetailsPage extends BasePage<BusRouteDetailsPageViewModel> {
-  const BusRouteDetailsPage({super.key});
+  final StopModel stop;
+  const BusRouteDetailsPage({super.key, required this.stop});
 
   @override
   BusChecklistPageState createState() => BusChecklistPageState();
@@ -38,11 +40,20 @@ class BusChecklistPageState extends AppBasePageState<
   void onModelReady(BusRouteDetailsPageViewModel model) {
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
     getViewModel().getRouteStudentList(routeId: 1, stopId: 1);
+    model.trip = ProviderScope.containerOf(context)
+        .read(busRouteListPageViewModelProvider)
+        .trip;
+    model.stop = widget.stop;
     super.onModelReady(model);
   }
 
   @override
   PreferredSizeWidget? buildAppbar(BusRouteDetailsPageViewModel model) {
-    return const CommonAppBar(appbarTitle: "PBD To MLD");
+    return CommonAppBar(
+      appbarTitle: model.trip?.routeType == "1"
+          ? "School To ${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'}"
+          : "${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'} To School",
+      showBackButton: true,
+    );
   }
 }

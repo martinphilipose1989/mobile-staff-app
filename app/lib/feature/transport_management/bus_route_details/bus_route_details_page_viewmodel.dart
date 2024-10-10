@@ -5,6 +5,7 @@ import 'package:app/utils/dateformate.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_errors/flutter_errors.dart';
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
@@ -16,6 +17,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   final CreateAttendanceUsecase createAttendanceUsecase;
   final GetGuardianlistUsecase getGuardianlistUsecase;
   final GetStudentProfileUsecase getStudentProfileUsecase;
+  final CreateStopsLogsUsecase createStopsLogsUsecase;
 
   final _studentListSubject =
       BehaviorSubject<Resource<List<Student>>>.seeded(Resource.none());
@@ -30,13 +32,23 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   Stream<Resource<List<GuardiansDetail>>> get guardianListStream =>
       _guardianListSubject.stream;
 
+  final _createRouteLogSubject =
+      BehaviorSubject<Resource<CreateStopLogsData>>.seeded(Resource.none());
+
+  Stream<Resource<CreateStopLogsData>> get createRouteLogstream =>
+      _createRouteLogSubject.stream;
+
+  TripResult? trip;
+  StopModel? stop;
+
   BusRouteDetailsPageViewModel(
       {required this.getGuardianlistUsecase,
       required this.getStudentProfileUsecase,
       required this.exceptionHandlerBinder,
       required this.flutterToastErrorPresenter,
       required this.getStudentlistByRouteUsecase,
-      required this.createAttendanceUsecase});
+      required this.createAttendanceUsecase,
+      required this.createStopsLogsUsecase});
 
   void getRouteStudentList({required int routeId, required int stopId}) {
     _studentListSubject.add(Resource.loading(data: null));
@@ -96,6 +108,28 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       },
       onError: (error) {
         _guardianListSubject.add(Resource.error(error: error));
+      },
+    );
+  }
+
+  void createStopLog(int stopId) {
+    _createRouteLogSubject.add(Resource.loading(data: null));
+    final CreateStopsLogsParams params = CreateStopsLogsParams(
+        routeId: int.parse(trip?.id ?? ''),
+        stopId: stopId,
+        stopStatus: 'At Stop',
+        time: DateFormat.jm().format(DateTime.now()));
+    ApiResponseHandler.apiCallHandler<CreateStopsLogsParams,
+        CreateStopLogsModel, NetworkError>(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) => createStopsLogsUsecase.execute(params: params),
+      onSuccess: (result) {
+        _createRouteLogSubject.add(Resource.success(data: result?.data));
+      },
+      onError: (error) {
+        _createRouteLogSubject.add(Resource.error(error: error));
       },
     );
   }

@@ -89,4 +89,14 @@ class TransportRepositoryImpl implements TransportRepository {
         startDate: startDate,
         endDate: endDate);
   }
+
+  @override
+  Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
+      {required int routeId,
+      required int stopId,
+      required String stopStatus,
+      required String time}) {
+    return networkPort.createStopLogs(
+        routeId: routeId, stopId: stopId, stopStatus: stopStatus, time: time);
+  }
 }

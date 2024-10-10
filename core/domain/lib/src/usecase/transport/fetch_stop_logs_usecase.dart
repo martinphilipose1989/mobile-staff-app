@@ -11,15 +11,16 @@ class FetchStopLogsUsecase
   Future<Either<NetworkError, FetchStopLogsModel>> execute(
       {required FetchStopLogsParams params}) {
     return transportRepository.fetchStopLogs(
-        routeId: params.routeId, stopId: params.stopId);
+        routeId: params.routeId, stopId: 0);
   }
 }
 
 class FetchStopLogsParams extends Params {
   final int routeId;
-  final int stopId;
 
-  FetchStopLogsParams({required this.routeId, required this.stopId});
+  FetchStopLogsParams({
+    required this.routeId,
+  });
 
   @override
   Either<AppError, bool> verify() {

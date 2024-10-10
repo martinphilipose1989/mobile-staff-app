@@ -89,8 +89,11 @@ class AppRouter {
                   tripResult: tripResult,
                 ));
       case RoutePaths.busRouteDetailsPage:
+        StopModel stop = settings.arguments as StopModel;
         return CupertinoPageRoute(
-            builder: (context) => const BusRouteDetailsPage());
+            builder: (context) => BusRouteDetailsPage(
+                  stop: stop,
+                ));
       case RoutePaths.busRouteListPage:
         return CupertinoPageRoute(
             builder: (context) => const BusRouteListPage());

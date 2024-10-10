@@ -1,7 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:app/feature/landing_page.dart';
 import 'package:app/model/resource.dart';
-import 'package:app/navigation/route_paths.dart';
 
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
@@ -51,6 +51,12 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                           data.dealSafeAppError!.throwable,
                           context,
                           "${data.dealSafeAppError?.error.message}");
+                    } else if (data.status == Status.success) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LandingPage(),
+                          ));
                     }
                   },
                   onDone: () {},
@@ -62,10 +68,12 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             backgroundColor: Colors.white,
                             foregroundColor: AppColors.primary,
                             onPressed: () async {
-                              //  model.login();
-
-                              Navigator.pushReplacementNamed(
-                                  context, RoutePaths.myDutyPage);
+                              //model.login();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LandingPage(),
+                                  ));
                             },
                             title: 'Lets Get Started',
                             titleTextStyle: AppTypography.subtitle2);

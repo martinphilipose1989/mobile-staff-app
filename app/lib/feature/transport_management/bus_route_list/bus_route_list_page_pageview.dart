@@ -122,12 +122,30 @@ class BusRouteListPageView
                                                         child: InkWell(
                                                           onTap: () {
                                                             Navigator.pushNamed(
-                                                                context,
-                                                                RoutePaths
-                                                                    .busRouteDetailsPage);
+                                                                    context,
+                                                                    RoutePaths
+                                                                        .busRouteDetailsPage,
+                                                                    arguments: busStopsListData
+                                                                        ?.data?[
+                                                                            index]
+                                                                        .stop)
+                                                                .then(
+                                                              (value) {
+                                                                model
+                                                                    .getBusStopsList();
+                                                              },
+                                                            );
                                                           },
                                                           child: TimelineTile(
+                                                            model: model,
                                                             index: index,
+                                                            stopid:
+                                                                busStopsListData
+                                                                        ?.data?[
+                                                                            index]
+                                                                        .stop
+                                                                        ?.id ??
+                                                                    0,
                                                             isActive: true,
                                                             lineWidth: 3.w,
                                                             stopName: busStopsListData
@@ -176,7 +194,8 @@ class BusRouteListPageView
                                                                             ?.stopName ??
                                                                         '',
                                                                     color: index ==
-                                                                            0
+                                                                            model
+                                                                                .updatedRouteIndex
                                                                         ? AppColors
                                                                             .primary
                                                                         : AppColors
@@ -298,7 +317,9 @@ class TimelineTile extends StatelessWidget {
       this.isActive = false,
       required this.index,
       required this.child,
-      required this.stopName});
+      required this.stopName,
+      required this.stopid,
+      required this.model});
 
   final double? lineWidth;
   final double? circleSize;
@@ -309,6 +330,8 @@ class TimelineTile extends StatelessWidget {
   final int index;
   final bool isActive;
   final String stopName;
+  final int stopid;
+  final BusRouteListPageViewModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -337,7 +360,7 @@ class TimelineTile extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             Visibility(
-                              visible: index == 0,
+                              visible: index == model.updatedRouteIndex,
                               replacement: Container(
                                 alignment: Alignment.bottomCenter,
                                 padding: const EdgeInsets.all(4),
@@ -372,7 +395,7 @@ class TimelineTile extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
-                                  color: index == 0
+                                  color: index == model.updatedRouteIndex
                                       ? AppColors.primary
                                       : AppColors.textLightGray,
                                   width: lineWidth,
@@ -382,7 +405,8 @@ class TimelineTile extends StatelessWidget {
                                         Column(
                                           children: [
                                             Container(
-                                              color: index == 0
+                                              color: index ==
+                                                      model.updatedRouteIndex
                                                   ? AppColors.primary
                                                   : AppColors.textLightGray,
                                               height: 5.h,
@@ -394,7 +418,7 @@ class TimelineTile extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              if (index == 0) ...{
+                              if (index == model.updatedRouteIndex) ...{
                                 SizedBox(height: 24.h),
                                 Stack(
                                   clipBehavior: Clip.none,
