@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 abstract class NetworkPort {
@@ -79,4 +80,10 @@ abstract class NetworkPort {
       required int userType,
       required String startDate,
       required String endDate});
+
+  Future<Either<NetworkError, CreateBearerResponse>> createBearer(
+      {required CreateBearerRequest request});
+
+  Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
+      {required MapStudenttoBearerRequest request});
 }

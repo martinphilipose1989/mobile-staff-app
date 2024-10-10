@@ -1,15 +1,15 @@
 class CreateBearerRequest {
-  CreateBearerData? data;
+  CreateBearerRequesData? data;
 
   CreateBearerRequest({this.data});
 }
 
-class CreateBearerData {
+class CreateBearerRequesData {
   String? firstName;
 
   String? lastName;
 
   String? profileImage;
 
-  CreateBearerData({this.firstName, this.lastName, this.profileImage});
+  CreateBearerRequesData({this.firstName, this.lastName, this.profileImage});
 }

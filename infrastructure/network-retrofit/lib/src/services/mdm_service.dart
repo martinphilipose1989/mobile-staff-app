@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_bearer_entity_request.dart';
-import 'package:network_retrofit/src/model/response/transport_management/createbearer_response_entity.dart';
+import 'package:network_retrofit/src/model/request/transport_management/map_student_bearer_entity_request.dart';
+import 'package:network_retrofit/src/model/response/transport_management/create_bearer_response_entity.dart';
+import 'package:network_retrofit/src/model/response/transport_management/map_student_bearer_response_entity.dart';
 
 import 'package:retrofit/retrofit.dart';
 
@@ -21,34 +23,6 @@ abstract class MdmService {
       @Body() CreateBearerRequestEntity request);
 
   @POST(_mapBearerToGuardians)
-  Future<HttpResponse<CreateBearerResponseEntity>> mapBearerToGuardians(
-      @Body() CreateBearerRequestEntity request);
+  Future<HttpResponse<MapStudenttoBearerResponseEntity>> mapBearerToGuardians(
+      @Body() MapStudenttoBearerRequestEntity request);
 }
-
-/**
- *
-   payload: {
-    "data": {
-        "student_id": number,
-        "guardian_id": number,
-        "guardian_relationship_id": 7
-    }
-}
- *
- */
-
-/**
-  response: {
-    "data": {
-        "id": 33,
-        "attributes": {
-            "student_id": 1,
-            "guardian_id": 1,
-            "guardian_relationship_id": 7,
-			....
-        }
-    },
-    "meta": {}
-}
- * 
- */

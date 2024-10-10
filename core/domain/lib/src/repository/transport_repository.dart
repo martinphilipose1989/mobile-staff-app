@@ -40,4 +40,10 @@ abstract class TransportRepository {
       required int userType,
       required String startDate,
       required String endDate});
+
+  Future<Either<NetworkError, CreateBearerResponse>> createBearer(
+      {required CreateBearerRequest request});
+
+  Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
+      {required MapStudenttoBearerRequest request});
 }

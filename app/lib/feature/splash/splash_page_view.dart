@@ -63,9 +63,10 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             foregroundColor: AppColors.primary,
                             onPressed: () async {
                               //  model.login();
-
+                              // Navigator.pushReplacementNamed(
+                              //     context, RoutePaths.myDutyPage);
                               Navigator.pushReplacementNamed(
-                                  context, RoutePaths.myDutyPage);
+                                  context, RoutePaths.busRouteDetailsPage);
                             },
                             title: 'Lets Get Started',
                             titleTextStyle: AppTypography.subtitle2);

@@ -175,11 +175,30 @@ class RouteEntity
   @override
   TransportRoute transform() {
     return TransportRoute(
-      id: id,
-      busType: busType,
-      routeName: routeName,
-      routeType: routeType,
-      // routeStopMapping: routeStopMapping?.map((e) => e.transform()).toList()
-    );
+        id: id,
+        busType: busType,
+        routeName: routeName,
+        routeType: routeType,
+        routeStopMapping: routeStopMapping
+            ?.map(
+              (e) => TransportRouteStopMapping(
+                  id: e.id,
+                  approxTime: e.approxTime,
+                  createdAt: e.createdAt,
+                  orderNo: e.orderNo,
+                  stop: Stop(
+                    academicYrsId: e.stop?.academicYrsId,
+                    createdAt: e.stop?.createdAt,
+                    distanceKm: e.stop?.distanceKm,
+                    endDate: e.stop?.endDate,
+                    id: e.stop?.id,
+                    isDraft: e.stop?.isDraft,
+                    // lat: e.stop.lat,
+                    // long: e.stop.long,
+                    // orderBy: e.s
+                  ),
+                  updatedAt: e.updatedAt),
+            )
+            .toList());
   }
 }

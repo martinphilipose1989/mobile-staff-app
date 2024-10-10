@@ -89,4 +89,16 @@ class TransportRepositoryImpl implements TransportRepository {
         startDate: startDate,
         endDate: endDate);
   }
+
+  @override
+  Future<Either<NetworkError, CreateBearerResponse>> createBearer(
+      {required CreateBearerRequest request}) {
+    return networkPort.createBearer(request: request);
+  }
+
+  @override
+  Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
+      {required MapStudenttoBearerRequest request}) {
+    return networkPort.mapBearerToGuardians(request: request);
+  }
 }
