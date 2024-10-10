@@ -17,6 +17,7 @@ class Student {
   String? feesStatus;
   String? createdAt;
   String? updatedAt;
+  bool isOpen;
   StudentDetails? studentDetails;
   List<IntimationDetails>? intimationList;
   List<AttendanceLogDetailsResponse>? attendanceList;
@@ -34,7 +35,8 @@ class Student {
       this.updatedAt,
       this.studentDetails,
       this.intimationList,
-      this.attendanceList});
+      this.attendanceList,
+      this.isOpen = true});
 }
 
 class StudentDetails {

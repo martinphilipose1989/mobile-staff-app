@@ -273,7 +273,7 @@ class NetworkAdapter implements NetworkPort {
   }
 
   @override
-  Future<Either<NetworkError, CreateAttendance>> createAttendance(
+  Future<Either<NetworkError, CreateAttendanceResponse>> createAttendance(
       {required CreateAttendance createAttendance}) async {
     final response = await safeApiCall(
       academicsService.createAttendance(

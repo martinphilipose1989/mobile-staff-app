@@ -18,6 +18,8 @@ class AddNewBearerViewmodel extends BasePageViewModel {
   final CreateBearerUsecase createBearerUsecase;
   final GlobalKey<FormState> formKey = GlobalKey();
 
+  String filePath = "";
+
   AddNewBearerViewmodel(
       {required this.uploadBearerProfileUsecase,
       required this.flutterToastErrorPresenter,
@@ -58,6 +60,9 @@ class AddNewBearerViewmodel extends BasePageViewModel {
       params,
       createCall: () => uploadBearerProfileUsecase.execute(params: params),
     ).asFlow().listen((result) {
+      if (result.status == Status.success) {
+        filePath = result.data?.data?.fileName ?? "";
+      }
       _uploadedFileResponse.add(result);
     }).onError((error) {});
   }
@@ -73,13 +78,11 @@ class AddNewBearerViewmodel extends BasePageViewModel {
   void createBearer({required int studentId}) {
     bearerSubject.add(Resource.loading());
 
-    log("UPLOAD ${_uploadedFileResponse.value.data?.data?.filePath}");
-
     CreateBearerUsecaseParams params = CreateBearerUsecaseParams(
       request: CreateBearerRequesData(
         firstName: firstNameController.text,
         lastName: lastNameController.text,
-        profileImage: _uploadedFileResponse.value.data?.data?.filePath,
+        profileImage: _uploadedFileResponse.value.data?.data?.fileName,
       ),
       studentId: studentId,
     );

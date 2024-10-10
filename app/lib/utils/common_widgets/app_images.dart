@@ -96,4 +96,8 @@ class AppImages {
   static const String schoolIcon = "assets/images/building.svg";
   static const String recordIcon = "assets/images/record.svg";
   static const String addBearerIcon = "assets/images/add_bearer.png";
+
+  static const String transport1 = "assets/images/transport_active_1.svg";
+  static const String transport2 = "assets/images/transport_2.svg";
+  static const String transport3 = "assets/images/transport_3.svg";
 }

@@ -49,7 +49,7 @@ abstract class NetworkPort {
   Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
       {required int routeId, required int stopId});
 
-  Future<Either<NetworkError, CreateAttendance>> createAttendance(
+  Future<Either<NetworkError, CreateAttendanceResponse>> createAttendance(
       {required CreateAttendance createAttendance});
 
   Future<Either<NetworkError, GetStudentProfileResponse>> getStudentProfile(

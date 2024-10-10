@@ -41,10 +41,12 @@ class UploadResponseDataEntity
             UploadFileResponseData> {
   @JsonKey(name: "filePath")
   String? filePath;
+  @JsonKey(name: "fileName")
+  String? fileName;
   @JsonKey(name: "url")
   String? url;
 
-  UploadResponseDataEntity({this.filePath, this.url});
+  UploadResponseDataEntity({this.filePath, this.url, this.fileName});
 
   factory UploadResponseDataEntity.fromJson(Map<String, dynamic> json) =>
       _$UploadResponseDataEntityFromJson(json);
@@ -53,11 +55,16 @@ class UploadResponseDataEntity
 
   @override
   UploadResponseDataEntity restore(UploadFileResponseData data) {
-    return UploadResponseDataEntity(filePath: data.filePath, url: data.url);
+    return UploadResponseDataEntity(
+        filePath: data.filePath, url: data.url, fileName: data.fileName);
   }
 
   @override
   UploadFileResponseData transform() {
-    return UploadFileResponseData(filePath: filePath, url: url);
+    return UploadFileResponseData(
+      filePath: filePath,
+      url: url,
+      fileName: fileName,
+    );
   }
 }

@@ -43,7 +43,6 @@ class IncidentReportPageView
           },
         ),
         CustomDropdownButton(
-          isMutiSelect: false,
           showAstreik: true,
           showBorderColor: true,
           leftPadding: 16,

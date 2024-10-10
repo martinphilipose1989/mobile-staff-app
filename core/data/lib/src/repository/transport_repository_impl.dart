@@ -27,7 +27,7 @@ class TransportRepositoryImpl implements TransportRepository {
   }
 
   @override
-  Future<Either<NetworkError, CreateAttendance>> createAttendance(
+  Future<Either<NetworkError, CreateAttendanceResponse>> createAttendance(
       {required CreateAttendance createAttendance}) {
     return networkPort.createAttendance(createAttendance: createAttendance);
   }

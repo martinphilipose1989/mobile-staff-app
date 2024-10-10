@@ -1,7 +1,7 @@
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
+import 'package:app/molecules/transport_managment_dashboard/transport_management_dashboard_bottom_navigation.dart';
 
-import 'package:app/utils/common_widgets/common_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,7 +43,7 @@ class TransportDashboardPageState extends AppBasePageState<
   }
 
   @override
-  PreferredSizeWidget? buildAppbar(TransportDashboardPageViewModel model) {
-    return const CommonAppBar(appbarTitle: "My Duty");
+  Widget? buildBottomNavigationBar(TransportDashboardPageViewModel model) {
+    return TransportManagementDashboardBottomNavigation(model: model);
   }
 }

@@ -13,9 +13,7 @@ class UploadFileResponseModel {
 class UploadFileResponseData {
   String? filePath;
   String? url;
+  String? fileName;
 
-  UploadFileResponseData({
-    this.filePath,
-    this.url,
-  });
+  UploadFileResponseData({this.filePath, this.url, this.fileName});
 }

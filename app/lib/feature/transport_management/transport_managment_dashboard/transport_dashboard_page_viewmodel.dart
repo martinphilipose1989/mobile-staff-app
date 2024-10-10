@@ -1,4 +1,3 @@
-import 'package:app/utils/common_widgets/toggle_option_list.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
@@ -6,14 +5,19 @@ import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 class TransportDashboardPageViewModel extends BasePageViewModel {
   final FlutterExceptionHandlerBinder exceptionHandlerBinder;
 
-  final BehaviorSubject<String> selectedTripStatus = BehaviorSubject.seeded("");
+  final BehaviorSubject<int> selectedIndex = BehaviorSubject.seeded(0);
 
-  final tripStatusType = [
-    const ToggleOption<String>(
-        value: "up coming trips", text: "Upcoming Trips"),
-    const ToggleOption<String>(
-        value: "completed trips", text: "Incompleted Trips")
-  ];
+  final BehaviorSubject<String> selectedSatus = BehaviorSubject.seeded("");
 
   TransportDashboardPageViewModel({required this.exceptionHandlerBinder});
+
+  void selectDashboardItem({required int index}) {
+    if (index == 0) {
+      selectedIndex.value = index;
+    } else if (index == 1) {
+      selectedIndex.value = index;
+    } else if (index == 2) {
+      selectedIndex.value = index;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_attendane_entity_request.dart';
+import 'package:network_retrofit/src/model/response/transport_management/create_attendance_response_entity.dart';
 
 import 'package:retrofit/retrofit.dart';
 
@@ -14,6 +15,6 @@ abstract class AcademicsService {
   }
 
   @POST(_createAttendance)
-  Future<HttpResponse<CreateAttendanceEntity>> createAttendance(
+  Future<HttpResponse<CreateAttendanceResponseEntity>> createAttendance(
       @Body() CreateAttendanceEntity body);
 }

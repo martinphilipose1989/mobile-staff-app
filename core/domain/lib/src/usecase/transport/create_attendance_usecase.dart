@@ -2,13 +2,13 @@ import 'package:domain/domain.dart';
 import 'package:domain/src/usecase/base/base_usecase.dart';
 
 class CreateAttendanceUsecase extends BaseUseCase<NetworkError,
-    CreateAttendanceUsecaseParams, CreateAttendance> {
+    CreateAttendanceUsecaseParams, CreateAttendanceResponse> {
   final TransportRepository transportRepository;
 
   CreateAttendanceUsecase({required this.transportRepository});
 
   @override
-  Future<Either<NetworkError, CreateAttendance>> execute(
+  Future<Either<NetworkError, CreateAttendanceResponse>> execute(
       {required CreateAttendanceUsecaseParams params}) {
     return transportRepository.createAttendance(
         createAttendance: params.createAttendance);

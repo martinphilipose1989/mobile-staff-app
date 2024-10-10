@@ -41,6 +41,20 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   TripResult? trip;
   StopModel? stop;
 
+  final BehaviorSubject<bool> _presentLoadingSubject =
+      BehaviorSubject.seeded(false);
+  Stream<bool> get presentStream => _presentLoadingSubject.stream;
+  final BehaviorSubject<bool> _absentLoadingSubject =
+      BehaviorSubject.seeded(false);
+  Stream<bool> get absentLoadingStream => _absentLoadingSubject.stream;
+
+  // Helper methods to check if buttons should be disabled
+  bool isPresentLoading() => _presentLoadingSubject.value;
+  bool isAbsentLoading() => _absentLoadingSubject.value;
+
+  BehaviorSubject<Resource<CreateAttendanceResponse>> createAttendanceResponse =
+      BehaviorSubject.seeded(Resource.none());
+
   BusRouteDetailsPageViewModel(
       {required this.getGuardianlistUsecase,
       required this.getStudentProfileUsecase,
@@ -69,6 +83,13 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   }
 
   void createAttendance({required Student student, required String remark}) {
+    if (remark == "present") {
+      _presentLoadingSubject.add(true);
+      _absentLoadingSubject.add(false);
+    } else {
+      _absentLoadingSubject.add(true);
+      _presentLoadingSubject.add(false);
+    }
     final CreateAttendanceUsecaseParams params = CreateAttendanceUsecaseParams(
       createAttendance: CreateAttendance(
           attendanceDate: DateTime.now().dateFormatToyyyMMdd(),
@@ -88,9 +109,16 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       params: params,
       createCall: (params) => createAttendanceUsecase.execute(params: params),
       onSuccess: (data) {
+        _presentLoadingSubject.add(false);
+        _absentLoadingSubject.add(false);
+        createAttendanceResponse.add(Resource.success(data: data));
+
         getRouteStudentList(routeId: 1, stopId: 1);
       },
-      onError: (error) {},
+      onError: (error) {
+        _presentLoadingSubject.add(false);
+        _absentLoadingSubject.add(false);
+      },
     );
   }
 

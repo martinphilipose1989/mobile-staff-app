@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/molecules/transport_management/student_attendance/guardian_list.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_bottom_sheet.dart';
@@ -48,14 +47,21 @@ class AttendanceLogListTile extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        CommonImageWidget(
-                            imageUrl:
-                                student.studentDetails?.profileImage ?? "",
-                            imageHeight: 40.h,
-                            fallbackAssetImagePath:
-                                AppImages.defaultStudentAvatar,
-                            imageWidth: 40.h,
-                            clipBehavior: Clip.hardEdge),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RoutePaths.studentProfilePage,
+                                arguments: student.studentId);
+                          },
+                          child: CommonImageWidget(
+                              imageUrl:
+                                  student.studentDetails?.profileImage ?? "",
+                              imageHeight: 40.h,
+                              fallbackAssetImagePath:
+                                  AppImages.defaultStudentAvatar,
+                              imageWidth: 40.h,
+                              clipBehavior: Clip.hardEdge),
+                        ),
                         SizedBox(width: 8.w),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,181 +79,117 @@ class AttendanceLogListTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Visibility(
-                      visible: student.attendanceList?.isEmpty ?? false,
-                      replacement: TextButton.icon(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AddEditAttendancePopup(
-                                  header: "Add Attendance Log",
-                                  onAbsentPresentCallback: () {
-                                    final selectedStudent = Student(
-                                      id: student.id,
-                                      studentId: student.studentId,
-                                      studentDetails: student.studentDetails,
-                                    );
-                                    ProviderScope.containerOf(context)
-                                        .read(
-                                            busRouteDetailsPageViewModelProvider)
-                                        .createAttendance(
-                                          student: selectedStudent,
-                                          remark: "absent",
-                                        );
-                                  },
-                                  onStudentPresentCallback: () {
-                                    final selectedStudent = Student(
-                                      id: student.id,
-                                      studentId: student.studentId,
-                                      studentDetails: student.studentDetails,
-                                    );
-                                    ProviderScope.containerOf(context)
-                                        .read(
-                                            busRouteDetailsPageViewModelProvider)
-                                        .createAttendance(
-                                          student: selectedStudent,
-                                          remark: "present",
-                                        );
-                                  },
-                                  studentName:
-                                      "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
-                                );
-                              });
-                        },
-                        label: student.attendanceList?.isEmpty ?? false
-                            ? const Text("Add Log")
-                            : const Text("Edit Log"),
-                        icon: const Icon(Icons.add),
-                      ),
-                      child: TextButton.icon(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AddEditAttendancePopup(
-                                  header: "Edit Attendance Log",
-                                  onAbsentPresentCallback: () {
-                                    final selectedStudent = Student(
-                                      id: student.id,
-                                      studentId: student.studentId,
-                                      studentDetails: student.studentDetails,
-                                    );
-                                    ProviderScope.containerOf(context)
-                                        .read(
-                                            busRouteDetailsPageViewModelProvider)
-                                        .createAttendance(
-                                          student: selectedStudent,
-                                          remark: "absent",
-                                        );
-                                  },
-                                  onStudentPresentCallback: () {
-                                    final selectedStudent = Student(
-                                      id: student.id,
-                                      studentId: student.studentId,
-                                      studentDetails: student.studentDetails,
-                                    );
-                                    ProviderScope.containerOf(context)
-                                        .read(
-                                            busRouteDetailsPageViewModelProvider)
-                                        .createAttendance(
-                                          student: selectedStudent,
-                                          remark: "present",
-                                        );
-                                  },
-                                  studentName:
-                                      "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
-                                );
-                              });
-                        },
-                        label: const Text("Edit Log"),
-                        icon: SvgPicture.asset(AppImages.editIcon),
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(color: AppColors.dividerColor),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        ProviderScope.containerOf(context)
-                            .read(busRouteDetailsPageViewModelProvider)
-                            .getGuardianList(studentId: student.studentId!);
-                        AppBottomSheet(
-                          context: context,
-                          child: GuardianList(
-                              busRouteDetailsPageViewModelProvider),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(AppImages.callBgIcon),
-                          CommonText(
-                              text: "Call Parent",
-                              style: AppTypography.smallCaption,
-                              color: AppColors.textGray),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (student.intimationList?.isNotEmpty ?? false) {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return BasicDialog(
-                                    message:
-                                        "${student.intimationList?.first.intimationNote}",
-                                    header: "Intimation message",
-                                    buttonTitle: "Close",
-                                    voidCallback: () {
-                                      Navigator.pop(context);
-                                    });
-                              });
-                        }
-                      },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(AppImages.infoBgIcon),
-                          CommonText(
-                              text: "View Intimation",
-                              style: AppTypography.smallCaption,
-                              color: AppColors.textGray),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
+                    TextButton.icon(
+                      onPressed: () {
                         showDialog(
                             context: context,
                             barrierDismissible: false,
                             builder: (context) {
-                              return AddNewBearer(
-                                  studentId: student.studentId!,
-                                  cancelCallback: () {
-                                    Navigator.pop(context);
-                                  },
-                                  addNewBearerCallback: () {});
-                            }).then((value) {
-                          ProviderScope.containerOf(context)
-                              .read(busRouteDetailsPageViewModelProvider)
-                              .getRouteStudentList(routeId: 1, stopId: 1);
-                        });
+                              return AddEditAttendancePopup(
+                                header: student.attendanceList?.isEmpty ?? false
+                                    ? "Add Attendance Log"
+                                    : "Edit Attendance Log",
+                                student: student,
+                                studentName:
+                                    "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
+                              );
+                            });
                       },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(AppImages.addUserBgIcon),
-                          CommonText(
-                              text: "Add New Bearer",
-                              style: AppTypography.smallCaption,
-                              color: AppColors.textGray),
-                        ],
-                      ),
+                      label: student.attendanceList?.isEmpty ?? false
+                          ? const Text("Add Log")
+                          : const Text("Edit Log"),
+                      icon: student.attendanceList?.isEmpty ?? false
+                          ? const Icon(Icons.add)
+                          : SvgPicture.asset(AppImages.editIcon),
                     ),
                   ],
-                )
+                ),
+                if (student.isOpen) ...{
+                  const Divider(color: AppColors.dividerColor),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          ProviderScope.containerOf(context)
+                              .read(busRouteDetailsPageViewModelProvider)
+                              .getGuardianList(studentId: student.studentId!);
+                          AppBottomSheet(
+                            context: context,
+                            child: GuardianList(
+                                busRouteDetailsPageViewModelProvider),
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(AppImages.callBgIcon),
+                            CommonText(
+                                text: "Call Parent",
+                                style: AppTypography.smallCaption,
+                                color: AppColors.textGray),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (student.intimationList?.isNotEmpty ?? false) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return BasicDialog(
+                                      message:
+                                          "${student.intimationList?.first.intimationNote}",
+                                      header: "Intimation message",
+                                      buttonTitle: "Close",
+                                      voidCallback: () {
+                                        Navigator.pop(context);
+                                      });
+                                });
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(AppImages.infoBgIcon),
+                            CommonText(
+                                text: "View Intimation",
+                                style: AppTypography.smallCaption,
+                                color: AppColors.textGray),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return AddNewBearer(
+                                    studentId: student.studentId!,
+                                    cancelCallback: () {
+                                      Navigator.pop(context);
+                                    },
+                                    addNewBearerCallback: () {});
+                              }).then((value) {
+                            if (value == true) {
+                              ProviderScope.containerOf(context)
+                                  .read(busRouteDetailsPageViewModelProvider)
+                                  .getRouteStudentList(routeId: 1, stopId: 1);
+                            }
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(AppImages.addUserBgIcon),
+                            CommonText(
+                                text: "Add New Bearer",
+                                style: AppTypography.smallCaption,
+                                color: AppColors.textGray),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                }
               ],
             ),
           ),

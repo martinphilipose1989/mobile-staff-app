@@ -1,5 +1,6 @@
 import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -51,6 +52,7 @@ class _LandingPageState extends State<LandingPage> {
           InkWell(
             onTap: () {
               Navigator.pushNamed(context, RoutePaths.myDutyPage);
+              //Navigator.pushNamed(context, RoutePaths.transportDashBoardPage);
             },
             child: SizedBox(
               height: 300,

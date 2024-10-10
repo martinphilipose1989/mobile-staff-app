@@ -74,7 +74,9 @@ abstract class ApiResponseHandler {
         flutterToastErrorPresenter.show(
             appError!.throwable,
             navigatorKey.currentContext!,
-            "An unexpected error occurred. Please try again later.");
+            appError.error.message.isNotEmpty
+                ? appError.error.message
+                : "An unexpected error occurred. Please try again later.");
     }
   }
 }

@@ -7,6 +7,7 @@ import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer.dart';
 import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
@@ -98,7 +99,10 @@ class StudentProfilePageView
                     SizedBox(height: 16.h),
                     CommonText(text: "Bearers", style: AppTypography.subtitle2),
                     SizedBox(height: 16.h),
-                    BearerList(bearerList: student?.data?.bearersDetails ?? [])
+                    BearerList(
+                        model: model,
+                        bearerList: student?.data?.bearersDetails ?? [],
+                        studentId: studentId)
                   ],
                 ),
               ),
@@ -109,9 +113,15 @@ class StudentProfilePageView
 }
 
 class BearerList extends StatelessWidget {
-  const BearerList({super.key, required this.bearerList});
+  const BearerList(
+      {super.key,
+      required this.bearerList,
+      required this.studentId,
+      required this.model});
 
   final List<BearerResponse> bearerList;
+  final int studentId;
+  final StudentProfilePageViewModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +165,23 @@ class BearerList extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AddNewBearer(
+                            studentId: studentId,
+                            cancelCallback: () {
+                              Navigator.pop(context);
+                            },
+                            addNewBearerCallback: () {});
+                      }).then((value) {
+                    if (value == true) {
+                      model.getStudentProfile(studentId: studentId);
+                    }
+                  });
+                },
                 child: const CommonImageWidget(
                     imageUrl: "imageUrl",
                     fallbackAssetImagePath: AppImages.addBearerIcon,

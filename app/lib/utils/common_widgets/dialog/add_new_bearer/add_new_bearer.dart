@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/themes_setup.dart';
@@ -43,6 +41,11 @@ class AddNewBearer extends StatelessWidget {
             AppStreamBuilder<Resource<MapStudenttoBearerResponse>>(
                 stream: model!.bearerStream,
                 initialData: Resource.none(),
+                onData: (data) {
+                  if (data.status == Status.success) {
+                    Navigator.pop(context, true);
+                  }
+                },
                 dataBuilder: (context, data) {
                   return Container(
                     width: double.infinity,

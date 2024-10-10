@@ -2,6 +2,7 @@
 
 import 'package:app/feature/landing_page.dart';
 import 'package:app/model/resource.dart';
+import 'package:app/navigation/route_paths.dart';
 
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
@@ -69,6 +70,7 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             foregroundColor: AppColors.primary,
                             onPressed: () async {
                               //model.login();
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

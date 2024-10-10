@@ -67,8 +67,11 @@ class MyDutyPageViewModel extends BasePageViewModel {
       params: params,
       createCall: (params) => getMydutyListUsecase.execute(params: params),
       onSuccess: (result) {
-        _tripListSubject.add(Resource.success(data: result?.data?.tripResult));
-        _loadingSubject.add(false);
+        if (!_tripListSubject.isClosed) {
+          _tripListSubject
+              .add(Resource.success(data: result?.data?.tripResult));
+          _loadingSubject.add(false);
+        }
       },
       onError: (error) {
         _tripListSubject.add(Resource.error(data: null, error: error));

@@ -1,10 +1,9 @@
-import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
-import 'package:app/molecules/transport_management/trip_list/completed_trip_list_tile.dart';
-
-import 'package:app/utils/common_widgets/toggle_option_list.dart';
+import 'package:app/feature/transport_management/incident_report/incident_report_page.dart';
+import 'package:app/feature/transport_management/my_duty/my_duty_page.dart';
+import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 import 'transport_dashboard_page_viewmodel.dart';
@@ -18,23 +17,16 @@ class TransportDashboardPageView
 
   @override
   Widget build(BuildContext context, TransportDashboardPageViewModel model) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: REdgeInsets.all(16.0),
-          child: ToggleOptionList<String>(
-              selectedValue: model.selectedTripStatus,
-              options: model.tripStatusType,
-              onSelect: (value) => {}),
-        ),
-        // const UpcomingTripListTile(),
-        const CompletedTripListTile(),
-        const ArrivalInfoTile(
-            vehicleNumber: "MH47-PK-9386",
-            startTime: "7:00 AM",
-            totalStudents: 10)
-      ],
-    );
+    return AppStreamBuilder(
+        stream: model.selectedIndex,
+        initialData: model.selectedIndex.value,
+        dataBuilder: (context, data) {
+          if (model.selectedIndex.value == 0) {
+            return const MyDutyPage();
+          } else if (model.selectedIndex.value == 1) {
+            return const IncidentReportPage();
+          }
+          return const SizedBox.shrink();
+        });
   }
 }

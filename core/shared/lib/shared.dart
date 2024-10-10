@@ -66,6 +66,7 @@ export 'src/model/response/transport_management/create_bearer_response.dart';
 export 'src/model/request/transport_management/map_student_bearer_request.dart';
 export 'src/model/response/transport_management/map_student_bearer_response.dart';
 export 'src/model/response/transport_management/create_stop_logs_model.dart';
+export 'src/model/response/transport_management/create_attendance_response.dart';
 
 //utils
 export 'src/utils/validator.dart';
