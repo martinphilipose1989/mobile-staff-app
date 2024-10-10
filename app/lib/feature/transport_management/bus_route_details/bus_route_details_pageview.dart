@@ -8,6 +8,7 @@ import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:domain/domain.dart';
@@ -50,26 +51,26 @@ class BusRouteDetailsPageView
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AttendanceCountTile(
-                  count: 15, countType: "Total", textColor: AppColors.primary),
-              AttendanceCountTile(
-                  count: 10,
-                  countType: "Picked Up",
-                  textColor: Color(0xff5C3535)),
-              AttendanceCountTile(
-                  count: 10,
-                  countType: "Present",
-                  textColor: AppColors.success),
-              AttendanceCountTile(
-                  count: 5, countType: "Absent", textColor: AppColors.failure),
-            ],
-          ),
-        ),
+        // const Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 16),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       AttendanceCountTile(
+        //           count: 15, countType: "Total", textColor: AppColors.primary),
+        //       AttendanceCountTile(
+        //           count: 10,
+        //           countType: "Picked Up",
+        //           textColor: Color(0xff5C3535)),
+        //       AttendanceCountTile(
+        //           count: 10,
+        //           countType: "Present",
+        //           textColor: AppColors.success),
+        //       AttendanceCountTile(
+        //           count: 5, countType: "Absent", textColor: AppColors.failure),
+        //     ],
+        //   ),
+        // ),
         Expanded(
           child: AppStreamBuilder<Resource<List<Student>>>(
             stream: model.studentListStream,
@@ -79,6 +80,23 @@ class BusRouteDetailsPageView
                 status: studentData?.status ?? Status.none,
                 loadingWidget: () => const Center(
                   child: CircularProgressIndicator(),
+                ),
+                errorWidget: () => Center(
+                  child: NoDataFoundWidget(
+                    title: studentData?.dealSafeAppError?.error.message
+                                .contains("internet") ??
+                            false
+                        ? "No Internet Connection"
+                        : "Something Went Wrong",
+                    subtitle: studentData?.dealSafeAppError?.error.message
+                                .contains("internet") ??
+                            false
+                        ? "It seems you're offline. Please check your internet connection and try again."
+                        : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+                    onPressed: () {
+                      model.getRouteStudentList(routeId: 1, stopId: 1);
+                    },
+                  ),
                 ),
                 successWidget: () => ListView.builder(
                   itemCount: studentData?.data?.length,

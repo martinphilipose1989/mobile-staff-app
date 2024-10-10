@@ -22,8 +22,10 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, MdmCoReasonResponseModel>> getTypeOfVistorList();
 
-  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
-      {required File file});
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage({
+    required File file,
+    String module = "GATE",
+  });
 
   Future<Either<NetworkError, VisitorPopulateResponseModel>>
       populateVisitorData({required visitorMobileNumber});

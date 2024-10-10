@@ -17,6 +17,7 @@ import 'package:network_retrofit/src/model/request/transport_management/get_chec
 import 'package:network_retrofit/src/model/request/transport_management/map_student_bearer_entity_request.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
 import 'package:network_retrofit/src/services/academics_service.dart';
 import 'package:network_retrofit/src/services/mdm_service.dart';
@@ -118,8 +119,13 @@ class NetworkAdapter implements NetworkPort {
 
   @override
   Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
-      {required File file}) async {
-    final response = await safeApiCall(apiService.uploadProfileImage(file));
+      {required File file, String module = "GATE"}) async {
+    Either<NetworkError, HttpResponse<UploadFileResponseEntity>>? response;
+    if (module == "TRANSPORT") {
+      response = await safeApiCall(transportService.uploadProfileImage(file));
+    } else {
+      response = await safeApiCall(apiService.uploadProfileImage(file));
+    }
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }

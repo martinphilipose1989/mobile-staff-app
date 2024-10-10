@@ -62,8 +62,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
           attendanceDate: DateTime.now().dateFormatToyyyMMdd(),
           attendanceDetails: [
             AttendanceDetail(
-              attendanceRemark: remark,
-            )
+                attendanceRemark: remark, globalStudentId: student.studentId)
           ],
           boardId: student.studentDetails?.crtBoardId,
           brandId: student.studentDetails?.crtBrandId,

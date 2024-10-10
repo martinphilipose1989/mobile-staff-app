@@ -62,6 +62,8 @@ class StudentEntity
   StudentDetailsEntity? studentDetails;
   @JsonKey(name: "intimation_details")
   List<IntimationDetailsEntity>? intimationDetails;
+  @JsonKey(name: "attendance_details")
+  List<AttendanceLogDetailsResponseEntity>? attendanceDetail;
 
   StudentEntity(
       {this.id,
@@ -75,7 +77,8 @@ class StudentEntity
       this.createdAt,
       this.updatedAt,
       this.studentDetails,
-      this.intimationDetails});
+      this.intimationDetails,
+      this.attendanceDetail});
 
   factory StudentEntity.fromJson(Map<String, dynamic> json) =>
       _$StudentEntityFromJson(json);
@@ -220,5 +223,89 @@ class IntimationDetailsEntity
         intimationNote: intimationNote,
         intimationStatus: intimationStatus,
         toDate: toDate);
+  }
+}
+
+@JsonSerializable()
+class AttendanceLogDetailsResponseEntity
+    implements
+        BaseLayerDataTransformer<AttendanceLogDetailsResponseEntity,
+            AttendanceLogDetailsResponse> {
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "attendance_id")
+  int? attendanceId;
+  @JsonKey(name: "attendance_type")
+  dynamic attendanceType;
+  @JsonKey(name: "subject_id")
+  dynamic subjectId;
+  @JsonKey(name: "timetable_id")
+  dynamic timetableId;
+  @JsonKey(name: "global_student_id")
+  int? globalStudentId;
+  @JsonKey(name: "attendance_remark")
+  String? attendanceRemark;
+  @JsonKey(name: "start_time")
+  dynamic startTime;
+  @JsonKey(name: "end_time")
+  dynamic endTime;
+  @JsonKey(name: "subject_name")
+  dynamic subjectName;
+  @JsonKey(name: "first_name")
+  String? firstName;
+  @JsonKey(name: "middle_name")
+  dynamic middleName;
+  @JsonKey(name: "last_name")
+  String? lastName;
+  @JsonKey(name: "enr_on")
+  String? enrOn;
+
+  AttendanceLogDetailsResponseEntity({
+    this.id,
+    this.attendanceId,
+    this.attendanceType,
+    this.subjectId,
+    this.timetableId,
+    this.globalStudentId,
+    this.attendanceRemark,
+    this.startTime,
+    this.endTime,
+    this.subjectName,
+    this.firstName,
+    this.middleName,
+    this.lastName,
+    this.enrOn,
+  });
+
+  factory AttendanceLogDetailsResponseEntity.fromJson(
+          Map<String, dynamic> json) =>
+      _$AttendanceLogDetailsResponseEntityFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$AttendanceLogDetailsResponseEntityToJson(this);
+
+  @override
+  AttendanceLogDetailsResponseEntity restore(
+      AttendanceLogDetailsResponse data) {
+    return AttendanceLogDetailsResponseEntity();
+  }
+
+  @override
+  AttendanceLogDetailsResponse transform() {
+    return AttendanceLogDetailsResponse(
+        attendanceId: attendanceId,
+        attendanceRemark: attendanceRemark,
+        attendanceType: attendanceType,
+        endTime: endTime,
+        enrOn: enrOn,
+        firstName: firstName,
+        lastName: lastName,
+        globalStudentId: globalStudentId,
+        id: id,
+        middleName: middleName,
+        startTime: startTime,
+        subjectId: subjectId,
+        subjectName: subjectName,
+        timetableId: timetableId);
   }
 }

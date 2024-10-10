@@ -36,6 +36,32 @@ class CreateBearerUsecaseParams extends Params {
 
   @override
   Either<AppError, bool> verify() {
+    if (Validator.isEmpty(request.profileImage ?? '')) {
+      return Left(
+        AppError(
+          type: ErrorType.uiPorfileImage,
+          throwable: Exception(),
+          error: ErrorInfo(message: 'Please click image of bearer'),
+        ),
+      );
+    } else if (Validator.isEmpty(request.firstName ?? '')) {
+      return Left(
+        AppError(
+          type: ErrorType.uiEmptyName,
+          throwable: Exception(),
+          error: ErrorInfo(message: 'Please fill first name'),
+        ),
+      );
+    } else if (Validator.isEmpty(request.lastName ?? '')) {
+      return Left(
+        AppError(
+          type: ErrorType.uiEmptyName,
+          throwable: Exception(),
+          error: ErrorInfo(message: 'Please fill last name'),
+        ),
+      );
+    }
+
     return Right(true);
   }
 }

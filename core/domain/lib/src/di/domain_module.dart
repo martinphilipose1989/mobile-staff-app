@@ -1,4 +1,5 @@
 import 'package:domain/domain.dart';
+import 'package:domain/src/usecase/transport/create_bearer_usecase.dart';
 import 'package:domain/src/usecase/transport/create_incident_report_usecase.dart';
 
 import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
@@ -154,5 +155,17 @@ abstract class DomainModule {
   CreateRouteLogsUsecase createRouteLogs(
       TransportRepository transportRepository) {
     return CreateRouteLogsUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  UploadBearerProfileUsecase uploadBearerProfileUsecase(
+      TransportRepository transportRepository) {
+    return UploadBearerProfileUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  CreateBearerUsecase createBearerUsecase(
+      TransportRepository transportRepository) {
+    return CreateBearerUsecase(transportRepository: transportRepository);
   }
 }

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/bus_route_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/checklist_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/create_reportincident_entity_response.dart';
@@ -34,6 +37,8 @@ const String _getChecklistConformation =
     "transport-service/mobile-app/confirm-checklist";
 const String _createRouteLogs =
     'transport-service/mobile-app/create/route-logs';
+
+const String _uploadBearerImage = "transport-service/upload/profile";
 
 @RestApi()
 abstract class TransportService {
@@ -89,4 +94,9 @@ abstract class TransportService {
   @POST(_createRouteLogs)
   Future<HttpResponse<CreateRouteLogsEntity>> createRouteLogs(
       @Body() CreateRouteLogsRequest createRouteLogsRequest);
+
+  @POST(_uploadBearerImage)
+  @MultiPart()
+  Future<HttpResponse<UploadFileResponseEntity>> uploadProfileImage(
+      @Part(name: "file") File file);
 }
