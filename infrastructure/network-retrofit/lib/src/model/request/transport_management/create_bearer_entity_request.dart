@@ -9,9 +9,11 @@ class CreateBearerRequestEntity
         BaseLayerDataTransformer<CreateBearerRequestEntity,
             CreateBearerRequest> {
   @JsonKey(name: "data")
-  CreateBearerDataEntity? data;
+  CreateBearerRequesDataEntity? data;
 
-  CreateBearerRequestEntity({this.data});
+  CreateBearerRequestEntity({
+    this.data,
+  });
 
   factory CreateBearerRequestEntity.fromJson(Map<String, dynamic> json) =>
       _$CreateBearerRequestEntityFromJson(json);
@@ -30,9 +32,10 @@ class CreateBearerRequestEntity
 }
 
 @JsonSerializable()
-class CreateBearerDataEntity
+class CreateBearerRequesDataEntity
     implements
-        BaseLayerDataTransformer<CreateBearerDataEntity, CreateBearerData> {
+        BaseLayerDataTransformer<CreateBearerRequesDataEntity,
+            CreateBearerRequesData> {
   @JsonKey(name: "first_name")
   String? firstName;
   @JsonKey(name: "last_name")
@@ -40,21 +43,22 @@ class CreateBearerDataEntity
   @JsonKey(name: "profile_image")
   String? profileImage;
 
-  CreateBearerDataEntity({this.firstName, this.lastName, this.profileImage});
+  CreateBearerRequesDataEntity(
+      {this.firstName, this.lastName, this.profileImage});
 
-  factory CreateBearerDataEntity.fromJson(Map<String, dynamic> json) =>
-      _$CreateBearerDataEntityFromJson(json);
+  factory CreateBearerRequesDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$CreateBearerRequesDataEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CreateBearerDataEntityToJson(this);
+  Map<String, dynamic> toJson() => _$CreateBearerRequesDataEntityToJson(this);
 
   @override
-  CreateBearerDataEntity restore(CreateBearerData data) {
-    return CreateBearerDataEntity();
+  CreateBearerRequesDataEntity restore(CreateBearerRequesData data) {
+    return CreateBearerRequesDataEntity();
   }
 
   @override
-  CreateBearerData transform() {
-    return CreateBearerData(
+  CreateBearerRequesData transform() {
+    return CreateBearerRequesData(
         firstName: firstName, lastName: lastName, profileImage: profileImage);
   }
 }

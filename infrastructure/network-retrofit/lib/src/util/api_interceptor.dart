@@ -18,8 +18,11 @@ class ApiInterceptor extends InterceptorsWrapper {
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final isCoReasonRequest = options.uri.path.contains("/api/co-reasons");
+    final isBearerRequest = options.uri.path.contains("/api/ac-guardians");
+    final isMapStudentToBearerRequest =
+        options.uri.path.contains("/api/ac-student-guardians");
 
-    if (isCoReasonRequest) {
+    if (isCoReasonRequest || isBearerRequest || isMapStudentToBearerRequest) {
       options.headers.putIfAbsent(
           ServerConstants.authorization,
           () =>

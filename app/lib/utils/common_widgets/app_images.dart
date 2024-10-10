@@ -90,4 +90,10 @@ class AppImages {
   static const String addUserBgIcon = "assets/images/adduser_bg_icon.svg";
   static const String callBgIcon = "assets/images/call_icon_bg.svg";
   static const String infoBgIcon = "assets/images/info_bg_icon.svg";
+
+  static const String bookIcon = "assets/images/book.svg";
+  static const String usertagIcon = "assets/images/user_tag.svg";
+  static const String schoolIcon = "assets/images/building.svg";
+  static const String recordIcon = "assets/images/record.svg";
+  static const String addBearerIcon = "assets/images/add_bearer.png";
 }

@@ -12,11 +12,13 @@ import 'package:app/feature/transport_management/bus_route_list/bus_route_list_p
 import 'package:app/feature/transport_management/incident_report/incident_report_page_viewmodel.dart';
 import 'package:app/feature/transport_management/my_duty/my_duty_page_viewmodel.dart';
 import 'package:app/feature/transport_management/school_contacts/school_contacts_page_viewmodel.dart';
+import 'package:app/feature/transport_management/student_profile/student_profile_page_viewmodel.dart';
 import 'package:app/feature/transport_management/transport_managment_dashboard/transport_dashboard_page_viewmodel.dart';
 import 'package:app/utils/commonTime/common_time_model.dart';
 import 'package:app/utils/common_calendar/common_calendar_model.dart';
 import 'package:app/utils/common_widgets/common_chip_list/common_chip_list_view_model.dart';
 import 'package:app/utils/common_widgets/common_stepper/common_stepper_model.dart';
+import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer_viewmodel.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -166,4 +168,24 @@ final myDutyPageViewModelProvider =
       flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
       createRouteLogsUsecase: getIt.get<CreateRouteLogsUsecase>()),
+);
+
+final studentProfilePageViewModelProvider =
+    ChangeNotifierProvider.autoDispose<StudentProfilePageViewModel>(
+  (ref) => StudentProfilePageViewModel(
+    getStudentProfileUsecase: getIt.get<GetStudentProfileUsecase>(),
+    flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+    exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+  ),
+);
+
+final addNewBearerViewmodelProvider =
+    ChangeNotifierProvider.autoDispose<AddNewBearerViewmodel>(
+  (ref) => AddNewBearerViewmodel(
+    createBearerUsecase: getIt.get<CreateBearerUsecase>(),
+    chooseFileUseCase: getIt.get<ChooseFileUseCase>(),
+    uploadBearerProfileUsecase: getIt.get<UploadBearerProfileUsecase>(),
+    flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+    exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+  ),
 );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:domain/domain.dart';
 
 abstract class TransportRepository {
@@ -41,6 +43,14 @@ abstract class TransportRepository {
       required String startDate,
       required String endDate});
 
+  Future<Either<NetworkError, CreateBearerResponse>> createBearer(
+      {required CreateBearerRequest request});
+
+  Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
+      {required MapStudenttoBearerRequest request});
+
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
+      {required File file, String module = "TRANSPORT"});
   Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
       {required int routeId,
       required int stopId,

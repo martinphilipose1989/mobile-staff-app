@@ -9,15 +9,19 @@ import 'package:network_retrofit/src/model/request/gate_managment/parent_gatepas
 import 'package:network_retrofit/src/model/request/gate_managment/visitor_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/login/login_request_entity.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_attendane_entity_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/create_bearer_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request_entity.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/map_student_bearer_entity_request.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
+import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/visitor_search_request_entity.dart';
 import 'package:network_retrofit/src/services/academics_service.dart';
+import 'package:network_retrofit/src/services/mdm_service.dart';
 import 'package:network_retrofit/src/services/transport_service.dart';
 
 import 'package:network_retrofit/src/util/safe_api_call.dart';
@@ -29,9 +33,15 @@ class NetworkAdapter implements NetworkPort {
   final RetrofitService apiService;
   final TransportService transportService;
   final AcademicsService academicsService;
+  final MdmService mdmService;
   CancelToken? _cancelToken;
 
-  NetworkAdapter(this.apiService, this.transportService, this.academicsService);
+  NetworkAdapter(
+    this.apiService,
+    this.transportService,
+    this.academicsService,
+    this.mdmService,
+  );
 
   @override
   Future<Either<NetworkError, VisitorDetailsResponseModel>> getVisitorDetails(
@@ -110,8 +120,13 @@ class NetworkAdapter implements NetworkPort {
 
   @override
   Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
-      {required File file}) async {
-    final response = await safeApiCall(apiService.uploadProfileImage(file));
+      {required File file, String module = "GATE"}) async {
+    Either<NetworkError, HttpResponse<UploadFileResponseEntity>>? response;
+    if (module == "TRANSPORT") {
+      response = await safeApiCall(transportService.uploadProfileImage(file));
+    } else {
+      response = await safeApiCall(apiService.uploadProfileImage(file));
+    }
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
@@ -404,6 +419,40 @@ class NetworkAdapter implements NetworkPort {
       transportService.createRouteLogs(createRouteLogsRequest),
     );
 
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, CreateBearerResponse>> createBearer(
+      {required CreateBearerRequest request}) async {
+    final response = await safeApiCall(
+      mdmService.createBearer(
+        CreateBearerRequestEntity(
+          data: CreateBearerRequesDataEntity(
+              firstName: request.data?.firstName,
+              lastName: request.data?.lastName,
+              profileImage: request.data?.profileImage),
+        ),
+      ),
+    );
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
+      {required MapStudenttoBearerRequest request}) async {
+    final response = await safeApiCall(mdmService.mapBearerToGuardians(
+      MapStudenttoBearerRequestEntity(
+        data: MapStudenttoBearerRequestDataEntity(
+          guardianId: request.data?.guardianId,
+          guardianRelationshipId: request.data?.guardianRelationshipId,
+          studentId: request.data?.studentId,
+        ),
+      ),
+    ));
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }

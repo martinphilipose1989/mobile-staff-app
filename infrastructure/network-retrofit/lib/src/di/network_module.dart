@@ -77,6 +77,12 @@ abstract class NetworkModule {
   NetworkPort providerNetworkService(
           RetrofitService retrofitService,
           TransportService transportService,
-          AcademicsService academicsService) =>
-      NetworkAdapter(retrofitService, transportService, academicsService);
+          AcademicsService academicsService,
+          MdmService mdmService) =>
+      NetworkAdapter(
+        retrofitService,
+        transportService,
+        academicsService,
+        mdmService,
+      );
 }

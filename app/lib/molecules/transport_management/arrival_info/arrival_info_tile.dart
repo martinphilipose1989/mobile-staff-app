@@ -35,8 +35,9 @@ class ArrivalInfoTile extends StatelessWidget {
                 SvgPicture.asset(AppImages.bus),
                 SizedBox(width: 4.w),
                 Flexible(
-                    child: CommonText(
-                        text: vehicleNumber, style: AppTypography.caption)),
+                  child: CommonText(
+                      text: vehicleNumber, style: AppTypography.smallCaption),
+                ),
               ],
             ),
           ),
@@ -56,7 +57,7 @@ class ArrivalInfoTile extends StatelessWidget {
                 SizedBox(width: 4.w),
                 Flexible(
                     child: CommonText(
-                        text: startTime, style: AppTypography.caption)),
+                        text: startTime, style: AppTypography.smallCaption)),
               ],
             ),
           ),
@@ -77,7 +78,7 @@ class ArrivalInfoTile extends StatelessWidget {
                 Flexible(
                   child: CommonText(
                       text: "$totalStudents Students",
-                      style: AppTypography.caption),
+                      style: AppTypography.smallCaption),
                 ),
               ],
             ),

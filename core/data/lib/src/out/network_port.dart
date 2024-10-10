@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 abstract class NetworkPort {
@@ -21,8 +22,10 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, MdmCoReasonResponseModel>> getTypeOfVistorList();
 
-  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
-      {required File file});
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage({
+    required File file,
+    String module = "GATE",
+  });
 
   Future<Either<NetworkError, VisitorPopulateResponseModel>>
       populateVisitorData({required visitorMobileNumber});
@@ -80,6 +83,11 @@ abstract class NetworkPort {
       required String startDate,
       required String endDate});
 
+  Future<Either<NetworkError, CreateBearerResponse>> createBearer(
+      {required CreateBearerRequest request});
+
+  Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
+      {required MapStudenttoBearerRequest request});
   Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
       {required int routeId,
       required int stopId,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
@@ -88,6 +90,24 @@ class TransportRepositoryImpl implements TransportRepository {
         routeStatus: routeStatus,
         startDate: startDate,
         endDate: endDate);
+  }
+
+  @override
+  Future<Either<NetworkError, CreateBearerResponse>> createBearer(
+      {required CreateBearerRequest request}) {
+    return networkPort.createBearer(request: request);
+  }
+
+  @override
+  Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
+      {required MapStudenttoBearerRequest request}) {
+    return networkPort.mapBearerToGuardians(request: request);
+  }
+
+  @override
+  Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
+      {required File file, String module = "TRANSPORT"}) {
+    return networkPort.uploadProfileImage(file: file, module: module);
   }
 
   @override

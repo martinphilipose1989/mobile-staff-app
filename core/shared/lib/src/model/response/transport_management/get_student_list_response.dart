@@ -19,6 +19,7 @@ class Student {
   String? updatedAt;
   StudentDetails? studentDetails;
   List<IntimationDetails>? intimationList;
+  List<AttendanceLogDetailsResponse>? attendanceList;
 
   Student(
       {this.id,
@@ -32,7 +33,8 @@ class Student {
       this.createdAt,
       this.updatedAt,
       this.studentDetails,
-      this.intimationList});
+      this.intimationList,
+      this.attendanceList});
 }
 
 class StudentDetails {
@@ -79,4 +81,38 @@ class IntimationDetails {
       this.intimationStatus,
       this.initimationType,
       this.intimationNote});
+}
+
+class AttendanceLogDetailsResponse {
+  int? id;
+  int? attendanceId;
+  dynamic attendanceType;
+  dynamic subjectId;
+  dynamic timetableId;
+  int? globalStudentId;
+  String? attendanceRemark;
+  dynamic startTime;
+  dynamic endTime;
+  dynamic subjectName;
+  String? firstName;
+  dynamic middleName;
+  String? lastName;
+  String? enrOn;
+
+  AttendanceLogDetailsResponse({
+    this.id,
+    this.attendanceId,
+    this.attendanceType,
+    this.subjectId,
+    this.timetableId,
+    this.globalStudentId,
+    this.attendanceRemark,
+    this.startTime,
+    this.endTime,
+    this.subjectName,
+    this.firstName,
+    this.middleName,
+    this.lastName,
+    this.enrOn,
+  });
 }

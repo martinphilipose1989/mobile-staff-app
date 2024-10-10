@@ -10,7 +10,6 @@ import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_refresh_indicator.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 
-import 'package:app/utils/common_widgets/dialog/view_bearer.dart';
 import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
 import 'package:app/utils/enum/dialog_enum.dart';

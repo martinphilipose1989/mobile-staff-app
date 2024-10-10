@@ -67,7 +67,7 @@ class GetStudentProfileDataEntity
   @JsonKey(name: "transport_details")
   TransportDetailsEntity? transportDetails;
   @JsonKey(name: "bearers_details")
-  List<dynamic>? bearersDetails;
+  List<BearerResponseEntity>? bearersDetails;
 
   GetStudentProfileDataEntity({
     this.studentId,
@@ -96,7 +96,7 @@ class GetStudentProfileDataEntity
   @override
   GetStudentProfileData transform() {
     return GetStudentProfileData(
-        bearersDetails: bearersDetails,
+        bearersDetails: bearersDetails?.map((e) => e.transform()).toList(),
         crtEnrOn: crtEnrOn,
         firstName: firstName,
         gradeName: gradeName,
@@ -175,11 +175,71 @@ class RouteEntity
   @override
   TransportRoute transform() {
     return TransportRoute(
-      id: id,
-      busType: busType,
-      routeName: routeName,
-      routeType: routeType,
-      // routeStopMapping: routeStopMapping?.map((e) => e.transform()).toList()
-    );
+        id: id,
+        busType: busType,
+        routeName: routeName,
+        routeType: routeType,
+        routeStopMapping: routeStopMapping
+            ?.map(
+              (e) => TransportRouteStopMapping(
+                  id: e.id,
+                  approxTime: e.approxTime,
+                  createdAt: e.createdAt,
+                  orderNo: e.orderNo,
+                  stop: Stop(
+                      academicYrsId: e.stop?.academicYrsId,
+                      createdAt: e.stop?.createdAt,
+                      distanceKm: e.stop?.distanceKm,
+                      endDate: e.stop?.endDate,
+                      id: e.stop?.id,
+                      isDraft: e.stop?.isDraft,
+                      lat: e.stop?.lat,
+                      long: e.stop?.long,
+                      orderBy: e.stop?.orderBy),
+                  updatedAt: e.updatedAt),
+            )
+            .toList());
+  }
+}
+
+@JsonSerializable()
+class BearerResponseEntity
+    implements BaseLayerDataTransformer<BearerResponseEntity, BearerResponse> {
+  @JsonKey(name: "first_name")
+  String? firstName;
+  @JsonKey(name: "middle_name")
+  String? middleName;
+  @JsonKey(name: "last_name")
+  String? lastName;
+  @JsonKey(name: "mobile_no")
+  String? mobileNo;
+  @JsonKey(name: "profile_image")
+  String? profileImage;
+
+  BearerResponseEntity(
+      {this.firstName,
+      this.middleName,
+      this.lastName,
+      this.mobileNo,
+      this.profileImage});
+
+  factory BearerResponseEntity.fromJson(Map<String, dynamic> json) =>
+      _$BearerResponseEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BearerResponseEntityToJson(this);
+
+  @override
+  BearerResponseEntity restore(BearerResponse data) {
+    return BearerResponseEntity();
+  }
+
+  @override
+  BearerResponse transform() {
+    return BearerResponse(
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName,
+        mobileNo: mobileNo,
+        profileImage: profileImage);
   }
 }

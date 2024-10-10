@@ -9,6 +9,7 @@ import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_card_wrapper.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer.dart';
 import 'package:app/utils/common_widgets/dialog/basic_dialog.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -190,7 +191,6 @@ class AttendanceLogListTile extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        log("message ${student.intimationList}");
                         if (student.intimationList?.isNotEmpty ?? false) {
                           showDialog(
                               context: context,
@@ -217,7 +217,23 @@ class AttendanceLogListTile extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AddNewBearer(
+                                  studentId: student.studentId!,
+                                  cancelCallback: () {
+                                    Navigator.pop(context);
+                                  },
+                                  addNewBearerCallback: () {});
+                            }).then((value) {
+                          ProviderScope.containerOf(context)
+                              .read(busRouteDetailsPageViewModelProvider)
+                              .getRouteStudentList(routeId: 1, stopId: 1);
+                        });
+                      },
                       child: Column(
                         children: [
                           SvgPicture.asset(AppImages.addUserBgIcon),
@@ -234,37 +250,49 @@ class AttendanceLogListTile extends StatelessWidget {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Container(
-                      padding:
-                          REdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                      color: isPresent ? AppColors.success : AppColors.failure,
-                      child: CommonText(
-                          text: isPresent ? "Present" : " Absent",
-                          color: Colors.white,
-                          style: AppTypography.caption),
-                    ),
-                    TriangleContainer(isPresent: isPresent)
-                  ],
-                ),
-                Positioned(
-                  right: 10,
-                  bottom: 0,
-                  child: Container(
-                      width: 10, height: 10, color: AppColors.listItem),
-                )
-              ],
+        if (student.attendanceList?.isNotEmpty ?? false) ...{
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding:
+                            REdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        color: student.attendanceList?.first.attendanceRemark ==
+                                "present"
+                            ? AppColors.success
+                            : AppColors.failure,
+                        child: CommonText(
+                            text: student.attendanceList?.first
+                                        .attendanceRemark ==
+                                    "present"
+                                ? "Present"
+                                : " Absent",
+                            color: Colors.white,
+                            style: AppTypography.caption),
+                      ),
+                      TriangleContainer(
+                          isPresent:
+                              student.attendanceList?.first.attendanceRemark ==
+                                  "present")
+                    ],
+                  ),
+                  Positioned(
+                    right: 10,
+                    bottom: 0,
+                    child: Container(
+                        width: 10, height: 10, color: AppColors.listItem),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
+        }
       ],
     );
   }
