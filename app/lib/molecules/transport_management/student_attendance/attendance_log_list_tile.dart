@@ -74,7 +74,7 @@ class AttendanceLogListTile extends StatelessWidget {
                       ],
                     ),
                     Visibility(
-                      visible: isEdit,
+                      visible: student.attendanceList?.isEmpty ?? false,
                       replacement: TextButton.icon(
                         onPressed: () {
                           showDialog(
@@ -115,7 +115,9 @@ class AttendanceLogListTile extends StatelessWidget {
                                 );
                               });
                         },
-                        label: const Text("Add Log"),
+                        label: student.attendanceList?.isEmpty ?? false
+                            ? const Text("Add Log")
+                            : const Text("Edit Log"),
                         icon: const Icon(Icons.add),
                       ),
                       child: TextButton.icon(

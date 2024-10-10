@@ -87,7 +87,9 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       flutterToastErrorPresenter: flutterToastErrorPresenter,
       params: params,
       createCall: (params) => createAttendanceUsecase.execute(params: params),
-      onSuccess: (data) {},
+      onSuccess: (data) {
+        getRouteStudentList(routeId: 1, stopId: 1);
+      },
       onError: (error) {},
     );
   }

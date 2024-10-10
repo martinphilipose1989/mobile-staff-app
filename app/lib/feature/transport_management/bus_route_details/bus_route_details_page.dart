@@ -39,11 +39,12 @@ class BusChecklistPageState extends AppBasePageState<
   @override
   void onModelReady(BusRouteDetailsPageViewModel model) {
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
-    getViewModel().getRouteStudentList(routeId: 1, stopId: 1);
+
     model.trip = ProviderScope.containerOf(context)
         .read(busRouteListPageViewModelProvider)
         .trip;
     model.stop = widget.stop;
+    getViewModel().getRouteStudentList(routeId: 1, stopId: 1);
     super.onModelReady(model);
   }
 

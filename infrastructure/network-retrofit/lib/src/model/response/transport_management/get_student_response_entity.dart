@@ -104,7 +104,8 @@ class StudentEntity
         studentDetails: studentDetails?.transform(),
         intimationList: intimationDetails?.map((e) => e.transform()).toList(),
         studentId: studentId,
-        updatedAt: updatedAt);
+        updatedAt: updatedAt,
+        attendanceList: attendanceDetail?.map((e) => e.transform()).toList());
   }
 }
 
