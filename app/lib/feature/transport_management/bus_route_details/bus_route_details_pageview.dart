@@ -28,13 +28,13 @@ class BusRouteDetailsPageView
   Widget build(BuildContext context, BusRouteDetailsPageViewModel model) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: ArrivalInfoTile(
-              vehicleNumber: "MH47-PK-9386",
-              startTime: "Morning 7 AM",
-              totalStudents: 15),
-        ),
+        Padding(
+            padding: const EdgeInsets.all(16),
+            child: ArrivalInfoTile(
+                vehicleNumber:
+                    model.trip?.routeBusUserMapping?[0].bus?.busNumber ?? '',
+                startTime: model.trip?.shiftName ?? '',
+                totalStudents: model.trip?.studentStopsMappings?.length ?? 0)),
         const Padding(
           padding: EdgeInsets.all(16.0),
           child: Divider(color: AppColors.dividerColor),
@@ -45,7 +45,7 @@ class BusRouteDetailsPageView
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CommonText(
-                text: "Vibgyor Kids & high malad West",
+                text: model.trip?.schoolName ?? '',
                 style: AppTypography.subtitle1,
               ),
             ],
@@ -109,14 +109,31 @@ class BusRouteDetailsPageView
             },
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(16),
-          width: double.infinity,
-          child: CommonPrimaryElevatedButton(
-            title: "Pickup Students",
-            width: double.infinity,
-            onPressed: () {},
-          ),
+        AppStreamBuilder<Resource<CreateStopLogsData>>(
+          stream: model.createRouteLogstream,
+          initialData: Resource.none(),
+          onData: (value) {
+            if (value.status == Status.success) {
+              Navigator.pop(context);
+            }
+          },
+          dataBuilder: (context, data) {
+            return data?.status == Status.loading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    padding: const EdgeInsets.all(16),
+                    width: double.infinity,
+                    child: CommonPrimaryElevatedButton(
+                      title: "Pickup Students",
+                      width: double.infinity,
+                      onPressed: () {
+                        model.createStopLog(model.stop?.id ?? 0);
+                      },
+                    ),
+                  );
+          },
         )
       ],
     );

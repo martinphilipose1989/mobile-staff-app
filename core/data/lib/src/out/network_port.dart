@@ -88,4 +88,9 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
       {required MapStudenttoBearerRequest request});
+  Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
+      {required int routeId,
+      required int stopId,
+      required String stopStatus,
+      required String time});
 }

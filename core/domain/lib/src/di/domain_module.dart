@@ -1,6 +1,7 @@
 import 'package:domain/domain.dart';
 import 'package:domain/src/usecase/transport/create_bearer_usecase.dart';
 import 'package:domain/src/usecase/transport/create_incident_report_usecase.dart';
+import 'package:domain/src/usecase/transport/create_stops_logs_usecase.dart';
 
 import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
 import 'package:injectable/injectable.dart';
@@ -167,5 +168,11 @@ abstract class DomainModule {
   CreateBearerUsecase createBearerUsecase(
       TransportRepository transportRepository) {
     return CreateBearerUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  CreateStopsLogsUsecase createStopLogs(
+      TransportRepository transportRepository) {
+    return CreateStopsLogsUsecase(transportRepository: transportRepository);
   }
 }

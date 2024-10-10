@@ -12,6 +12,7 @@ import 'package:network_retrofit/src/model/request/transport_management/create_a
 import 'package:network_retrofit/src/model/request/transport_management/create_bearer_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request_entity.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/map_student_bearer_entity_request.dart';
@@ -443,16 +444,29 @@ class NetworkAdapter implements NetworkPort {
   @override
   Future<Either<NetworkError, MapStudenttoBearerResponse>> mapBearerToGuardians(
       {required MapStudenttoBearerRequest request}) async {
-    final response = await safeApiCall(
-      mdmService.mapBearerToGuardians(
-        MapStudenttoBearerRequestEntity(
-          data: MapStudenttoBearerRequestDataEntity(
-            guardianId: request.data?.guardianId,
-            guardianRelationshipId: request.data?.guardianRelationshipId,
-            studentId: request.data?.studentId,
-          ),
+    final response = await safeApiCall(mdmService.mapBearerToGuardians(
+      MapStudenttoBearerRequestEntity(
+        data: MapStudenttoBearerRequestDataEntity(
+          guardianId: request.data?.guardianId,
+          guardianRelationshipId: request.data?.guardianRelationshipId,
+          studentId: request.data?.studentId,
         ),
       ),
+    ));
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
+      {required int routeId,
+      required int stopId,
+      required String stopStatus,
+      required String time}) async {
+    CreateStopLogsRequest createStopLogsRequest = CreateStopLogsRequest(
+        routeId: routeId, stopId: stopId, stopStatus: stopStatus, time: time);
+    final response = await safeApiCall(
+      transportService.createStopLogs(createStopLogsRequest),
     );
 
     return response.fold(

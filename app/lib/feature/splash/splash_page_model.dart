@@ -50,8 +50,8 @@ class SplashViewModel extends BasePageViewModel {
           .asFlow()
           .listen((data) {
         if (data.status == Status.success) {
-          Navigator.of(navigatorKey.currentContext!)
-              .pushReplacementNamed(RoutePaths.dashboard);
+          // Navigator.of(navigatorKey.currentContext!)
+          //     .pushReplacementNamed(RoutePaths.dashboard);
         } else if (data.status == Status.error) {
           isLoadingSubject.add(Resource.none());
         }

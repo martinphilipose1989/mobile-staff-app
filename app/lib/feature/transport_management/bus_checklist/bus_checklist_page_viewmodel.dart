@@ -38,6 +38,8 @@ class BusChecklistPageViewModel extends BasePageViewModel {
   Stream<Resource<GetChecklistConfirmationData>> get getConfirmationStream =>
       _getConfirmationSubject.stream;
 
+  int? selectedIndex;
+
   void getBusCheckList() {
     _loadingSubject.add(true);
     if (_pageSubject.value == 1) {
@@ -65,17 +67,24 @@ class BusChecklistPageViewModel extends BasePageViewModel {
     );
   }
 
+  String getRole(String value) {
+    switch (value) {
+      case "1":
+        return "didi";
+      case "2":
+        return "driver";
+      case "3":
+        return "teacher";
+      default:
+        return "unknown";
+    }
+  }
+
   void getChecklistConfirmation(
       String userType, List<CheckListDatum> checkListdata, int index) {
     final GetChecklistConfirmationParams params =
         GetChecklistConfirmationParams(
-            userId: 1,
-            routeId: int.parse(trip?.id ?? ''),
-            userType: userType == "didi"
-                ? 1
-                : userType == "driver"
-                    ? 2
-                    : 3);
+            userId: 1, routeId: int.parse(trip?.id ?? ''), userType: 1);
     _getConfirmationSubject.add(Resource.loading(data: null));
     ApiResponseHandler.apiCallHandler(
       exceptionHandlerBinder: exceptionHandlerBinder,

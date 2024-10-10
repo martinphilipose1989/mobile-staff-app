@@ -109,4 +109,14 @@ class TransportRepositoryImpl implements TransportRepository {
       {required File file, String module = "TRANSPORT"}) {
     return networkPort.uploadProfileImage(file: file, module: module);
   }
+
+  @override
+  Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
+      {required int routeId,
+      required int stopId,
+      required String stopStatus,
+      required String time}) {
+    return networkPort.createStopLogs(
+        routeId: routeId, stopId: stopId, stopStatus: stopStatus, time: time);
+  }
 }

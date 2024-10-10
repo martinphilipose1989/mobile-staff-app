@@ -137,7 +137,9 @@ class BusChecklistPageView
                                               initialData: Resource.none(),
                                               dataBuilder: (context, data) {
                                                 return data!.status ==
-                                                        Status.loading
+                                                            Status.loading &&
+                                                        model.selectedIndex ==
+                                                            index
                                                     ? const CircularProgressIndicator()
                                                     : (checkListdata
                                                                 ?.data?[index]
@@ -190,6 +192,8 @@ class BusChecklistPageView
                                                                             ?.data ??
                                                                         [],
                                                                     index);
+                                                                model.selectedIndex =
+                                                                    index;
                                                                 Navigator.pop(
                                                                     context);
                                                               }, negativeCallback:
@@ -207,7 +211,7 @@ class BusChecklistPageView
                                                                     context);
                                                               },
                                                                   header:
-                                                                      'Verify ${checkListdata?.data?[index].userType ?? ''}',
+                                                                      'Verify ${model.getRole(checkListdata?.data?[index].userType ?? '')}',
                                                                   info:
                                                                       "+91-${checkListdata?.data?[index].userDetails?.mobile}",
                                                                   name: checkListdata
@@ -217,7 +221,7 @@ class BusChecklistPageView
                                                                           ?.fullName ??
                                                                       '',
                                                                   role:
-                                                                      'Call ${checkListdata?.data?[index].userType ?? ''}',
+                                                                      'Call ${model.getRole(checkListdata?.data?[index].userType ?? '')}',
                                                                   type: DialogType
                                                                       .driver);
                                                             },

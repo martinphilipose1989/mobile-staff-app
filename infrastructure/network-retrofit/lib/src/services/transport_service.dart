@@ -4,12 +4,14 @@ import 'package:dio/dio.dart';
 
 import 'package:network_retrofit/src/model/request/transport_management/create_reportincident_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/create_route_logs_request_entity.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/bus_route_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/checklist_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/create_reportincident_entity_response.dart';
+import 'package:network_retrofit/src/model/response/transport_management/create_stops_logs_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/get_student_profile_entity_response.dart';
 import 'package:network_retrofit/src/model/response/transport_management/get_student_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/guardians_detail_response_entity.dart';
@@ -37,6 +39,7 @@ const String _getChecklistConformation =
     "transport-service/mobile-app/confirm-checklist";
 const String _createRouteLogs =
     'transport-service/mobile-app/create/route-logs';
+const String _createStopLogs = 'transport-service/mobile-app/create/stop-logs';
 
 const String _uploadBearerImage = "transport-service/upload/profile";
 
@@ -80,8 +83,7 @@ abstract class TransportService {
 
   @GET(_fetchStopsLogs)
   Future<HttpResponse<FetchStopLogsEntity>> fetchStopLogs(
-      {@Query("route_id") required int routeId,
-      @Query("stop_id") required int stopId});
+      {@Query("route_id") required int routeId, required int stopId});
 
   @POST(_getCheckList)
   Future<HttpResponse<CheckListEntity>> getAllCheckList(
@@ -99,4 +101,7 @@ abstract class TransportService {
   @MultiPart()
   Future<HttpResponse<UploadFileResponseEntity>> uploadProfileImage(
       @Part(name: "file") File file);
+  @POST(_createStopLogs)
+  Future<HttpResponse<CreateStopLogsEntity>> createStopLogs(
+      @Body() CreateStopLogsRequest createStopLogsRequest);
 }

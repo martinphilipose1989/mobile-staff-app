@@ -51,4 +51,9 @@ abstract class TransportRepository {
 
   Future<Either<NetworkError, UploadFileResponseModel>> uploadProfileImage(
       {required File file, String module = "TRANSPORT"});
+  Future<Either<NetworkError, CreateStopLogsModel>> createStopLogs(
+      {required int routeId,
+      required int stopId,
+      required String stopStatus,
+      required String time});
 }

@@ -43,6 +43,9 @@ class MyDutyPageState
 
   @override
   PreferredSizeWidget? buildAppbar(MyDutyPageViewModel model) {
-    return const CommonAppBar(appbarTitle: "My Duty");
+    return const CommonAppBar(
+      appbarTitle: "My Duty",
+      showBackButton: true,
+    );
   }
 }
