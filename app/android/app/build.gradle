@@ -74,6 +74,11 @@ android {
 
     signingConfigs {
         release {
+            
+            // storeFile file(System.getenv("KEY_STORE_PATH") ?: "keystore/app_key.jks")
+            // storePassword "123456"
+            // keyAlias "staff" 
+            // keyPassword "123456"
             storeFile file(System.getenv("KEY_STORE_PATH") ?: "keystore/app_key.jks")
             storePassword System.getenv("RELEASE_STORE_PASSWORD")
             keyAlias System.getenv("RELEASE_KEY_ALIAS") 
