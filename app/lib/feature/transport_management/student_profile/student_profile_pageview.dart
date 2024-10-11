@@ -128,76 +128,166 @@ class BearerList extends StatelessWidget {
     return SizedBox(
       height: 200,
       width: 1.sw,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: bearerList.length * (0.7.sw / 4),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: bearerList.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: bearerList.length + 1, // Add one for the "Add New" button
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          if (index == bearerList.length) {
+            // This is the last item, show the "Add New" button
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CommonImageWidget(
-                            imageUrl: "${bearerList[index].profileImage}",
-                            clipBehavior: Clip.hardEdge,
-                            imageWidth: 50,
-                            imageHeight: 50),
-                        const SizedBox(height: 12),
-                        Text("${bearerList[index].firstName}")
-                      ],
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AddNewBearer(
+                                  studentId: studentId,
+                                  cancelCallback: () {
+                                    Navigator.pop(context);
+                                  },
+                                  addNewBearerCallback: () {});
+                            }).then((value) {
+                          if (value == true) {
+                            model.getStudentProfile(studentId: studentId);
+                          }
+                        });
+                      },
+                      child: const CommonImageWidget(
+                          imageUrl: "imageUrl",
+                          fallbackAssetImagePath: AppImages.addBearerIcon,
+                          clipBehavior: Clip.hardEdge,
+                          imageWidth: 50,
+                          imageHeight: 50),
                     ),
-                    SizedBox(width: 16.w),
+                    const SizedBox(height: 12),
+                    const Text("Add New"),
                   ],
-                );
-              },
-            ),
-          ),
-          SizedBox(width: 16.w),
-          Column(
+                ),
+                SizedBox(width: 16.w),
+              ],
+            );
+          }
+
+          // Display each bearer
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              InkWell(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AddNewBearer(
-                            studentId: studentId,
-                            cancelCallback: () {
-                              Navigator.pop(context);
-                            },
-                            addNewBearerCallback: () {});
-                      }).then((value) {
-                    if (value == true) {
-                      model.getStudentProfile(studentId: studentId);
-                    }
-                  });
-                },
-                child: const CommonImageWidget(
-                    imageUrl: "imageUrl",
-                    fallbackAssetImagePath: AppImages.addBearerIcon,
-                    clipBehavior: Clip.hardEdge,
-                    imageWidth: 50,
-                    imageHeight: 50),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CommonImageWidget(
+                      imageUrl: "${bearerList[index].profileImage}",
+                      clipBehavior: Clip.hardEdge,
+                      imageWidth: 50,
+                      imageHeight: 50),
+                  const SizedBox(height: 12),
+                  Text("${bearerList[index].firstName}")
+                ],
               ),
-              const SizedBox(height: 12),
-              const Text("Add New")
+              SizedBox(width: 16.w),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 }
+
+// class BearerList extends StatelessWidget {
+//   const BearerList(
+//       {super.key,
+//       required this.bearerList,
+//       required this.studentId,
+//       required this.model});
+
+//   final List<BearerResponse> bearerList;
+//   final int studentId;
+//   final StudentProfilePageViewModel model;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: 200,
+//       width: 1.sw,
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           SizedBox(
+//             width: 0.7.sw,
+//             child: ListView.builder(
+//               scrollDirection: Axis.horizontal,
+//               itemCount: bearerList.length,
+//               shrinkWrap: true,
+//               itemBuilder: (context, index) {
+//                 return Row(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       children: [
+//                         CommonImageWidget(
+//                             imageUrl: "${bearerList[index].profileImage}",
+//                             clipBehavior: Clip.hardEdge,
+//                             imageWidth: 50,
+//                             imageHeight: 50),
+//                         const SizedBox(height: 12),
+//                         Text("${bearerList[index].firstName}")
+//                       ],
+//                     ),
+//                     SizedBox(width: 16.w),
+//                   ],
+//                 );
+//               },
+//             ),
+//           ),
+//           SizedBox(width: 16.w),
+//           Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               InkWell(
+//                 onTap: () {
+//                   showDialog(
+//                       context: context,
+//                       barrierDismissible: false,
+//                       builder: (context) {
+//                         return AddNewBearer(
+//                             studentId: studentId,
+//                             cancelCallback: () {
+//                               Navigator.pop(context);
+//                             },
+//                             addNewBearerCallback: () {});
+//                       }).then((value) {
+//                     if (value == true) {
+//                       model.getStudentProfile(studentId: studentId);
+//                     }
+//                   });
+//                 },
+//                 child: const CommonImageWidget(
+//                     imageUrl: "imageUrl",
+//                     fallbackAssetImagePath: AppImages.addBearerIcon,
+//                     clipBehavior: Clip.hardEdge,
+//                     imageWidth: 50,
+//                     imageHeight: 50),
+//               ),
+//               const SizedBox(height: 12),
+//               const Text("Add New")
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class StudentImageInfo extends StatelessWidget {
   const StudentImageInfo({super.key, this.student});

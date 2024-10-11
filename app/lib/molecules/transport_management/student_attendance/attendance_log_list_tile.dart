@@ -86,7 +86,9 @@ class AttendanceLogListTile extends StatelessWidget {
                             barrierDismissible: false,
                             builder: (context) {
                               return AddEditAttendancePopup(
-                                header: student.attendanceList?.isEmpty ?? false
+                                header: (student.attendanceList == null ||
+                                        (student.attendanceList?.isEmpty ??
+                                            false))
                                     ? "Add Attendance Log"
                                     : "Edit Attendance Log",
                                 student: student,
@@ -95,10 +97,12 @@ class AttendanceLogListTile extends StatelessWidget {
                               );
                             });
                       },
-                      label: student.attendanceList?.isEmpty ?? false
+                      label: (student.attendanceList == null ||
+                              (student.attendanceList?.isEmpty ?? false))
                           ? const Text("Add Log")
                           : const Text("Edit Log"),
-                      icon: student.attendanceList?.isEmpty ?? false
+                      icon: (student.attendanceList == null ||
+                              (student.attendanceList?.isEmpty ?? false))
                           ? const Icon(Icons.add)
                           : SvgPicture.asset(AppImages.editIcon),
                     ),
