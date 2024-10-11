@@ -46,6 +46,7 @@ class StudentProfilePageState
 
   @override
   PreferredSizeWidget? buildAppbar(StudentProfilePageViewModel model) {
-    return const CommonAppBar(appbarTitle: "Student Profile");
+    return const CommonAppBar(
+        appbarTitle: "Student Profile", showBackButton: true);
   }
 }
