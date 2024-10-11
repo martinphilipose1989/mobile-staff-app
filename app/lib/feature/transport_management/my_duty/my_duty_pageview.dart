@@ -38,117 +38,111 @@ class MyDutyPageView extends BasePageViewWidget<MyDutyPageViewModel> {
             stream: model.selectedTripStatus,
             initialData: model.selectedTripStatus.value,
             dataBuilder: (context, data) {
-              return data == "completed trips"
-                  ? const CompletedTripListTile()
-                  : Expanded(
-                      child: AppStreamBuilder<Resource<List<TripResult>>>(
-                        stream: model.tripListStream,
-                        initialData: Resource.none(),
-                        dataBuilder: (context, tripData) {
-                          log("message ${tripData?.data}");
-                          return CommonRefreshIndicator(
-                            onRefresh: () {
-                              return model.refreshMyDutyList();
+              return Expanded(
+                child: AppStreamBuilder<Resource<List<TripResult>>>(
+                  stream: model.tripListStream,
+                  initialData: Resource.none(),
+                  dataBuilder: (context, tripData) {
+                    log("message ${tripData?.data}");
+                    return CommonRefreshIndicator(
+                      onRefresh: () {
+                        return model.refreshMyDutyList();
+                      },
+                      child: DataStatusWidget(
+                        status: tripData?.status ?? Status.none,
+                        loadingWidget: () => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: () => Center(
+                          child: NoDataFoundWidget(
+                            title: tripData?.dealSafeAppError?.error.message
+                                        .contains("internet") ??
+                                    false
+                                ? "No Internet Connection"
+                                : "Something Went Wrong",
+                            subtitle: tripData?.dealSafeAppError?.error.message
+                                        .contains("internet") ??
+                                    false
+                                ? "It seems you're offline. Please check your internet connection and try again."
+                                : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
+                            onPressed: () {
+                              model.refreshMyDutyList();
                             },
-                            child: DataStatusWidget(
-                              status: tripData?.status ?? Status.none,
-                              loadingWidget: () => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              errorWidget: () => Center(
-                                child: NoDataFoundWidget(
-                                  title: tripData
-                                              ?.dealSafeAppError?.error.message
-                                              .contains("internet") ??
-                                          false
-                                      ? "No Internet Connection"
-                                      : "Something Went Wrong",
-                                  subtitle: tripData
-                                              ?.dealSafeAppError?.error.message
-                                              .contains("internet") ??
-                                          false
-                                      ? "It seems you're offline. Please check your internet connection and try again."
-                                      : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
-                                  onPressed: () {
-                                    model.refreshMyDutyList();
-                                  },
-                                ),
-                              ),
-                              successWidget: () {
-                                return AppStreamBuilder<bool>(
-                                  stream: model.hasMorePagesStream,
-                                  initialData: model.hasMorePagesSubject.value,
-                                  dataBuilder: (context, hasMorePage) {
-                                    return NotificationListener<
-                                        ScrollNotification>(
-                                      onNotification: (scrollNotification) {
-                                        if (scrollNotification.metrics.pixels ==
-                                            scrollNotification
-                                                .metrics.maxScrollExtent) {
-                                          //model.loadMoreVisitorList();
-                                        }
-                                        return false;
-                                      },
-                                      child: AppStreamBuilder<bool>(
-                                        stream: model.loadingStream,
-                                        initialData: false,
-                                        dataBuilder: (context, isLoading) {
-                                          final itemCount =
-                                              (tripData?.data?.length ?? 0) +
-                                                  (isLoading! && hasMorePage!
-                                                      ? 1
-                                                      : 0);
-                                          return Visibility(
-                                            visible: tripData?.data?.isEmpty ??
-                                                false,
-                                            replacement: CommonRefreshIndicator(
-                                              isChildScrollable: true,
-                                              onRefresh: () {
-                                                return model
-                                                    .refreshMyDutyList();
-                                              },
-                                              child: ListView.builder(
-                                                itemCount: itemCount,
-                                                itemBuilder: (context, index) {
-                                                  if (index <
-                                                      (tripData?.data?.length ??
-                                                          0)) {
-                                                    return UpcomingTripListTile(
-                                                        trip: tripData!
-                                                            .data![index]);
-                                                  } else if (isLoading) {
-                                                    return const Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 16,
-                                                          right: 16,
-                                                          bottom: 32),
-                                                      child: Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    return const SizedBox
-                                                        .shrink();
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                            child: const NoDataFoundWidget(
-                                              title: "No Trip List Found",
-                                            ),
-                                          );
+                          ),
+                        ),
+                        successWidget: () {
+                          return AppStreamBuilder<bool>(
+                            stream: model.hasMorePagesStream,
+                            initialData: model.hasMorePagesSubject.value,
+                            dataBuilder: (context, hasMorePage) {
+                              return NotificationListener<ScrollNotification>(
+                                onNotification: (scrollNotification) {
+                                  if (scrollNotification.metrics.pixels ==
+                                      scrollNotification
+                                          .metrics.maxScrollExtent) {
+                                    //model.loadMoreVisitorList();
+                                  }
+                                  return false;
+                                },
+                                child: AppStreamBuilder<bool>(
+                                  stream: model.loadingStream,
+                                  initialData: false,
+                                  dataBuilder: (context, isLoading) {
+                                    final itemCount = (tripData?.data?.length ??
+                                            0) +
+                                        (isLoading! && hasMorePage! ? 1 : 0);
+                                    return Visibility(
+                                      visible: tripData?.data?.isEmpty ?? false,
+                                      replacement: CommonRefreshIndicator(
+                                        isChildScrollable: true,
+                                        onRefresh: () {
+                                          return model.refreshMyDutyList();
                                         },
+                                        child: ListView.builder(
+                                          itemCount: itemCount,
+                                          itemBuilder: (context, index) {
+                                            if (index <
+                                                (tripData?.data?.length ?? 0)) {
+                                              return data == "completed trips"
+                                                  ? CompletedTripListTile(
+                                                      trip: tripData!
+                                                          .data![index],
+                                                    )
+                                                  : UpcomingTripListTile(
+                                                      trip: tripData!
+                                                          .data![index]);
+                                            } else if (isLoading) {
+                                              return const Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 16,
+                                                    right: 16,
+                                                    bottom: 32),
+                                                child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
+                                            } else {
+                                              return const SizedBox.shrink();
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      child: const NoDataFoundWidget(
+                                        title: "No Trip List Found",
                                       ),
                                     );
                                   },
-                                );
-                              },
-                            ),
+                                ),
+                              );
+                            },
                           );
                         },
                       ),
                     );
+                  },
+                ),
+              );
             })
       ],
     );

@@ -2,6 +2,7 @@
 
 import 'package:app/feature/landing_page.dart';
 import 'package:app/model/resource.dart';
+import 'package:app/navigation/route_paths.dart';
 
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
@@ -52,11 +53,8 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                           context,
                           "${data.dealSafeAppError?.error.message}");
                     } else if (data.status == Status.success) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LandingPage(),
-                          ));
+                      Navigator.pushReplacementNamed(
+                          context, RoutePaths.landingPage);
                     }
                   },
                   onDone: () {},
@@ -70,11 +68,8 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             onPressed: () async {
                               //model.login();
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LandingPage(),
-                                  ));
+                              Navigator.pushReplacementNamed(
+                                  context, RoutePaths.landingPage);
                             },
                             title: 'Lets Get Started',
                             titleTextStyle: AppTypography.subtitle2);

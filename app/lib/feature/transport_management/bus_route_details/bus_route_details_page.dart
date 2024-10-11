@@ -12,8 +12,9 @@ import 'bus_route_details_page_viewmodel.dart';
 import 'bus_route_details_pageview.dart';
 
 class BusRouteDetailsPage extends BasePage<BusRouteDetailsPageViewModel> {
-  final StopModel stop;
-  const BusRouteDetailsPage({super.key, required this.stop});
+  final BusRouteDetailsPageParams busRouteDetailsPageParams;
+  const BusRouteDetailsPage(
+      {super.key, required this.busRouteDetailsPageParams});
 
   @override
   BusChecklistPageState createState() => BusChecklistPageState();
@@ -43,8 +44,10 @@ class BusChecklistPageState extends AppBasePageState<
     model.trip = ProviderScope.containerOf(context)
         .read(busRouteListPageViewModelProvider)
         .trip;
-    model.stop = widget.stop;
-    getViewModel().getRouteStudentList(routeId: 1, stopId: 1);
+    model.stop = widget.busRouteDetailsPageParams.stop;
+    model.isLastIndex = widget.busRouteDetailsPageParams.isLastIndex;
+    getViewModel().getRouteStudentList(
+        routeId: int.parse(model.trip?.id ?? ''), stopId: model.stop?.id ?? 0);
     super.onModelReady(model);
   }
 
@@ -59,4 +62,10 @@ class BusChecklistPageState extends AppBasePageState<
       showBackButton: true,
     );
   }
+}
+
+class BusRouteDetailsPageParams {
+  final StopModel stop;
+  final bool isLastIndex;
+  BusRouteDetailsPageParams({required this.stop, required this.isLastIndex});
 }

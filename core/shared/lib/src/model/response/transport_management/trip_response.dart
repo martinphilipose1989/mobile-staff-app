@@ -53,6 +53,8 @@ class TripResult {
 
   String? createdAt;
 
+  bool? isCompletedTrip;
+
   String? updatedAt;
 
   String? shiftName;
@@ -89,6 +91,7 @@ class TripResult {
       this.routeBusUserMapping,
       this.routeStopMapping,
       this.studentStopsMappings,
+      this.isCompletedTrip,
       this.schoolName,
       this.shiftName,
       this.isLoading = false});

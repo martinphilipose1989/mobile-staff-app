@@ -34,13 +34,13 @@ class MyDutyPageViewModel extends BasePageViewModel {
       BehaviorSubject<Resource<List<TripResult>>>.seeded(Resource.none());
   final _createRouteLogsSubject =
       BehaviorSubject<Resource<CreateRouteLogsData>>.seeded(Resource.none());
+  Stream<Resource<CreateRouteLogsData>> get createRouteLogsStream =>
+      _createRouteLogsSubject.stream;
 
   Stream<bool> get loadingStream => _loadingSubject.stream;
   Stream<bool> get hasMorePagesStream => hasMorePagesSubject.stream;
   Stream<Resource<List<TripResult>>> get tripListStream =>
       _tripListSubject.stream;
-  Stream<Resource<CreateRouteLogsData>> get createRouteLogsStream =>
-      _createRouteLogsSubject.stream;
 
   final throttleDuration = const Duration(milliseconds: 300);
 
@@ -68,8 +68,20 @@ class MyDutyPageViewModel extends BasePageViewModel {
       createCall: (params) => getMydutyListUsecase.execute(params: params),
       onSuccess: (result) {
         if (!_tripListSubject.isClosed) {
-          _tripListSubject
-              .add(Resource.success(data: result?.data?.tripResult));
+          List<TripResult>? tripResult = [];
+
+          for (var i = 0; i < (result?.data?.tripResult?.length ?? 0); i++) {
+            if (selectedTripStatus.value == 'up coming trips') {
+              if (result?.data?.tripResult?[i].isCompletedTrip == false) {
+                tripResult.add(result!.data!.tripResult![i]);
+              }
+            } else {
+              if (result?.data?.tripResult?[i].isCompletedTrip == true) {
+                tripResult.add(result!.data!.tripResult![i]);
+              }
+            }
+          }
+          _tripListSubject.add(Resource.success(data: tripResult));
           _loadingSubject.add(false);
         }
       },

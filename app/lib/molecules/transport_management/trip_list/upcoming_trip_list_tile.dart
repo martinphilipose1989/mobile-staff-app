@@ -33,6 +33,9 @@ class UpcomingTripListTile extends StatelessWidget {
                 title: trip.routeStopMapping
                         ?.firstWhere(
                           (element) => element.stop?.orderBy == 1,
+                          orElse: () {
+                            return TripRouteStopMapping();
+                          },
                         )
                         .stop
                         ?.stopName ??
@@ -61,6 +64,9 @@ class UpcomingTripListTile extends StatelessWidget {
                 title: trip.routeStopMapping
                         ?.firstWhere(
                           (element) => element.stop?.orderBy == 7,
+                          orElse: () {
+                            return TripRouteStopMapping();
+                          },
                         )
                         .stop
                         ?.stopName ??

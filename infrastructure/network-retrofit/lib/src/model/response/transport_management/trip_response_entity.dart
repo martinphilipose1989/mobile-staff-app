@@ -116,6 +116,8 @@ class TripResultEntity
   int? academicYrsId;
   @JsonKey(name: "isDraft")
   bool? isDraft;
+  @JsonKey(name: "is_completed_trip")
+  bool? isCompletedTrip;
   @JsonKey(name: "createdAt")
   String? createdAt;
   @JsonKey(name: "updatedAt")
@@ -155,6 +157,7 @@ class TripResultEntity
       this.routeBusUserMappingEntity,
       this.routeStopMapping,
       this.studentStopsMappings,
+      this.isCompletedTrip,
       this.schoolName,
       this.shiftName});
 
@@ -173,6 +176,7 @@ class TripResultEntity
         endDate: data.endDate,
         id: data.id,
         isDraft: data.isDraft,
+        isCompletedTrip: isCompletedTrip,
         isPermanentRoute: data.isPermanentRoute,
         routeCode: data.routeCode,
         routeName: data.routeName,
@@ -254,6 +258,7 @@ class TripResultEntity
         routeCode: routeCode,
         routeName: routeName,
         routeType: routeType,
+        isCompletedTrip: isCompletedTrip,
         routeWorkingDays: routeWorkingDays?.transform(),
         schoolCode: schoolCode,
         schoolId: schoolId,

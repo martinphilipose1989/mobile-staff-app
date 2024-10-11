@@ -18,6 +18,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   final GetGuardianlistUsecase getGuardianlistUsecase;
   final GetStudentProfileUsecase getStudentProfileUsecase;
   final CreateStopsLogsUsecase createStopsLogsUsecase;
+  final CreateRouteLogsUsecase createRouteLogsUsecase;
 
   final _studentListSubject =
       BehaviorSubject<Resource<List<Student>>>.seeded(Resource.none());
@@ -32,14 +33,15 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   Stream<Resource<List<GuardiansDetail>>> get guardianListStream =>
       _guardianListSubject.stream;
 
-  final _createRouteLogSubject =
+  final _createStopLogsSubgject =
       BehaviorSubject<Resource<CreateStopLogsData>>.seeded(Resource.none());
 
-  Stream<Resource<CreateStopLogsData>> get createRouteLogstream =>
-      _createRouteLogSubject.stream;
+  Stream<Resource<CreateStopLogsData>> get createStopLogsSubgject =>
+      _createStopLogsSubgject.stream;
 
   TripResult? trip;
   StopModel? stop;
+  bool? isLastIndex;
 
   final BehaviorSubject<bool> _presentLoadingSubject =
       BehaviorSubject.seeded(false);
@@ -55,6 +57,11 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   BehaviorSubject<Resource<CreateAttendanceResponse>> createAttendanceResponse =
       BehaviorSubject.seeded(Resource.none());
 
+  final _createRouteLogsSubject =
+      BehaviorSubject<Resource<CreateRouteLogsData>>.seeded(Resource.none());
+  Stream<Resource<CreateRouteLogsData>> get createRouteLogsStream =>
+      _createRouteLogsSubject.stream;
+
   BusRouteDetailsPageViewModel(
       {required this.getGuardianlistUsecase,
       required this.getStudentProfileUsecase,
@@ -62,7 +69,8 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       required this.flutterToastErrorPresenter,
       required this.getStudentlistByRouteUsecase,
       required this.createAttendanceUsecase,
-      required this.createStopsLogsUsecase});
+      required this.createStopsLogsUsecase,
+      required this.createRouteLogsUsecase});
 
   void getRouteStudentList({required int routeId, required int stopId}) {
     _studentListSubject.add(Resource.loading(data: null));
@@ -113,7 +121,8 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         _absentLoadingSubject.add(false);
         createAttendanceResponse.add(Resource.success(data: data));
 
-        getRouteStudentList(routeId: 1, stopId: 1);
+        getRouteStudentList(
+            routeId: int.parse(trip?.id ?? ''), stopId: stop?.id ?? 0);
       },
       onError: (error) {
         _presentLoadingSubject.add(false);
@@ -142,7 +151,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   }
 
   void createStopLog(int stopId) {
-    _createRouteLogSubject.add(Resource.loading(data: null));
+    _createStopLogsSubgject.add(Resource.loading(data: null));
     final CreateStopsLogsParams params = CreateStopsLogsParams(
         routeId: int.parse(trip?.id ?? ''),
         stopId: stopId,
@@ -155,10 +164,35 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       params: params,
       createCall: (params) => createStopsLogsUsecase.execute(params: params),
       onSuccess: (result) {
-        _createRouteLogSubject.add(Resource.success(data: result?.data));
+        _createStopLogsSubgject.add(Resource.success(data: result?.data));
       },
       onError: (error) {
-        _createRouteLogSubject.add(Resource.error(error: error));
+        _createStopLogsSubgject.add(Resource.error(error: error));
+      },
+    );
+  }
+
+  void createRouteLogs(int routeId) {
+    _createRouteLogsSubject.add(Resource.loading(data: null));
+    final CreateRouteLogsParams params = CreateRouteLogsParams(
+        didId: null,
+        driverId: 1,
+        endDate: DateTime.now().toIso8601String(),
+        startDate: DateTime.now().toIso8601String(),
+        routeId: routeId,
+        userType: 1,
+        routeStatus: "Completed",
+        teacherId: null);
+    ApiResponseHandler.apiCallHandler(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) => createRouteLogsUsecase.execute(params: params),
+      onSuccess: (result) {
+        _createRouteLogsSubject.add(Resource.success(data: result?.data));
+      },
+      onError: (error) {
+        _createRouteLogsSubject.add(Resource.error(data: null, error: error));
       },
     );
   }

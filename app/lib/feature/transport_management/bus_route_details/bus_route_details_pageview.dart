@@ -1,7 +1,10 @@
+import 'package:app/di/states/viewmodels.dart';
+import 'package:app/feature/transport_management/my_duty/my_duty_page.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
 
 import 'package:app/molecules/transport_management/student_attendance/attendance_log_list_tile.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 
@@ -14,6 +17,7 @@ import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:injectable/injectable.dart';
 
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 import 'bus_route_details_page_viewmodel.dart';
@@ -110,29 +114,54 @@ class BusRouteDetailsPageView
           ),
         ),
         AppStreamBuilder<Resource<CreateStopLogsData>>(
-          stream: model.createRouteLogstream,
+          stream: model.createStopLogsSubgject,
           initialData: Resource.none(),
           onData: (value) {
             if (value.status == Status.success) {
               Navigator.pop(context);
             }
           },
-          dataBuilder: (context, data) {
-            return data?.status == Status.loading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    child: CommonPrimaryElevatedButton(
-                      title: "Pickup Students",
-                      width: double.infinity,
-                      onPressed: () {
-                        model.createStopLog(model.stop?.id ?? 0);
-                      },
-                    ),
-                  );
+          dataBuilder: (context, createStopLogsData) {
+            return AppStreamBuilder<Resource<CreateRouteLogsData>>(
+                stream: model.createRouteLogsStream,
+                initialData: Resource.none(),
+                onData: (value) {
+                  if (value.status == Status.success) {
+                    ProviderScope.containerOf(context)
+                        .read(myDutyPageViewModelProvider)
+                        .getMyDutyList();
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }
+                },
+                dataBuilder: (context, createRouteLogsdata) {
+                  return createStopLogsData?.status == Status.loading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : createRouteLogsdata?.status == Status.loading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Container(
+                              padding: const EdgeInsets.all(16),
+                              width: double.infinity,
+                              child: CommonPrimaryElevatedButton(
+                                title: (model.isLastIndex ?? false)
+                                    ? "Drop All Students"
+                                    : "Pickup Students",
+                                width: double.infinity,
+                                onPressed: () {
+                                  (model.isLastIndex ?? false)
+                                      ? model.createRouteLogs(
+                                          int.parse(model.trip?.id ?? ''))
+                                      : model
+                                          .createStopLog(model.stop?.id ?? 0);
+                                },
+                              ),
+                            );
+                });
           },
         )
       ],

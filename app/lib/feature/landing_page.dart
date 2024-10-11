@@ -52,7 +52,6 @@ class _LandingPageState extends State<LandingPage> {
           InkWell(
             onTap: () {
               Navigator.pushNamed(context, RoutePaths.myDutyPage);
-              //Navigator.pushNamed(context, RoutePaths.transportDashBoardPage);
             },
             child: SizedBox(
               height: 300,

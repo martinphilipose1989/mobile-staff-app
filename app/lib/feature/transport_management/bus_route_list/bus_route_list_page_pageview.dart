@@ -1,3 +1,4 @@
+import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
 import 'package:app/navigation/route_paths.dart';
@@ -121,14 +122,24 @@ class BusRouteListPageView
                                                                 .all(16.0),
                                                         child: InkWell(
                                                           onTap: () {
+                                                            BusRouteDetailsPageParams
+                                                                params =
+                                                                BusRouteDetailsPageParams(
+                                                                    stop: busStopsListData!
+                                                                        .data![
+                                                                            index]
+                                                                        .stop!,
+                                                                    isLastIndex: index ==
+                                                                            ((busStopsListData.data?.length ?? 0) -
+                                                                                1)
+                                                                        ? true
+                                                                        : false);
                                                             Navigator.pushNamed(
                                                                     context,
                                                                     RoutePaths
                                                                         .busRouteDetailsPage,
-                                                                    arguments: busStopsListData
-                                                                        ?.data?[
-                                                                            index]
-                                                                        .stop)
+                                                                    arguments:
+                                                                        params)
                                                                 .then(
                                                               (value) {
                                                                 model

@@ -149,7 +149,8 @@ final busRouteDetailsPageViewModelProvider =
       getStudentlistByRouteUsecase: getIt.get<GetStudentlistByRouteUsecase>(),
       flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
-      createStopsLogsUsecase: getIt.get<CreateStopsLogsUsecase>()),
+      createStopsLogsUsecase: getIt.get<CreateStopsLogsUsecase>(),
+      createRouteLogsUsecase: getIt.get<CreateRouteLogsUsecase>()),
 );
 
 final busRouteListPageViewModelProvider =

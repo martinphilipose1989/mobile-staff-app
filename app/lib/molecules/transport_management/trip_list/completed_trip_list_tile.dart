@@ -1,5 +1,6 @@
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/common_widgets/common_card_wrapper.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,7 +8,8 @@ import 'trip_list_tile_header.dart';
 import 'trip_tile_detail_item.dart';
 
 class CompletedTripListTile extends StatelessWidget {
-  const CompletedTripListTile({super.key});
+  final TripResult trip;
+  const CompletedTripListTile({super.key, required this.trip});
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +26,52 @@ class CompletedTripListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const TripTileDetailItem(
-                    title: "Pickup point", subtitle: "Prabhadevi"),
+                TripTileDetailItem(
+                    title: "Pickup point",
+                    subtitle: trip.routeStopMapping
+                            ?.firstWhere(
+                              (element) => element.stop?.orderBy == 1,
+                              orElse: () {
+                                return TripRouteStopMapping();
+                              },
+                            )
+                            .stop
+                            ?.stopName ??
+                        ""),
                 SizedBox(height: 24.h),
-                const TripTileDetailItem(
-                    title: "Students", subtitle: "15 Students"),
+                TripTileDetailItem(
+                    title: "Students",
+                    subtitle:
+                        "${trip.studentStopsMappings?.length ?? 0} Students"),
               ]),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const TripTileDetailItem(
-                    title: "Drop point", subtitle: "Malad"),
+                TripTileDetailItem(
+                    title: "Drop point",
+                    subtitle: trip.routeStopMapping
+                            ?.firstWhere(
+                              (element) => element.stop?.orderBy == 7,
+                              orElse: () {
+                                return TripRouteStopMapping();
+                              },
+                            )
+                            .stop
+                            ?.stopName ??
+                        ""),
                 SizedBox(height: 24.h),
-                const TripTileDetailItem(title: "Action", subtitle: "Pickup"),
+                TripTileDetailItem(
+                    title: "Action",
+                    subtitle: trip.routeType == "2"
+                        ? "Pickup"
+                        : trip.routeType == "1"
+                            ? "Drop"
+                            : ""),
               ]),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const TripTileDetailItem(
-                    title: "Route No", subtitle: "Rno: XYZ1213"),
+                TripTileDetailItem(
+                    title: "Route No", subtitle: "Rno:${trip.routeCode}"),
                 SizedBox(height: 24.h),
-                const TripTileDetailItem(title: "Shift", subtitle: "Morning"),
+                TripTileDetailItem(
+                    title: "Shift", subtitle: trip.shiftName ?? ''),
               ])
             ],
           )
