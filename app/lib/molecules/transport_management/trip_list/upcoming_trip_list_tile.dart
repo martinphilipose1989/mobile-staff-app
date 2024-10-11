@@ -30,9 +30,13 @@ class UpcomingTripListTile extends StatelessWidget {
           const Divider(color: AppColors.textPalerGray),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             TripTileDetailItem(
-                title: trip.routeType == "1"
-                    ? "School"
-                    : trip.routeStopMapping?.last.stop?.stopName ?? '--',
+                title: trip.routeStopMapping
+                        ?.firstWhere(
+                          (element) => element.stop?.orderBy == 1,
+                        )
+                        .stop
+                        ?.stopName ??
+                    "",
                 subtitle: "",
                 subtitleTextStyle: AppTypography.h6),
             Stack(
@@ -54,9 +58,13 @@ class UpcomingTripListTile extends StatelessWidget {
               ],
             ),
             TripTileDetailItem(
-                title: trip.routeType == "1"
-                    ? trip.routeStopMapping?.last.stop?.stopName ?? "--"
-                    : 'School',
+                title: trip.routeStopMapping
+                        ?.firstWhere(
+                          (element) => element.stop?.orderBy == 7,
+                        )
+                        .stop
+                        ?.stopName ??
+                    "",
                 subtitle: '',
                 subtitleTextStyle: AppTypography.h6),
           ]),
