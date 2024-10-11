@@ -64,31 +64,96 @@ class TripVerificationPopUp extends StatelessWidget {
               style: AppTypography.body2),
         ],
       ),
+      actionsAlignment: MainAxisAlignment.center,
       actions: [
-        CommonPrimaryElevatedButton(
-          elevation: 0,
-          title: negativeText,
-          backgroundColor: AppColors.textPalerGray,
-          foregroundColor: AppColors.textGray,
-          icon: SvgPicture.asset(
-            AppImages.callIcon,
-            colorFilter:
-                const ColorFilter.mode(AppColors.textGray, BlendMode.srcIn),
+        InkWell(
+          onTap: () {
+            negativeCallback.call();
+          },
+          child: AbsorbPointer(
+            child: Container(
+              width: 130,
+              height: 50,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color: AppColors.textPalerGray,
+                  borderRadius: BorderRadius.circular(25)),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    width: 30,
+                    AppImages.callIcon,
+                    colorFilter: const ColorFilter.mode(
+                        AppColors.textGray, BlendMode.srcIn),
+                  ),
+                  CommonText(
+                    text: negativeText,
+                    style: const TextStyle(color: AppColors.textGray),
+                  )
+                ],
+              ),
+            ),
           ),
-          onPressed: negativeCallback,
         ),
-        CommonPrimaryElevatedButton(
-          elevation: 0,
-          title: "Yes Verify",
-          icon: SvgPicture.asset(
-            AppImages.checkMark,
-            colorFilter:
-                const ColorFilter.mode(AppColors.primaryOn, BlendMode.srcIn),
+        InkWell(
+          onTap: () {
+            positiveCallback.call();
+          },
+          child: AbsorbPointer(
+            child: Container(
+              width: 130,
+              height: 50,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(25)),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    AppImages.checkMark,
+                    colorFilter: const ColorFilter.mode(
+                        AppColors.primaryOn, BlendMode.srcIn),
+                  ),
+                  CommonText(
+                    text: "   Yes Verify",
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  )
+                ],
+              ),
+            ),
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          onPressed: positiveCallback,
-        )
+        ),
+
+        // Expanded(
+        //   flex: 2,
+        //   child: CommonPrimaryElevatedButton(
+        //     elevation: 0,
+        //     title: negativeText,
+        //     backgroundColor: AppColors.textPalerGray,
+        //     foregroundColor: AppColors.textGray,
+        //     icon: SvgPicture.asset(
+        //       AppImages.callIcon,
+        //       colorFilter:
+        //           const ColorFilter.mode(AppColors.textGray, BlendMode.srcIn),
+        //     ),
+        //     onPressed: negativeCallback,
+        //   ),
+        // ),
+        // Expanded(
+        //     flex: 1,
+        //     child: CommonPrimaryElevatedButton(
+        //       elevation: 0,
+        //       title: "Yes Verify",
+        //       icon: SvgPicture.asset(
+        //         AppImages.checkMark,
+        //         colorFilter: const ColorFilter.mode(
+        //             AppColors.primaryOn, BlendMode.srcIn),
+        //       ),
+        //       backgroundColor: Theme.of(context).colorScheme.primary,
+        //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        //       onPressed: positiveCallback,
+        //     )),
       ],
     );
   }

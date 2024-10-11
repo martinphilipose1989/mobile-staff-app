@@ -48,9 +48,11 @@ class BusChecklistPageState
   @override
   PreferredSizeWidget? buildAppbar(BusChecklistPageViewModel model) {
     return CommonAppBar(
-      appbarTitle: model.trip?.routeType == "1"
-          ? "School To ${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'}"
-          : "${model.trip?.routeStopMapping?.last.stop?.stopName ?? '--'} To School",
+      appbarTitle: "${model.trip?.routeStopMapping?.firstWhere(
+            (element) => element.stop?.orderBy == 1,
+          ).stop?.stopName ?? ""} To ${model.trip?.routeStopMapping?.firstWhere(
+            (element) => element.stop?.orderBy == 7,
+          ).stop?.stopName ?? ""}",
       showBackButton: true,
     );
   }
