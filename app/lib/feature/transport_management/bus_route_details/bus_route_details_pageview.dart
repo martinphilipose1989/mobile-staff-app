@@ -1,6 +1,6 @@
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
-import 'package:app/molecules/transport_management/student_attendance/attendance_count_tile.dart';
+
 import 'package:app/molecules/transport_management/student_attendance/attendance_log_list_tile.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';

@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 
 import 'package:app/model/resource.dart';
-import 'package:app/myapp.dart';
-import 'package:app/navigation/route_paths.dart';
+
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
