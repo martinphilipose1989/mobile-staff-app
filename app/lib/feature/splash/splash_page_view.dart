@@ -46,17 +46,17 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                   stream: model.isLoadingSubject.stream,
                   onError: (error) {},
                   onData: (data) {
-                    if (data.status == Status.error) {
-                      model.toastErrorPresenter.show(
-                          data.dealSafeAppError!.throwable,
-                          context,
-                          "${data.dealSafeAppError?.error.message}");
-                    } else if (data.status == Status.success) {
+                    // if (data.status == Status.error) {
+                    //   model.toastErrorPresenter.show(
+                    //       data.dealSafeAppError!.throwable,
+                    //       context,
+                    //       "${data.dealSafeAppError?.error.message}");
+                    // } else
+                    if (data.status == Status.success) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const LandingPage(),
-                          ));
+                              builder: (context) => const LandingPage()));
                     }
                   },
                   onDone: () {},
@@ -68,13 +68,13 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             backgroundColor: Colors.white,
                             foregroundColor: AppColors.primary,
                             onPressed: () async {
-                              //model.login();
+                              model.login();
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LandingPage(),
-                                  ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => const LandingPage(),
+                              //     ));
                             },
                             title: 'Lets Get Started',
                             titleTextStyle: AppTypography.subtitle2);

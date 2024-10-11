@@ -5,6 +5,7 @@ import 'package:app/feature/gate_management/create_edit_gate_pass/create_edit_ga
 import 'package:app/feature/gate_management/visitor_details/qr_details.dart';
 import 'package:app/feature/gate_management/visitor_details/visitor_details_page.dart';
 import 'package:app/feature/gate_management/visitor_list/visitor_list_page.dart';
+import 'package:app/feature/landing_page.dart';
 import 'package:app/feature/login/login_page.dart';
 import 'package:app/feature/transport_management/bus_checklist/bus_checklist_page.dart';
 import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page.dart';
@@ -105,6 +106,11 @@ class AppRouter {
         return CupertinoPageRoute(
             builder: (context) => StudentProfilePage(studentId: studentId),
             settings: settings);
+      case RoutePaths.landingPage:
+        return CupertinoPageRoute(
+          builder: (context) => const LandingPage(),
+          settings: settings,
+        );
       default:
         // Replace by Empty Page
         return CupertinoPageRoute(builder: (context) => Container());
