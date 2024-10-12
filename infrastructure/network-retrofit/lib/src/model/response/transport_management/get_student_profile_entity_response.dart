@@ -2,6 +2,7 @@ import 'package:data/data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:network_retrofit/src/model/response/transport_management/guardians_detail_response_entity.dart';
 
+import 'bearer_list_response_entity.dart';
 import 'route_stop_mapping_entity.dart';
 
 part 'get_student_profile_entity_response.g.dart';
@@ -199,47 +200,5 @@ class RouteEntity
                   updatedAt: e.updatedAt),
             )
             .toList());
-  }
-}
-
-@JsonSerializable()
-class BearerResponseEntity
-    implements BaseLayerDataTransformer<BearerResponseEntity, BearerResponse> {
-  @JsonKey(name: "first_name")
-  String? firstName;
-  @JsonKey(name: "middle_name")
-  String? middleName;
-  @JsonKey(name: "last_name")
-  String? lastName;
-  @JsonKey(name: "mobile_no")
-  String? mobileNo;
-  @JsonKey(name: "profile_image")
-  String? profileImage;
-
-  BearerResponseEntity(
-      {this.firstName,
-      this.middleName,
-      this.lastName,
-      this.mobileNo,
-      this.profileImage});
-
-  factory BearerResponseEntity.fromJson(Map<String, dynamic> json) =>
-      _$BearerResponseEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => _$BearerResponseEntityToJson(this);
-
-  @override
-  BearerResponseEntity restore(BearerResponse data) {
-    return BearerResponseEntity();
-  }
-
-  @override
-  BearerResponse transform() {
-    return BearerResponse(
-        firstName: firstName,
-        lastName: lastName,
-        middleName: middleName,
-        mobileNo: mobileNo,
-        profileImage: profileImage);
   }
 }

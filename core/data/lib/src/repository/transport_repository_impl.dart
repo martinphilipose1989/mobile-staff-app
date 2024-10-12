@@ -119,4 +119,10 @@ class TransportRepositoryImpl implements TransportRepository {
     return networkPort.createStopLogs(
         routeId: routeId, stopId: stopId, stopStatus: stopStatus, time: time);
   }
+
+  @override
+  Future<Either<NetworkError, GetBearerListResponse>> getBearerList(
+      {required int studentId}) {
+    return networkPort.getBearerList(studentId: studentId);
+  }
 }

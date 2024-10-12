@@ -2,6 +2,7 @@ import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/utils/api_response_handler.dart';
 import 'package:app/utils/dateformate.dart';
+import 'package:app/utils/enum/attendance_type_enum.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_errors/flutter_errors.dart';
@@ -95,7 +96,11 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
           attendanceDate: DateTime.now().dateFormatToyyyMMdd(),
           attendanceDetails: [
             AttendanceDetail(
-                attendanceRemark: remark, globalStudentId: student.studentId)
+                attendanceType: remark == "present"
+                    ? AttendanceTypeEnum.present.value
+                    : AttendanceTypeEnum.absent.value,
+                attendanceRemark: remark,
+                globalStudentId: student.studentId)
           ],
           boardId: student.studentDetails?.crtBoardId,
           brandId: student.studentDetails?.crtBrandId,

@@ -19,6 +19,7 @@ import 'package:app/utils/common_calendar/common_calendar_model.dart';
 import 'package:app/utils/common_widgets/common_chip_list/common_chip_list_view_model.dart';
 import 'package:app/utils/common_widgets/common_stepper/common_stepper_model.dart';
 import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer_viewmodel.dart';
+import 'package:app/utils/common_widgets/dialog/drop_bearer/view_or_drop_bearer_viewmodel.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -141,16 +142,16 @@ final busChecklistPageViewModelProvider =
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
 final busRouteDetailsPageViewModelProvider =
-    ChangeNotifierProvider.autoDispose<BusRouteDetailsPageViewModel>(
-  (ref) => BusRouteDetailsPageViewModel(
-      getGuardianlistUsecase: getIt.get<GetGuardianlistUsecase>(),
-      getStudentProfileUsecase: getIt.get<GetStudentProfileUsecase>(),
-      createAttendanceUsecase: getIt.get<CreateAttendanceUsecase>(),
-      getStudentlistByRouteUsecase: getIt.get<GetStudentlistByRouteUsecase>(),
-      flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
-      exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
-      createStopsLogsUsecase: getIt.get<CreateStopsLogsUsecase>()),
-);
+    ChangeNotifierProvider.autoDispose<BusRouteDetailsPageViewModel>((ref) =>
+        BusRouteDetailsPageViewModel(
+            getGuardianlistUsecase: getIt.get<GetGuardianlistUsecase>(),
+            getStudentProfileUsecase: getIt.get<GetStudentProfileUsecase>(),
+            createAttendanceUsecase: getIt.get<CreateAttendanceUsecase>(),
+            getStudentlistByRouteUsecase:
+                getIt.get<GetStudentlistByRouteUsecase>(),
+            flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+            exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+            createStopsLogsUsecase: getIt.get<CreateStopsLogsUsecase>()));
 
 final busRouteListPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<BusRouteListPageViewModel>(
@@ -188,4 +189,14 @@ final addNewBearerViewmodelProvider =
     flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
     exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
   ),
+);
+
+final viewOrDropBearerViewmodel =
+    ChangeNotifierProvider.autoDispose.family<ViewOrDropBearerViewmodel, int>(
+  (ref, studentId) => ViewOrDropBearerViewmodel(
+    flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+    exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+    getBearerListUsecase: getIt.get<GetBearerListUsecase>(),
+    createAttendanceUsecase: getIt.get<CreateAttendanceUsecase>(),
+  )..getBearerList(studentId: studentId),
 );

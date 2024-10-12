@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 abstract class NetworkPort {
@@ -93,4 +92,7 @@ abstract class NetworkPort {
       required int stopId,
       required String stopStatus,
       required String time});
+
+  Future<Either<NetworkError, GetBearerListResponse>> getBearerList(
+      {required int studentId});
 }

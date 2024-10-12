@@ -100,4 +100,7 @@ class AppImages {
   static const String transport1 = "assets/images/transport_active_1.svg";
   static const String transport2 = "assets/images/transport_2.svg";
   static const String transport3 = "assets/images/transport_3.svg";
+
+  static const String dropIcon = "assets/images/drop_icon.svg";
+  static const String dropActiveIcon = "assets/images/drop_icon_active.svg";
 }

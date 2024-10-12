@@ -1,3 +1,4 @@
+import 'get_bearer_response.dart';
 import 'guardian_detail_response.dart';
 import 'route_stop_mapping_response.dart';
 
@@ -77,23 +78,4 @@ class TransportRoute {
     this.routeType,
     this.routeStopMapping,
   });
-}
-
-class BearerResponse {
-  String? firstName;
-
-  String? middleName;
-
-  String? lastName;
-
-  String? mobileNo;
-
-  String? profileImage;
-
-  BearerResponse(
-      {this.firstName,
-      this.middleName,
-      this.lastName,
-      this.mobileNo,
-      this.profileImage});
 }

@@ -472,4 +472,14 @@ class NetworkAdapter implements NetworkPort {
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));
   }
+
+  @override
+  Future<Either<NetworkError, GetBearerListResponse>> getBearerList(
+      {required int studentId}) async {
+    final response =
+        await safeApiCall(transportService.getBearerList(studentId));
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
 }
