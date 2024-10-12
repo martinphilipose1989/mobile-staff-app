@@ -118,7 +118,8 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         _absentLoadingSubject.add(false);
         createAttendanceResponse.add(Resource.success(data: data));
 
-        getRouteStudentList(routeId: 1, stopId: 1);
+        getRouteStudentList(
+            routeId: int.parse(trip?.id ?? '1'), stopId: stop?.id ?? 1);
       },
       onError: (error) {
         _presentLoadingSubject.add(false);

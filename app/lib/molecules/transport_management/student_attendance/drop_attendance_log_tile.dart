@@ -87,9 +87,14 @@ class DropAttendanceLogTile extends StatelessWidget {
                                 return ViewOrDropBearer(student: student);
                               }).then((value) {
                             if (value == true) {
-                              ProviderScope.containerOf(context)
-                                  .read(busRouteDetailsPageViewModelProvider)
-                                  .getRouteStudentList(routeId: 1, stopId: 1);
+                              final provider =
+                                  ProviderScope.containerOf(context).read(
+                                      busRouteDetailsPageViewModelProvider);
+                              int routeId = int.parse(provider.trip?.id ?? '0');
+                              int stopId = int.parse(
+                                  (provider.stop?.id ?? '0').toString());
+                              provider.getRouteStudentList(
+                                  routeId: routeId, stopId: stopId);
                             }
                           });
                         },
@@ -183,9 +188,17 @@ class DropAttendanceLogTile extends StatelessWidget {
                                     addNewBearerCallback: () {});
                               }).then((value) {
                             if (value == true) {
+                              final provider =
+                                  ProviderScope.containerOf(context).read(
+                                      busRouteDetailsPageViewModelProvider);
+                              int routeId = int.parse(provider.trip?.id ?? '1');
+                              int stopId = int.parse(
+                                  (provider.stop?.id ?? '1').toString());
+
                               ProviderScope.containerOf(context)
                                   .read(busRouteDetailsPageViewModelProvider)
-                                  .getRouteStudentList(routeId: 1, stopId: 1);
+                                  .getRouteStudentList(
+                                      routeId: routeId, stopId: stopId);
                             }
                           });
                         },

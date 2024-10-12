@@ -1,5 +1,6 @@
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
+import 'package:app/molecules/transport_management/student_attendance/attendance_log_list_tile.dart';
 
 import 'package:app/molecules/transport_management/student_attendance/drop_attendance_log_tile.dart';
 import 'package:app/themes_setup.dart';
@@ -94,7 +95,10 @@ class BusRouteDetailsPageView
                         ? "It seems you're offline. Please check your internet connection and try again."
                         : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
                     onPressed: () {
-                      model.getRouteStudentList(routeId: 1, stopId: 1);
+                      model.getRouteStudentList(
+                          routeId: int.parse(model.trip?.id ?? '1'),
+                          stopId:
+                              int.parse((model.stop?.id ?? '1').toString()));
                     },
                   ),
                 ),
@@ -102,8 +106,10 @@ class BusRouteDetailsPageView
                   itemCount: studentData?.data?.length,
                   itemBuilder: (context, index) {
                     final student = studentData?.data?[index];
-                    //  return AttendanceLogListTile(student: student!);
-                    return DropAttendanceLogTile(student: student!);
+
+                    return model.trip?.routeType == '1'
+                        ? DropAttendanceLogTile(student: student!)
+                        : AttendanceLogListTile(student: student!);
                   },
                 ),
               );

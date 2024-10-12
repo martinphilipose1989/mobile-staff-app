@@ -52,9 +52,7 @@ class _LandingPageState extends State<LandingPage> {
           ),
           InkWell(
             onTap: () {
-              //  Navigator.pushNamed(context, RoutePaths.myDutyPage);
-              Navigator.pushNamed(context, RoutePaths.busRouteDetailsPage,
-                  arguments: StopModel());
+              Navigator.pushNamed(context, RoutePaths.myDutyPage);
             },
             child: SizedBox(
               height: 300,

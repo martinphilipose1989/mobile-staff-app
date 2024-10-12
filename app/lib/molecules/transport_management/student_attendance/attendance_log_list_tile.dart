@@ -176,9 +176,15 @@ class AttendanceLogListTile extends StatelessWidget {
                                     addNewBearerCallback: () {});
                               }).then((value) {
                             if (value == true) {
-                              ProviderScope.containerOf(context)
-                                  .read(busRouteDetailsPageViewModelProvider)
-                                  .getRouteStudentList(routeId: 1, stopId: 1);
+                              final provider =
+                                  ProviderScope.containerOf(context).read(
+                                      busRouteDetailsPageViewModelProvider);
+                              int routeId = int.parse(provider.trip?.id ?? '1');
+                              int stopId = int.parse(
+                                  (provider.stop?.id ?? '1').toString());
+
+                              provider.getRouteStudentList(
+                                  routeId: routeId, stopId: stopId);
                             }
                           });
                         },

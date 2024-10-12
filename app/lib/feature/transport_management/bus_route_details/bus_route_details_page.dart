@@ -44,7 +44,8 @@ class BusChecklistPageState extends AppBasePageState<
         .read(busRouteListPageViewModelProvider)
         .trip;
     model.stop = widget.stop;
-    getViewModel().getRouteStudentList(routeId: 1, stopId: 1);
+    getViewModel().getRouteStudentList(
+        routeId: int.parse(model.trip?.id ?? '1'), stopId: model.stop?.id ?? 1);
     super.onModelReady(model);
   }
 
