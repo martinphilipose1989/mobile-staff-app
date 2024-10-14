@@ -107,9 +107,11 @@ class AppRouter {
         return CupertinoPageRoute(
             builder: (context) => StudentProfilePage(studentId: studentId),
             settings: settings);
-
       case RoutePaths.landingPage:
-        return CupertinoPageRoute(builder: (context) => const LandingPage());
+        return CupertinoPageRoute(
+          builder: (context) => const LandingPage(),
+          settings: settings,
+        );
       default:
         // Replace by Empty Page
         return CupertinoPageRoute(builder: (context) => Container());

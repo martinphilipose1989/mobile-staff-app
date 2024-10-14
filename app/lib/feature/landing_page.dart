@@ -1,5 +1,6 @@
 import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:domain/domain.dart' hide State;
 
 import 'package:flutter/material.dart';
 

@@ -2,7 +2,7 @@ import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
-import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
+
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:app/utils/enum/dialog_enum.dart';
 import 'package:flutter/material.dart';

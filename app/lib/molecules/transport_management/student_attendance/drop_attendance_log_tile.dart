@@ -11,23 +11,17 @@ import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer.dart';
 import 'package:app/utils/common_widgets/dialog/basic_dialog.dart';
+import 'package:app/utils/common_widgets/dialog/drop_bearer/view_or_drop_bearer.dart';
+import 'package:app/utils/enum/attendance_type_enum.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'add_edit_attendance_popup.dart';
+class DropAttendanceLogTile extends StatelessWidget {
+  const DropAttendanceLogTile({super.key, required this.student});
 
-class AttendanceLogListTile extends StatelessWidget {
-  const AttendanceLogListTile(
-      {super.key,
-      this.isEdit = false,
-      this.isPresent = false,
-      required this.student});
-
-  final bool isEdit;
-  final bool isPresent;
   final Student student;
 
   @override
@@ -80,33 +74,51 @@ class AttendanceLogListTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    TextButton.icon(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return AddEditAttendancePopup(
-                                header: (student.attendanceList == null ||
-                                        (student.attendanceList?.isEmpty ??
-                                            false))
-                                    ? "Add Attendance Log"
-                                    : "Edit Attendance Log",
-                                student: student,
-                                studentName:
-                                    "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
-                              );
-                            });
-                      },
-                      label: (student.attendanceList == null ||
-                              (student.attendanceList?.isEmpty ?? false))
-                          ? const Text("Add Log")
-                          : const Text("Edit Log"),
-                      icon: (student.attendanceList == null ||
-                              (student.attendanceList?.isEmpty ?? false))
-                          ? const Icon(Icons.add)
-                          : SvgPicture.asset(AppImages.editIcon),
-                    ),
+                    Visibility(
+                      visible: student.attendanceList?.isNotEmpty ?? false
+                          ? student.attendanceList?.first.attendanceType ==
+                              AttendanceTypeEnum.drop
+                          : false,
+                      replacement: TextButton.icon(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ViewOrDropBearer(student: student);
+                              }).then((value) {
+                            if (value == true) {
+                              final provider =
+                                  ProviderScope.containerOf(context).read(
+                                      busRouteDetailsPageViewModelProvider);
+                              int routeId = int.parse(provider.trip?.id ?? '0');
+                              int stopId = int.parse(
+                                  (provider.stop?.id ?? '0').toString());
+                              provider.getRouteStudentList(
+                                  routeId: routeId, stopId: stopId);
+                            }
+                          });
+                        },
+                        label: const Text("Drop"),
+                        icon: SvgPicture.asset(AppImages.dropIcon),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.primary),
+                            borderRadius: BorderRadius.circular(8),
+                            color: AppColors.primaryLighter),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(AppImages.dropActiveIcon),
+                            CommonText(
+                              text: "Dropped",
+                              color: AppColors.primary,
+                              style: AppTypography.subtitle2,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 if (student.isOpen) ...{
@@ -183,8 +195,10 @@ class AttendanceLogListTile extends StatelessWidget {
                               int stopId = int.parse(
                                   (provider.stop?.id ?? '1').toString());
 
-                              provider.getRouteStudentList(
-                                  routeId: routeId, stopId: stopId);
+                              ProviderScope.containerOf(context)
+                                  .read(busRouteDetailsPageViewModelProvider)
+                                  .getRouteStudentList(
+                                      routeId: routeId, stopId: stopId);
                             }
                           });
                         },

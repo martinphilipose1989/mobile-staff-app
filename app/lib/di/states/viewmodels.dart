@@ -19,6 +19,7 @@ import 'package:app/utils/common_calendar/common_calendar_model.dart';
 import 'package:app/utils/common_widgets/common_chip_list/common_chip_list_view_model.dart';
 import 'package:app/utils/common_widgets/common_stepper/common_stepper_model.dart';
 import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer_viewmodel.dart';
+import 'package:app/utils/common_widgets/dialog/drop_bearer/view_or_drop_bearer_viewmodel.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -189,4 +190,14 @@ final addNewBearerViewmodelProvider =
     flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
     exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
   ),
+);
+
+final viewOrDropBearerViewmodel =
+    ChangeNotifierProvider.autoDispose.family<ViewOrDropBearerViewmodel, int>(
+  (ref, studentId) => ViewOrDropBearerViewmodel(
+    flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+    exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
+    getBearerListUsecase: getIt.get<GetBearerListUsecase>(),
+    createAttendanceUsecase: getIt.get<CreateAttendanceUsecase>(),
+  )..getBearerList(studentId: studentId),
 );

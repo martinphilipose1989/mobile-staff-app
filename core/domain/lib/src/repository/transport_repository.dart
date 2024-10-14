@@ -56,4 +56,7 @@ abstract class TransportRepository {
       required int stopId,
       required String stopStatus,
       required String time});
+
+  Future<Either<NetworkError, GetBearerListResponse>> getBearerList(
+      {required int studentId});
 }

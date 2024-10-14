@@ -8,6 +8,7 @@ import 'package:network_retrofit/src/model/request/transport_management/create_r
 import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
+import 'package:network_retrofit/src/model/response/transport_management/bearer_list_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/bus_route_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/checklist_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/create_reportincident_entity_response.dart';
@@ -42,6 +43,9 @@ const String _createRouteLogs =
 const String _createStopLogs = 'transport-service/mobile-app/create/stop-logs';
 
 const String _uploadBearerImage = "transport-service/upload/profile";
+
+const String _getBearerList =
+    "transport-service/mobile-app/bearer-list/{studentId}";
 
 @RestApi()
 abstract class TransportService {
@@ -104,4 +108,8 @@ abstract class TransportService {
   @POST(_createStopLogs)
   Future<HttpResponse<CreateStopLogsEntity>> createStopLogs(
       @Body() CreateStopLogsRequest createStopLogsRequest);
+
+  @GET(_getBearerList)
+  Future<HttpResponse<GetBearerListResponseEntity>> getBearerList(
+      @Path('studentId') int studentId);
 }
