@@ -99,9 +99,15 @@ class AppRouter {
                 ));
       case RoutePaths.busRouteListPage:
         return CupertinoPageRoute(
-            builder: (context) => const BusRouteListPage());
+            builder: (context) => BusRouteListPage(
+                  dropStarted: settings.arguments == null
+                      ? false
+                      : settings.arguments as bool,
+                ));
       case RoutePaths.myDutyPage:
-        return CupertinoPageRoute(builder: (context) => const MyDutyPage());
+        return CupertinoPageRoute(
+            builder: (context) => const MyDutyPage(),
+            settings: const RouteSettings(name: RoutePaths.myDutyPage));
       case RoutePaths.studentProfilePage:
         final studentId = settings.arguments as int;
         return CupertinoPageRoute(

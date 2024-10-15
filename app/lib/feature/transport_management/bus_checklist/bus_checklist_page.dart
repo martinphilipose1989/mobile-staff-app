@@ -50,8 +50,14 @@ class BusChecklistPageState
     return CommonAppBar(
       appbarTitle: "${model.trip?.routeStopMapping?.firstWhere(
             (element) => element.stop?.orderBy == 1,
+            orElse: () {
+              return TripRouteStopMapping();
+            },
           ).stop?.stopName ?? ""} To ${model.trip?.routeStopMapping?.firstWhere(
             (element) => element.stop?.orderBy == 7,
+            orElse: () {
+              return TripRouteStopMapping();
+            },
           ).stop?.stopName ?? ""}",
       showBackButton: true,
     );

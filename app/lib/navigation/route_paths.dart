@@ -21,8 +21,6 @@ class RoutePaths {
   static const String studentProfilePage = "/studentProfilePage";
   static const String landingPage = "/landingPage";
 
-  static const String landingPage = '/landingPage';
-
   // login
   static const String webLogin = "/webLogin";
 }

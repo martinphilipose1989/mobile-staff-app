@@ -37,6 +37,8 @@ class BusRouteListPageViewModel extends BasePageViewModel {
   Stream<Resource<List<RouteStopMappingModel>>> get busStopsListStream =>
       _busStopsListSubject.stream;
 
+  bool? dropStarted;
+
   void getBusStopsList() {
     _loadingSubject.add(true);
     if (_pageSubject.value == 1) {

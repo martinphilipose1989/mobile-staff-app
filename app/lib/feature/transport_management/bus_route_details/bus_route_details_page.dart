@@ -41,13 +41,15 @@ class BusChecklistPageState extends AppBasePageState<
   void onModelReady(BusRouteDetailsPageViewModel model) {
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
 
-    model.trip = ProviderScope.containerOf(context)
-        .read(busRouteListPageViewModelProvider)
-        .trip;
+    model.trip = widget.busRouteDetailsPageParams.trip ??
+        ProviderScope.containerOf(context)
+            .read(busRouteListPageViewModelProvider)
+            .trip;
     model.stop = widget.busRouteDetailsPageParams.stop;
     model.isLastIndex = widget.busRouteDetailsPageParams.isLastIndex;
+    model.dropStarted = widget.busRouteDetailsPageParams.dropStarted;
     getViewModel().getRouteStudentList(
-        routeId: int.parse(model.trip?.id ?? ''), stopId: model.stop?.id ?? 0);
+        routeId: int.parse(model.trip?.id ?? ""), stopId: model.stop?.id ?? 0);
     super.onModelReady(model);
   }
 
@@ -56,8 +58,14 @@ class BusChecklistPageState extends AppBasePageState<
     return CommonAppBar(
       appbarTitle: "${model.trip?.routeStopMapping?.firstWhere(
             (element) => element.stop?.orderBy == 1,
+            orElse: () {
+              return TripRouteStopMapping();
+            },
           ).stop?.stopName ?? ""} To ${model.trip?.routeStopMapping?.firstWhere(
             (element) => element.stop?.orderBy == 7,
+            orElse: () {
+              return TripRouteStopMapping();
+            },
           ).stop?.stopName ?? ""}",
       showBackButton: true,
     );
@@ -67,5 +75,11 @@ class BusChecklistPageState extends AppBasePageState<
 class BusRouteDetailsPageParams {
   final StopModel stop;
   final bool isLastIndex;
-  BusRouteDetailsPageParams({required this.stop, required this.isLastIndex});
+  final TripResult? trip;
+  final bool? dropStarted;
+  BusRouteDetailsPageParams(
+      {required this.stop,
+      required this.isLastIndex,
+      required this.trip,
+      required this.dropStarted});
 }

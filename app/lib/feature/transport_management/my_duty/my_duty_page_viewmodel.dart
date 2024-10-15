@@ -130,7 +130,9 @@ class MyDutyPageViewModel extends BasePageViewModel {
   void stopLoader(TripResult tripResult) {
     List<TripResult> a = _tripListSubject.value.data ?? [];
     for (var value in a) {
-      value.isLoading = false;
+      if (value.id == tripResult.id) {
+        value.isLoading = false;
+      }
     }
     _tripListSubject.add(Resource.success(data: a));
   }

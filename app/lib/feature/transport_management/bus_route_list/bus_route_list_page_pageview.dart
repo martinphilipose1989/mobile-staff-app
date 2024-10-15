@@ -125,6 +125,10 @@ class BusRouteListPageView
                                                             BusRouteDetailsPageParams
                                                                 params =
                                                                 BusRouteDetailsPageParams(
+                                                                    dropStarted:
+                                                                        model
+                                                                            .dropStarted,
+                                                                    trip: null,
                                                                     stop: busStopsListData!
                                                                         .data![
                                                                             index]

@@ -43,6 +43,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   TripResult? trip;
   StopModel? stop;
   bool? isLastIndex;
+  bool? dropStarted;
 
   final BehaviorSubject<bool> _presentLoadingSubject =
       BehaviorSubject.seeded(false);
@@ -134,6 +135,12 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         _absentLoadingSubject.add(false);
       },
     );
+  }
+
+  void reset() {
+    dropStarted = false;
+    List<Student> tempList = _studentListSubject.value.data ?? [];
+    _studentListSubject.add(Resource.success(data: tempList));
   }
 
   void getGuardianList({required int studentId}) {

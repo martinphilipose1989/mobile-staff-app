@@ -2,6 +2,7 @@ import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
 
 import 'package:app/utils/common_widgets/common_appbar.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,7 +12,8 @@ import 'bus_route_list_page_viewmodel.dart';
 import 'bus_route_list_page_pageview.dart';
 
 class BusRouteListPage extends BasePage<BusRouteListPageViewModel> {
-  const BusRouteListPage({super.key});
+  final bool? dropStarted;
+  const BusRouteListPage({super.key, required this.dropStarted});
 
   @override
   BusChecklistPageState createState() => BusChecklistPageState();
@@ -38,9 +40,13 @@ class BusChecklistPageState
   void onModelReady(BusRouteListPageViewModel model) {
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
     model.trip = ProviderScope.containerOf(context)
-        .read(busChecklistPageViewModelProvider)
-        .trip;
+            .read(busChecklistPageViewModelProvider)
+            .trip ??
+        ProviderScope.containerOf(context)
+            .read(busRouteDetailsPageViewModelProvider)
+            .trip;
     model.getBusStopsList();
+    model.dropStarted = widget.dropStarted ?? false;
 
     super.onModelReady(model);
   }
@@ -51,8 +57,14 @@ class BusChecklistPageState
         showBackButton: true,
         appbarTitle: "${model.trip?.routeStopMapping?.firstWhere(
               (element) => element.stop?.orderBy == 1,
+              orElse: () {
+                return TripRouteStopMapping();
+              },
             ).stop?.stopName ?? ""} To ${model.trip?.routeStopMapping?.firstWhere(
               (element) => element.stop?.orderBy == 7,
+              orElse: () {
+                return TripRouteStopMapping();
+              },
             ).stop?.stopName ?? ""}");
   }
 }

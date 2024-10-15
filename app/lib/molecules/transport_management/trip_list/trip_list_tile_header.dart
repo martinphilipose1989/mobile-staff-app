@@ -1,4 +1,5 @@
 import 'package:app/di/states/viewmodels.dart';
+import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page.dart';
 import 'package:app/feature/transport_management/my_duty/my_duty_page_viewmodel.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/navigation/route_paths.dart';
@@ -42,7 +43,9 @@ class TripListTileHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CommonText(
-                text: trip?.routeBusUserMapping?[0].bus?.busNumber ?? '',
+                text: (trip?.routeBusUserMapping?.isNotEmpty ?? false)
+                    ? trip?.routeBusUserMapping![0].bus?.busNumber ?? ''
+                    : '',
                 style: AppTypography.subtitle2,
                 color: AppColors.textDark,
               ),
@@ -66,9 +69,45 @@ class TripListTileHeader extends StatelessWidget {
                     onData: (value) {
                       if (value.status == Status.success &&
                           (trip?.isLoading ?? false)) {
-                        Navigator.pushNamed(
-                            context, RoutePaths.busCheckListPage,
-                            arguments: trip);
+                        if (trip?.routeType == "1") {
+                          BusRouteDetailsPageParams params = BusRouteDetailsPageParams(
+                              dropStarted: false,
+                              trip: trip,
+                              stop: StopModel(
+                                  academicYrsId: trip?.routeStopMapping?[0].stop
+                                      ?.academicYrsId,
+                                  createdAt: DateTime.parse(
+                                      trip?.routeStopMapping?[0].stop?.createdAt ??
+                                          ''),
+                                  distanceKm: trip
+                                      ?.routeStopMapping?[0].stop?.distanceKm,
+                                  endDate: DateTime.parse(
+                                      trip?.routeStopMapping?[0].stop?.endDate ??
+                                          ''),
+                                  id: trip?.routeStopMapping?[0].stop?.id,
+                                  isDraft:
+                                      trip?.routeStopMapping?[0].stop?.isDraft,
+                                  lat: trip?.routeStopMapping?[0].stop?.lat,
+                                  long: trip?.routeStopMapping?[0].stop?.long,
+                                  orderBy:
+                                      trip?.routeStopMapping?[0].stop?.orderBy,
+                                  relatedStopId: trip?.routeStopMapping?[0].stop
+                                      ?.relatedStopId,
+                                  schoolId: trip?.routeStopMapping?[0].stop?.schoolId,
+                                  startDate: DateTime.parse(trip?.routeStopMapping?[0].stop?.startDate ?? ''),
+                                  stopMapName: trip?.routeStopMapping?[0].stop?.stopMapName,
+                                  stopName: trip?.routeStopMapping?[0].stop?.stopName,
+                                  updatedAt: DateTime.parse(trip?.routeStopMapping?[0].stop?.updatedAt ?? ''),
+                                  zoneName: trip?.routeStopMapping?[0].stop?.zoneName),
+                              isLastIndex: false);
+                          Navigator.pushNamed(
+                              context, RoutePaths.busRouteDetailsPage,
+                              arguments: params);
+                        } else {
+                          Navigator.pushNamed(
+                              context, RoutePaths.busCheckListPage,
+                              arguments: trip);
+                        }
                         model.stopLoader(trip!);
                       }
                     },
