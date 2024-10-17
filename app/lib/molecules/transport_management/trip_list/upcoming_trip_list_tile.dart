@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
@@ -6,6 +8,7 @@ import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'trip_list_tile_header.dart';
 import 'trip_tile_detail_item.dart';
@@ -24,15 +27,23 @@ class UpcomingTripListTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TripListTileHeader(
-            trip: trip,
+          Row(
+            children: [
+              SvgPicture.asset(AppImages.schoolTripIcon),
+              CommonText(
+                  text: trip.schoolName ?? '',
+                  style: AppTypography.caption,
+                  color: AppColors.textGray),
+            ],
           ),
+          const Divider(color: AppColors.textPalerGray),
+          TripListTileHeader(trip: trip),
           const Divider(color: AppColors.textPalerGray),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             TripTileDetailItem(
                 title: trip.routeStopMapping
                         ?.firstWhere(
-                          (element) => element.stop?.orderBy == 1,
+                          (element) => element.orderNo == 1,
                           orElse: () {
                             return TripRouteStopMapping();
                           },
@@ -40,6 +51,8 @@ class UpcomingTripListTile extends StatelessWidget {
                         .stop
                         ?.stopName ??
                     "",
+                titleTextStyle:
+                    AppTypography.subtitle2.copyWith(color: AppColors.textDark),
                 subtitle: "",
                 subtitleTextStyle: AppTypography.h6),
             Stack(
@@ -47,30 +60,12 @@ class UpcomingTripListTile extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 Image.asset(AppImages.routeImage, height: 48.h, width: 144.w),
-                SizedBox(
-                  width: 80,
-                  child: CommonText(
-                      text: "Rno: ${trip.routeCode}",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      color: AppColors.textGray,
-                      style: AppTypography.smallCaption),
-                )
               ],
             ),
             TripTileDetailItem(
-                title: trip.routeStopMapping
-                        ?.firstWhere(
-                          (element) => element.stop?.orderBy == 7,
-                          orElse: () {
-                            return TripRouteStopMapping();
-                          },
-                        )
-                        .stop
-                        ?.stopName ??
-                    "",
+                title: "${trip.routeStopMapping?.last.stop?.stopName}",
+                titleTextStyle:
+                    AppTypography.subtitle2.copyWith(color: AppColors.textDark),
                 subtitle: '',
                 subtitleTextStyle: AppTypography.h6),
           ]),

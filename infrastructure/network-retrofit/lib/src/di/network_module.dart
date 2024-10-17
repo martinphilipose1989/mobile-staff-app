@@ -8,7 +8,7 @@ import 'package:network_retrofit/src/services/mdm_service.dart';
 import 'package:network_retrofit/src/services/retrofit_service.dart';
 import 'package:network_retrofit/src/services/transport_service.dart';
 import 'package:network_retrofit/src/util/api_interceptor.dart';
-import 'package:network_retrofit/src/util/token_interceptor.dart';
+
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 @module
@@ -34,20 +34,21 @@ abstract class NetworkModule {
       CurlLoggerDioInterceptor(printOnSuccess: true);
 
   @singleton
-  ApiInterceptor provideApiInterceptor(@Named("ApiKey") String apiKey) =>
-      ApiInterceptor(apiKey);
+  ApiInterceptor provideApiInterceptor(@Named("ApiKey") String apiKey,
+          AppAuthPort appAuthPort, @Named('MDMToken') String mdmToken) =>
+      ApiInterceptor(apiKey, appAuthPort, mdmToken);
 
-  @singleton
-  TokenInterceptor provideTokenInterceptor(AppAuthPort appAuthPort) =>
-      TokenInterceptor(appAuthPort: appAuthPort);
+  // @singleton
+  // TokenInterceptor provideTokenInterceptor(AppAuthPort appAuthPort) =>
+  //     TokenInterceptor(appAuthPort: appAuthPort);
 
   @singleton
   List<Interceptor> providerInterceptors(
           PrettyDioLogger logger,
           ApiInterceptor apiInterceptor,
-          TokenInterceptor tokenInterceptor,
+          // TokenInterceptor tokenInterceptor,
           CurlLoggerDioInterceptor curlInterceptor) =>
-      <Interceptor>[tokenInterceptor, apiInterceptor, logger, curlInterceptor];
+      <Interceptor>[apiInterceptor, logger, curlInterceptor];
 
   @lazySingleton
   Dio providerDio(BaseOptions options, List<Interceptor> interceptors) {

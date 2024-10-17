@@ -19,6 +19,7 @@ import 'package:network_retrofit/src/model/response/transport_management/guardia
 import 'package:network_retrofit/src/model/response/transport_management/create_route_logs_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/fetch_stops_logs_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/get_confirmation_checklist_entity.dart';
+import 'package:network_retrofit/src/model/response/transport_management/school_contact_response_entity.dart';
 import 'package:network_retrofit/src/model/response/transport_management/trip_response_entity.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -46,6 +47,9 @@ const String _uploadBearerImage = "transport-service/upload/profile";
 
 const String _getBearerList =
     "transport-service/mobile-app/bearer-list/{studentId}";
+
+const String _getSchoolContacts =
+    "/transport-service/mobile-app/school-contacts/{schoolId}";
 
 @RestApi()
 abstract class TransportService {
@@ -112,4 +116,8 @@ abstract class TransportService {
   @GET(_getBearerList)
   Future<HttpResponse<GetBearerListResponseEntity>> getBearerList(
       @Path('studentId') int studentId);
+
+  @GET(_getSchoolContacts)
+  Future<HttpResponse<GetSchoolContactResponseEntity>> getSchoolContacts(
+      @Path('schoolId') int schoolId);
 }

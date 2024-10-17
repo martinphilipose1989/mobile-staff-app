@@ -9,19 +9,19 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.dev,
     values: const FlavorValues(
-      academicsUrl: EnvDev.academicsBaseUrl,
-      apiBaseUrl: EnvDev.baseUrl,
-      mdmBaseUrl: EnvDev.mdmBaseUrl,
-      transportUrl: EnvDev.transportBaseUrl,
-      authorizationEndpoint: EnvDev.authorizationEndpoint,
-      tokenEndpoint: EnvDev.tokenEndpoint,
-      logoutEndpoint: EnvDev.logoutEndpoint,
-      discoveryUrl: EnvDev.discoveryUrl,
-      secrets: AppSecrets.appSecretsDev,
-      logSqlStatements: true,
-      showLogs: true,
-      useFakeData: false,
-    ),
+        academicsUrl: EnvDev.academicsBaseUrl,
+        apiBaseUrl: EnvDev.baseUrl,
+        mdmBaseUrl: EnvDev.mdmBaseUrl,
+        transportUrl: EnvDev.transportBaseUrl,
+        authorizationEndpoint: EnvDev.authorizationEndpoint,
+        tokenEndpoint: EnvDev.tokenEndpoint,
+        logoutEndpoint: EnvDev.logoutEndpoint,
+        discoveryUrl: EnvDev.discoveryUrl,
+        secrets: AppSecrets.appSecretsDev,
+        logSqlStatements: true,
+        showLogs: true,
+        useFakeData: false,
+        mdmToken: EnvDev.mdmToken),
   );
   startApp();
 }

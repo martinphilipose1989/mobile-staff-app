@@ -27,17 +27,20 @@ class AppRouter {
     switch (settings.name) {
       case RoutePaths.splash:
         return CupertinoPageRoute(
-            builder: (context) => const SplashPage(),
-            settings: const RouteSettings(name: RoutePaths.splash));
+          builder: (context) => const SplashPage(),
+          settings: const RouteSettings(name: RoutePaths.splash),
+        );
 
       case RoutePaths.dashboard:
         return CupertinoPageRoute(
-            builder: (context) => const DashboardPage(),
-            settings: const RouteSettings(name: RoutePaths.dashboard));
+          builder: (context) => const DashboardPage(),
+          settings: const RouteSettings(name: RoutePaths.dashboard),
+        );
       case RoutePaths.visitorListPage:
         return CupertinoPageRoute(
-            builder: (context) => const VisitorListPage(),
-            settings: const RouteSettings(name: RoutePaths.visitorListPage));
+          builder: (context) => const VisitorListPage(),
+          settings: const RouteSettings(name: RoutePaths.visitorListPage),
+        );
       case RoutePaths.visitorDetailsPage:
         final args = settings.arguments as Map<String, dynamic>;
 
@@ -58,47 +61,58 @@ class AppRouter {
       case RoutePaths.qrCodeDetailsPage:
         final arguments = settings.arguments as Uint8List;
         return CupertinoPageRoute(
+          settings: RouteSettings(
+              name: RoutePaths.qrCodeDetailsPage, arguments: arguments),
           builder: (context) => QrDetailsPage(qrImageBytes: arguments),
         );
 
       case RoutePaths.login:
         return CupertinoPageRoute(
+          settings: const RouteSettings(name: RoutePaths.login),
           builder: (context) => const LoginPage(),
         );
 
       case RoutePaths.webLogin:
         return CupertinoPageRoute(
+          settings: const RouteSettings(name: RoutePaths.webLogin),
           builder: (context) => const MyInAppWebView(),
         );
 
       // TRANSPORT MODULE
       case RoutePaths.transportDashBoardPage:
         return CupertinoPageRoute(
-            builder: (context) => const TransportDashboardPage());
+          settings:
+              const RouteSettings(name: RoutePaths.transportDashBoardPage),
+          builder: (context) => const TransportDashboardPage(),
+        );
 
       case RoutePaths.incidentReportPage:
         return CupertinoPageRoute(
-            builder: (context) => const IncidentReportPage());
+          settings: const RouteSettings(name: RoutePaths.incidentReportPage),
+          builder: (context) => const IncidentReportPage(),
+        );
 
       case RoutePaths.schoolContactPage:
         return CupertinoPageRoute(
-            builder: (context) => const SchoolContactsPage());
+          settings: const RouteSettings(name: RoutePaths.schoolContactPage),
+          builder: (context) => const SchoolContactsPage(),
+        );
 
       case RoutePaths.busCheckListPage:
         final TripResult tripResult = settings.arguments as TripResult;
         return CupertinoPageRoute(
-            builder: (context) => BusChecklistPage(
-                  tripResult: tripResult,
-                ));
+            settings: const RouteSettings(name: RoutePaths.busCheckListPage),
+            builder: (context) => BusChecklistPage(tripResult: tripResult));
       case RoutePaths.busRouteDetailsPage:
         BusRouteDetailsPageParams params =
             settings.arguments as BusRouteDetailsPageParams;
         return CupertinoPageRoute(
-            builder: (context) => BusRouteDetailsPage(
-                  busRouteDetailsPageParams: params,
-                ));
+            settings: const RouteSettings(name: RoutePaths.busRouteDetailsPage),
+            builder: (context) =>
+                BusRouteDetailsPage(busRouteDetailsPageParams: params));
       case RoutePaths.busRouteListPage:
         return CupertinoPageRoute(
+            settings: const RouteSettings(name: RoutePaths.busRouteListPage),
             builder: (context) => BusRouteListPage(
                   dropStarted: settings.arguments == null
                       ? false
@@ -106,17 +120,19 @@ class AppRouter {
                 ));
       case RoutePaths.myDutyPage:
         return CupertinoPageRoute(
-            builder: (context) => const MyDutyPage(),
-            settings: const RouteSettings(name: RoutePaths.myDutyPage));
+          builder: (context) => const MyDutyPage(),
+          settings: const RouteSettings(name: RoutePaths.myDutyPage),
+        );
       case RoutePaths.studentProfilePage:
         final studentId = settings.arguments as int;
         return CupertinoPageRoute(
-            builder: (context) => StudentProfilePage(studentId: studentId),
-            settings: settings);
+          builder: (context) => StudentProfilePage(studentId: studentId),
+          settings: const RouteSettings(name: RoutePaths.studentProfilePage),
+        );
       case RoutePaths.landingPage:
         return CupertinoPageRoute(
           builder: (context) => const LandingPage(),
-          settings: settings,
+          settings: const RouteSettings(name: RoutePaths.landingPage),
         );
       default:
         // Replace by Empty Page

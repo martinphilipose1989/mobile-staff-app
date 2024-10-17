@@ -9,16 +9,16 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.qa,
     values: const FlavorValues(
-      academicsUrl: EnvQa.academicsBaseUrl,
-      apiBaseUrl: EnvQa.baseUrl,
-      mdmBaseUrl: EnvQa.mdmBaseUrl,
-      transportUrl: EnvQa.transportBaseUrl,
-      authorizationEndpoint: EnvQa.authorizationEndpoint,
-      tokenEndpoint: EnvQa.tokenEndpoint,
-      logoutEndpoint: EnvQa.logoutEndpoint,
-      discoveryUrl: EnvQa.discoveryUrl,
-      secrets: AppSecrets.appSecretsQA,
-    ),
+        academicsUrl: EnvQa.academicsBaseUrl,
+        apiBaseUrl: EnvQa.baseUrl,
+        mdmBaseUrl: EnvQa.mdmBaseUrl,
+        transportUrl: EnvQa.transportBaseUrl,
+        authorizationEndpoint: EnvQa.authorizationEndpoint,
+        tokenEndpoint: EnvQa.tokenEndpoint,
+        logoutEndpoint: EnvQa.logoutEndpoint,
+        discoveryUrl: EnvQa.discoveryUrl,
+        secrets: AppSecrets.appSecretsQA,
+        mdmToken: EnvQa.mdmToken),
   );
   startApp();
 }

@@ -2,6 +2,8 @@
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
+import 'package:app/myapp.dart';
+import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/api_response_handler.dart';
 import 'package:app/utils/common_widgets/toggle_option_list.dart';
 
@@ -15,6 +17,7 @@ class MyDutyPageViewModel extends BasePageViewModel {
   final FlutterToastErrorPresenter flutterToastErrorPresenter;
   final GetMydutyListUsecase getMydutyListUsecase;
   final CreateRouteLogsUsecase createRouteLogsUsecase;
+  final LogoutUsecase logoutUsecase;
 
   final BehaviorSubject<String> selectedTripStatus =
       BehaviorSubject.seeded("up coming trips");
@@ -48,7 +51,8 @@ class MyDutyPageViewModel extends BasePageViewModel {
       {required this.exceptionHandlerBinder,
       required this.flutterToastErrorPresenter,
       required this.getMydutyListUsecase,
-      required this.createRouteLogsUsecase}) {
+      required this.createRouteLogsUsecase,
+      required this.logoutUsecase}) {
     getMyDutyList();
   }
 
@@ -73,10 +77,20 @@ class MyDutyPageViewModel extends BasePageViewModel {
           for (var i = 0; i < (result?.data?.tripResult?.length ?? 0); i++) {
             if (selectedTripStatus.value == 'up coming trips') {
               if (result?.data?.tripResult?[i].isCompletedTrip == false) {
+                if (result?.data?.tripResult?[i].routeStopMapping?.isNotEmpty ??
+                    false) {
+                  result!.data!.tripResult![i].routeStopMapping?.sort((a, b) =>
+                      a.orderNo?.compareTo(num.parse("${b.orderNo}")) ?? 000);
+                }
                 tripResult.add(result!.data!.tripResult![i]);
               }
             } else {
               if (result?.data?.tripResult?[i].isCompletedTrip == true) {
+                if (result?.data?.tripResult?[i].routeStopMapping?.isNotEmpty ??
+                    false) {
+                  result!.data!.tripResult![i].routeStopMapping?.sort((a, b) =>
+                      a.orderNo?.compareTo(num.parse("${b.orderNo}")) ?? 000);
+                }
                 tripResult.add(result!.data!.tripResult![i]);
               }
             }
@@ -144,6 +158,22 @@ class MyDutyPageViewModel extends BasePageViewModel {
     hasMorePagesSubject.add(true);
     _loadingSubject.add(false);
     getMyDutyList();
+  }
+
+  void logout() {
+    final LogoutUsecaseParams params = LogoutUsecaseParams();
+
+    ApiResponseHandler.apiCallHandler(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) => logoutUsecase.execute(params: params),
+      onSuccess: (data) {
+        navigatorKey.currentState
+            ?.pushNamedAndRemoveUntil(RoutePaths.splash, (route) => false);
+      },
+      onError: (error) {},
+    );
   }
 
   @override

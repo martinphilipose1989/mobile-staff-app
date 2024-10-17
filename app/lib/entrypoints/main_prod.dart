@@ -9,16 +9,16 @@ void main() {
   FlavorConfig.initialize(
     flavor: Flavor.prod,
     values: const FlavorValues(
-      academicsUrl: EnvProd.academicsBaseUrl,
-      apiBaseUrl: EnvProd.baseUrl,
-      mdmBaseUrl: EnvProd.mdmBaseUrl,
-      transportUrl: EnvProd.transportBaseUrl,
-      authorizationEndpoint: EnvProd.authorizationEndpoint,
-      tokenEndpoint: EnvProd.tokenEndpoint,
-      logoutEndpoint: EnvProd.logoutEndpoint,
-      discoveryUrl: EnvProd.discoveryUrl,
-      secrets: AppSecrets.appSecretsProd,
-    ),
+        academicsUrl: EnvProd.academicsBaseUrl,
+        apiBaseUrl: EnvProd.baseUrl,
+        mdmBaseUrl: EnvProd.mdmBaseUrl,
+        transportUrl: EnvProd.transportBaseUrl,
+        authorizationEndpoint: EnvProd.authorizationEndpoint,
+        tokenEndpoint: EnvProd.tokenEndpoint,
+        logoutEndpoint: EnvProd.logoutEndpoint,
+        discoveryUrl: EnvProd.discoveryUrl,
+        secrets: AppSecrets.appSecretsProd,
+        mdmToken: EnvProd.mdmToken),
   );
   startApp();
 }

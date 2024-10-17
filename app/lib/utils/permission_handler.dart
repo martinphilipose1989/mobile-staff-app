@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:geolocator/geolocator.dart';
@@ -69,12 +70,13 @@ class PermissionHandlerService {
   Future<bool> requestLocationPermission(
       Function(bool value) onPermanentlyClosedCall) async {
     PermissionStatus status = await Permission.location.request();
+
     if (!status.isGranted) {
       onPermanentlyClosedCall.call(true);
     } else {
       Position position = await getUserLocation();
-      print(position.latitude);
-      print(position.longitude);
+      log("LOCATION ${position.latitude}");
+      log("LOCATION ${position.longitude}");
       return true;
     }
     return false;
@@ -84,7 +86,7 @@ class PermissionHandlerService {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // If location services are not enabled, ask the user to enable them
-      return Future.error('Location services are disabled.');
+      await Geolocator.openLocationSettings();
     }
 
     return await Geolocator.getCurrentPosition(

@@ -39,4 +39,7 @@ abstract class EnvQa {
 
   @EnviedField(varName: 'KEY_CLOAK_CLIENT_SECRET')
   static const String clientSecret = _EnvQa.clientSecret;
+
+  @EnviedField(varName: 'MDM_TOKEN')
+  static const String mdmToken = _EnvQa.mdmToken;
 }

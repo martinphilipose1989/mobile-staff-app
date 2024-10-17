@@ -42,4 +42,7 @@ abstract class AppModule {
 
   @Named("DiscoveryUrl")
   String get discoveryUrl => FlavorConfig.instance.values.discoveryUrl;
+
+  @Named("MDMToken")
+  String get mdmToken => FlavorConfig.instance.values.mdmToken;
 }

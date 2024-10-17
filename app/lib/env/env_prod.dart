@@ -39,4 +39,7 @@ abstract class EnvProd {
 
   @EnviedField(varName: 'KEY_CLOAK_CLIENT_SECRET')
   static const String clientSecret = _EnvProd.clientSecret;
+
+  @EnviedField(varName: 'MDM_TOKEN')
+  static const String mdmToken = _EnvProd.mdmToken;
 }

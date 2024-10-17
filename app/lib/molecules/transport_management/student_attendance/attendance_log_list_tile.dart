@@ -150,6 +150,13 @@ class AttendanceLogListTile extends StatelessWidget {
                                         Navigator.pop(context);
                                       });
                                 });
+                          } else {
+                            final model = ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider);
+                            model.flutterToastErrorPresenter.show(
+                                Exception(),
+                                context,
+                                "No intimation for ${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}");
                           }
                         },
                         child: Column(

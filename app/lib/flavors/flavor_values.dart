@@ -13,6 +13,7 @@ class FlavorValues {
   final String discoveryUrl;
   final String transportUrl;
   final String academicsUrl;
+  final String mdmToken;
 
   const FlavorValues({
     required this.transportUrl,
@@ -23,6 +24,7 @@ class FlavorValues {
     required this.tokenEndpoint,
     required this.academicsUrl,
     required this.discoveryUrl,
+    required this.mdmToken,
     this.logoutEndpoint,
     logSqlStatements = false,
     this.showLogs = false,

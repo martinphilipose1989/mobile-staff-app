@@ -1,6 +1,5 @@
 import 'package:app/navigation/route_paths.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
-import 'package:domain/domain.dart' hide State;
 
 import 'package:flutter/material.dart';
 
@@ -34,14 +33,10 @@ class _LandingPageState extends State<LandingPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.house,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    Icon(Icons.house, color: Theme.of(context).primaryColor),
                     CommonText(
-                      text: "Gate Management",
-                      color: Theme.of(context).primaryColor,
-                    )
+                        text: "Gate Management",
+                        color: Theme.of(context).primaryColor)
                   ],
                 ),
               ),

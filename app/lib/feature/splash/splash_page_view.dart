@@ -70,27 +70,27 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             backgroundColor: Colors.white,
                             foregroundColor: AppColors.primary,
                             onPressed: () async {
-                              bool locationPermissionGranted = await model
-                                  .permissionHandler
-                                  .requestLocationPermission(
-                                (value) {
-                                  if (value) {
-                                    CommonPopups()
-                                        .showLocationSettingPermission(
-                                      context,
-                                      'To continue, please allow access to your location. These permissions are necessary for showing accurate data. You can enable them in your device settings.',
-                                      true,
-                                      Icons.location_on,
-                                      (shouldRoute) {
-                                        openAppSettings();
-                                      },
-                                    );
-                                  }
-                                },
-                              );
-                              if (locationPermissionGranted) {
-                                model.login();
-                              }
+                              // bool locationPermissionGranted = await model
+                              //     .permissionHandler
+                              //     .requestLocationPermission(
+                              //   (value) {
+                              //     if (value) {
+                              //       CommonPopups()
+                              //           .showLocationSettingPermission(
+                              //         context,
+                              //         'To continue, please allow access to your location. These permissions are necessary for showing accurate data. You can enable them in your device settings.',
+                              //         true,
+                              //         Icons.location_on,
+                              //         (shouldRoute) {
+                              //           openAppSettings();
+                              //         },
+                              //       );
+                              //     }
+                              //   },
+                              // );
+                              //   if (locationPermissionGranted) {
+                              model.login();
+                              //  }
                             },
                             title: 'Lets Get Started',
                             titleTextStyle: AppTypography.subtitle2);

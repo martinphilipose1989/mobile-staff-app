@@ -1,3 +1,4 @@
+import 'package:app/di/states/viewmodels.dart';
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
@@ -6,6 +7,7 @@ import 'package:app/utils/string_formatter.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
@@ -66,7 +68,10 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               InkWell(
                 onTap: () {
-                  onTapAction?.call();
+                  //onTapAction?.call();
+                  ProviderScope.containerOf(context)
+                      .read(myDutyPageViewModelProvider)
+                      .logout();
                 },
                 child: Container(
                   height: 32.h,

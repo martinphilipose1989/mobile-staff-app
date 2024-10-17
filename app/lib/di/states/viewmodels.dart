@@ -167,6 +167,7 @@ final myDutyPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<MyDutyPageViewModel>(
   (ref) => MyDutyPageViewModel(
       getMydutyListUsecase: getIt.get<GetMydutyListUsecase>(),
+      logoutUsecase: getIt.get<LogoutUsecase>(),
       flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
       exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
       createRouteLogsUsecase: getIt.get<CreateRouteLogsUsecase>()),

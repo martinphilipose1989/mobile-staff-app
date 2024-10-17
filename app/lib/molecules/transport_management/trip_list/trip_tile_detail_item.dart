@@ -8,10 +8,12 @@ class TripTileDetailItem extends StatelessWidget {
       {super.key,
       required this.title,
       required this.subtitle,
-      this.subtitleTextStyle});
+      this.subtitleTextStyle,
+      this.titleTextStyle});
 
   final String title;
   final String subtitle;
+  final TextStyle? titleTextStyle;
   final TextStyle? subtitleTextStyle;
 
   @override
@@ -21,8 +23,8 @@ class TripTileDetailItem extends StatelessWidget {
       children: [
         CommonText(
             text: title,
-            style: AppTypography.caption,
-            color: AppColors.textGray),
+            style: titleTextStyle ?? AppTypography.caption,
+            color: titleTextStyle?.color ?? AppColors.textGray),
         subtitle.isEmpty
             ? const SizedBox.shrink()
             : CommonText(

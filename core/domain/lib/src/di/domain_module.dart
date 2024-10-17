@@ -1,7 +1,6 @@
 import 'package:domain/domain.dart';
 
 import 'package:domain/src/usecase/transport/create_incident_report_usecase.dart';
-import 'package:domain/src/usecase/transport/get_bearer_list_usecase.dart';
 
 import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
 import 'package:injectable/injectable.dart';

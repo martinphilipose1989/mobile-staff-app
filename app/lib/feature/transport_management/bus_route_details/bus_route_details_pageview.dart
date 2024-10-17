@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:app/di/states/viewmodels.dart';
-import 'package:app/feature/transport_management/my_duty/my_duty_page.dart';
+
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
+import 'package:app/molecules/transport_management/student_attendance/attendance_count_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/attendance_log_list_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/drop_attendance_log_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/drop_attendance_log_tile_first.dart';
@@ -36,8 +39,10 @@ class BusRouteDetailsPageView
         Padding(
             padding: const EdgeInsets.all(16),
             child: ArrivalInfoTile(
-                vehicleNumber:
-                    model.trip?.routeBusUserMapping?[0].bus?.busNumber ?? '',
+                vehicleNumber: model.trip?.routeBusUserMapping?.isNotEmpty ??
+                        false
+                    ? (model.trip?.routeBusUserMapping?[0].bus?.busNumber ?? '')
+                    : '',
                 startTime: model.trip?.shiftName ?? '',
                 totalStudents: model.trip?.studentStopsMappings?.length ?? 0)),
         const Padding(
@@ -61,8 +66,8 @@ class BusRouteDetailsPageView
         //   child: Row(
         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //     children: [
-        //       AttendanceCountTile(
-        //           count: 15, countType: "Total", textColor: AppColors.primary),
+        // AttendanceCountTile(
+        //     count: 15, countType: "Total", textColor: AppColors.primary),
         //       AttendanceCountTile(
         //           count: 10,
         //           countType: "Picked Up",

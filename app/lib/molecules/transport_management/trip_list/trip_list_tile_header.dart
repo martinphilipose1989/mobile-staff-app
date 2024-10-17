@@ -43,19 +43,19 @@ class TripListTileHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CommonText(
-                text: (trip?.routeBusUserMapping?.isNotEmpty ?? false)
-                    ? trip?.routeBusUserMapping![0].bus?.busNumber ?? ''
-                    : '',
-                style: AppTypography.subtitle2,
-                color: AppColors.textDark,
-              ),
-              CommonText(
-                text: trip?.schoolName ?? '',
+                text: "#${trip?.routeCode ?? ""}",
                 maxLines: 1,
                 overflow: TextOverflow
                     .ellipsis, // Ensures text truncates with ellipsis
-                style: AppTypography.body2,
+                style: AppTypography.smallCaption,
                 color: AppColors.textGray,
+              ),
+              CommonText(
+                text: (trip?.routeBusUserMapping?.isNotEmpty ?? false)
+                    ? (trip?.routeBusUserMapping?[0].bus?.busNumber ?? '')
+                    : '',
+                style: AppTypography.subtitle2,
+                color: AppColors.textDark,
               ),
             ],
           ),
@@ -114,6 +114,8 @@ class TripListTileHeader extends StatelessWidget {
                     dataBuilder: (context, data) {
                       return CommonPrimaryElevatedButton(
                         title: buttonTitle,
+                        isDisabled:
+                            trip?.studentStopsMappings?.isEmpty ?? false,
                         isLoading: (trip?.isLoading ?? false),
                         titleTextStyle: AppTypography.subtitle2,
                         onPressed: () {
