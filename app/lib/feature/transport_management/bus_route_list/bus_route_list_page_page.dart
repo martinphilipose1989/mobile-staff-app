@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
 
@@ -47,8 +49,8 @@ class BusChecklistPageState
             .trip;
     model.getBusStopsList();
     model.dropStarted = widget.dropStarted ?? false;
-
-    super.onModelReady(model);
+    model.timer = Timer.periodic(
+        const Duration(minutes: 5), (timer) => model.getUserLoacation());
   }
 
   @override

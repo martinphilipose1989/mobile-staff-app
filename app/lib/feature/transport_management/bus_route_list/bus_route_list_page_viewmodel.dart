@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/utils/api_response_handler.dart';
+import 'package:app/utils/permission_handler.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_errors/flutter_errors.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
@@ -20,6 +24,7 @@ class BusRouteListPageViewModel extends BasePageViewModel {
       required this.getAllBusStopsUsecase,
       required this.fetchStopLogsUsecase});
   TripResult? trip;
+  late Timer timer;
 
   final _loadingSubject = BehaviorSubject<bool>.seeded(false);
   final _pageSubject = BehaviorSubject<int>.seeded(1);
@@ -62,6 +67,12 @@ class BusRouteListPageViewModel extends BasePageViewModel {
         _loadingSubject.add(false);
       },
     );
+  }
+
+  Position? _busPosition;
+  void getUserLoacation() async {
+    PermissionHandlerService permission = PermissionHandlerService();
+    _busPosition = await permission.getUserLocation();
   }
 
   void fetchBusStopLogs(List<RouteStopMappingModel> a) {
@@ -113,6 +124,21 @@ class BusRouteListPageViewModel extends BasePageViewModel {
     }
 
     _busStopsListSubject.add(Resource.success(data: a));
+  }
+
+  Future<void> checkBusProximity(
+    double busStopLatitude,
+    double busStopLongitude,
+  ) async {
+    // Check the distance to the bus stop
+    double distanceInMeters = Geolocator.distanceBetween(
+      _busPosition!.latitude,
+      _busPosition!.longitude,
+      busStopLatitude,
+      busStopLongitude,
+    );
+
+    if (distanceInMeters <= 50) {}
   }
 
   String convertTo12HourFormat(String time) {

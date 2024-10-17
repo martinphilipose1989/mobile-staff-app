@@ -146,8 +146,8 @@ class BusRouteListPageView
                                                                         params)
                                                                 .then(
                                                               (value) {
-                                                                model
-                                                                    .getBusStopsList();
+                                                                // model
+                                                                //     .getBusStopsList();
                                                               },
                                                             );
                                                           },

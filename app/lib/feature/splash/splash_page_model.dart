@@ -5,6 +5,7 @@ import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/myapp.dart';
 import 'package:app/navigation/route_paths.dart';
+import 'package:app/utils/permission_handler.dart';
 
 import 'package:app/utils/request_manager.dart';
 import 'package:domain/domain.dart';
@@ -24,6 +25,8 @@ class SplashViewModel extends BasePageViewModel {
   late Timer future;
 
   final AuthUsecase authUsecase;
+
+  final PermissionHandlerService permissionHandler = PermissionHandlerService();
 
   SplashViewModel(
     @factoryParam this.myBaseUrl,

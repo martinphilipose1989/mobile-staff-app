@@ -21,16 +21,18 @@ class CommonPopups {
   }
 
   // Method to show a success popup
-  showSuccess(BuildContext context, String message,
+  // Method to show a success popup
+  void showSuccess(BuildContext context, String message,
       Function(bool shouldRoute) onChanged,
-      {dynamic popParameter}) {
+      {required String popParameter}) {
     _showDialog(context,
         icon: Icons.check_circle,
         iconColor: Colors.green,
         message: message,
         buttonText: 'OK',
-        onChanged: onChanged,
-        popParameter: popParameter);
+        popParameter: popParameter,
+        barrierDismissible: false,
+        onChanged: onChanged);
   }
 
   // Method to show an error popup
@@ -41,6 +43,7 @@ class CommonPopups {
         iconColor: Colors.red,
         message: message,
         buttonText: 'OK',
+        barrierDismissible: true,
         onChanged: onChanged);
   }
 
@@ -55,6 +58,7 @@ class CommonPopups {
       iconColor: Colors.orange,
       message: message,
       buttonText: 'OK',
+      barrierDismissible: true,
       onChanged: (shouldRoute) {},
     );
   }
@@ -80,6 +84,22 @@ class CommonPopups {
     );
   }
 
+  // Method to show a gallery permission popup
+  void showLocationSettingPermission(
+      BuildContext context,
+      String message,
+      bool barrierDismissible,
+      IconData icon,
+      Function(bool shouldRoute) onChanged) {
+    _showDialog(context,
+        icon: icon,
+        iconColor: Theme.of(context).primaryColor,
+        message: message,
+        buttonText: 'OK',
+        barrierDismissible: barrierDismissible,
+        onChanged: onChanged);
+  }
+
   // Private method to show a dialog
   void _showDialog(BuildContext context,
       {required IconData icon,
@@ -87,7 +107,8 @@ class CommonPopups {
       required String message,
       required String buttonText,
       required Function(bool shouldRoute) onChanged,
-      dynamic popParameter}) {
+      dynamic popParameter,
+      required bool barrierDismissible}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
