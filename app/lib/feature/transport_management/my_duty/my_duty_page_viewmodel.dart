@@ -77,20 +77,10 @@ class MyDutyPageViewModel extends BasePageViewModel {
           for (var i = 0; i < (result?.data?.tripResult?.length ?? 0); i++) {
             if (selectedTripStatus.value == 'up coming trips') {
               if (result?.data?.tripResult?[i].isCompletedTrip == false) {
-                if (result?.data?.tripResult?[i].routeStopMapping?.isNotEmpty ??
-                    false) {
-                  result!.data!.tripResult![i].routeStopMapping?.sort((a, b) =>
-                      a.orderNo?.compareTo(num.parse("${b.orderNo}")) ?? 000);
-                }
                 tripResult.add(result!.data!.tripResult![i]);
               }
             } else {
               if (result?.data?.tripResult?[i].isCompletedTrip == true) {
-                if (result?.data?.tripResult?[i].routeStopMapping?.isNotEmpty ??
-                    false) {
-                  result!.data!.tripResult![i].routeStopMapping?.sort((a, b) =>
-                      a.orderNo?.compareTo(num.parse("${b.orderNo}")) ?? 000);
-                }
                 tripResult.add(result!.data!.tripResult![i]);
               }
             }
@@ -107,6 +97,8 @@ class MyDutyPageViewModel extends BasePageViewModel {
   }
 
   void createRouteLogs(int routeId) {
+    _createRouteLogsSubject.add(Resource.loading());
+
     final CreateRouteLogsParams params = CreateRouteLogsParams(
         didId: null,
         driverId: 1,

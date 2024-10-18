@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
@@ -41,16 +39,7 @@ class UpcomingTripListTile extends StatelessWidget {
           const Divider(color: AppColors.textPalerGray),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             TripTileDetailItem(
-                title: trip.routeStopMapping
-                        ?.firstWhere(
-                          (element) => element.orderNo == 1,
-                          orElse: () {
-                            return TripRouteStopMapping();
-                          },
-                        )
-                        .stop
-                        ?.stopName ??
-                    "",
+                title: trip.routeStopMapping?.first.stop?.stopName ?? "",
                 titleTextStyle:
                     AppTypography.subtitle2.copyWith(color: AppColors.textDark),
                 subtitle: "",
@@ -63,7 +52,7 @@ class UpcomingTripListTile extends StatelessWidget {
               ],
             ),
             TripTileDetailItem(
-                title: "${trip.routeStopMapping?.last.stop?.stopName}",
+                title: trip.routeStopMapping?.last.stop?.stopName ?? "",
                 titleTextStyle:
                     AppTypography.subtitle2.copyWith(color: AppColors.textDark),
                 subtitle: '',

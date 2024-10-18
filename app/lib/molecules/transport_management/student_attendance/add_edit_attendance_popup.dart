@@ -43,7 +43,7 @@ class AddEditAttendancePopup extends StatelessWidget {
               stream: model!.createAttendanceResponse.stream,
               onData: (result) {
                 if (result.status == Status.success) {
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                 }
               },
               dataBuilder: (context, attendance) {

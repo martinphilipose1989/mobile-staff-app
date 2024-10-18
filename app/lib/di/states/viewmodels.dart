@@ -124,12 +124,12 @@ final incidentReportPageViewModelProvider =
             exceptionHandlerBinder:
                 getIt.get<FlutterExceptionHandlerBinder>()));
 
-final schoolContactsPageViewModelProvider =
-    ChangeNotifierProvider.autoDispose<SchoolContactsPageViewModel>((ref) =>
-        SchoolContactsPageViewModel(
-            flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
-            exceptionHandlerBinder:
-                getIt.get<FlutterExceptionHandlerBinder>()));
+final schoolContactsPageViewModelProvider = ChangeNotifierProvider.autoDispose<
+        SchoolContactsPageViewModel>(
+    (ref) => SchoolContactsPageViewModel(
+        getSchoolContactListUsecase: getIt.get<GetSchoolContactListUsecase>(),
+        flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
+        exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>()));
 
 final busChecklistPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<BusChecklistPageViewModel>((ref) =>

@@ -49,21 +49,15 @@ class BusChecklistPageState extends AppBasePageState<
     model.isLastIndex = widget.busRouteDetailsPageParams.isLastIndex;
     model.dropStarted = widget.busRouteDetailsPageParams.dropStarted;
     getViewModel().getRouteStudentList(
-        routeId: int.parse(model.trip?.id ?? ""), stopId: model.stop?.id ?? 0);
+        routeId: int.parse(model.trip?.id ?? ""), stopId: model.stop?.id);
     super.onModelReady(model);
   }
 
   @override
   PreferredSizeWidget? buildAppbar(BusRouteDetailsPageViewModel model) {
-    model.trip?.routeStopMapping?.sort(
-        (a, b) => a.orderNo?.compareTo(num.parse("${b.orderNo}")) ?? 000);
     return CommonAppBar(
-      appbarTitle: "${model.trip?.routeStopMapping?.firstWhere(
-            (element) => element.stop?.orderBy == 1,
-            orElse: () {
-              return TripRouteStopMapping();
-            },
-          ).stop?.stopName ?? ""} To ${model.trip?.routeStopMapping?.last.stop?.stopName ?? ""}",
+      appbarTitle:
+          "${model.trip?.routeStopMapping?.first.stop?.stopName ?? ""} To ${model.trip?.routeStopMapping?.last.stop?.stopName ?? ""}",
       showBackButton: true,
     );
   }

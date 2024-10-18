@@ -7,7 +7,7 @@ abstract class TransportRepository {
       {required CreateIncidentReportRequest requestBody});
 
   Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
-      {required int routeId, required int stopId});
+      {required int routeId, int? stopId});
 
   Future<Either<NetworkError, CreateAttendanceResponse>> createAttendance(
       {required CreateAttendance createAttendance});
@@ -59,4 +59,7 @@ abstract class TransportRepository {
 
   Future<Either<NetworkError, GetBearerListResponse>> getBearerList(
       {required int studentId});
+
+  Future<Either<NetworkError, GetSchoolContactResponse>> getSchoolContactList(
+      {required int schoolId});
 }

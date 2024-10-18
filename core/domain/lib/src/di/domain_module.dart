@@ -1,6 +1,7 @@
 import 'package:domain/domain.dart';
 
 import 'package:domain/src/usecase/transport/create_incident_report_usecase.dart';
+import 'package:domain/src/usecase/transport/get_school_contact_list_usecase.dart';
 
 import 'package:domain/src/usecase/user/user_permission_details_usecase.dart';
 import 'package:injectable/injectable.dart';
@@ -178,5 +179,12 @@ abstract class DomainModule {
   @lazySingleton
   GetBearerListUsecase getBearerList(TransportRepository transportRepository) {
     return GetBearerListUsecase(transportRepository: transportRepository);
+  }
+
+  @lazySingleton
+  GetSchoolContactListUsecase getSchoolContactList(
+      TransportRepository transportRepository) {
+    return GetSchoolContactListUsecase(
+        transportRepository: transportRepository);
   }
 }

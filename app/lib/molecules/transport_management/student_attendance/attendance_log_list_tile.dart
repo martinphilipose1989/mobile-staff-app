@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/molecules/transport_management/student_attendance/guardian_list.dart';
 import 'package:app/molecules/transport_management/student_attendance/triangle_container.dart';
@@ -82,6 +84,7 @@ class AttendanceLogListTile extends StatelessWidget {
                     ),
                     TextButton.icon(
                       onPressed: () {
+                        log("message ATT");
                         showDialog(
                             context: context,
                             barrierDismissible: false,
@@ -186,9 +189,9 @@ class AttendanceLogListTile extends StatelessWidget {
                               final provider =
                                   ProviderScope.containerOf(context).read(
                                       busRouteDetailsPageViewModelProvider);
-                              int routeId = int.parse(provider.trip?.id ?? '1');
-                              int stopId = int.parse(
-                                  (provider.stop?.id ?? '1').toString());
+                              int routeId = int.parse(provider.trip?.id ?? '');
+                              int stopId =
+                                  int.parse((provider.stop?.id).toString());
 
                               provider.getRouteStudentList(
                                   routeId: routeId, stopId: stopId);

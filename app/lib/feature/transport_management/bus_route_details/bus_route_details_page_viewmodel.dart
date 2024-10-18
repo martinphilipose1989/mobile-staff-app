@@ -64,17 +64,18 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   Stream<Resource<CreateRouteLogsData>> get createRouteLogsStream =>
       _createRouteLogsSubject.stream;
 
-  BusRouteDetailsPageViewModel(
-      {required this.getGuardianlistUsecase,
-      required this.getStudentProfileUsecase,
-      required this.exceptionHandlerBinder,
-      required this.flutterToastErrorPresenter,
-      required this.getStudentlistByRouteUsecase,
-      required this.createAttendanceUsecase,
-      required this.createStopsLogsUsecase,
-      required this.createRouteLogsUsecase});
+  BusRouteDetailsPageViewModel({
+    required this.getGuardianlistUsecase,
+    required this.getStudentProfileUsecase,
+    required this.exceptionHandlerBinder,
+    required this.flutterToastErrorPresenter,
+    required this.getStudentlistByRouteUsecase,
+    required this.createAttendanceUsecase,
+    required this.createStopsLogsUsecase,
+    required this.createRouteLogsUsecase,
+  });
 
-  void getRouteStudentList({required int routeId, required int stopId}) {
+  void getRouteStudentList({required int routeId, int? stopId}) {
     _studentListSubject.add(Resource.loading(data: null));
     final GetStudentlistByRouteUsecaseParams params =
         GetStudentlistByRouteUsecaseParams(routeId: routeId, stopId: stopId);
@@ -106,7 +107,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
           attendanceDetails: [
             AttendanceDetail(
                 attendanceType: remark == "present"
-                    ? AttendanceTypeEnum.present.value
+                    ? AttendanceTypeEnum.pickup.value
                     : AttendanceTypeEnum.absent.value,
                 attendanceRemark: remark,
                 globalStudentId: student.studentId)
@@ -128,7 +129,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         createAttendanceResponse.add(Resource.success(data: data));
 
         getRouteStudentList(
-            routeId: int.parse(trip?.id ?? ''), stopId: stop?.id ?? 0);
+            routeId: int.parse(trip?.id ?? ''), stopId: stop?.id);
       },
       onError: (error) {
         _presentLoadingSubject.add(false);

@@ -84,7 +84,7 @@ class TripListTileHeader extends StatelessWidget {
                                   endDate: DateTime.parse(
                                       trip?.routeStopMapping?[0].stop?.endDate ??
                                           ''),
-                                  id: trip?.routeStopMapping?[0].stop?.id,
+                                //  id: trip?.routeStopMapping?[0].stop?.id,
                                   isDraft:
                                       trip?.routeStopMapping?[0].stop?.isDraft,
                                   lat: trip?.routeStopMapping?[0].stop?.lat,
@@ -116,7 +116,7 @@ class TripListTileHeader extends StatelessWidget {
                         title: buttonTitle,
                         isDisabled:
                             trip?.studentStopsMappings?.isEmpty ?? false,
-                        isLoading: (trip?.isLoading ?? false),
+                        isLoading:  (trip?.isLoading ?? false),
                         titleTextStyle: AppTypography.subtitle2,
                         onPressed: () {
                           model.startRouteCall(trip!);

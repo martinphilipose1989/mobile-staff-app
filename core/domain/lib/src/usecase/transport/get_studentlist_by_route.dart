@@ -18,10 +18,10 @@ class GetStudentlistByRouteUsecase extends BaseUseCase<NetworkError,
 class GetStudentlistByRouteUsecaseParams extends Params {
   final int routeId;
 
-  final int stopId;
+  final int? stopId;
 
   GetStudentlistByRouteUsecaseParams(
-      {super.reloading, required this.routeId, required this.stopId});
+      {super.reloading, required this.routeId, this.stopId});
 
   @override
   Either<AppError, bool> verify() {

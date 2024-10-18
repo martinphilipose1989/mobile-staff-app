@@ -11,7 +11,9 @@ import 'school_contacts_page_viewmodel.dart';
 import 'school_contacts_pageview.dart';
 
 class SchoolContactsPage extends BasePage<SchoolContactsPageViewModel> {
-  const SchoolContactsPage({super.key});
+  const SchoolContactsPage({super.key, required this.schoolId});
+
+  final int schoolId;
 
   @override
   SchoolContactsPageState createState() => SchoolContactsPageState();
@@ -37,7 +39,7 @@ class SchoolContactsPageState
   @override
   void onModelReady(SchoolContactsPageViewModel model) {
     model.exceptionHandlerBinder.bind(context, super.stateObserver);
-    //getViewModel()
+    getViewModel().getSchoolContactList(schoolId: widget.schoolId);
     super.onModelReady(model);
   }
 

@@ -93,9 +93,10 @@ class AppRouter {
         );
 
       case RoutePaths.schoolContactPage:
+        final int schoolId = settings.arguments as int;
         return CupertinoPageRoute(
           settings: const RouteSettings(name: RoutePaths.schoolContactPage),
-          builder: (context) => const SchoolContactsPage(),
+          builder: (context) => SchoolContactsPage(schoolId: schoolId),
         );
 
       case RoutePaths.busCheckListPage:

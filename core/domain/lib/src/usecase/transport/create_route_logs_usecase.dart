@@ -11,17 +11,21 @@ class CreateRouteLogsUsecase extends BaseUseCase<NetworkError,
   Future<Either<NetworkError, CreateRouteLogsModel>> execute(
       {required CreateRouteLogsParams params}) {
     return transportRepository.createRouteLogs(
-      routeId: params.routeId,
-      driverId: params.driverId,
-      didId: params.didId,
-      userType: params.userType,
-      teacherId: params.teacherId,
-      routeStatus: params.routeStatus,
-      startDate: params.startDate,
-      endDate: params.endDate,
-    );
+        routeId: params.routeId,
+        driverId: params.driverId,
+        didId: params.didId,
+        userType: params.userType,
+        teacherId: params.teacherId,
+        routeStatus: params.routeStatus,
+        startDate: params.startDate,
+        endDate: params.endDate);
   }
 }
+
+/*
+ * student_id:[],
+attendance_type:3,4
+ */
 
 class CreateRouteLogsParams extends Params {
   final int? driverId;

@@ -22,7 +22,7 @@ class TransportRepositoryImpl implements TransportRepository {
 
   @override
   Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
-      {required int routeId, required int stopId}) {
+      {required int routeId, int? stopId}) {
     return networkPort.getStudentListByRoute(routeId: routeId, stopId: stopId);
   }
 
@@ -124,5 +124,11 @@ class TransportRepositoryImpl implements TransportRepository {
   Future<Either<NetworkError, GetBearerListResponse>> getBearerList(
       {required int studentId}) {
     return networkPort.getBearerList(studentId: studentId);
+  }
+
+  @override
+  Future<Either<NetworkError, GetSchoolContactResponse>> getSchoolContactList(
+      {required int schoolId}) {
+    return networkPort.getSchoolContactList(schoolId: schoolId);
   }
 }

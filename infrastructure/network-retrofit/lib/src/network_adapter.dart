@@ -261,7 +261,7 @@ class NetworkAdapter implements NetworkPort {
 
   @override
   Future<Either<NetworkError, GetStudentList>> getStudentListByRoute(
-      {required int routeId, required int stopId}) async {
+      {required int routeId, int? stopId}) async {
     final response = await safeApiCall(
         transportService.getStudentRouteList(routeId, stopId));
 
@@ -478,6 +478,16 @@ class NetworkAdapter implements NetworkPort {
       {required int studentId}) async {
     final response =
         await safeApiCall(transportService.getBearerList(studentId));
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, GetSchoolContactResponse>> getSchoolContactList(
+      {required int schoolId}) async {
+    final response =
+        await safeApiCall(transportService.getSchoolContacts(schoolId));
 
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));

@@ -1,8 +1,10 @@
 enum AttendanceTypeEnum {
   present(1),
   absent(2),
-  drop(3),
-  pickup(4);
+  dropall(3),
+  pickupall(4),
+  drop(5),
+  pickup(6);
 
   // This is a field to hold the integer value for each enum
   final int value;
