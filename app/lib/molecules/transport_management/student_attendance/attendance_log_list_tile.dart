@@ -13,6 +13,7 @@ import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer.dart';
 import 'package:app/utils/common_widgets/dialog/basic_dialog.dart';
+import 'package:app/utils/enum/attendance_type_enum.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,6 +91,7 @@ class AttendanceLogListTile extends StatelessWidget {
                             barrierDismissible: false,
                             builder: (context) {
                               return AddEditAttendancePopup(
+                                attendanceType: AttendanceTypeEnum.present,
                                 header: (student.attendanceList == null ||
                                         (student.attendanceList?.isEmpty ??
                                             false))
@@ -99,7 +101,23 @@ class AttendanceLogListTile extends StatelessWidget {
                                 studentName:
                                     "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
                               );
-                            });
+                            }).then((value) {
+                          if (value == true) {
+                            String? routeId = ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider)
+                                .trip
+                                ?.id;
+                            int? stopId = ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider)
+                                .stop
+                                ?.id;
+                            ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider)
+                                .getRouteStudentList(
+                                    routeId: int.parse(routeId ?? ''),
+                                    stopId: stopId);
+                          }
+                        });
                       },
                       label: (student.attendanceList == null ||
                               (student.attendanceList?.isEmpty ?? false))

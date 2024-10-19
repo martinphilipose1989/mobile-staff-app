@@ -28,11 +28,14 @@ class ViewOrDropBearerViewmodel extends BasePageViewModel {
 
   BehaviorSubject<int> selectIndex = BehaviorSubject.seeded(0);
 
+  final UpdateAttendanceUsecase updateAttendanceUsecase;
+
   ViewOrDropBearerViewmodel(
       {required this.flutterToastErrorPresenter,
       required this.exceptionHandlerBinder,
       required this.getBearerListUsecase,
-      required this.createAttendanceUsecase});
+      required this.createAttendanceUsecase,
+      required this.updateAttendanceUsecase});
 
   void getBearerList({required int studentId}) {
     bearerResponse.add(Resource.loading());
@@ -81,6 +84,38 @@ class ViewOrDropBearerViewmodel extends BasePageViewModel {
       },
       onError: (error) {
         createAttendanceResponse.add(Resource.error());
+      },
+    );
+  }
+
+  void updateAttendance(
+      {required String attendanceRemark,
+      required AttendanceTypeEnum attendanceType,
+      required int studentId}) {
+    createAttendanceResponse.add(Resource.loading());
+    UpdateAttendanceUsecaseParams params = UpdateAttendanceUsecaseParams(
+      request: UpdateAttendanceRequest(
+        attendanceUpdates: [
+          AttendanceUpdate(
+            attendanceDate: [DateTime.now().dateFormatToyyyMMdd()],
+            attendanceRemark: attendanceRemark,
+            attendanceType: attendanceType.value,
+            studentId: [studentId],
+          ),
+        ],
+      ),
+    );
+
+    ApiResponseHandler.apiCallHandler(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) => updateAttendanceUsecase.execute(params: params),
+      onSuccess: (result) {
+        createAttendanceResponse.add(Resource.success());
+      },
+      onError: (error) {
+        createAttendanceResponse.add(Resource.error(error: error));
       },
     );
   }

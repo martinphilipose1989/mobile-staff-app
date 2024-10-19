@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/molecules/transport_management/student_attendance/guardian_list.dart';
 import 'package:app/molecules/transport_management/student_attendance/triangle_container.dart';
@@ -75,17 +77,17 @@ class DropAttendanceLogTile extends StatelessWidget {
                       ],
                     ),
                     Visibility(
-                      visible: student.attendanceList?.isNotEmpty ?? false
-                          ? student.attendanceList?.first.attendanceType ==
-                              AttendanceTypeEnum.drop
-                          : false,
+                      visible: student.attendanceList?.isNotEmpty == true &&
+                          student.attendanceList?.first.attendanceType ==
+                              AttendanceTypeEnum.drop.value,
                       replacement: TextButton.icon(
                         onPressed: () {
                           showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ViewOrDropBearer(student: student);
-                              }).then((value) {
+                            context: context,
+                            builder: (context) {
+                              return ViewOrDropBearer(student: student);
+                            },
+                          ).then((value) {
                             if (value == true) {
                               final provider =
                                   ProviderScope.containerOf(context).read(
@@ -104,9 +106,10 @@ class DropAttendanceLogTile extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.primary),
-                            borderRadius: BorderRadius.circular(8),
-                            color: AppColors.primaryLighter),
+                          border: Border.all(color: AppColors.primary),
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColors.primaryLighter,
+                        ),
                         child: Row(
                           children: [
                             SvgPicture.asset(AppImages.dropActiveIcon),
@@ -114,7 +117,7 @@ class DropAttendanceLogTile extends StatelessWidget {
                               text: "Dropped",
                               color: AppColors.primary,
                               style: AppTypography.subtitle2,
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -162,6 +165,13 @@ class DropAttendanceLogTile extends StatelessWidget {
                                         Navigator.pop(context);
                                       });
                                 });
+                          } else {
+                            final model = ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider);
+                            model.flutterToastErrorPresenter.show(
+                                Exception(),
+                                context,
+                                "No intimation for ${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}");
                           }
                         },
                         child: Column(

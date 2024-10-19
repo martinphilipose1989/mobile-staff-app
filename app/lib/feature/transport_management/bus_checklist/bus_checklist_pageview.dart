@@ -127,7 +127,8 @@ class BusChecklistPageView
                                                     '',
                                                 style: AppTypography.subtitle2),
                                             subtitle: CommonText(
-                                                text: '',
+                                                text:
+                                                    "${checkListdata?.data?[index].userType}",
                                                 style: AppTypography.body2),
                                             trailing: AppStreamBuilder<
                                                 Resource<

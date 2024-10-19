@@ -16,6 +16,7 @@ import 'package:network_retrofit/src/model/request/transport_management/create_r
 import 'package:network_retrofit/src/model/request/transport_management/get_check_list_entity_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/get_checklist_confirmation_request.dart';
 import 'package:network_retrofit/src/model/request/transport_management/map_student_bearer_entity_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/update_attendance_entity_request.dart';
 import 'package:network_retrofit/src/model/request/user_permission/user_permission_request_entity.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/create_gatepass_entity_response.dart';
 import 'package:network_retrofit/src/model/response/gate_managment/upload_file_response_entity.dart';
@@ -401,6 +402,8 @@ class NetworkAdapter implements NetworkPort {
       int? driverId,
       int? didId,
       int? teacherId,
+      List<int>? studentIdList,
+      int? attendanceType,
       required int userType,
       required String routeStatus,
       required String startDate,
@@ -414,7 +417,9 @@ class NetworkAdapter implements NetworkPort {
             userType: userType,
             routeStatus: routeStatus,
             startDate: startDate,
-            teacherId: teacherId);
+            teacherId: teacherId,
+            studentId: studentIdList,
+            attendanceType: attendanceType);
     final response = await safeApiCall(
       transportService.createRouteLogs(createRouteLogsRequest),
     );
@@ -488,6 +493,30 @@ class NetworkAdapter implements NetworkPort {
       {required int schoolId}) async {
     final response =
         await safeApiCall(transportService.getSchoolContacts(schoolId));
+
+    return response.fold(
+        (error) => Left(error), (data) => Right(data.data.transform()));
+  }
+
+  @override
+  Future<Either<NetworkError, UpdateAttendanceResponse>> updateAttendance(
+      {required UpdateAttendanceRequest body}) async {
+    final response = await safeApiCall(
+      academicsService.updateAttendance(
+        UpdateAttendanceRequestEntity(
+          attendanceUpdates: body.attendanceUpdates
+              ?.map(
+                (e) => AttendanceUpdateEntity(
+                  attendanceDate: e.attendanceDate,
+                  attendanceRemark: e.attendanceRemark,
+                  studentId: e.studentId,
+                  attendanceType: e.attendanceType,
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
 
     return response.fold(
         (error) => Left(error), (data) => Right(data.data.transform()));

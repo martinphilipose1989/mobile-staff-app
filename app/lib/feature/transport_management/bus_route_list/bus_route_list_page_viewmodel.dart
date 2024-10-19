@@ -72,7 +72,7 @@ class BusRouteListPageViewModel extends BasePageViewModel {
   Position? _busPosition;
   void getUserLoacation() async {
     PermissionHandlerService permission = PermissionHandlerService();
-    _busPosition = await permission.getUserLocation();
+    // _busPosition = await permission.getUserLocation();
   }
 
   void fetchBusStopLogs(List<RouteStopMappingModel> a) {

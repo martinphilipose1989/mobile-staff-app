@@ -20,6 +20,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   final GetStudentProfileUsecase getStudentProfileUsecase;
   final CreateStopsLogsUsecase createStopsLogsUsecase;
   final CreateRouteLogsUsecase createRouteLogsUsecase;
+  final UpdateAttendanceUsecase updateAttendanceUsecase;
 
   final _studentListSubject =
       BehaviorSubject<Resource<List<Student>>>.seeded(Resource.none());
@@ -64,16 +65,26 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   Stream<Resource<CreateRouteLogsData>> get createRouteLogsStream =>
       _createRouteLogsSubject.stream;
 
-  BusRouteDetailsPageViewModel({
-    required this.getGuardianlistUsecase,
-    required this.getStudentProfileUsecase,
-    required this.exceptionHandlerBinder,
-    required this.flutterToastErrorPresenter,
-    required this.getStudentlistByRouteUsecase,
-    required this.createAttendanceUsecase,
-    required this.createStopsLogsUsecase,
-    required this.createRouteLogsUsecase,
-  });
+  final pickAllLoadingSubject =
+      BehaviorSubject<Resource<bool>>.seeded(Resource.none());
+
+  Stream<Resource<bool>> get pickAllLoadingStream =>
+      pickAllLoadingSubject.stream;
+
+  int totalStudent = 0;
+  int presentStudent = 0;
+  int absentStudent = 0;
+
+  BusRouteDetailsPageViewModel(
+      {required this.getGuardianlistUsecase,
+      required this.getStudentProfileUsecase,
+      required this.exceptionHandlerBinder,
+      required this.flutterToastErrorPresenter,
+      required this.getStudentlistByRouteUsecase,
+      required this.createAttendanceUsecase,
+      required this.createStopsLogsUsecase,
+      required this.createRouteLogsUsecase,
+      required this.updateAttendanceUsecase});
 
   void getRouteStudentList({required int routeId, int? stopId}) {
     _studentListSubject.add(Resource.loading(data: null));
@@ -87,13 +98,26 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
             getStudentlistByRouteUsecase.execute(params: params),
         onSuccess: (data) {
           _studentListSubject.add(Resource.success(data: data?.data));
+          totalStudent = data?.data?.length ?? 0;
+          presentStudent = data?.data
+                  ?.where((student) =>
+                      student.attendanceList?.isNotEmpty == true &&
+                      student.attendanceList?.first.attendanceRemark ==
+                          "present")
+                  .length ??
+              0;
+          absentStudent = totalStudent - presentStudent;
         },
         onError: (error) {
           _studentListSubject.add(Resource.error(data: null, error: error));
         });
   }
 
-  void createAttendance({required Student student, required String remark}) {
+  void createAttendance({
+    required Student student,
+    required String remark,
+    AttendanceTypeEnum? attendanceTypeEnum,
+  }) {
     if (remark == "present") {
       _presentLoadingSubject.add(true);
       _absentLoadingSubject.add(false);
@@ -107,7 +131,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
           attendanceDetails: [
             AttendanceDetail(
                 attendanceType: remark == "present"
-                    ? AttendanceTypeEnum.pickup.value
+                    ? attendanceTypeEnum?.value
                     : AttendanceTypeEnum.absent.value,
                 attendanceRemark: remark,
                 globalStudentId: student.studentId)
@@ -178,6 +202,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       createCall: (params) => createStopsLogsUsecase.execute(params: params),
       onSuccess: (result) {
         _createStopLogsSubgject.add(Resource.success(data: result?.data));
+        _createStopLogsSubgject.add(Resource.none());
       },
       onError: (error) {
         _createStopLogsSubgject.add(Resource.error(error: error));
@@ -185,17 +210,37 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
     );
   }
 
-  void createRouteLogs(int routeId) {
+  void createRouteLogs(int routeId,
+      {AttendanceTypeEnum? attendanceTypeEnum,
+      TripRouteStatus status = TripRouteStatus.inProcess}) {
     _createRouteLogsSubject.add(Resource.loading(data: null));
+    final studentList = _studentListSubject.value.data
+        ?.where((student) =>
+            student.attendanceList?.isNotEmpty == true &&
+            student.attendanceList?.first.attendanceRemark == "present")
+        .map(
+            (student) => student.studentId) // Assuming 'studentId' is the field
+        .toList();
+    final studentListFiltered =
+        studentList?.where((id) => id != null).cast<int>().toList();
+
     final CreateRouteLogsParams params = CreateRouteLogsParams(
-        didId: null,
-        driverId: 1,
-        endDate: DateTime.now().toIso8601String(),
-        startDate: DateTime.now().toIso8601String(),
-        routeId: routeId,
-        userType: 1,
-        routeStatus: "Completed",
-        teacherId: null);
+      didId: null,
+      driverId: 1,
+      endDate: DateTime.now().toIso8601String(),
+      startDate: DateTime.now().toIso8601String(),
+      routeId: routeId,
+      userType: 1,
+      routeStatus: status.status,
+      teacherId: null,
+      attendanceType: attendanceTypeEnum?.value,
+      studentIdList: studentListFiltered, // Use the filtered list
+    );
+
+    if (studentList != null) {
+      pickAllLoadingSubject.add(Resource.loading());
+    }
+
     ApiResponseHandler.apiCallHandler(
       exceptionHandlerBinder: exceptionHandlerBinder,
       flutterToastErrorPresenter: flutterToastErrorPresenter,
@@ -203,9 +248,57 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       createCall: (params) => createRouteLogsUsecase.execute(params: params),
       onSuccess: (result) {
         _createRouteLogsSubject.add(Resource.success(data: result?.data));
+        if (studentListFiltered != null) {
+          _createRouteLogsSubject.add(Resource.none());
+          pickAllLoadingSubject.add(Resource.success(data: false));
+        }
       },
       onError: (error) {
         _createRouteLogsSubject.add(Resource.error(data: null, error: error));
+        if (studentListFiltered != null) {
+          pickAllLoadingSubject.add(Resource.error(data: false));
+        }
+      },
+    );
+  }
+
+  void updateAttendance(
+      {required String attendanceRemark,
+      required AttendanceTypeEnum attendanceType,
+      required int studentId}) {
+    if (attendanceRemark == "present") {
+      _presentLoadingSubject.add(true);
+      _absentLoadingSubject.add(false);
+    } else {
+      _absentLoadingSubject.add(true);
+      _presentLoadingSubject.add(false);
+    }
+    UpdateAttendanceUsecaseParams params = UpdateAttendanceUsecaseParams(
+      request: UpdateAttendanceRequest(
+        attendanceUpdates: [
+          AttendanceUpdate(
+            attendanceDate: [DateTime.now().dateFormatToyyyMMdd()],
+            attendanceRemark: attendanceRemark,
+            attendanceType: attendanceType.value,
+            studentId: [studentId],
+          ),
+        ],
+      ),
+    );
+
+    ApiResponseHandler.apiCallHandler(
+      exceptionHandlerBinder: exceptionHandlerBinder,
+      flutterToastErrorPresenter: flutterToastErrorPresenter,
+      params: params,
+      createCall: (params) => updateAttendanceUsecase.execute(params: params),
+      onSuccess: (result) {
+        _presentLoadingSubject.add(false);
+        _absentLoadingSubject.add(false);
+        createAttendanceResponse.add(Resource.success());
+      },
+      onError: (error) {
+        _presentLoadingSubject.add(false);
+        _absentLoadingSubject.add(false);
       },
     );
   }

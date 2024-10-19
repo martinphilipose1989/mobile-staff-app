@@ -12,6 +12,7 @@ import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer.dart';
 import 'package:app/utils/common_widgets/dialog/basic_dialog.dart';
+import 'package:app/utils/enum/attendance_type_enum.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,6 +81,7 @@ class DropAttendanceLogTileFirst extends StatelessWidget {
                             barrierDismissible: false,
                             builder: (context) {
                               return AddEditAttendancePopup(
+                                attendanceType: AttendanceTypeEnum.pickup,
                                 header: (student.attendanceList == null ||
                                         (student.attendanceList?.isEmpty ??
                                             false))
@@ -89,7 +91,18 @@ class DropAttendanceLogTileFirst extends StatelessWidget {
                                 studentName:
                                     "${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}",
                               );
-                            });
+                            }).then((value) {
+                          if (value == true) {
+                            String? routeId = ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider)
+                                .trip
+                                ?.id;
+                            ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider)
+                                .getRouteStudentList(
+                                    routeId: int.parse(routeId ?? ''));
+                          }
+                        });
                       },
                       label: (student.attendanceList == null ||
                               (student.attendanceList?.isEmpty ?? false))
@@ -143,6 +156,13 @@ class DropAttendanceLogTileFirst extends StatelessWidget {
                                         Navigator.pop(context);
                                       });
                                 });
+                          } else {
+                            final model = ProviderScope.containerOf(context)
+                                .read(busRouteDetailsPageViewModelProvider);
+                            model.flutterToastErrorPresenter.show(
+                                Exception(),
+                                context,
+                                "No intimation for ${student.studentDetails?.firstName ?? ""} ${student.studentDetails?.lastName ?? ""}");
                           }
                         },
                         child: Column(
@@ -172,9 +192,9 @@ class DropAttendanceLogTileFirst extends StatelessWidget {
                               final provider =
                                   ProviderScope.containerOf(context).read(
                                       busRouteDetailsPageViewModelProvider);
-                              int routeId = int.parse(provider.trip?.id ?? '1');
-                              int stopId = int.parse(
-                                  (provider.stop?.id ?? '1').toString());
+                              int routeId = int.parse(provider.trip?.id ?? '');
+                              int? stopId =
+                                  int.tryParse((provider.stop?.id).toString());
 
                               ProviderScope.containerOf(context)
                                   .read(busRouteDetailsPageViewModelProvider)

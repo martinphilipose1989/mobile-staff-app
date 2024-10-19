@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
@@ -122,6 +124,7 @@ class BusRouteListPageView
                                                                 .all(16.0),
                                                         child: InkWell(
                                                           onTap: () {
+                                                            log("DROP");
                                                             BusRouteDetailsPageParams
                                                                 params =
                                                                 BusRouteDetailsPageParams(

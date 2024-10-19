@@ -77,6 +77,8 @@ abstract class NetworkPort {
       int? driverId,
       int? didId,
       int? teacherId,
+      List<int>? studentIdList,
+      int? attendanceType,
       required String routeStatus,
       required int userType,
       required String startDate,
@@ -98,4 +100,7 @@ abstract class NetworkPort {
 
   Future<Either<NetworkError, GetSchoolContactResponse>> getSchoolContactList(
       {required int schoolId});
+
+  Future<Either<NetworkError, UpdateAttendanceResponse>> updateAttendance(
+      {required UpdateAttendanceRequest body});
 }

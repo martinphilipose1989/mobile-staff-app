@@ -6,6 +6,7 @@ import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/enum/attendance_type_enum.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -17,16 +18,14 @@ class AddEditAttendancePopup extends StatelessWidget {
   final String header;
   final String studentName;
   final Student student;
-  // final VoidCallback onStudentPresentCallback;
-  // final VoidCallback onAbsentPresentCallback;
+  final AttendanceTypeEnum attendanceType;
 
   const AddEditAttendancePopup(
       {super.key,
       required this.header,
       required this.student,
-      // required this.onStudentPresentCallback,
-      // required this.onAbsentPresentCallback,
-      required this.studentName});
+      required this.studentName,
+      required this.attendanceType});
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +42,7 @@ class AddEditAttendancePopup extends StatelessWidget {
               stream: model!.createAttendanceResponse.stream,
               onData: (result) {
                 if (result.status == Status.success) {
+                  model.createAttendanceResponse.add(Resource.none());
                   Navigator.pop(context, true);
                 }
               },
@@ -113,9 +113,21 @@ class AddEditAttendancePopup extends StatelessWidget {
                                       studentId: student.studentId,
                                       studentDetails: student.studentDetails,
                                     );
-                                    model.createAttendance(
-                                        student: selectedStudent,
-                                        remark: "absent");
+                                    if (student.attendanceList != null &&
+                                        (student.attendanceList?.isNotEmpty ??
+                                            false)) {
+                                      model.updateAttendance(
+                                          attendanceRemark: "absent",
+                                          attendanceType:
+                                              AttendanceTypeEnum.absent,
+                                          studentId: student.studentId ?? 0);
+                                    } else {
+                                      model.createAttendance(
+                                          attendanceTypeEnum:
+                                              AttendanceTypeEnum.absent,
+                                          student: selectedStudent,
+                                          remark: "absent");
+                                    }
                                   },
                                 );
                               }),
@@ -145,9 +157,19 @@ class AddEditAttendancePopup extends StatelessWidget {
                                       studentId: student.studentId,
                                       studentDetails: student.studentDetails,
                                     );
-                                    model.createAttendance(
-                                        student: selectedStudent,
-                                        remark: "present");
+                                    if (student.attendanceList != null &&
+                                        (student.attendanceList?.isNotEmpty ??
+                                            false)) {
+                                      model.updateAttendance(
+                                          attendanceRemark: "present",
+                                          attendanceType: attendanceType,
+                                          studentId: student.studentId ?? 0);
+                                    } else {
+                                      model.createAttendance(
+                                          attendanceTypeEnum: attendanceType,
+                                          student: selectedStudent,
+                                          remark: "present");
+                                    }
                                   },
                                 );
                               }),

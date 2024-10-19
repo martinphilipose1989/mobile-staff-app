@@ -144,6 +144,7 @@ final busChecklistPageViewModelProvider =
 final busRouteDetailsPageViewModelProvider =
     ChangeNotifierProvider.autoDispose<BusRouteDetailsPageViewModel>(
   (ref) => BusRouteDetailsPageViewModel(
+      updateAttendanceUsecase: getIt.get<UpdateAttendanceUsecase>(),
       getGuardianlistUsecase: getIt.get<GetGuardianlistUsecase>(),
       getStudentProfileUsecase: getIt.get<GetStudentProfileUsecase>(),
       createAttendanceUsecase: getIt.get<CreateAttendanceUsecase>(),
@@ -196,6 +197,7 @@ final addNewBearerViewmodelProvider =
 final viewOrDropBearerViewmodel =
     ChangeNotifierProvider.autoDispose.family<ViewOrDropBearerViewmodel, int>(
   (ref, studentId) => ViewOrDropBearerViewmodel(
+    updateAttendanceUsecase: getIt.get<UpdateAttendanceUsecase>(),
     flutterToastErrorPresenter: getIt.get<FlutterToastErrorPresenter>(),
     exceptionHandlerBinder: getIt.get<FlutterExceptionHandlerBinder>(),
     getBearerListUsecase: getIt.get<GetBearerListUsecase>(),

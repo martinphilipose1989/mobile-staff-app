@@ -12,3 +12,11 @@ enum AttendanceTypeEnum {
   // Constructor to assign the value
   const AttendanceTypeEnum(this.value);
 }
+
+enum TripRouteStatus {
+  inProcess("Inprocess"),
+  completed("Completed");
+
+  final String status;
+  const TripRouteStatus(this.status);
+}

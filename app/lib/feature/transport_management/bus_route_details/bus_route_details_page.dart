@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
 
@@ -45,6 +47,7 @@ class BusChecklistPageState extends AppBasePageState<
         ProviderScope.containerOf(context)
             .read(busRouteListPageViewModelProvider)
             .trip;
+    log("TRIP ${model.trip}");
     model.stop = widget.busRouteDetailsPageParams.stop;
     model.isLastIndex = widget.busRouteDetailsPageParams.isLastIndex;
     model.dropStarted = widget.busRouteDetailsPageParams.dropStarted;

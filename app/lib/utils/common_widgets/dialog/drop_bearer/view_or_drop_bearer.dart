@@ -6,13 +6,16 @@ import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_image_widget.dart';
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
+import 'package:app/utils/common_widgets/dialog/add_new_bearer/add_new_bearer.dart';
 import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/enum/attendance_type_enum.dart';
 
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:app/utils/url_launcher.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
@@ -167,7 +170,39 @@ class ViewOrDropBearer extends StatelessWidget {
                                 child: CommonPrimaryElevatedButton(
                                   elevation: 0,
                                   title: "Add Bearer",
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) {
+                                          return AddNewBearer(
+                                              studentId: student.studentId!,
+                                              cancelCallback: () {
+                                                Navigator.pop(context);
+                                              },
+                                              addNewBearerCallback: () {});
+                                        }).then((value) {
+                                      if (value == true) {
+                                        final provider = ProviderScope
+                                                .containerOf(context)
+                                            .read(
+                                                busRouteDetailsPageViewModelProvider);
+                                        int routeId =
+                                            int.parse(provider.trip?.id ?? '1');
+                                        int stopId = int.parse(
+                                            (provider.stop?.id ?? '1')
+                                                .toString());
+
+                                        ProviderScope.containerOf(context)
+                                            .read(
+                                                busRouteDetailsPageViewModelProvider)
+                                            .getRouteStudentList(
+                                                routeId: routeId,
+                                                stopId: stopId);
+                                      }
+                                    });
+                                  },
                                   backgroundColor: AppColors.textPalerGray,
                                   foregroundColor: AppColors.textGray,
                                 ),
@@ -197,8 +232,21 @@ class ViewOrDropBearer extends StatelessWidget {
                                             .onPrimary,
                                         title: "Drop",
                                         onPressed: () {
-                                          model.createAttendance(
-                                              student: student);
+                                          if (student.attendanceList?.first
+                                                  .attendanceType ==
+                                              AttendanceTypeEnum.absent) {
+                                            model.flutterToastErrorPresenter.show(
+                                                Exception(),
+                                                context,
+                                                "Cannot mark drop because student is absent");
+                                          } else {
+                                            model.updateAttendance(
+                                                attendanceRemark: 'present',
+                                                attendanceType:
+                                                    AttendanceTypeEnum.drop,
+                                                studentId:
+                                                    student.studentId ?? 0);
+                                          }
                                         },
                                       );
                                     }),

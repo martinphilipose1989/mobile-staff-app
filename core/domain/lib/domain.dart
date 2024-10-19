@@ -43,6 +43,7 @@ export 'src/usecase/transport/create_bearer_usecase.dart';
 export 'src/usecase/transport/create_stops_logs_usecase.dart';
 export 'src/usecase/transport/get_bearer_list_usecase.dart';
 export 'src/usecase/transport/get_school_contact_list_usecase.dart';
+export 'src/usecase/transport/update_attendance_usecase.dart';
 
 export 'package:shared/shared.dart';
 

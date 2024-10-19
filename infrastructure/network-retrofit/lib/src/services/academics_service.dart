@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:network_retrofit/src/model/request/transport_management/create_attendane_entity_request.dart';
+import 'package:network_retrofit/src/model/request/transport_management/update_attendance_entity_request.dart';
 import 'package:network_retrofit/src/model/response/transport_management/create_attendance_response_entity.dart';
+import 'package:network_retrofit/src/model/response/transport_management/update_attendance_entity_response.dart';
 
 import 'package:retrofit/retrofit.dart';
 
 part 'academics_service.g.dart';
 
 const String _createAttendance = "academics/attendance/create";
+const String _updateAttendance = "academics/attendance/updateMarkAttendance";
 
 @RestApi()
 abstract class AcademicsService {
@@ -17,4 +20,8 @@ abstract class AcademicsService {
   @POST(_createAttendance)
   Future<HttpResponse<CreateAttendanceResponseEntity>> createAttendance(
       @Body() CreateAttendanceEntity body);
+
+  @POST(_updateAttendance)
+  Future<HttpResponse<UpdateAttendanceResponseEntity>> updateAttendance(
+      @Body() UpdateAttendanceRequestEntity reuqest);
 }

@@ -77,6 +77,8 @@ class TransportRepositoryImpl implements TransportRepository {
       int? driverId,
       int? didId,
       int? teacherId,
+      List<int>? studentIdList,
+      int? attendanceType,
       required String routeStatus,
       required int userType,
       required String startDate,
@@ -89,7 +91,9 @@ class TransportRepositoryImpl implements TransportRepository {
         teacherId: teacherId,
         routeStatus: routeStatus,
         startDate: startDate,
-        endDate: endDate);
+        endDate: endDate,
+        attendanceType: attendanceType,
+        studentIdList: studentIdList);
   }
 
   @override
@@ -130,5 +134,11 @@ class TransportRepositoryImpl implements TransportRepository {
   Future<Either<NetworkError, GetSchoolContactResponse>> getSchoolContactList(
       {required int schoolId}) {
     return networkPort.getSchoolContactList(schoolId: schoolId);
+  }
+
+  @override
+  Future<Either<NetworkError, UpdateAttendanceResponse>> updateAttendance(
+      {required UpdateAttendanceRequest body}) {
+    return networkPort.updateAttendance(body: body);
   }
 }

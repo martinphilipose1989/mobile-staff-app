@@ -20,23 +20,22 @@ class CreateRouteLogsRequest {
   String? startDate;
   @JsonKey(name: "end_date")
   String? endDate;
-  // @JsonKey(name: "student_id")
-  // List<int>? studentId;
-  // @JsonKey(name: "attendance_type")
-  // int? attendanceType;
+  @JsonKey(name: "student_id")
+  List<int>? studentId;
+  @JsonKey(name: "attendance_type")
+  int? attendanceType;
 
-  CreateRouteLogsRequest({
-    this.routeId,
-    this.driverId,
-    this.didId,
-    this.teacherId,
-    this.routeStatus,
-    this.startDate,
-    this.endDate,
-    this.userType,
-    // this.attendanceType,
-    // this.studentId
-  });
+  CreateRouteLogsRequest(
+      {this.routeId,
+      this.driverId,
+      this.didId,
+      this.teacherId,
+      this.routeStatus,
+      this.startDate,
+      this.endDate,
+      this.userType,
+      this.attendanceType,
+      this.studentId});
 
   factory CreateRouteLogsRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateRouteLogsRequestFromJson(json);

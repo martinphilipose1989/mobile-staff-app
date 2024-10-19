@@ -18,14 +18,11 @@ class CreateRouteLogsUsecase extends BaseUseCase<NetworkError,
         teacherId: params.teacherId,
         routeStatus: params.routeStatus,
         startDate: params.startDate,
-        endDate: params.endDate);
+        endDate: params.endDate,
+        attendanceType: params.attendanceType,
+        studentIdList: params.studentIdList);
   }
 }
-
-/*
- * student_id:[],
-attendance_type:3,4
- */
 
 class CreateRouteLogsParams extends Params {
   final int? driverId;
@@ -36,12 +33,16 @@ class CreateRouteLogsParams extends Params {
   final String startDate;
   final String endDate;
   final int userType;
+  final List<int>? studentIdList;
+  final int? attendanceType;
 
   CreateRouteLogsParams(
       {required this.routeId,
       this.driverId,
       this.didId,
       this.teacherId,
+      this.attendanceType,
+      this.studentIdList,
       required this.routeStatus,
       required this.startDate,
       required this.endDate,

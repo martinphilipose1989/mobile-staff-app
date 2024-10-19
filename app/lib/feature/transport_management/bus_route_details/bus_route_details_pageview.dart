@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:app/di/states/viewmodels.dart';
 
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/attendance_count_tile.dart';
+
 import 'package:app/molecules/transport_management/student_attendance/attendance_log_list_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/drop_attendance_log_tile.dart';
 import 'package:app/molecules/transport_management/student_attendance/drop_attendance_log_tile_first.dart';
@@ -18,6 +17,7 @@ import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/common_widgets/common_text_widget.dart';
 import 'package:app/utils/common_widgets/no_data_found_widget.dart';
 import 'package:app/utils/data_status_widget.dart';
+import 'package:app/utils/enum/attendance_type_enum.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -61,26 +61,39 @@ class BusRouteDetailsPageView
             ],
           ),
         ),
-        // const Padding(
-        //   padding: EdgeInsets.symmetric(horizontal: 16),
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [
-        // AttendanceCountTile(
-        //     count: 15, countType: "Total", textColor: AppColors.primary),
-        //       AttendanceCountTile(
-        //           count: 10,
-        //           countType: "Picked Up",
-        //           textColor: Color(0xff5C3535)),
-        //       AttendanceCountTile(
-        //           count: 10,
-        //           countType: "Present",
-        //           textColor: AppColors.success),
-        //       AttendanceCountTile(
-        //           count: 5, countType: "Absent", textColor: AppColors.failure),
-        //     ],
-        //   ),
-        // ),
+        if (model.isLastIndex == true || model.stop?.id == null) ...[
+          const SizedBox(height: 16),
+          AppStreamBuilder<Resource<List<Student>>>(
+              stream: model.studentListStream,
+              initialData: Resource.none(),
+              dataBuilder: (context, studentData) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      AttendanceCountTile(
+                          count: model.totalStudent,
+                          countType: "Total",
+                          textColor: AppColors.primary),
+                      if (model.stop?.id != null)
+                        AttendanceCountTile(
+                            count: model.presentStudent,
+                            countType: "Picked Up",
+                            textColor: const Color(0xff5C3535)),
+                      AttendanceCountTile(
+                          count: model.presentStudent,
+                          countType: "Present",
+                          textColor: AppColors.success),
+                      AttendanceCountTile(
+                          count: model.absentStudent,
+                          countType: "Absent",
+                          textColor: AppColors.failure),
+                    ],
+                  ),
+                );
+              }),
+        ],
         Expanded(
           child: AppStreamBuilder<Resource<List<Student>>>(
             stream: model.studentListStream,
@@ -105,9 +118,8 @@ class BusRouteDetailsPageView
                         : "An unexpected error occurred. Please try again later or contact support if the issue persists.",
                     onPressed: () {
                       model.getRouteStudentList(
-                          routeId: int.parse(model.trip?.id ?? '1'),
-                          stopId:
-                              int.parse((model.stop?.id ?? '1').toString()));
+                          routeId: int.parse(model.trip?.id ?? ''),
+                          stopId: int.tryParse((model.stop?.id).toString()));
                     },
                   ),
                 ),
@@ -118,16 +130,17 @@ class BusRouteDetailsPageView
 
                     return model.trip?.routeType == '1'
                         ? (model.dropStarted ?? false)
-                            ? DropAttendanceLogTile(student: student!)
-                            : DropAttendanceLogTileFirst(student: student!)
-                        : AttendanceLogListTile(student: student!);
+                            ? DropAttendanceLogTile(
+                                student: student ?? Student())
+                            : DropAttendanceLogTileFirst(
+                                student: student ?? Student())
+                        : AttendanceLogListTile(student: student ?? Student());
                   },
                 ),
               );
             },
           ),
         ),
-
         model.trip?.routeType == '1'
             ? (model.dropStarted ?? false)
                 ? AppStreamBuilder<Resource<CreateStopLogsData>>(
@@ -176,7 +189,12 @@ class BusRouteDetailsPageView
                                             (model.isLastIndex ?? false)
                                                 ? model.createRouteLogs(
                                                     int.parse(
-                                                        model.trip?.id ?? ''))
+                                                        model.trip?.id ?? ''),
+                                                    attendanceTypeEnum:
+                                                        AttendanceTypeEnum
+                                                            .dropall,
+                                                    status: TripRouteStatus
+                                                        .completed)
                                                 : model.createStopLog(
                                                     model.stop?.id ?? 0);
                                           },
@@ -185,24 +203,46 @@ class BusRouteDetailsPageView
                           });
                     },
                   )
-                : Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    child: CommonPrimaryElevatedButton(
-                      title: "Pickup All",
-                      width: double.infinity,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                                context, RoutePaths.busRouteListPage,
-                                arguments: true)
-                            .then(
-                          (value) {
-                            model.reset();
+                : AppStreamBuilder<Resource<List<Student>>>(
+                    initialData: Resource.none(),
+                    stream: model.studentListStream,
+                    dataBuilder: (context, student) {
+                      return AppStreamBuilder<Resource<bool>>(
+                          stream: model.pickAllLoadingStream,
+                          initialData: Resource.none(),
+                          onData: (result) {
+                            if (result.status == Status.success) {
+                              model.pickAllLoadingSubject.add(Resource.none());
+                              Navigator.pushNamed(
+                                      context, RoutePaths.busRouteListPage,
+                                      arguments: true)
+                                  .then((value) {
+                                model.reset();
+                              });
+                            }
                           },
-                        );
-                      },
-                    ),
-                  )
+                          dataBuilder: (context, loading) {
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              width: double.infinity,
+                              child: CommonPrimaryElevatedButton(
+                                  isLoading: loading?.status == Status.loading,
+                                  isDisabled: student?.data?.any((students) =>
+                                          students.attendanceList?.isEmpty ??
+                                          true) ??
+                                      true,
+                                  title: "Pickup All",
+                                  width: double.infinity,
+                                  onPressed: () {
+                                    model.createRouteLogs(
+                                      int.parse(model.trip?.id ?? ''),
+                                      attendanceTypeEnum:
+                                          AttendanceTypeEnum.pickupall,
+                                    );
+                                  }),
+                            );
+                          });
+                    })
             : AppStreamBuilder<Resource<CreateStopLogsData>>(
                 stream: model.createStopLogsSubgject,
                 initialData: Resource.none(),
@@ -217,12 +257,15 @@ class BusRouteDetailsPageView
                       initialData: Resource.none(),
                       onData: (value) {
                         if (value.status == Status.success) {
-                          ProviderScope.containerOf(context)
-                              .read(myDutyPageViewModelProvider)
-                              .getMyDutyList();
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          if (model.isLastIndex ?? false) {
+                            ProviderScope.containerOf(context)
+                                .read(myDutyPageViewModelProvider)
+                                .getMyDutyList();
+
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          }
                         }
                       },
                       dataBuilder: (context, createRouteLogsdata) {
@@ -245,7 +288,11 @@ class BusRouteDetailsPageView
                                       onPressed: () {
                                         (model.isLastIndex ?? false)
                                             ? model.createRouteLogs(
-                                                int.parse(model.trip?.id ?? ''))
+                                                int.parse(model.trip?.id ?? ''),
+                                                status:
+                                                    TripRouteStatus.completed,
+                                                attendanceTypeEnum:
+                                                    AttendanceTypeEnum.dropall)
                                             : model.createStopLog(
                                                 model.stop?.id ?? 0);
                                       },

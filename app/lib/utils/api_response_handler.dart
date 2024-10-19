@@ -45,7 +45,8 @@ abstract class ApiResponseHandler {
     log("${appError?.error.message}");
     switch (appError?.error.code) {
       case 401:
-      // navigate to splash screen and show dialog
+        // navigate to splash screen and show dialog
+        log("========== 401 ===========");
       case 408: // Connection Timeout
         flutterToastErrorPresenter.show(
             appError!.throwable,
