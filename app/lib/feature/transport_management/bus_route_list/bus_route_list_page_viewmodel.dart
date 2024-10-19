@@ -112,9 +112,9 @@ class BusRouteListPageViewModel extends BasePageViewModel {
   int updatedRouteIndex = 0;
 
   void updatRoute(List<RouteStopMappingModel> a) {
-    a.sort(
-      (a, b) => a.stop!.orderBy!.compareTo(b.stop!.orderBy!),
-    );
+    // a.sort(
+    //   (a, b) => a.stop!.orderBy!.compareTo(b.stop!.orderBy!),
+    // );
     for (var i = 0; i < a.length; i++) {
       if (i != a.length - 1) {
         if (a[i].stopComplete && a[i + 1].stopComplete) {
