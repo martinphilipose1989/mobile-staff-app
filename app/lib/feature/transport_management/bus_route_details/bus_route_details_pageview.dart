@@ -11,6 +11,7 @@ import 'package:app/navigation/route_paths.dart';
 
 import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
+import 'package:app/utils/common_widgets/app_images.dart';
 
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 
@@ -22,6 +23,7 @@ import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 import 'bus_route_details_page_viewmodel.dart';
@@ -58,6 +60,43 @@ class BusRouteDetailsPageView
                 text: model.trip?.schoolName ?? '',
                 style: AppTypography.subtitle1,
               ),
+              // PopupMenuButton<String>(
+              //   color: Colors.white,
+              //   onSelected: (value) {
+              //     if (value == "call") {
+              //       Navigator.pushNamed(
+              //         context,
+              //         RoutePaths.schoolContactPage,
+              //         arguments:
+              //             model.trip?.routeStopMapping?[0].stop?.schoolId,
+              //       );
+              //     } else {
+              //       Navigator.pushNamed(context, RoutePaths.incidentReportPage);
+              //     }
+              //   },
+              //   itemBuilder: (BuildContext context) {
+              //     return [
+              //       PopupMenuItem<String>(
+              //         value: 'call',
+              //         child: Row(
+              //           children: [
+              //             SvgPicture.asset(AppImages.schoolIcon),
+              //             const Text('Call School'),
+              //           ],
+              //         ),
+              //       ),
+              //       PopupMenuItem<String>(
+              //         value: 'incident',
+              //         child: Row(
+              //           children: [
+              //             SvgPicture.asset(AppImages.dangerIcon),
+              //             const Text('Raise Incident'),
+              //           ],
+              //         ),
+              //       ),
+              //     ];
+              //   },
+              // ),
             ],
           ),
         ),
@@ -180,25 +219,42 @@ class BusRouteDetailsPageView
                                     : Container(
                                         padding: const EdgeInsets.all(16),
                                         width: double.infinity,
-                                        child: CommonPrimaryElevatedButton(
-                                          title: (model.isLastIndex ?? false)
-                                              ? "Complete Trip"
-                                              : "Drop Students",
-                                          width: double.infinity,
-                                          onPressed: () {
-                                            (model.isLastIndex ?? false)
-                                                ? model.createRouteLogs(
-                                                    int.parse(
-                                                        model.trip?.id ?? ''),
-                                                    attendanceTypeEnum:
-                                                        AttendanceTypeEnum
-                                                            .dropall,
-                                                    status: TripRouteStatus
-                                                        .completed)
-                                                : model.createStopLog(
-                                                    model.stop?.id ?? 0);
-                                          },
-                                        ),
+                                        child: AppStreamBuilder<
+                                                Resource<List<Student>>>(
+                                            initialData: Resource.none(),
+                                            stream: model.studentListStream,
+                                            dataBuilder:
+                                                (context, studentList) {
+                                              return CommonPrimaryElevatedButton(
+                                                isDisabled: studentList?.data
+                                                        ?.any((students) =>
+                                                            students
+                                                                .attendanceList
+                                                                ?.isEmpty ??
+                                                            true) ??
+                                                    true,
+                                                title:
+                                                    (model.isLastIndex ?? false)
+                                                        ? "Complete Trip"
+                                                        : "Drop Students",
+                                                width: double.infinity,
+                                                onPressed: () {
+                                                  (model.isLastIndex ?? false)
+                                                      ? model.createRouteLogs(
+                                                          int.parse(
+                                                              model.trip?.id ??
+                                                                  ''),
+                                                          attendanceTypeEnum:
+                                                              AttendanceTypeEnum
+                                                                  .dropall,
+                                                          status:
+                                                              TripRouteStatus
+                                                                  .completed)
+                                                      : model.createStopLog(
+                                                          model.stop?.id ?? 0);
+                                                },
+                                              );
+                                            }),
                                       );
                           });
                     },
@@ -280,23 +336,37 @@ class BusRouteDetailsPageView
                                 : Container(
                                     padding: const EdgeInsets.all(16),
                                     width: double.infinity,
-                                    child: CommonPrimaryElevatedButton(
-                                      title: (model.isLastIndex ?? false)
-                                          ? "Drop All Students"
-                                          : "Pickup Students",
-                                      width: double.infinity,
-                                      onPressed: () {
-                                        (model.isLastIndex ?? false)
-                                            ? model.createRouteLogs(
-                                                int.parse(model.trip?.id ?? ''),
-                                                status:
-                                                    TripRouteStatus.completed,
-                                                attendanceTypeEnum:
-                                                    AttendanceTypeEnum.dropall)
-                                            : model.createStopLog(
-                                                model.stop?.id ?? 0);
-                                      },
-                                    ),
+                                    child: AppStreamBuilder<
+                                            Resource<List<Student>>>(
+                                        initialData: Resource.none(),
+                                        stream: model.studentListStream,
+                                        dataBuilder: (context, studentList) {
+                                          return CommonPrimaryElevatedButton(
+                                            isDisabled: studentList?.data?.any(
+                                                    (students) =>
+                                                        students.attendanceList
+                                                            ?.isEmpty ??
+                                                        true) ??
+                                                true,
+                                            title: (model.isLastIndex ?? false)
+                                                ? "Drop All Students"
+                                                : "Pickup Students",
+                                            width: double.infinity,
+                                            onPressed: () {
+                                              (model.isLastIndex ?? false)
+                                                  ? model.createRouteLogs(
+                                                      int.parse(
+                                                          model.trip?.id ?? ''),
+                                                      status: TripRouteStatus
+                                                          .completed,
+                                                      attendanceTypeEnum:
+                                                          AttendanceTypeEnum
+                                                              .dropall)
+                                                  : model.createStopLog(
+                                                      model.stop?.id ?? 0);
+                                            },
+                                          );
+                                        }),
                                   );
                       });
                 },

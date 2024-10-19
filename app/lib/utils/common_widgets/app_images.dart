@@ -106,4 +106,6 @@ class AppImages {
 
   static const String schoolTripIcon = "assets/images/school_icon.svg";
   static const String menuAction = "assets/images/popupmenu_icon.svg";
+
+  static const String dangerIcon = "assets/images/danger.svg";
 }
