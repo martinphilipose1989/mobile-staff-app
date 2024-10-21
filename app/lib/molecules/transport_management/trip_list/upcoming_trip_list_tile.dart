@@ -39,7 +39,9 @@ class UpcomingTripListTile extends StatelessWidget {
           const Divider(color: AppColors.textPalerGray),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             TripTileDetailItem(
-                title: trip.routeStopMapping?.first.stop?.stopName ?? "",
+                title: trip.routeStopMapping?.isEmpty ?? true
+                    ? ""
+                    : trip.routeStopMapping?.first.stop?.stopName ?? "",
                 titleTextStyle:
                     AppTypography.subtitle2.copyWith(color: AppColors.textDark),
                 subtitle: "",
@@ -52,7 +54,9 @@ class UpcomingTripListTile extends StatelessWidget {
               ],
             ),
             TripTileDetailItem(
-                title: trip.routeStopMapping?.last.stop?.stopName ?? "",
+                title: trip.routeStopMapping?.isEmpty ?? true
+                    ? ""
+                    : trip.routeStopMapping?.last.stop?.stopName ?? "",
                 titleTextStyle:
                     AppTypography.subtitle2.copyWith(color: AppColors.textDark),
                 subtitle: '',
