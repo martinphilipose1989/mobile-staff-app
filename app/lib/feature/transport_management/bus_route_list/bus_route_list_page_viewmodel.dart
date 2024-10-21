@@ -72,7 +72,7 @@ class BusRouteListPageViewModel extends BasePageViewModel {
   Position? _busPosition;
   void getUserLoacation() async {
     PermissionHandlerService permission = PermissionHandlerService();
-    // _busPosition = await permission.getUserLocation();
+    _busPosition = await permission.getUserLocation();
   }
 
   void fetchBusStopLogs(List<RouteStopMappingModel> a) {
@@ -141,6 +141,11 @@ class BusRouteListPageViewModel extends BasePageViewModel {
     if (distanceInMeters <= 50) {}
   }
 
+  void trackLiveLocation() {
+    PermissionHandlerService permission = PermissionHandlerService();
+    permission.liveLocation();
+  }
+
   String convertTo12HourFormat(String time) {
     // Split the input string to extract hours, minutes, and seconds
     List<String> timeParts = time.split(':');
@@ -167,7 +172,6 @@ class BusRouteListPageViewModel extends BasePageViewModel {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _loadingSubject.close();
     _pageSubject.close();
     hasMorePagesSubject.close();

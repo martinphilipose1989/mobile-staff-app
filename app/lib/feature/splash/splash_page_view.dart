@@ -1,5 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'dart:developer';
+
 import 'package:app/feature/landing_page.dart';
 import 'package:app/model/resource.dart';
 
@@ -7,6 +9,7 @@ import 'package:app/themes_setup.dart';
 import 'package:app/utils/app_typography.dart';
 import 'package:app/utils/common_widgets/app_images.dart';
 import 'package:app/utils/common_widgets/common_app_loader.dart';
+import 'package:app/utils/common_widgets/common_popups.dart';
 
 import 'package:app/utils/common_widgets/common_primary_elevated_button.dart';
 import 'package:app/utils/stream_builder/app_stream_builder.dart';
@@ -14,6 +17,7 @@ import 'package:app/utils/stream_builder/app_stream_builder.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
@@ -68,24 +72,26 @@ class SplashPageView extends BasePageViewWidget<SplashViewModel> {
                             backgroundColor: Colors.white,
                             foregroundColor: AppColors.primary,
                             onPressed: () async {
-                              // bool locationPermissionGranted = await model
-                              //     .permissionHandler
-                              //     .requestLocationPermission(
-                              //   (value) {
-                              //     if (value) {
-                              //       CommonPopups()
-                              //           .showLocationSettingPermission(
-                              //         context,
-                              //         'To continue, please allow access to your location. These permissions are necessary for showing accurate data. You can enable them in your device settings.',
-                              //         true,
-                              //         Icons.location_on,
-                              //         (shouldRoute) {
-                              //           openAppSettings();
-                              //         },
-                              //       );
-                              //     }
-                              //   },
-                              // );
+                              bool locationPermissionGranted = await model
+                                  .permissionHandler
+                                  .requestLocationPermission(
+                                (value) {
+                                  if (value) {
+                                    CommonPopups()
+                                        .showLocationSettingPermission(
+                                      context,
+                                      'To continue, please allow access to your location. These permissions are necessary for showing accurate data. You can enable them in your device settings.',
+                                      true,
+                                      Icons.location_on,
+                                      (shouldRoute) {
+                                        openAppSettings();
+                                      },
+                                    );
+                                  }
+                                },
+                              );
+
+                              log("locationPermissionGranted $locationPermissionGranted");
                               //   if (locationPermissionGranted) {
                               model.login();
                               //  }

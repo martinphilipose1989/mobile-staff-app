@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
 
@@ -212,7 +214,7 @@ class BusChecklistPageView
                                                                     context);
                                                               },
                                                                   header:
-                                                                      'Verify ${model.getRole(checkListdata?.data?[index].userType ?? '')}',
+                                                                      'Verify ${checkListdata?.data?[index].userType}',
                                                                   info:
                                                                       "+91-${checkListdata?.data?[index].userDetails?.mobile}",
                                                                   name: checkListdata
@@ -222,7 +224,7 @@ class BusChecklistPageView
                                                                           ?.fullName ??
                                                                       '',
                                                                   role:
-                                                                      'Call ${model.getRole(checkListdata?.data?[index].userType ?? '')}',
+                                                                      'Call ${checkListdata?.data?[index].userType}',
                                                                   type: DialogType
                                                                       .driver);
                                                             },
@@ -295,6 +297,7 @@ class BusChecklistPageView
       Function()? negativeCallback,
       Function()? positiveCallback,
       String imageUrl = ''}) {
+    log("role ${role}");
     return showDialog(
       context: context,
       builder: (context) {

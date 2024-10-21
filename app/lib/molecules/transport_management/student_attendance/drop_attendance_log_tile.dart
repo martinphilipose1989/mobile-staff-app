@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/di/states/viewmodels.dart';
 import 'package:app/molecules/transport_management/student_attendance/guardian_list.dart';
 import 'package:app/molecules/transport_management/student_attendance/triangle_container.dart';

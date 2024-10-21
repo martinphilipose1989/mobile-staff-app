@@ -49,8 +49,11 @@ class BusChecklistPageState
             .trip;
     model.getBusStopsList();
     model.dropStarted = widget.dropStarted ?? false;
-    model.timer = Timer.periodic(
-        const Duration(minutes: 5), (timer) => model.getUserLoacation());
+
+    model.trackLiveLocation();
+
+    // model.timer = Timer.periodic(
+    //     const Duration(minutes: 5), (timer) => model.getUserLoacation());
   }
 
   @override

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
@@ -259,7 +257,7 @@ class BusRouteListPageView
                                                                             .stop
                                                                             ?.stopName ??
                                                                         '',
-                                                                    color: index ==
+                                                                    color: index <=
                                                                             model
                                                                                 .updatedRouteIndex
                                                                         ? AppColors
@@ -426,7 +424,7 @@ class TimelineTile extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             Visibility(
-                              visible: index == model.updatedRouteIndex,
+                              visible: index <= model.updatedRouteIndex,
                               replacement: Container(
                                 alignment: Alignment.bottomCenter,
                                 padding: const EdgeInsets.all(4),
@@ -461,7 +459,7 @@ class TimelineTile extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
-                                  color: index == model.updatedRouteIndex
+                                  color: index <= model.updatedRouteIndex
                                       ? AppColors.primary
                                       : AppColors.textLightGray,
                                   width: lineWidth,
@@ -471,7 +469,7 @@ class TimelineTile extends StatelessWidget {
                                         Column(
                                           children: [
                                             Container(
-                                              color: index ==
+                                              color: index <=
                                                       model.updatedRouteIndex
                                                   ? AppColors.primary
                                                   : AppColors.textLightGray,
