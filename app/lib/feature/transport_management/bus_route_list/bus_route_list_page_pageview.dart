@@ -124,7 +124,57 @@ class BusRouteListPageView
                                                                 .all(16.0),
                                                         child: InkWell(
                                                           onTap: () {
-                                                            log("DROP");
+                                                            final busStopData =
+                                                                busStopsListData!
+                                                                    .data![
+                                                                        index]
+                                                                    .stop!;
+                                                            final stopData = index ==
+                                                                    ((busStopsListData?.data?.length ?? 0) -
+                                                                        1)
+                                                                ? StopModel(
+                                                                    academicYrsId:
+                                                                        busStopData
+                                                                            .academicYrsId,
+                                                                    isDraft: busStopData
+                                                                        .isDraft,
+                                                                    createdAt:
+                                                                        busStopData
+                                                                            .createdAt,
+                                                                    distanceKm:
+                                                                        busStopData
+                                                                            .distanceKm,
+                                                                    endDate: busStopData
+                                                                        .endDate,
+                                                                    lat: busStopData
+                                                                        .lat,
+                                                                    long: busStopData
+                                                                        .long,
+                                                                    orderBy: busStopData
+                                                                        .orderBy,
+                                                                    relatedStopId:
+                                                                        busStopData
+                                                                            .relatedStopId,
+                                                                    schoolId: busStopData
+                                                                        .schoolId,
+                                                                    startDate:
+                                                                        busStopData
+                                                                            .startDate,
+                                                                    stopMapName:
+                                                                        busStopData
+                                                                            .stopMapName,
+                                                                    stopName: busStopData
+                                                                        .stopName,
+                                                                    updatedAt:
+                                                                        busStopData
+                                                                            .updatedAt,
+                                                                    zoneName:
+                                                                        busStopData
+                                                                            .zoneName)
+                                                                : busStopsListData!
+                                                                    .data![
+                                                                        index]
+                                                                    .stop!;
                                                             BusRouteDetailsPageParams
                                                                 params =
                                                                 BusRouteDetailsPageParams(
@@ -132,12 +182,10 @@ class BusRouteListPageView
                                                                         model
                                                                             .dropStarted,
                                                                     trip: null,
-                                                                    stop: busStopsListData!
-                                                                        .data![
-                                                                            index]
-                                                                        .stop!,
+                                                                    stop:
+                                                                        stopData,
                                                                     isLastIndex: index ==
-                                                                            ((busStopsListData.data?.length ?? 0) -
+                                                                            ((busStopsListData?.data?.length ?? 0) -
                                                                                 1)
                                                                         ? true
                                                                         : false);
