@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:app/errors/flutter_toast_error_presenter.dart';
 import 'package:app/model/resource.dart';
@@ -111,6 +112,9 @@ class BusRouteListPageViewModel extends BasePageViewModel {
 
   int updatedRouteIndex = 0;
 
+  RouteStopMappingModel? currentStop;
+  RouteStopMappingModel? nextStop;
+
   void updatRoute(List<RouteStopMappingModel> a) {
     // a.sort(
     //   (a, b) => a.stop!.orderBy!.compareTo(b.stop!.orderBy!),
@@ -119,31 +123,73 @@ class BusRouteListPageViewModel extends BasePageViewModel {
       if (i != a.length - 1) {
         if (a[i].stopComplete && a[i + 1].stopComplete) {
           updatedRouteIndex = i + 1;
+          currentStop = a[updatedRouteIndex];
+          nextStop = a[updatedRouteIndex + 1];
         }
       }
     }
-
+    log("nextStop ${nextStop?.stop?.lat} ${nextStop?.stop?.long}");
     _busStopsListSubject.add(Resource.success(data: a));
   }
 
-  Future<void> checkBusProximity(
-    double busStopLatitude,
-    double busStopLongitude,
-  ) async {
-    // Check the distance to the bus stop
-    double distanceInMeters = Geolocator.distanceBetween(
-      _busPosition!.latitude,
-      _busPosition!.longitude,
-      busStopLatitude,
-      busStopLongitude,
-    );
+  // distance between bus and next stop
+  BehaviorSubject<double> distanceSubject = BehaviorSubject<double>.seeded(0);
+  Stream<double> get distanceStream => distanceSubject.stream;
 
-    if (distanceInMeters <= 50) {}
+  Future<void> checkBusProximity(
+      {required double latitude, required double longitude}) async {
+    // Check the distance to the bus stop
+    if (nextStop?.stop == null) return;
+
+    double distanceInMeters = Geolocator.distanceBetween(
+        19.141425, //latitude,
+        72.8309000, //  longitude,
+
+        double.parse(nextStop?.stop?.lat ?? '0'),
+        double.parse(nextStop?.stop?.long ?? '0'));
+
+    if (distanceInMeters > 0 && distanceInMeters <= 50) {
+      log("IF distanceInMeters ${distanceInMeters.floor()}");
+      distanceSubject.add(distanceInMeters);
+    } else {
+      log("ELSE distanceInMeters ${distanceInMeters.floor()}");
+    }
   }
+
+  StreamSubscription<Position>?
+      _positionSubscription; // Declare a StreamSubscription
+  bool enableLiveLocation =
+      false; // Example flag for enabling/disabling location tracking
 
   void trackLiveLocation() {
     PermissionHandlerService permission = PermissionHandlerService();
-    permission.liveLocation();
+    log("enableLiveLocation $enableLiveLocation");
+
+    // Check if location tracking is enabled
+    if (enableLiveLocation) {
+      // If already subscribed, return to avoid duplicate subscriptions
+      _positionSubscription ??= permission.liveLocation().listen((position) {
+        log("New position: $position");
+
+        // Call checkBusProximity whenever a new position is received
+        checkBusProximity(
+            latitude: position.latitude, longitude: position.longitude);
+      });
+    } else {
+      // If not enabled, pause the subscription
+      _positionSubscription?.pause();
+    }
+  }
+
+  void updateLiveLocationStatus(bool isEnabled) {
+    enableLiveLocation = isEnabled;
+
+    // If enabled, resume the stream; if disabled, pause it
+    if (enableLiveLocation) {
+      _positionSubscription?.resume();
+    } else {
+      _positionSubscription?.pause();
+    }
   }
 
   String convertTo12HourFormat(String time) {
@@ -176,6 +222,8 @@ class BusRouteListPageViewModel extends BasePageViewModel {
     _pageSubject.close();
     hasMorePagesSubject.close();
     _busStopsListSubject.close();
+    _positionSubscription?.cancel();
+    _positionSubscription = null;
     super.dispose();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/feature/transport_management/bus_route_details/bus_route_details_page.dart';
 import 'package:app/model/resource.dart';
 import 'package:app/molecules/transport_management/arrival_info/arrival_info_tile.dart';
@@ -116,186 +118,203 @@ class BusRouteListPageView
                                                     },
                                                     itemBuilder:
                                                         (context, index) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16.0),
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            final busStopData =
-                                                                busStopsListData!
-                                                                    .data![
-                                                                        index]
-                                                                    .stop!;
-                                                            final stopData = index ==
-                                                                    ((busStopsListData?.data?.length ?? 0) -
-                                                                        1)
-                                                                ? StopModel(
-                                                                    academicYrsId:
-                                                                        busStopData
-                                                                            .academicYrsId,
-                                                                    isDraft: busStopData
-                                                                        .isDraft,
-                                                                    createdAt:
-                                                                        busStopData
-                                                                            .createdAt,
-                                                                    distanceKm:
-                                                                        busStopData
-                                                                            .distanceKm,
-                                                                    endDate: busStopData
-                                                                        .endDate,
-                                                                    lat: busStopData
-                                                                        .lat,
-                                                                    long: busStopData
-                                                                        .long,
-                                                                    orderBy: busStopData
-                                                                        .orderBy,
-                                                                    relatedStopId:
-                                                                        busStopData
-                                                                            .relatedStopId,
-                                                                    schoolId: busStopData
-                                                                        .schoolId,
-                                                                    startDate:
-                                                                        busStopData
-                                                                            .startDate,
-                                                                    stopMapName:
-                                                                        busStopData
-                                                                            .stopMapName,
-                                                                    stopName: busStopData
-                                                                        .stopName,
-                                                                    updatedAt:
-                                                                        busStopData
-                                                                            .updatedAt,
-                                                                    zoneName:
-                                                                        busStopData
-                                                                            .zoneName)
-                                                                : busStopsListData!
-                                                                    .data![
-                                                                        index]
-                                                                    .stop!;
-                                                            BusRouteDetailsPageParams
-                                                                params =
-                                                                BusRouteDetailsPageParams(
-                                                                    dropStarted:
-                                                                        model
-                                                                            .dropStarted,
-                                                                    trip: null,
-                                                                    stop:
-                                                                        stopData,
-                                                                    isLastIndex: index ==
-                                                                            ((busStopsListData?.data?.length ?? 0) -
-                                                                                1)
-                                                                        ? true
-                                                                        : false);
-                                                            Navigator.pushNamed(
-                                                                    context,
-                                                                    RoutePaths
-                                                                        .busRouteDetailsPage,
-                                                                    arguments:
-                                                                        params)
-                                                                .then(
-                                                              (value) {
-                                                                model
-                                                                    .getBusStopsList();
-                                                              },
-                                                            );
+                                                      return AppStreamBuilder<
+                                                              double>(
+                                                          stream: model
+                                                              .distanceStream,
+                                                          initialData: model
+                                                              .distanceSubject
+                                                              .value,
+                                                          onData: (distance) {
+                                                            if (distance > 0) {
+                                                              // model
+                                                              //     .updateLiveLocationStatus(
+                                                              //         false);
+                                                              // model.enableLiveLocation =
+                                                              //     false;
+                                                              // model
+                                                              //     .distanceSubject
+                                                              //     .add(0);
+                                                              // navigateToBusRouteDetails(
+                                                              //     context:
+                                                              //         context,
+                                                              //     busStopsListData:
+                                                              //         busStopsListData,
+                                                              //     index: index,
+                                                              //     model: model);
+                                                            }
                                                           },
-                                                          child: TimelineTile(
-                                                            model: model,
-                                                            index: index,
-                                                            stopid:
-                                                                busStopsListData
-                                                                        ?.data?[
-                                                                            index]
-                                                                        .stop
-                                                                        ?.id ??
-                                                                    0,
-                                                            isActive: true,
-                                                            lineWidth: 3.w,
-                                                            stopName: busStopsListData
-                                                                    ?.data?[
-                                                                        index]
-                                                                    .stop
-                                                                    ?.stopName ??
-                                                                '',
-                                                            circleColor:
-                                                                AppColors
-                                                                    .primary,
-                                                            leadingChild:
-                                                                Column(
-                                                              children: [
-                                                                CommonText(
-                                                                    text: model.convertTo12HourFormat(
-                                                                        busStopsListData?.data?[index].approxTime ??
-                                                                            ""),
-                                                                    style: AppTypography
-                                                                        .caption,
-                                                                    color: AppColors
-                                                                        .textGray),
-                                                                // CommonText(
-                                                                //     text:
-                                                                //         "7:00 Am",
-                                                                //     style: AppTypography
-                                                                //         .caption,
-                                                                //     color: index ==
-                                                                //             0
-                                                                //         ? AppColors
-                                                                //             .success
-                                                                //         : AppColors
-                                                                //             .failure),
-                                                              ],
-                                                            ),
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                CommonText(
-                                                                    text: busStopsListData
-                                                                            ?.data?[
-                                                                                index]
-                                                                            .stop
-                                                                            ?.stopName ??
-                                                                        '',
-                                                                    color: index <=
-                                                                            model
-                                                                                .updatedRouteIndex
-                                                                        ? AppColors
-                                                                            .primary
-                                                                        : AppColors
-                                                                            .textLightGray,
-                                                                    style: AppTypography
-                                                                        .subtitle2),
-                                                                Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    SvgPicture.asset(
-                                                                        AppImages
-                                                                            .userOutlineIcon),
-                                                                    const SizedBox(
-                                                                      width: 5,
-                                                                    ),
-                                                                    CommonText(
-                                                                        text:
-                                                                            "${busStopsListData?.data?[index].totalStudents} Students",
-                                                                        color: AppColors
-                                                                            .textGray,
-                                                                        style: AppTypography
-                                                                            .caption),
-                                                                  ],
+                                                          dataBuilder: (context,
+                                                              distanceBetweenBusAndStop) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      16.0),
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  navigateToBusRouteDetails(
+                                                                      context:
+                                                                          context,
+                                                                      busStopsListData:
+                                                                          busStopsListData,
+                                                                      index:
+                                                                          index,
+                                                                      model:
+                                                                          model);
+                                                                  // final busStopData =
+                                                                  //     busStopsListData!
+                                                                  //         .data![
+                                                                  //             index]
+                                                                  //         .stop!;
+                                                                  // final stopData = index ==
+                                                                  //         ((busStopsListData?.data?.length ?? 0) -
+                                                                  //             1)
+                                                                  //     ? StopModel(
+                                                                  //         academicYrsId: busStopData
+                                                                  //             .academicYrsId,
+                                                                  //         isDraft: busStopData
+                                                                  //             .isDraft,
+                                                                  //         createdAt: busStopData
+                                                                  //             .createdAt,
+                                                                  //         distanceKm: busStopData
+                                                                  //             .distanceKm,
+                                                                  //         endDate: busStopData
+                                                                  //             .endDate,
+                                                                  //         lat: busStopData
+                                                                  //             .lat,
+                                                                  //         long: busStopData
+                                                                  //             .long,
+                                                                  //         orderBy: busStopData
+                                                                  //             .orderBy,
+                                                                  //         relatedStopId: busStopData
+                                                                  //             .relatedStopId,
+                                                                  //         schoolId: busStopData
+                                                                  //             .schoolId,
+                                                                  //         startDate: busStopData
+                                                                  //             .startDate,
+                                                                  //         stopMapName: busStopData
+                                                                  //             .stopMapName,
+                                                                  //         stopName: busStopData
+                                                                  //             .stopName,
+                                                                  //         updatedAt: busStopData
+                                                                  //             .updatedAt,
+                                                                  //         zoneName: busStopData
+                                                                  //             .zoneName)
+                                                                  //     : busStopsListData!
+                                                                  //         .data![
+                                                                  //             index]
+                                                                  //         .stop!;
+                                                                  // BusRouteDetailsPageParams params = BusRouteDetailsPageParams(
+                                                                  //     dropStarted:
+                                                                  //         model
+                                                                  //             .dropStarted,
+                                                                  //     trip:
+                                                                  //         null,
+                                                                  //     stop:
+                                                                  //         stopData,
+                                                                  //     isLastIndex: index ==
+                                                                  //             ((busStopsListData?.data?.length ?? 0) - 1)
+                                                                  //         ? true
+                                                                  //         : false);
+                                                                  // Navigator.pushNamed(
+                                                                  //         context,
+                                                                  //         RoutePaths
+                                                                  //             .busRouteDetailsPage,
+                                                                  //         arguments:
+                                                                  //             params)
+                                                                  //     .then(
+                                                                  //   (value) {
+                                                                  //     model
+                                                                  //         .getBusStopsList();
+                                                                  //   },
+                                                                  // );
+                                                                },
+                                                                child:
+                                                                    TimelineTile(
+                                                                  model: model,
+                                                                  index: index,
+                                                                  stopid: busStopsListData
+                                                                          ?.data?[
+                                                                              index]
+                                                                          .stop
+                                                                          ?.id ??
+                                                                      0,
+                                                                  isActive:
+                                                                      true,
+                                                                  lineWidth:
+                                                                      3.w,
+                                                                  stopName: busStopsListData
+                                                                          ?.data?[
+                                                                              index]
+                                                                          .stop
+                                                                          ?.stopName ??
+                                                                      '',
+                                                                  circleColor:
+                                                                      AppColors
+                                                                          .primary,
+                                                                  leadingChild:
+                                                                      Column(
+                                                                    children: [
+                                                                      CommonText(
+                                                                          text: model.convertTo12HourFormat(busStopsListData?.data?[index].approxTime ??
+                                                                              ""),
+                                                                          style: AppTypography
+                                                                              .caption,
+                                                                          color:
+                                                                              AppColors.textGray),
+                                                                      // CommonText(
+                                                                      //     text:
+                                                                      //         "7:00 Am",
+                                                                      //     style: AppTypography
+                                                                      //         .caption,
+                                                                      //     color: index ==
+                                                                      //             0
+                                                                      //         ? AppColors
+                                                                      //             .success
+                                                                      //         : AppColors
+                                                                      //             .failure),
+                                                                    ],
+                                                                  ),
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      CommonText(
+                                                                          text: busStopsListData?.data?[index].stop?.stopName ??
+                                                                              '',
+                                                                          color: index <= model.updatedRouteIndex
+                                                                              ? AppColors.primary
+                                                                              : AppColors.textLightGray,
+                                                                          style: AppTypography.subtitle2),
+                                                                      Row(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.end,
+                                                                        children: [
+                                                                          SvgPicture.asset(
+                                                                              AppImages.userOutlineIcon),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                5,
+                                                                          ),
+                                                                          CommonText(
+                                                                              text: "${busStopsListData?.data?[index].totalStudents} Students",
+                                                                              color: AppColors.textGray,
+                                                                              style: AppTypography.caption),
+                                                                        ],
+                                                                      ),
+                                                                      if (index ==
+                                                                          0)
+                                                                        Expanded(
+                                                                            child:
+                                                                                Container(height: 100.h))
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                                if (index == 0)
-                                                                  Expanded(
-                                                                      child: Container(
-                                                                          height:
-                                                                              100.h))
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
+                                                              ),
+                                                            );
+                                                          });
                                                     }),
                                               ),
                                               child: const NoDataFoundWidget(
@@ -367,6 +386,50 @@ class BusRouteListPageView
         // )
       ],
     );
+  }
+
+  void navigateToBusRouteDetails(
+      {required BuildContext context,
+      required Resource<List<RouteStopMappingModel>>? busStopsListData,
+      required int index,
+      required BusRouteListPageViewModel model}) {
+    final busStopData = busStopsListData?.data?[index].stop;
+    final isLastIndex = index == ((busStopsListData?.data?.length ?? 0) - 1);
+
+    final stopData = isLastIndex
+        ? StopModel(
+            academicYrsId: busStopData?.academicYrsId,
+            isDraft: busStopData?.isDraft,
+            createdAt: busStopData?.createdAt,
+            distanceKm: busStopData?.distanceKm,
+            endDate: busStopData?.endDate,
+            lat: busStopData?.lat,
+            long: busStopData?.long,
+            orderBy: busStopData?.orderBy,
+            relatedStopId: busStopData?.relatedStopId,
+            schoolId: busStopData?.schoolId,
+            startDate: busStopData?.startDate,
+            stopMapName: busStopData?.stopMapName,
+            stopName: busStopData?.stopName,
+            updatedAt: busStopData?.updatedAt,
+            zoneName: busStopData?.zoneName,
+          )
+        : busStopData;
+
+    BusRouteDetailsPageParams params = BusRouteDetailsPageParams(
+      dropStarted: model.dropStarted,
+      trip: null,
+      stop: stopData!,
+      isLastIndex: isLastIndex,
+    );
+
+    Navigator.pushNamed(
+      context,
+      RoutePaths.busRouteDetailsPage,
+      arguments: params,
+    ).then((value) {
+      model.getBusStopsList();
+    });
   }
 }
 

@@ -152,7 +152,6 @@ class CreateEditGatePassPageView
                                                     "parent")
                                                 .toList() ??
                                             [],
-                                    isMutiSelect: false,
                                     dropdownName: "Type Of Visitor",
                                     showAstreik: true,
                                     showBorderColor: true,

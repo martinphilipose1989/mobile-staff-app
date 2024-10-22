@@ -37,7 +37,9 @@ dependencies:
   attachment:
     path: ../infrastructure/attachment/ 
   appauth:
-    path: ../infrastructure/appauth/    
+    path: ../infrastructure/appauth/  
+  location_provider:
+    path: ../infrastructure/location-provider/      
   data:
     path: ../core/data/
   domain:

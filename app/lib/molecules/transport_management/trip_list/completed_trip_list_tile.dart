@@ -20,7 +20,7 @@ class CompletedTripListTile extends StatelessWidget {
       isPrimary: false,
       child: Column(
         children: [
-          const TripListTileHeader(tripStatus: "Completed"),
+          TripListTileHeader(tripStatus: "Completed", trip: trip),
           const Divider(color: AppColors.textPalerGray),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,16 +28,9 @@ class CompletedTripListTile extends StatelessWidget {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 TripTileDetailItem(
                     title: "Pickup point",
-                    subtitle: trip.routeStopMapping
-                            ?.firstWhere(
-                              (element) => element.stop?.orderBy == 1,
-                              orElse: () {
-                                return TripRouteStopMapping();
-                              },
-                            )
-                            .stop
-                            ?.stopName ??
-                        ""),
+                    subtitle: trip.routeStopMapping?.isEmpty ?? true
+                        ? ""
+                        : trip.routeStopMapping?.first.stop?.stopName ?? ""),
                 SizedBox(height: 24.h),
                 TripTileDetailItem(
                     title: "Students",
@@ -47,16 +40,9 @@ class CompletedTripListTile extends StatelessWidget {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 TripTileDetailItem(
                     title: "Drop point",
-                    subtitle: trip.routeStopMapping
-                            ?.firstWhere(
-                              (element) => element.stop?.orderBy == 7,
-                              orElse: () {
-                                return TripRouteStopMapping();
-                              },
-                            )
-                            .stop
-                            ?.stopName ??
-                        ""),
+                    subtitle: trip.routeStopMapping?.isEmpty ?? true
+                        ? ""
+                        : trip.routeStopMapping?.last.stop?.stopName ?? ""),
                 SizedBox(height: 24.h),
                 TripTileDetailItem(
                     title: "Action",

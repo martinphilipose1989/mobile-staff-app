@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
 
@@ -50,7 +48,7 @@ class BusChecklistPageState
     model.getBusStopsList();
     model.dropStarted = widget.dropStarted ?? false;
 
-    model.trackLiveLocation();
+    // model.trackLiveLocation();
 
     // model.timer = Timer.periodic(
     //     const Duration(minutes: 5), (timer) => model.getUserLoacation());

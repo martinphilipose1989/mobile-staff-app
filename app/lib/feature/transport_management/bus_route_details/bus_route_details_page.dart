@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:app/base/app_base_page.dart';
 import 'package:app/di/states/viewmodels.dart';
+import 'package:app/feature/transport_management/bus_route_list/bus_route_list_page_viewmodel.dart';
 
 import 'package:app/utils/common_widgets/common_appbar.dart';
 import 'package:domain/domain.dart';
@@ -24,6 +25,8 @@ class BusRouteDetailsPage extends BasePage<BusRouteDetailsPageViewModel> {
 
 class BusChecklistPageState extends AppBasePageState<
     BusRouteDetailsPageViewModel, BusRouteDetailsPage> {
+  // ignore: prefer_typing_uninitialized_variables
+  late final BusRouteListPageViewModel busListProvider;
   @override
   Widget buildView(BuildContext context, BusRouteDetailsPageViewModel model) {
     return BusRouteDetailsPageView(provideBase());
@@ -37,6 +40,21 @@ class BusChecklistPageState extends AppBasePageState<
   @override
   Color scaffoldBackgroundColor() {
     return Colors.white;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Access the provider safely in initState or didChangeDependencies
+    busListProvider = ProviderScope.containerOf(context, listen: false)
+        .read(busRouteListPageViewModelProvider);
+  }
+
+  @override
+  void dispose() {
+    // Use the stored provider reference here
+    //  busListProvider.updateLiveLocationStatus(true);
+    super.dispose();
   }
 
   @override

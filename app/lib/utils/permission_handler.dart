@@ -93,16 +93,12 @@ class PermissionHandlerService {
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  liveLocation() {
+  Stream<Position> liveLocation() {
     const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
       // distanceFilter: 5,
       timeLimit: Duration(minutes: 2),
     );
-    Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-      (position) {
-        log("position ${position.toString()}");
-      },
-    );
+    return Geolocator.getPositionStream(locationSettings: locationSettings);
   }
 }

@@ -28,7 +28,7 @@ class CustomDropdownButton extends StatefulWidget {
   const CustomDropdownButton(
       {super.key,
       required this.items,
-      this.isMutiSelect,
+      this.isMutiSelect = false,
       required this.dropdownName,
       required this.showAstreik,
       this.showBorderColor = false,
@@ -95,7 +95,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             right: widget.rightPadding,
             bottom: widget.bottomPadding,
             left: widget.leftPadding),
-        child: widget.isMutiSelect != null
+        child: widget.isMutiSelect != null || widget.isMutiSelect == true
             ? multiSelectDropDown()
             : singleSelectDropDown());
   }
