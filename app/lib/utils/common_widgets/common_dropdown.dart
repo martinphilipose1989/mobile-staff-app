@@ -95,7 +95,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             right: widget.rightPadding,
             bottom: widget.bottomPadding,
             left: widget.leftPadding),
-        child: widget.isMutiSelect != null || widget.isMutiSelect == true
+        child: widget.isMutiSelect != null && widget.isMutiSelect == true
             ? multiSelectDropDown()
             : singleSelectDropDown());
   }

@@ -43,7 +43,6 @@ class MyDutyPageView extends BasePageViewWidget<MyDutyPageViewModel> {
                   stream: model.tripListStream,
                   initialData: Resource.none(),
                   dataBuilder: (context, tripData) {
-                    log("message ${tripData?.data}");
                     return CommonRefreshIndicator(
                       onRefresh: () {
                         return model.refreshMyDutyList();
