@@ -112,8 +112,8 @@ class BusRouteListPageViewModel extends BasePageViewModel {
 
   int updatedRouteIndex = 0;
 
-  RouteStopMappingModel? currentStop;
-  RouteStopMappingModel? nextStop;
+  // RouteStopMappingModel? currentStop;
+  // RouteStopMappingModel? nextStop;
 
   void updatRoute(List<RouteStopMappingModel> a) {
     // a.sort(
@@ -123,12 +123,12 @@ class BusRouteListPageViewModel extends BasePageViewModel {
       if (i != a.length - 1) {
         if (a[i].stopComplete && a[i + 1].stopComplete) {
           updatedRouteIndex = i + 1;
-          currentStop = a[updatedRouteIndex];
-          nextStop = a[updatedRouteIndex + 1];
+          // currentStop = a[updatedRouteIndex];
+          // nextStop = a[updatedRouteIndex + 1];
         }
       }
     }
-    log("nextStop ${nextStop?.stop?.lat} ${nextStop?.stop?.long}");
+    //  log("nextStop ${nextStop?.stop?.lat} ${nextStop?.stop?.long}");
     _busStopsListSubject.add(Resource.success(data: a));
   }
 
@@ -139,21 +139,21 @@ class BusRouteListPageViewModel extends BasePageViewModel {
   Future<void> checkBusProximity(
       {required double latitude, required double longitude}) async {
     // Check the distance to the bus stop
-    if (nextStop?.stop == null) return;
+    // if (nextStop?.stop == null) return;
 
-    double distanceInMeters = Geolocator.distanceBetween(
-        19.141425, //latitude,
-        72.8309000, //  longitude,
+    // double distanceInMeters = Geolocator.distanceBetween(
+    //     19.141425, //latitude,
+    //     72.8309000, //  longitude,
 
-        double.parse(nextStop?.stop?.lat ?? '0'),
-        double.parse(nextStop?.stop?.long ?? '0'));
+    //     double.parse(nextStop?.stop?.lat ?? '0'),
+    //     double.parse(nextStop?.stop?.long ?? '0'));
 
-    if (distanceInMeters > 0 && distanceInMeters <= 50) {
-      log("IF distanceInMeters ${distanceInMeters.floor()}");
-      distanceSubject.add(distanceInMeters);
-    } else {
-      log("ELSE distanceInMeters ${distanceInMeters.floor()}");
-    }
+    // if (distanceInMeters > 0 && distanceInMeters <= 50) {
+    //   log("IF distanceInMeters ${distanceInMeters.floor()}");
+    //   distanceSubject.add(distanceInMeters);
+    // } else {
+    //   log("ELSE distanceInMeters ${distanceInMeters.floor()}");
+    // }
   }
 
   StreamSubscription<Position>?
