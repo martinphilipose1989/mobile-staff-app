@@ -72,16 +72,23 @@ class StudentProfilePageView
                     ),
                     SizedBox(height: 16.h),
                     VisitorDetailsRow(
-                        title1: "Pickup Location",
-                        value1: student?.data?.transportDetails?.route
-                                    ?.routeStopMapping?.isNotEmpty ??
-                                false
-                            ? student?.data?.transportDetails?.route
-                                    ?.routeStopMapping?.first.stop?.stopName ??
-                                ""
-                            : "",
-                        title2: "Pickup Time",
-                        value2: "6:15 AM"),
+                      title1: "Pickup Location",
+                      value1: student?.data?.transportDetails?.route
+                                  ?.routeStopMapping?.isNotEmpty ??
+                              false
+                          ? student?.data?.transportDetails?.route
+                                  ?.routeStopMapping?.first.stop?.stopName ??
+                              ""
+                          : "",
+                      title2: "Pickup Time",
+                      value2: student?.data?.transportDetails?.route
+                                  ?.routeStopMapping?.isNotEmpty ??
+                              false
+                          ? student?.data?.transportDetails?.route
+                                  ?.routeStopMapping?.first.approxTime ??
+                              "N/A"
+                          : "",
+                    ),
                     SizedBox(height: 16.h),
                     VisitorDetailsRow(
                         title1: "Drop Location",
@@ -93,7 +100,7 @@ class StudentProfilePageView
                                 ""
                             : "",
                         title2: "Drop Time",
-                        value2: "12:30 PM"),
+                        value2: "N/A"),
                     SizedBox(height: 16.h),
                     const Divider(color: AppColors.dividerColor),
                     SizedBox(height: 16.h),
