@@ -70,36 +70,42 @@ class TripListTileHeader extends StatelessWidget {
                       if (value.status == Status.success &&
                           (trip?.isLoading ?? false)) {
                         if (trip?.routeType == "1") {
-                          BusRouteDetailsPageParams params = BusRouteDetailsPageParams(
-                              dropStarted: false,
-                              trip: trip,
-                              stop: StopModel(
-                                  academicYrsId: trip?.routeStopMapping?[0].stop
-                                      ?.academicYrsId,
-                                  createdAt: DateTime.parse(
-                                      trip?.routeStopMapping?[0].stop?.createdAt ??
+                          BusRouteDetailsPageParams params =
+                              BusRouteDetailsPageParams(
+                                  dropStarted: false,
+                                  trip: trip,
+                                  stop: StopModel(
+                                      academicYrsId: trip?.routeStopMapping?[0]
+                                          .stop?.academicYrsId,
+                                      createdAt: DateTime.parse(trip
+                                              ?.routeStopMapping?[0]
+                                              .stop
+                                              ?.createdAt ??
                                           ''),
-                                  distanceKm: trip
-                                      ?.routeStopMapping?[0].stop?.distanceKm,
-                                  endDate: DateTime.parse(
-                                      trip?.routeStopMapping?[0].stop?.endDate ??
+                                      distanceKm: trip?.routeStopMapping?[0]
+                                          .stop?.distanceKm,
+                                      endDate: DateTime.parse(trip
+                                              ?.routeStopMapping?[0]
+                                              .stop
+                                              ?.endDate ??
                                           ''),
-                                //  id: trip?.routeStopMapping?[0].stop?.id,
-                                  isDraft:
-                                      trip?.routeStopMapping?[0].stop?.isDraft,
-                                  lat: trip?.routeStopMapping?[0].stop?.lat,
-                                  long: trip?.routeStopMapping?[0].stop?.long,
-                                  orderBy:
-                                      trip?.routeStopMapping?[0].stop?.orderBy,
-                                  relatedStopId: trip?.routeStopMapping?[0].stop
-                                      ?.relatedStopId,
-                                  schoolId: trip?.routeStopMapping?[0].stop?.schoolId,
-                                  startDate: DateTime.parse(trip?.routeStopMapping?[0].stop?.startDate ?? ''),
-                                  stopMapName: trip?.routeStopMapping?[0].stop?.stopMapName,
-                                  stopName: trip?.routeStopMapping?[0].stop?.stopName,
-                                  updatedAt: DateTime.parse(trip?.routeStopMapping?[0].stop?.updatedAt ?? ''),
-                                  zoneName: trip?.routeStopMapping?[0].stop?.zoneName),
-                              isLastIndex: false);
+                                      //  id: trip?.routeStopMapping?[0].stop?.id,
+                                      isDraft: trip
+                                          ?.routeStopMapping?[0].stop?.isDraft,
+                                      lat: trip?.routeStopMapping?[0].stop?.lat,
+                                      long:
+                                          trip?.routeStopMapping?[0].stop?.long,
+                                      orderBy: trip
+                                          ?.routeStopMapping?[0].stop?.orderBy,
+                                      relatedStopId: trip?.routeStopMapping?[0]
+                                          .stop?.relatedStopId,
+                                      schoolId: trip?.routeStopMapping?[0].stop?.schoolId,
+                                      startDate: DateTime.parse(trip?.routeStopMapping?[0].stop?.startDate ?? ''),
+                                      stopMapName: trip?.routeStopMapping?[0].stop?.stopMapName,
+                                      stopName: trip?.routeStopMapping?[0].stop?.stopName,
+                                      updatedAt: DateTime.parse(trip?.routeStopMapping?[0].stop?.updatedAt ?? ''),
+                                      zoneName: trip?.routeStopMapping?[0].stop?.zoneName),
+                                  isLastIndex: false);
                           Navigator.pushNamed(
                               context, RoutePaths.busRouteDetailsPage,
                               arguments: params);
@@ -109,6 +115,8 @@ class TripListTileHeader extends StatelessWidget {
                               arguments: trip);
                         }
                         model.stopLoader(trip!);
+                      } else if (value.status == Status.error) {
+                        model.stopLoader(trip!);
                       }
                     },
                     dataBuilder: (context, data) {
@@ -116,7 +124,7 @@ class TripListTileHeader extends StatelessWidget {
                         title: buttonTitle,
                         isDisabled:
                             trip?.studentStopsMappings?.isEmpty ?? false,
-                        isLoading:  (trip?.isLoading ?? false),
+                        isLoading: (trip?.isLoading ?? false),
                         titleTextStyle: AppTypography.subtitle2,
                         onPressed: () {
                           model.startRouteCall(trip!);

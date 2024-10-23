@@ -97,16 +97,20 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         createCall: (params) =>
             getStudentlistByRouteUsecase.execute(params: params),
         onSuccess: (data) {
+          totalStudent = presentStudent = absentStudent = 0;
           _studentListSubject.add(Resource.success(data: data?.data));
           totalStudent = data?.data?.length ?? 0;
-          presentStudent = data?.data
-                  ?.where((student) =>
-                      student.attendanceList?.isNotEmpty == true &&
-                      student.attendanceList?.first.attendanceRemark ==
-                          "present")
-                  .length ??
-              0;
-          absentStudent = totalStudent - presentStudent;
+          data?.data?.forEach((student) {
+            if (student.attendanceList?.isNotEmpty == true) {
+              final remark =
+                  student.attendanceList?.first.attendanceRemark?.toLowerCase();
+              if (remark == "present") {
+                presentStudent++;
+              } else if (remark == "absent") {
+                absentStudent++;
+              }
+            }
+          });
         },
         onError: (error) {
           _studentListSubject.add(Resource.error(data: null, error: error));
@@ -118,7 +122,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
     required String remark,
     AttendanceTypeEnum? attendanceTypeEnum,
   }) {
-    if (remark == "present") {
+    if (remark.toLowerCase() == "present") {
       _presentLoadingSubject.add(true);
       _absentLoadingSubject.add(false);
     } else {
@@ -130,10 +134,10 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
           attendanceDate: DateTime.now().dateFormatToyyyMMdd(),
           attendanceDetails: [
             AttendanceDetail(
-                attendanceType: remark == "present"
+                attendanceType: remark.toLowerCase() == "present"
                     ? attendanceTypeEnum?.value
                     : AttendanceTypeEnum.absent.value,
-                attendanceRemark: remark,
+                attendanceRemark: remark.toLowerCase(),
                 globalStudentId: student.studentId)
           ],
           boardId: student.studentDetails?.crtBoardId,
@@ -217,7 +221,8 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
     final studentList = _studentListSubject.value.data
         ?.where((student) =>
             student.attendanceList?.isNotEmpty == true &&
-            student.attendanceList?.first.attendanceRemark == "present")
+            student.attendanceList?.first.attendanceRemark?.toLowerCase() ==
+                "present")
         .map(
             (student) => student.studentId) // Assuming 'studentId' is the field
         .toList();
@@ -266,7 +271,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
       {required String attendanceRemark,
       required AttendanceTypeEnum attendanceType,
       required int studentId}) {
-    if (attendanceRemark == "present") {
+    if (attendanceRemark.toLowerCase() == "present") {
       _presentLoadingSubject.add(true);
       _absentLoadingSubject.add(false);
     } else {
@@ -278,7 +283,7 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         attendanceUpdates: [
           AttendanceUpdate(
             attendanceDate: [DateTime.now().dateFormatToyyyMMdd()],
-            attendanceRemark: attendanceRemark,
+            attendanceRemark: attendanceRemark.toLowerCase(),
             attendanceType: attendanceType.value,
             studentId: [studentId],
           ),
