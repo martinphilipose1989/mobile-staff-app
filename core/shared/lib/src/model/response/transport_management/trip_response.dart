@@ -100,7 +100,7 @@ class TripResult {
 class RouteBusUserMapping {
   String? id;
 
-  String? userType;
+  dynamic userType;
 
   String? startDate;
 

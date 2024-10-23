@@ -127,7 +127,12 @@ class TripListTileHeader extends StatelessWidget {
                         isLoading: (trip?.isLoading ?? false),
                         titleTextStyle: AppTypography.subtitle2,
                         onPressed: () {
+                          if(trip?.routeBusUserMapping?.isNotEmpty ?? false){
                           model.startRouteCall(trip!);
+                          }
+                          else{
+                            model.flutterToastErrorPresenter.show(Exception(), context, "No bus assigned for  particular route");
+                          }
                         },
                         icon: SvgPicture.asset(AppImages.playButton),
                         backgroundColor: AppColors.primary,

@@ -53,8 +53,8 @@ class CompletedTripListTile extends StatelessWidget {
                             : ""),
               ]),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                TripTileDetailItem(
-                    title: "Route No", subtitle: "Rno:${trip.routeCode}"),
+                SizedBox(height: 24.h),
+                const TripTileDetailItem(title: "", subtitle: ""),
                 SizedBox(height: 24.h),
                 TripTileDetailItem(
                     title: "Shift", subtitle: trip.shiftName ?? ''),
