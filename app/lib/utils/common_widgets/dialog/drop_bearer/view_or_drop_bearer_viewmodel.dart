@@ -98,7 +98,7 @@ class ViewOrDropBearerViewmodel extends BasePageViewModel {
         attendanceUpdates: [
           AttendanceUpdate(
             attendanceDate: [DateTime.now().dateFormatToyyyMMdd()],
-            attendanceRemark: attendanceRemark,
+            attendanceRemark: attendanceRemark.toLowerCase(),
             attendanceType: attendanceType.value,
             studentId: [studentId],
           ),

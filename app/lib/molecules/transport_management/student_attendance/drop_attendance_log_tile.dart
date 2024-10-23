@@ -240,13 +240,14 @@ class DropAttendanceLogTile extends StatelessWidget {
                       Container(
                         padding:
                             REdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                        color: student.attendanceList?.first.attendanceRemark ==
+                        color: student.attendanceList?.first.attendanceRemark
+                                    ?.toLowerCase() ==
                                 "present"
                             ? AppColors.success
                             : AppColors.failure,
                         child: CommonText(
-                            text: student.attendanceList?.first
-                                        .attendanceRemark ==
+                            text: student.attendanceList?.first.attendanceRemark
+                                        ?.toLowerCase() ==
                                     "present"
                                 ? "Present"
                                 : " Absent",
@@ -254,9 +255,10 @@ class DropAttendanceLogTile extends StatelessWidget {
                             style: AppTypography.caption),
                       ),
                       TriangleContainer(
-                          isPresent:
-                              student.attendanceList?.first.attendanceRemark ==
-                                  "present")
+                          isPresent: student
+                                  .attendanceList?.first.attendanceRemark
+                                  ?.toLowerCase() ==
+                              "present")
                     ],
                   ),
                   Positioned(
