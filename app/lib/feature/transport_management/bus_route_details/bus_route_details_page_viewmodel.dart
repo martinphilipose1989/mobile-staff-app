@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
 
 class BusRouteDetailsPageViewModel extends BasePageViewModel {
@@ -71,9 +72,9 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
   Stream<Resource<bool>> get pickAllLoadingStream =>
       pickAllLoadingSubject.stream;
 
-  int totalStudent = 0;
-  int presentStudent = 0;
-  int absentStudent = 0;
+  BehaviorSubject<int> totalStudent = BehaviorSubject<int>.seeded(0);
+  BehaviorSubject<int> presentStudent = BehaviorSubject<int>.seeded(0);
+  BehaviorSubject<int> absentStudent = BehaviorSubject<int>.seeded(0);
 
   BusRouteDetailsPageViewModel(
       {required this.getGuardianlistUsecase,
@@ -88,6 +89,9 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
 
   void getRouteStudentList({required int routeId, int? stopId}) {
     _studentListSubject.add(Resource.loading(data: null));
+    totalStudent.add(0);
+    presentStudent.add(0);
+    absentStudent.add(0);
     final GetStudentlistByRouteUsecaseParams params =
         GetStudentlistByRouteUsecaseParams(routeId: routeId, stopId: stopId);
     ApiResponseHandler.apiCallHandler(
@@ -97,17 +101,16 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         createCall: (params) =>
             getStudentlistByRouteUsecase.execute(params: params),
         onSuccess: (data) {
-          totalStudent = presentStudent = absentStudent = 0;
           _studentListSubject.add(Resource.success(data: data?.data));
-          totalStudent = data?.data?.length ?? 0;
+          totalStudent.add(data?.data?.length ?? 0);
           data?.data?.forEach((student) {
             if (student.attendanceList?.isNotEmpty == true) {
               final remark =
                   student.attendanceList?.first.attendanceRemark?.toLowerCase();
               if (remark == "present") {
-                presentStudent++;
+                presentStudent.add(presentStudent.value++);
               } else if (remark == "absent") {
-                absentStudent++;
+                absentStudent.add(absentStudent.value++);
               }
             }
           });
