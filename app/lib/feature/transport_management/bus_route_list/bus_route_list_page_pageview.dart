@@ -398,6 +398,9 @@ class BusRouteListPageView
 
     final stopData = isLastIndex
         ? StopModel(
+            id: isLastIndex && (model.trip?.routeType == '1')
+                ? busStopData?.id
+                : null,
             academicYrsId: busStopData?.academicYrsId,
             isDraft: busStopData?.isDraft,
             createdAt: busStopData?.createdAt,

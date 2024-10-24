@@ -48,7 +48,6 @@ class ViewOrDropBearerViewmodel extends BasePageViewModel {
       params: params,
       createCall: (params) => getBearerListUsecase.execute(params: params),
       onSuccess: (result) {
-        log("GET BEARER LIST ${result?.data?.first.firstName}");
         bearerResponse.add(Resource.success(data: result?.data));
       },
       onError: (error) {

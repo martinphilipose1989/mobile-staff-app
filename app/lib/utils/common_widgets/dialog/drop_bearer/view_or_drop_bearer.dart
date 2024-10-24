@@ -73,44 +73,58 @@ class ViewOrDropBearer extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        model.pageController.previousPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.linear);
-                                      },
-                                      icon:
-                                          SvgPicture.asset(AppImages.backArrow),
-                                    ),
-                                    SizedBox(
-                                      width: 125.w,
-                                      height: 125.h,
-                                      child: PageView.builder(
-                                          itemCount: bearer?.data?.length,
-                                          controller: model.pageController,
-                                          onPageChanged: (index) {
-                                            model.selectIndex.value = index;
-                                          },
-                                          itemBuilder: (context, index) {
-                                            return CommonImageWidget(
-                                                imageHeight: 125.h,
-                                                imageWidth: 125.w,
-                                                imageUrl: "imageUrl",
-                                                clipBehavior: Clip.hardEdge);
-                                          }),
-                                    ),
-                                    RotatedBox(
-                                      quarterTurns: 2,
+                                    Visibility(
+                                      visible:
+                                          bearer?.data?.isNotEmpty ?? false,
                                       child: IconButton(
                                         onPressed: () {
-                                          model.pageController.nextPage(
+                                          model.pageController.previousPage(
                                               duration: const Duration(
                                                   milliseconds: 300),
                                               curve: Curves.linear);
                                         },
                                         icon: SvgPicture.asset(
                                             AppImages.backArrow),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 125.w,
+                                      height: 125.h,
+                                      child: Visibility(
+                                        visible:
+                                            bearer?.data?.isNotEmpty ?? false,
+                                        replacement: const Center(
+                                            child: Text("No Bearer Found")),
+                                        child: PageView.builder(
+                                            itemCount: bearer?.data?.length,
+                                            controller: model.pageController,
+                                            onPageChanged: (index) {
+                                              model.selectIndex.value = index;
+                                            },
+                                            itemBuilder: (context, index) {
+                                              return CommonImageWidget(
+                                                  imageHeight: 125.h,
+                                                  imageWidth: 125.w,
+                                                  imageUrl: "imageUrl",
+                                                  clipBehavior: Clip.hardEdge);
+                                            }),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible:
+                                          bearer?.data?.isNotEmpty ?? false,
+                                      child: RotatedBox(
+                                        quarterTurns: 2,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            model.pageController.nextPage(
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                                curve: Curves.linear);
+                                          },
+                                          icon: SvgPicture.asset(
+                                              AppImages.backArrow),
+                                        ),
                                       ),
                                     )
                                   ]),
@@ -233,8 +247,9 @@ class ViewOrDropBearer extends StatelessWidget {
                                         title: "Drop",
                                         onPressed: () {
                                           if (student.attendanceList?.first
-                                                  .attendanceType ==
-                                              AttendanceTypeEnum.absent) {
+                                                  .attendanceRemark
+                                                  ?.toLowerCase() ==
+                                              "absent") {
                                             model.flutterToastErrorPresenter.show(
                                                 Exception(),
                                                 context,

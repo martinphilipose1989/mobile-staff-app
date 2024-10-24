@@ -281,7 +281,7 @@ class RouteBusUserMappingEntity
   @JsonKey(name: "id")
   String? id;
   @JsonKey(name: "user_type")
-  String? userType;
+  dynamic userType;
   @JsonKey(name: "start_date")
   String? startDate;
   @JsonKey(name: "end_date")
