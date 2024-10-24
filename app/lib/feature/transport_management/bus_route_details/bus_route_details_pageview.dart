@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/di/states/viewmodels.dart';
 
 import 'package:app/model/resource.dart';
@@ -109,23 +111,43 @@ class BusRouteDetailsPageView
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      AttendanceCountTile(
-                          count: model.totalStudent,
-                          countType: "Total",
-                          textColor: AppColors.primary),
+                      AppStreamBuilder<int>(
+                          stream: model.totalStudent.stream,
+                          initialData: model.totalStudent.value,
+                          dataBuilder: (context, totalStudent) {
+                            return AttendanceCountTile(
+                                count: totalStudent ?? 0,
+                                countType: "Total",
+                                textColor: AppColors.primary);
+                          }),
                       if (model.stop?.id != null)
-                        AttendanceCountTile(
-                            count: model.presentStudent,
-                            countType: "Picked Up",
-                            textColor: const Color(0xff5C3535)),
-                      AttendanceCountTile(
-                          count: model.presentStudent,
-                          countType: "Present",
-                          textColor: AppColors.success),
-                      AttendanceCountTile(
-                          count: model.absentStudent,
-                          countType: "Absent",
-                          textColor: AppColors.failure),
+                        AppStreamBuilder<int>(
+                            stream: model.presentStudent.stream,
+                            initialData: model.presentStudent.value,
+                            dataBuilder: (context, presentStudent) {
+                              return AttendanceCountTile(
+                                  count: presentStudent ?? 0,
+                                  countType: "Picked Up",
+                                  textColor: const Color(0xff5C3535));
+                            }),
+                      AppStreamBuilder<int>(
+                          stream: model.presentStudent.stream,
+                          initialData: model.presentStudent.value,
+                          dataBuilder: (context, presentStudent) {
+                            return AttendanceCountTile(
+                                count: presentStudent ?? 0,
+                                countType: "Present",
+                                textColor: AppColors.success);
+                          }),
+                      AppStreamBuilder<int>(
+                          stream: model.absentStudent,
+                          initialData: 0,
+                          dataBuilder: (context, absentStudent) {
+                            return AttendanceCountTile(
+                                count: absentStudent ?? 0,
+                                countType: "Absent",
+                                textColor: AppColors.failure);
+                          }),
                     ],
                   ),
                 );
@@ -185,7 +207,11 @@ class BusRouteDetailsPageView
                     initialData: Resource.none(),
                     onData: (value) {
                       if (value.status == Status.success) {
-                        Navigator.pop(context);
+                        log("createStopLogsSubgject");
+                        if (model.isLastIndex == false &&
+                            model.trip?.routeType == '1') {
+                          Navigator.pop(context);
+                        }
                       }
                     },
                     dataBuilder: (context, createStopLogsData) {
@@ -194,6 +220,7 @@ class BusRouteDetailsPageView
                           initialData: Resource.none(),
                           onData: (value) {
                             if (value.status == Status.success) {
+                              log("createRouteLogsStream");
                               ProviderScope.containerOf(context)
                                   .read(myDutyPageViewModelProvider)
                                   .getMyDutyList();
@@ -266,13 +293,17 @@ class BusRouteDetailsPageView
                           initialData: Resource.none(),
                           onData: (result) {
                             if (result.status == Status.success) {
-                              model.pickAllLoadingSubject.add(Resource.none());
-                              Navigator.pushNamed(
-                                      context, RoutePaths.busRouteListPage,
-                                      arguments: true)
-                                  .then((value) {
-                                model.reset();
-                              });
+                              log("pickAllLoadingStream");
+                              if (model.isLastIndex == false) {
+                                model.pickAllLoadingSubject
+                                    .add(Resource.none());
+                                Navigator.pushNamed(
+                                        context, RoutePaths.busRouteListPage,
+                                        arguments: true)
+                                    .then((value) {
+                                  model.reset();
+                                });
+                              }
                             }
                           },
                           dataBuilder: (context, loading) {
@@ -302,6 +333,9 @@ class BusRouteDetailsPageView
                 initialData: Resource.none(),
                 onData: (value) {
                   if (value.status == Status.success) {
+                    log("createStopLogsSubgject");
+                    if (model.isLastIndex == true &&
+                        model.trip?.routeType == "1") return;
                     Navigator.pop(context);
                   }
                 },
@@ -316,9 +350,8 @@ class BusRouteDetailsPageView
                                 .read(myDutyPageViewModelProvider)
                                 .getMyDutyList();
 
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                            Navigator.popUntil(context,
+                                ModalRoute.withName(RoutePaths.myDutyPage));
                           }
                         }
                       },

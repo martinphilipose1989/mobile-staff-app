@@ -252,8 +252,8 @@ class AttendanceLogListTile extends StatelessWidget {
                             ? AppColors.success
                             : AppColors.failure,
                         child: CommonText(
-                            text: student.attendanceList?.first
-                                        .attendanceRemark ==
+                            text: student.attendanceList?.first.attendanceRemark
+                                        ?.toLowerCase() ==
                                     "present"
                                 ? "Present"
                                 : " Absent",
