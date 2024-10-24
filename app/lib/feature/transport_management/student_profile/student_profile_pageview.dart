@@ -87,7 +87,7 @@ class StudentProfilePageView
                           ? student?.data?.transportDetails?.route
                                   ?.routeStopMapping?.first.approxTime ??
                               "N/A"
-                          : "",
+                          : "N/A",
                     ),
                     SizedBox(height: 16.h),
                     VisitorDetailsRow(
