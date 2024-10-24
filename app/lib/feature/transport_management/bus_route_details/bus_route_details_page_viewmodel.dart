@@ -103,14 +103,18 @@ class BusRouteDetailsPageViewModel extends BasePageViewModel {
         onSuccess: (data) {
           _studentListSubject.add(Resource.success(data: data?.data));
           totalStudent.add(data?.data?.length ?? 0);
+
           data?.data?.forEach((student) {
             if (student.attendanceList?.isNotEmpty == true) {
               final remark =
                   student.attendanceList?.first.attendanceRemark?.toLowerCase();
+
               if (remark == "present") {
-                presentStudent.add(presentStudent.value++);
+                presentStudent.value += 1;
+                presentStudent.add(presentStudent.value);
               } else if (remark == "absent") {
-                absentStudent.add(absentStudent.value++);
+                absentStudent.value += 1;
+                absentStudent.add(absentStudent.value);
               }
             }
           });
